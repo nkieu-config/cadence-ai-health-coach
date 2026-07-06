@@ -1,6 +1,6 @@
 # INFRA-01: ตั้ง GitHub repo + Next.js scaffold
 
-Status: claimed
+Status: resolved
 Owner: D
 Sprint: 0
 Priority: M
@@ -8,10 +8,10 @@ Refs: ADR-0002, docs/06 (โครงสร้างโปรเจกต์)
 
 ## งาน
 
-- [x] สร้าง GitHub repo — https://github.com/nkieu-config/ai-personal-health-coach-project (เหลือเชิญทีมอีก 3 คน)
+- [x] สร้าง GitHub repo — https://github.com/nkieu-config/ai-personal-health-coach-project + เชิญทีมครบ 4 คน
 - [x] Next.js (App Router, TypeScript) + Tailwind + shadcn/ui
 - [x] โครงโฟลเดอร์ตาม docs/06: `app/`, `lib/supabase`, `lib/patterns`, `lib/ai`, `components/`, `scripts/`
-- [ ] Branch protection บน `main` + PR template สั้น ๆ
+- [x] Branch protection บน `main` + PR template สั้น ๆ
 - [x] README วิธี setup local (env vars ที่ต้องมี)
 
 ## Acceptance criteria
@@ -26,3 +26,5 @@ Refs: ADR-0002, docs/06 (โครงสร้างโปรเจกต์)
 เหลือของที่ต้องใช้บัญชีทีม: สร้าง GitHub repo + push, ตั้ง branch protection, PR template
 
 2026-07-07: push ขึ้น GitHub แล้ว 2 commits (docs / scaffold) — เหลือ: เชิญทีม 3 คน (Settings → Collaborators), branch protection บน main (require PR + 1 review), PR template
+
+2026-07-07 (resolved): เชิญทีมครบ + branch protection ตั้งแล้ว + เพิ่ม PR template (`.github/pull_request_template.md`) → ปิด INFRA-01 ครบทุกข้อ
