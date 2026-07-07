@@ -1,6 +1,6 @@
 # F0-02: Onboarding เก็บบริบทชีวิต
 
-Status: claimed
+Status: resolved
 Owner: A
 Sprint: 1
 Priority: M
@@ -35,3 +35,5 @@ Blocked by: 01
 - **contract คงเดิม:** profile row สร้างตอนจบ disclaimer เท่านั้น → `hasCompletedOnboarding` ยังใช้ได้ ไม่แตะ helper
 Verify: build + lint ผ่าน; guard `/onboarding` unauth → 307 /login; คอลัมน์ตรง migration
 เหลือ: click-through เต็มในเบราว์เซอร์บน preview (stepper → submit → home); task "แก้จาก settings" เลื่อนไป F7
+
+2026-07-07 (verified → resolved): เทสต์บน preview ผ่าน — onboarding 4 ขั้นจบเร็ว, ข้อมูลเข้า `profiles` ครบ, จบแล้วเข้า home ไม่วน onboarding ซ้ำ (AC1+AC2 ครบ); เหลือเฉพาะ task settings ที่เลื่อนไป F7
