@@ -1,6 +1,6 @@
 # F0-01: Auth — สมัคร/ล็อกอิน/ล็อกเอาต์
 
-Status: claimed
+Status: resolved
 Owner: D
 Sprint: 1
 Priority: M
@@ -40,3 +40,7 @@ Verify: `npm run build` + `lint` ผ่าน; smoke test dev — `/login` `/reg
 2026-07-07 (เพิ่ม Google OAuth — ตามที่ A ขอ): เปิด **ทั้ง Google + email/password** (ADR-0005) ไฟล์เพิ่ม: `signInWithGoogle` ใน actions.ts, `components/auth/google-button.tsx`, `app/auth/callback/route.ts`; หน้า login/register มีปุ่ม "ดำเนินการต่อด้วย Google" + ตัวคั่น
 Verify: build + lint ผ่าน; smoke test — ปุ่ม Google เรนเดอร์ทั้ง login/register, `/auth/callback` ไม่มี code → redirect `/login?error=oauth` (dev ใช้ http://localhost ถูกต้อง)
 ⚠️ **ยังใช้ Google ล็อกอินจริงไม่ได้จนกว่าจะ config** (นอกโค้ด — ทำไม่ได้จาก repo): Google Cloud OAuth client + Supabase enable Google provider + Redirect URLs allowlist ดูขั้นตอนใน ADR-0005 / คอมเมนต์ของ A ในกลุ่ม
+
+2026-07-07 (resolved): config Google OAuth เสร็จ (Google Cloud + Supabase provider + Redirect URLs) — เทสต์บน preview ผ่านทั้ง **Google และ email/password** → onboarding → home → logout; AC2 ผ่านตั้งแต่ smoke test; merge PR #2 เข้า main แล้ว prod deploy live
+บทเรียน setup OAuth (Vercel project name ≠ prod domain, Supabase fallback เงียบ ฯลฯ) บันทึกไว้ใน ADR-0005 § Gotchas
+เหลือ: A แทน onboarding stub ด้วย F0-02/F0-03 จริง

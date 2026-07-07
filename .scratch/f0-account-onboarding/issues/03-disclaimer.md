@@ -19,3 +19,5 @@ Blocked by: 02
 - ข้อความกำกับเห็นได้จริงทั้งมือถือ/desktop โดยไม่รบกวนการใช้งาน
 
 ## Comments
+
+2026-07-07 (หมายเหตุจาก D): onboarding stub (F0-01) ตอนนี้ **fake-set `disclaimer_accepted_at = now()`** เพื่อให้ flow ผ่านชั่วคราว — F0-03 ต้องเอา fake ออก แล้วแทนด้วย disclaimer จริงที่ผู้ใช้กดรับทราบก่อน ค่อย set timestamp (ทำใน onboarding ขั้นสุดท้ายตาม task ข้อ 1)
