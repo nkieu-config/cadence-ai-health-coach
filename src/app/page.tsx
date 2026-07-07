@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { hasCompletedOnboarding } from "@/lib/auth/onboarding";
 import { signOut } from "@/lib/auth/actions";
+import { SafetyNotice } from "@/components/safety-notice";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -45,7 +46,7 @@ export default async function HomePage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-4">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>สวัสดี 👋</CardTitle>
@@ -62,6 +63,7 @@ export default async function HomePage() {
           </form>
         </CardContent>
       </Card>
+      <SafetyNotice className="max-w-md" />
     </main>
   );
 }

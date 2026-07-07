@@ -1,6 +1,6 @@
 # F0-03: Safety disclaimer บังคับรับทราบ
 
-Status: ready-for-human
+Status: claimed
 Owner: A
 Sprint: 1
 Priority: M — ห้ามตัด (เกณฑ์ Safety)
@@ -9,9 +9,9 @@ Blocked by: 02
 
 ## งาน
 
-- [ ] ขั้นสุดท้ายของ onboarding: แสดง disclaimer "wellness coach ไม่ใช่แพทย์ ไม่วินิจฉัย ไม่แนะนำยา หากมีอาการผิดปกติควรพบผู้เชี่ยวชาญ" + ต้องกดรับทราบก่อนเข้าแอป
-- [ ] บันทึก `disclaimer_accepted_at`
-- [ ] ข้อความกำกับถาวรใต้หน้า coach และ dashboard (ตาม docs/08 ชั้นที่ 1)
+- [x] ขั้นสุดท้ายของ onboarding: แสดง disclaimer "wellness coach ไม่ใช่แพทย์ ไม่วินิจฉัย ไม่แนะนำยา หากมีอาการผิดปกติควรพบผู้เชี่ยวชาญ" + ต้องกดรับทราบก่อนเข้าแอป
+- [x] บันทึก `disclaimer_accepted_at`
+- [x] ข้อความกำกับถาวร: component `SafetyNotice` พร้อม + ใส่หน้า home แล้ว; coach/dashboard ยังไม่มี → F2/F4 import เพิ่มตอนสร้าง
 
 ## Acceptance criteria
 
@@ -21,3 +21,9 @@ Blocked by: 02
 ## Comments
 
 2026-07-07 (หมายเหตุจาก D): onboarding stub (F0-01) ตอนนี้ **fake-set `disclaimer_accepted_at = now()`** เพื่อให้ flow ผ่านชั่วคราว — F0-03 ต้องเอา fake ออก แล้วแทนด้วย disclaimer จริงที่ผู้ใช้กดรับทราบก่อน ค่อย set timestamp (ทำใน onboarding ขั้นสุดท้ายตาม task ข้อ 1)
+
+2026-07-07 (implement เสร็จ — บทบาท A): ทำ disclaimer จริงใน onboarding ขั้นที่ 4 (เอา fake ของ stub ออก)
+- ขั้นสุดท้ายแสดง disclaimer + checkbox "ฉันเข้าใจว่า...ไม่ใช่คำแนะนำทางการแพทย์" → ปุ่ม "รับทราบและเริ่มใช้งาน" disabled จนกว่าจะติ๊ก
+- `disclaimer_accepted_at` เขียนตอน submit เท่านั้น → profile ไม่ถูกสร้างจนกว่าจะรับทราบ → **เข้าแอปโดยไม่รับทราบไม่ได้** (AC1: guard เด้งกลับ /onboarding จนกว่าจะมี profile row)
+- `src/components/safety-notice.tsx` — ข้อความกำกับถาวร (reusable) ใส่ใต้ home แล้ว; F2/F4 import ตอนสร้าง coach/dashboard (AC2)
+Verify: build + lint ผ่าน; เหลือ click-through เต็มบน preview
