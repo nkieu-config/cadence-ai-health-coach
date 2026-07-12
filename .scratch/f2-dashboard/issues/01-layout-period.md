@@ -34,7 +34,8 @@ Refs: FR-2.1, wireframe (INFRA-05)
 
 - **Guard + เมนู + layout: มีให้จาก `src/app/(app)/layout.tsx` แล้ว** — ไม่ต้องเขียน auth guard เอง เขียนแค่เนื้อหาหน้า
 - **กราฟ: ติดตั้งให้แล้ว** — ใช้ `Chart*` จาก `@/components/ui/chart` (recharts + ผูกกับสี `--chart-1` ถึง `--chart-5` ใน theme อัตโนมัติ) **ไม่ต้อง `npm i` อะไรเพิ่ม และห้าม hardcode สี**
-- **`src/lib/supabase/server.ts`** — query ได้เลย **ไม่ต้องใส่ `.eq("user_id", ...)`** เพราะ RLS กรองให้อัตโนมัติ
+- **ดึงข้อมูล: `getCheckins(7)` จาก `@/lib/checkins/queries`** → คืน `Checkin[]` ตรง type พร้อมใช้ (RLS กรอง user ให้เอง)
+  ⛔ **ห้าม `supabase.from("checkins")` เอง** — ชื่อคอลัมน์ใน DB เป็น snake_case แต่ type เป็น camelCase ถ้า query เองจะไม่ตรง type
 - **type `Checkin`** มีแล้วที่ `src/lib/patterns/types.ts` — import มาใช้ อย่านิยามซ้ำ
 - **`SafetyNotice`** — layout ใส่ให้ทุกหน้าแล้ว (task ข้อ 4 เสร็จอัตโนมัติ)
 

@@ -32,7 +32,7 @@ Refs: FR-1.1, FR-1.2, FR-1.4, docs/05 (ฟิลด์ + ค่า)
 - **`src/lib/onboarding/actions.ts`** ← แม่แบบ server action: getUser → validate → upsert → `revalidatePath` → `redirect` (F1-02 ใช้โครงเดียวกันเป๊ะ)
 - **Guard + เมนู + layout: มีให้จาก `src/app/(app)/layout.tsx` แล้ว** — เขียนแค่เนื้อหาหน้า
 - **หน้ามี placeholder อยู่แล้ว** ที่ `src/app/(app)/checkin/page.tsx` → **แทนที่เนื้อหาในไฟล์นี้**
-- **`src/lib/supabase/server.ts`** — query/เขียนได้เลย **ไม่ต้องใส่ `.eq("user_id", ...)`** RLS กรองให้อัตโนมัติ
+- **`src/lib/checkins/`** — data layer พร้อมแล้ว: `saveCheckin(checkin)` (upsert = F1-02 เสร็จ), `getCheckinByDate(date)`, `getCheckins(days)` → ฟอร์มเรียกใช้ได้เลย ไม่ต้องแตะ Supabase ตรง ๆ
 - shadcn: Card / Button / Input / Label / Textarea / Badge พร้อม
 
 **📋 Contract — ห้ามเดาค่าเอง:**
