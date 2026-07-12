@@ -33,8 +33,9 @@ Refs: FR-3.1, docs/07 (ตาราง candidates 4 ตัว)
 - **`src/lib/patterns/index.ts`** — `hasEnoughData()` + ค่าคงที่ heuristic พร้อม (`MIN_DAYS_FOR_ANALYSIS = 7`, `MIN_DAYS_PER_GROUP = 3`, `MIN_RELATIVE_DIFFERENCE = 0.2`); ส่วน `computePatternCandidates()` เป็น **stub ที่ throw อยู่** → เขียนตัวจริงแทน
 - **นิยาม candidate 4 ตัว + วิธีคำนวณ** อยู่ครบใน **docs/07 § งานที่ 1** (ตาราง)
 - **`lib/ai` + system prompt guardrail + harness `npm run test:ai` พร้อมใช้แล้ว** → F3-02 เหลือแค่รันยืนยัน + บันทึกผลลง issue (เกือบเสร็จ)
-
-**ยังไม่มี test runner** — ติดตั้ง vitest (`npm i -D vitest`) + เพิ่ม script `"test": "vitest"` แล้ว **แจ้งในกลุ่ม**
+- **Test พร้อมรันแล้ว** — vitest ติดตั้งให้แล้ว สั่ง `npm test` (หรือ `npm run test:watch`) **ไม่ต้อง `npm i` อะไรเพิ่ม**
+- **`src/lib/patterns/test-fixtures.ts`** — `makeCheckin({ sleepHours: 5 })` เติมค่า default ให้ทุกฟิลด์ที่ไม่ได้ระบุ และ `makeCheckins(10, i => ...)` สร้างหลายวันรวด → **ไม่ต้องพิมพ์ 16 ฟิลด์เองทุกเคส**
+- **`src/lib/patterns/patterns.test.ts`** — มี test ตัวอย่างรันผ่านแล้ว ดูเป็นแบบได้เลย
 
 **Starter step:** เขียน unit test ก่อน (4 เคสตาม task: pattern ชัด / ไม่มี pattern / ข้อมูลขาดวัน / กลุ่มเล็กเกิน) แล้วค่อย implement ให้ผ่าน — โมดูลนี้เป็น**แหล่งตัวเลขทั้งหมดที่ AI จะอ้าง** จึงบังคับมี test
 

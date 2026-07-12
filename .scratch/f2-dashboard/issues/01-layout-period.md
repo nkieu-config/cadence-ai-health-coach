@@ -22,23 +22,22 @@ Refs: FR-2.1, wireframe (INFRA-05)
 
 2026-07-12 (kickoff → B): **สาย Dashboard — ทำขนานได้เลย ไม่ต้องรอ F1 check-in ของ A**
 
-**โซนไฟล์ของคุณ:** `src/app/dashboard/`, `src/components/charts/`
-อย่าแตะโซนคนอื่น: `lib/patterns` + `lib/ai` = C · `app/settings` + `scripts/seed.ts` = D · `app/checkin` = A
+**ไฟล์ที่คุณแก้:** `src/app/(app)/dashboard/page.tsx` (มี placeholder อยู่แล้ว — **แทนที่เนื้อหาในไฟล์นี้**) + สร้าง component เพิ่มใน `src/components/dashboard/`
+อย่าแตะโซนคนอื่น: `lib/patterns` + `lib/ai` = ไม้ · `app/(app)/settings` = คีตะ · `app/(app)/checkin` = A
 **Branch:** `feat/f2-dashboard`
 
-**ปลดล็อกตัวเองยังไง (ตาราง `checkins` ยังว่าง):**
-เข้า Supabase → Table Editor → ตาราง `checkins` → **Insert row มือสัก 10–14 แถว** (ใส่ `user_id` ของตัวเอง, `checkin_date` ไล่ย้อนหลัง, สลับค่า `sleep_hours` / `energy_level` / `meals_count` ให้หลากหลาย) → มีข้อมูลปั้นกราฟได้ทันที — พอ D ทำ seed script (INFRA-06) เสร็จ (~15 ก.ค.) ค่อยสลับมาใช้ชุดนั้น
+**ปลดล็อกข้อมูล (ตาราง `checkins` ยังว่าง) — 1 นาทีจบ:**
+เปิด Supabase → **SQL Editor** → วางไฟล์ **`supabase/seed-dev.sql`** → แก้อีเมลเป็นของตัวเอง → Run
+→ ได้ข้อมูล 14 วันพร้อมทำกราฟทันที (ฝัง pattern ไว้: ทุกวันที่ 3 = วัน deadline → นอนน้อย ข้ามมื้อเช้า พลังงานต่ำ)
 
 **ของที่มีให้แล้ว — อย่าเขียนใหม่:**
 
-- **Auth guard:** ก๊อป pattern จาก `src/app/page.tsx` (getUser → `hasCompletedOnboarding` → redirect)
-- **`src/components/safety-notice.tsx`** — task ข้อ 4 คือ **import ตัวนี้** ไม่ต้องเขียนข้อความเอง
-- **`src/lib/supabase/server.ts`** — query ได้เลย **ไม่ต้องใส่ `.eq("user_id", ...)`** เพราะ RLS กรองให้อัตโนมัติ (verify แล้วใน INFRA-02)
+- **Guard + เมนู + layout: มีให้จาก `src/app/(app)/layout.tsx` แล้ว** — ไม่ต้องเขียน auth guard เอง เขียนแค่เนื้อหาหน้า
+- **กราฟ: ติดตั้งให้แล้ว** — ใช้ `Chart*` จาก `@/components/ui/chart` (recharts + ผูกกับสี `--chart-1` ถึง `--chart-5` ใน theme อัตโนมัติ) **ไม่ต้อง `npm i` อะไรเพิ่ม และห้าม hardcode สี**
+- **`src/lib/supabase/server.ts`** — query ได้เลย **ไม่ต้องใส่ `.eq("user_id", ...)`** เพราะ RLS กรองให้อัตโนมัติ
 - **type `Checkin`** มีแล้วที่ `src/lib/patterns/types.ts` — import มาใช้ อย่านิยามซ้ำ
-- shadcn: Card / Button / Badge / Input / Label พร้อม
+- **`SafetyNotice`** — layout ใส่ให้ทุกหน้าแล้ว (task ข้อ 4 เสร็จอัตโนมัติ)
 
-**ยังไม่มี chart library** — เลือกเองได้ (แนะนำ Recharts) `npm i recharts` แล้ว **แจ้งในกลุ่ม** ว่าเพิ่ม dependency
-
-**Starter step:** ทำ `/dashboard` ให้เปิดได้ก่อน (guard + empty state + toggle 7/14/30) → เปิด PR เล็ก merge เลย → ค่อยต่อกราฟใน F2-02 เป็น PR ถัดไป
+**Starter step:** แทน placeholder ด้วยโครงหน้าจริง (empty state + toggle 7/14/30) → เปิด PR เล็ก merge เลย → ค่อยต่อกราฟใน F2-02 เป็น PR ถัดไป
 
 **ก่อนลงงานจริง:** เปิด PR จิ๋ว 1 อันลองระบบก่อน (ดูกติกาใน `.scratch/BOARD.md`) — ยังไม่มีใครในทีมเคย push เลย
