@@ -77,7 +77,7 @@ describe("buildCheckinSummary", () => {
 
     expect(summary.lines).toEqual([
       "กิน 2 มื้อ · ข้ามเช้า · เครื่องดื่มหวาน 2 แก้ว",
-      "นอน 5.5 ชม. · เข้านอนหลัง 02:00 · คุณภาพการนอนที่ประเมินเอง 2/5",
+      "นอน 5.5 ชม. · เข้านอน หลัง 02:00 · คุณภาพการนอนที่ประเมินเอง 2/5",
       "เดิน 20 นาที",
     ]);
   });
@@ -86,14 +86,14 @@ describe("buildCheckinSummary", () => {
     const summary = buildCheckinSummary(
       makeCheckin({ movementTypes: ["none"], movementMinutes: 0, movementBlocker: "tired" })
     );
-    expect(summary.lines[2]).toBe("วันนี้ไม่ได้ขยับ (เหนื่อยเกิน)");
+    expect(summary.lines[2]).toBe("ไม่ได้ขยับ (เหนื่อยเกิน)");
   });
 
   it("ข้อมูลเก่าที่ไม่มีชนิดการเคลื่อนไหว ไม่ทำให้ขึ้นบรรทัดว่าง ๆ", () => {
     const summary = buildCheckinSummary(
       makeCheckin({ movementTypes: [], movementMinutes: 20, movementBlocker: null })
     );
-    expect(summary.lines[2]).toBe("วันนี้ไม่ได้ขยับ");
+    expect(summary.lines[2]).toBe("ไม่ได้ขยับ");
   });
 
   it("มี disruptor → ให้กำลังใจโดยอ้างถึงวันที่ยาก ไม่ใช่โทษผู้ใช้", () => {

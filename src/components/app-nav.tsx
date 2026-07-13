@@ -2,24 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, CalendarCheck, MessageCircle, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const ITEMS = [
-  { href: "/checkin", label: "เช็คอิน", icon: CalendarCheck },
-  { href: "/dashboard", label: "ภาพรวม", icon: BarChart3 },
-  { href: "/coach", label: "โค้ช", icon: MessageCircle },
-  { href: "/settings/privacy", label: "ตั้งค่า", icon: Settings },
-];
+import { NAV_ITEMS, isActivePath } from "./nav-items";
 
 export function AppNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="sticky bottom-0 border-t bg-background pb-[env(safe-area-inset-bottom)]">
+    <nav
+      aria-label="เมนูหลัก"
+      className="sticky bottom-0 border-t bg-background pb-[env(safe-area-inset-bottom)] lg:hidden"
+    >
       <ul className="mx-auto flex w-full max-w-md">
-        {ITEMS.map(({ href, label, icon: Icon }) => {
-          const active = pathname === href || pathname.startsWith(`${href}/`);
+        {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+          const active = isActivePath(pathname, href);
           return (
             <li key={href} className="flex-1">
               <Link

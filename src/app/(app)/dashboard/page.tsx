@@ -6,6 +6,7 @@ import {
   parsePeriod,
   type DashboardPeriod,
 } from "@/components/dashboard/period-toggle";
+import { PageContainer } from "@/components/page-container";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { daysAgo, formatThaiDate, today } from "@/lib/checkins/date";
@@ -78,7 +79,11 @@ export default async function DashboardPage({
   const recent = await getCheckins(MAX_PERIOD);
 
   if (recent.length === 0) {
-    return <WelcomeCard />;
+    return (
+      <PageContainer>
+        <WelcomeCard />
+      </PageContainer>
+    );
   }
 
   const from = daysAgo(period - 1);
@@ -86,22 +91,27 @@ export default async function DashboardPage({
   const todaysCheckin = recent.find((checkin) => checkin.checkinDate === today()) ?? null;
 
   return (
-    <div className="space-y-5">
-      <div className="space-y-3">
+    <PageContainer width="content" className="space-y-5">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <h1 className="text-xl font-semibold">ภาพรวมสุขภาพ</h1>
+          <h1 className="text-xl font-semibold lg:text-2xl">ภาพรวมสุขภาพ</h1>
           <p className="text-sm text-muted-foreground">ดูรูปแบบของตัวเองย้อนหลัง</p>
         </div>
         <PeriodToggle period={period} />
       </div>
 
-      <TodayCard checkin={todaysCheckin} />
-
       {inPeriod.length === 0 ? (
-        <EmptyPeriodCard period={period} />
+        <div className="space-y-5">
+          <TodayCard checkin={todaysCheckin} />
+          <EmptyPeriodCard period={period} />
+        </div>
       ) : (
-        <>
-          <Card>
+        <div className="grid gap-5 lg:grid-cols-3 lg:items-start">
+          <div className="lg:col-span-1">
+            <TodayCard checkin={todaysCheckin} />
+          </div>
+
+          <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="text-base">แนวโน้ม 3 ด้าน</CardTitle>
               <CardDescription>
@@ -113,7 +123,7 @@ export default async function DashboardPage({
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="lg:col-span-3">
             <CardHeader>
               <CardTitle className="text-base">รูปแบบที่พบ</CardTitle>
               <CardDescription>สัญญาณที่น่าติดตาม ไม่ใช่ข้อสรุป</CardDescription>
@@ -122,9 +132,9 @@ export default async function DashboardPage({
               <ComingSoonSection label="ตาราง pattern (F2-04)" />
             </CardContent>
           </Card>
-        </>
+        </div>
       )}
-    </div>
+    </PageContainer>
   );
 }
 

@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { Shield, Eye, Database, Lock, AlertCircle, History, Fingerprint } from "lucide-react";
+import { PageContainer } from "@/components/page-container";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function PrivacyPage() {
   return (
-    <div className="space-y-6">
+    <PageContainer
+      width="content"
+      className="space-y-6 lg:columns-2 lg:gap-6 lg:space-y-0 lg:*:mb-6 lg:*:break-inside-avoid"
+    >
       {/* Header section */}
       <div className="space-y-1.5">
         <h1 className="text-xl font-semibold flex items-center gap-2">
@@ -164,6 +168,6 @@ export default function PrivacyPage() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageContainer>
   );
 }

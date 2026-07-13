@@ -26,7 +26,7 @@ function eatingLine(checkin: Checkin) {
 function sleepLine(checkin: Checkin) {
   return [
     `นอน ${checkin.sleepHours} ชม.`,
-    `เข้านอน${BED_TIME_LABELS[checkin.bedTimeBucket]}`,
+    `เข้านอน ${BED_TIME_LABELS[checkin.bedTimeBucket]}`,
     `คุณภาพการนอนที่ประเมินเอง ${checkin.sleepQuality}/5`,
   ].join(" · ");
 }
@@ -40,7 +40,7 @@ function movementLine(checkin: Checkin) {
     const blocker = checkin.movementBlocker
       ? ` (${MOVEMENT_BLOCKER_LABELS[checkin.movementBlocker]})`
       : "";
-    return `วันนี้ไม่ได้ขยับ${blocker}`;
+    return `ไม่ได้ขยับ${blocker}`;
   }
   return `${types.join(" / ")} ${checkin.movementMinutes} นาที`;
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageContainer } from "@/components/page-container";
 import { CalendarPlus, History } from "lucide-react";
 import { CheckinForm } from "@/components/checkin/checkin-form";
 import { buttonVariants } from "@/components/ui/button";
@@ -16,7 +17,7 @@ export default async function CheckinPage() {
   const missedYesterday = !recent.some((checkin) => checkin.checkinDate === yesterday);
 
   return (
-    <div className="space-y-4">
+    <PageContainer className="space-y-4">
       {hasEarlierCheckin && missedYesterday && (
         <Link
           href={`/checkin/edit/${yesterday}`}
@@ -43,6 +44,6 @@ export default async function CheckinPage() {
           ดูบันทึกย้อนหลัง
         </Link>
       )}
-    </div>
+    </PageContainer>
   );
 }

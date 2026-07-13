@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { CheckinForm } from "@/components/checkin/checkin-form";
+import { PageContainer } from "@/components/page-container";
 import { today } from "@/lib/checkins/date";
 import { getCheckinByDate } from "@/lib/checkins/queries";
 import { isCheckinDate, isWithinBackfillWindow } from "@/lib/checkins/validate";
@@ -13,5 +14,9 @@ export default async function EditCheckinPage({ params }: { params: Promise<{ da
 
   const existing = await getCheckinByDate(date);
 
-  return <CheckinForm date={date} existing={existing} isBackfill />;
+  return (
+    <PageContainer>
+      <CheckinForm date={date} existing={existing} isBackfill />
+    </PageContainer>
+  );
 }
