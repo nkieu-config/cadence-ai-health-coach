@@ -6,7 +6,9 @@ import {
   parsePeriod,
   type DashboardPeriod,
 } from "@/components/dashboard/period-toggle";
+import { CurrentGoalCard } from "@/components/goals/current-goal-card";
 import { PageContainer } from "@/components/page-container";
+import { ReflectionCard } from "@/components/reflection/reflection-card";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { daysAgo, formatThaiDate, today } from "@/lib/checkins/date";
@@ -107,8 +109,10 @@ export default async function DashboardPage({
         </div>
       ) : (
         <div className="grid gap-5 lg:grid-cols-3 lg:items-start">
-          <div className="lg:col-span-1">
+          <div className="space-y-5 lg:col-span-1">
             <TodayCard checkin={todaysCheckin} />
+            <CurrentGoalCard />
+            <ReflectionCard />
           </div>
 
           <Card className="lg:col-span-2">
