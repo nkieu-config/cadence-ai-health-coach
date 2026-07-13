@@ -194,6 +194,68 @@ components:
     typography: "{typography.micro}"
 ---
 
+# ⚠️ อ่านตรงนี้ก่อน — HealthCoach คือ "แอปมือถือ" ไม่ใช่ "เว็บไซต์"
+
+> เอกสาร Cohere ข้างล่าง **เอามาใช้แค่สีกับฟอนต์**
+> ส่วน **Layout / Grid / Responsive ของมันเป็นของเว็บไซต์การตลาด** (hero, trust-logo strip, grid 3 คอลัมน์) — **ไม่ใช่ของเรา อย่าอ่านตาม**
+> เราไม่มี landing page ไม่มี hero — เรามีฟอร์ม, dashboard, เมนูล่าง
+>
+> สี/ฟอนต์/มุมโค้ง **ฝังใน `globals.css` ให้แล้ว** เขียน UI ด้วย class ปกติ (`bg-primary`, `text-muted-foreground`) **ห้าม hardcode สี**
+
+## กฎ Layout ของแอปเรา (บังคับใช้จริง)
+
+**1. หน้าใหม่ไม่ต้องเขียนโครงเอง** — `src/app/(app)/layout.tsx` ให้ guard + เมนู + safety notice แล้ว
+
+```tsx
+export default async function MyPage() {
+  return (
+    <PageContainer>              {/* หรือ width="content" */}
+      <h1 className="sr-only">ชื่อหน้า</h1>
+      ...
+    </PageContainer>
+  );
+}
+```
+
+- ❌ **ห้ามใส่ `<main>` ในหน้า** — layout ใส่ให้แล้ว จะกลายเป็น `<main>` ซ้อนกัน (HTML ผิด)
+- ❌ **ห้ามกำหนดความกว้างเอง** (`max-w-7xl`, `container`) — ใช้ `<PageContainer>`
+- ✅ **ทุกหน้าต้องมี `<h1>` 1 อัน** — `CardTitle` เป็นแค่ `<div>` ไม่นับเป็นหัวข้อ ถ้าหัวข้อที่เห็นอยู่ในการ์ดแล้ว ใช้ `className="sr-only"`
+
+**2. `<PageContainer>` มี 2 แบบเท่านั้น**
+
+| | ความกว้าง | ใช้กับ |
+| --- | --- | --- |
+| `<PageContainer>` | 448px ทุกจอ | **ฟอร์ม** (เช็คอิน, onboarding, แชท) — ฟอร์มแคบกรอกง่ายกว่า |
+| `<PageContainer width="content">` | ถึง 1024px | **หน้าดูข้อมูล** (dashboard, ประวัติ, privacy) |
+
+**3. Breakpoint ที่ใช้จริงมีตัวเดียว: `lg` (1024px)**
+
+| | < 1024px | ≥ 1024px |
+| --- | --- | --- |
+| เมนู | เมนูล่าง 4 ปุ่ม | **Sidebar ซ้าย** |
+| Header | sticky บนสุด | ไม่มี (โลโก้อยู่ใน sidebar) |
+| Layout ในหน้า | คอลัมน์เดียว | ใช้ `lg:grid-cols-*` ได้ |
+
+อย่าใช้ `sm:` / `md:` พร่ำเพรื่อ — ออกแบบมือถือให้จบก่อน แล้วเพิ่ม `lg:` เฉพาะตอนที่เดสก์ท็อปต้องต่างจริง ๆ
+
+## กฎที่ห้ามพัง (ตรวจแล้วผ่านทั้งแอป — อย่าทำหลุด)
+
+1. **ปุ่ม/ลิงก์/ช่องกรอก ต้องสูง ≥ 44px** — ผู้ใช้เรากรอกตอนตี 1 มือเดียว ง่วง ๆ
+   ⚠️ **`<Link>` ที่แต่งให้ดูเหมือนปุ่ม ก็ต้อง 44px ด้วย** (ใช้ `buttonVariants()` หรือ `min-h-11`) — จุดนี้เคยหลุดมาแล้ว
+2. **Dark mode ตามค่าเครื่องอัตโนมัติ** — ทุกสีต้องมาจาก token ถ้า hardcode `bg-white` มันจะขาวโพลนตอนกลางคืน
+3. **ห้าม hardcode สี** — ใช้ `bg-primary` / `text-muted-foreground` / `border` เสมอ
+4. **กราฟใช้ `--chart-1` ถึง `--chart-5`** (นอน=1, กิน=2, เคลื่อนไหว=3) — ผูกกับ dark mode ให้แล้ว
+5. **ไม่ใช้ emoji เป็นไอคอน** — ใช้ Lucide (emoji ในข้อความปกติได้)
+
+## เช็กก่อนเปิด PR ที่แตะ UI
+
+- [ ] เปิดบนมือถือจริง (หรือย่อ browser เป็น 390px) — ไม่มี horizontal scroll
+- [ ] กดปุ่มทุกอันด้วยนิ้วโป้งได้ ไม่พลาด
+- [ ] ตั้งมือถือเป็น dark mode → เปิดดู ไม่มีจุดไหนขาวโพลน
+- [ ] มี `<h1>` 1 อันในหน้า
+
+---
+
 ## Overview
 
 Cohere's current web presence feels like a sober enterprise AI command center with editorial restraint. The home page opens on a huge typographic declaration over a white canvas, then uses photography, dark product mockups, trust logos, and generous empty space to make AI infrastructure feel controlled rather than speculative. Product pages invert the tone into deep green-black or dark navy bands, while blog and research pages move toward publishing-system clarity: large filters, thin rules, dense lists, and pale technical backgrounds.
@@ -283,6 +345,9 @@ Cohere does not use gradients as a generic UI fill. Gradients and color fields a
 
 ## Layout
 
+> 🚫 **หัวข้อ Layout / Grid & Container / Whitespace ข้างล่างนี้เป็นของเว็บไซต์ Cohere — ไม่ใช่ของเรา**
+> **Spacing System ใช้ได้** (4/8px) · **Grid & Container ห้ามใช้** → ใช้ `<PageContainer>` ตาม § "กฎ Layout ของแอปเรา" ด้านบนสุดแทน
+
 ### Spacing System
 
 The system uses an 8px base with many one-off alignment values: `2px`, `6px`, `8px`, `10px`, `12px`, `16px`, `20px`, `22px`, `24px`, `28px`, `32px`, `36px`, `40px`, `56px`, `60px`, `64px`, and `80px`.
@@ -332,6 +397,9 @@ Cohere is mostly flat. Depth comes from surface alternation, media contrast, rou
 Images are not decorative backdrops for text except in CTA bands. Most imagery sits as rounded cards with visible corners: product videos, enterprise photography, article thumbnails, and abstract 3D renders. The dominant radii are 8px and 22px.
 
 ## Components
+
+> 🚫 **component ข้างล่างเป็นของหน้าเว็บการตลาด** (hero-photo-card, trust-logo-strip, announcement-bar, blog-filter-chip, footer-newsletter…) — **เราไม่ใช้สักตัว**
+> ของเราใช้ shadcn ที่ติดตั้งไว้แล้ว: `Card` / `Button` / `Input` / `Chip` / `Chart` — ถ้าต้องการตัวใหม่ **แจ้งกลุ่มก่อน** (ดู `.scratch/BOARD.md`)
 
 ### **`button-primary`**
 
@@ -412,6 +480,9 @@ Dark footer subscription block with coral "AI moves fast" label, white headline,
 - Do not use saturated gradients as normal UI backgrounds; keep gradients media-led.
 
 ## Responsive Behavior
+
+> 🚫 **ทั้งหัวข้อนี้เป็นของเว็บไซต์ Cohere — ข้ามไปได้เลย**
+> breakpoint ของเรามีตัวเดียว (`lg` = 1024px) และ touch target ของเรา **บังคับ 44px** (ของ Cohere ไม่ได้บังคับ) → ดู § "กฎ Layout ของแอปเรา" ด้านบนสุด
 
 ### Breakpoints
 
