@@ -34,6 +34,11 @@ export function makeCheckins(
   build: (index: number) => Partial<Checkin> = () => ({})
 ): Checkin[] {
   return Array.from({ length: count }, (_, index) =>
-    makeCheckin({ checkinDate: dayBefore(index), ...build(index) })
+    makeCheckin({ checkinDate: dayBefore(count - 1 - index), ...build(index) })
   );
+}
+
+export function withMissingDays(checkins: Checkin[], ...indices: number[]): Checkin[] {
+  const dropped = new Set(indices);
+  return checkins.filter((_, index) => !dropped.has(index));
 }
