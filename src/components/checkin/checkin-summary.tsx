@@ -42,6 +42,12 @@ export function CheckinSummary({
           <Button variant="outline" className="w-full" onClick={onEdit}>
             แก้ไขบันทึกนี้
           </Button>
+          <Link
+            href="/checkin/history"
+            className={buttonVariants({ variant: "ghost", className: "w-full" })}
+          >
+            ดูบันทึกย้อนหลัง
+          </Link>
         </div>
       </CardContent>
     </Card>

@@ -89,6 +89,13 @@ describe("buildCheckinSummary", () => {
     expect(summary.lines[2]).toBe("วันนี้ไม่ได้ขยับ (เหนื่อยเกิน)");
   });
 
+  it("ข้อมูลเก่าที่ไม่มีชนิดการเคลื่อนไหว ไม่ทำให้ขึ้นบรรทัดว่าง ๆ", () => {
+    const summary = buildCheckinSummary(
+      makeCheckin({ movementTypes: [], movementMinutes: 20, movementBlocker: null })
+    );
+    expect(summary.lines[2]).toBe("วันนี้ไม่ได้ขยับ");
+  });
+
   it("มี disruptor → ให้กำลังใจโดยอ้างถึงวันที่ยาก ไม่ใช่โทษผู้ใช้", () => {
     const summary = buildCheckinSummary(makeCheckin({ disruptors: ["deadline"] }));
     expect(summary.encouragement).toContain("เดดไลน์");

@@ -12,6 +12,7 @@ import {
 
 export const NOTE_MAX_LENGTH = 200;
 export const TOTAL_MEALS = 3;
+export const MAX_BACKFILL_DAYS = 30;
 
 function allowed(labels: Record<string, string>) {
   return new Set(Object.keys(labels));
@@ -42,12 +43,24 @@ function isKnownOrNull(value: string | null, known: Set<string>) {
   return value === null || known.has(value);
 }
 
+export function isCheckinDate(date: string): boolean {
+  return /^\d{4}-\d{2}-\d{2}$/.test(date) && !Number.isNaN(Date.parse(`${date}T00:00:00Z`));
+}
+
+export function isWithinBackfillWindow(date: string, today: string): boolean {
+  const days = (Date.parse(`${today}T00:00:00Z`) - Date.parse(`${date}T00:00:00Z`)) / 86_400_000;
+  return days >= 0 && days < MAX_BACKFILL_DAYS;
+}
+
 export function validateCheckin(checkin: Checkin, today: string): string | null {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(checkin.checkinDate)) {
+  if (!isCheckinDate(checkin.checkinDate)) {
     return "วันที่ไม่ถูกต้อง";
   }
   if (checkin.checkinDate > today) {
     return "บันทึกล่วงหน้าไม่ได้";
+  }
+  if (!isWithinBackfillWindow(checkin.checkinDate, today)) {
+    return `บันทึกย้อนหลังได้ไม่เกิน ${MAX_BACKFILL_DAYS} วัน`;
   }
 
   if (!isBetween(checkin.mealsCount, 0, TOTAL_MEALS)) {
@@ -81,6 +94,9 @@ export function validateCheckin(checkin: Checkin, today: string): string | null 
 
   if (!isKnownList(checkin.movementTypes, MOVEMENT_TYPES)) {
     return "ชนิดการเคลื่อนไหวไม่ถูกต้อง";
+  }
+  if (checkin.movementTypes.length === 0) {
+    return "เลือกการเคลื่อนไหวอย่างน้อย 1 อย่าง (เลือก “ไม่ได้ขยับเลย” ได้)";
   }
   if (checkin.movementTypes.includes("none") && checkin.movementTypes.length > 1) {
     return "เลือก “ไม่ได้ขยับเลย” พร้อมกับชนิดอื่นไม่ได้";

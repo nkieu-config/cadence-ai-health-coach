@@ -32,14 +32,17 @@ function sleepLine(checkin: Checkin) {
 }
 
 function movementLine(checkin: Checkin) {
-  if (checkin.movementTypes.includes("none") || checkin.movementMinutes === 0) {
+  const types = checkin.movementTypes
+    .filter((type) => type !== "none")
+    .map((type) => MOVEMENT_TYPE_LABELS[type]);
+
+  if (types.length === 0 || checkin.movementMinutes === 0) {
     const blocker = checkin.movementBlocker
       ? ` (${MOVEMENT_BLOCKER_LABELS[checkin.movementBlocker]})`
       : "";
     return `วันนี้ไม่ได้ขยับ${blocker}`;
   }
-  const types = checkin.movementTypes.map((type) => MOVEMENT_TYPE_LABELS[type]).join(" / ");
-  return `${types} ${checkin.movementMinutes} นาที`;
+  return `${types.join(" / ")} ${checkin.movementMinutes} นาที`;
 }
 
 function encouragement(checkin: Checkin) {
