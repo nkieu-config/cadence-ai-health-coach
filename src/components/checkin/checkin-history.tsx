@@ -2,9 +2,9 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { Pencil, Trash2 } from "lucide-react";
+import { Check, Pencil, Trash2 } from "lucide-react";
 import { deleteCheckin } from "@/lib/checkins/actions";
-import { formatThaiDate } from "@/lib/checkins/date";
+import { formatShortThaiDate, formatThaiDate } from "@/lib/checkins/date";
 import { buildCheckinSummary } from "@/lib/checkins/summary";
 import type { Checkin } from "@/lib/patterns/types";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -12,9 +12,11 @@ import { Card, CardContent } from "@/components/ui/card";
 
 function HistoryRow({ checkin }: { checkin: Checkin }) {
   const [confirming, setConfirming] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const { lines } = buildCheckinSummary(checkin);
+  const shortDate = formatShortThaiDate(checkin.checkinDate);
 
   function remove() {
     setError(null);
@@ -23,8 +25,22 @@ function HistoryRow({ checkin }: { checkin: Checkin }) {
       if ("error" in result) {
         setError(result.error);
         setConfirming(false);
+        return;
       }
+      setConfirming(false);
+      setDeleted(true);
     });
+  }
+
+  if (deleted) {
+    return (
+      <Card>
+        <CardContent className="flex items-center gap-2 py-4 text-sm text-muted-foreground">
+          <Check className="size-4 shrink-0 text-primary" />
+          ลบบันทึกของ {shortDate} แล้ว
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
@@ -41,24 +57,27 @@ function HistoryRow({ checkin }: { checkin: Checkin }) {
         {error && <p className="text-sm text-destructive">{error}</p>}
 
         {confirming ? (
-          <div className="flex gap-2">
-            <Button
-              variant="destructive"
-              size="sm"
-              className="flex-1"
-              onClick={remove}
-              disabled={pending}
-            >
-              {pending ? "กำลังลบ…" : "ยืนยันลบบันทึกวันนี้"}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setConfirming(false)}
-              disabled={pending}
-            >
-              ยกเลิก
-            </Button>
+          <div className="space-y-2">
+            <p className="text-sm">ลบบันทึกของ {shortDate} ถาวร — กู้คืนไม่ได้</p>
+            <div className="flex gap-2">
+              <Button
+                variant="destructive"
+                size="sm"
+                className="flex-1"
+                onClick={remove}
+                disabled={pending}
+              >
+                {pending ? "กำลังลบ…" : `ยืนยันลบ ${shortDate}`}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setConfirming(false)}
+                disabled={pending}
+              >
+                ยกเลิก
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="flex gap-2">

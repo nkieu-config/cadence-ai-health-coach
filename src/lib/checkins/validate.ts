@@ -49,7 +49,7 @@ export function isCheckinDate(date: string): boolean {
 
 export function isWithinBackfillWindow(date: string, today: string): boolean {
   const days = (Date.parse(`${today}T00:00:00Z`) - Date.parse(`${date}T00:00:00Z`)) / 86_400_000;
-  return days >= 0 && days <= MAX_BACKFILL_DAYS;
+  return days >= 0 && days < MAX_BACKFILL_DAYS;
 }
 
 export function validateCheckin(checkin: Checkin, today: string): string | null {
@@ -94,6 +94,9 @@ export function validateCheckin(checkin: Checkin, today: string): string | null 
 
   if (!isKnownList(checkin.movementTypes, MOVEMENT_TYPES)) {
     return "ชนิดการเคลื่อนไหวไม่ถูกต้อง";
+  }
+  if (checkin.movementTypes.length === 0) {
+    return "เลือกการเคลื่อนไหวอย่างน้อย 1 อย่าง (เลือก “ไม่ได้ขยับเลย” ได้)";
   }
   if (checkin.movementTypes.includes("none") && checkin.movementTypes.length > 1) {
     return "เลือก “ไม่ได้ขยับเลย” พร้อมกับชนิดอื่นไม่ได้";

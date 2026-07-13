@@ -25,3 +25,11 @@ export function formatThaiDate(isoDate: string): string {
     timeZone: "UTC",
   }).format(new Date(`${isoDate}T00:00:00Z`));
 }
+
+export function formatShortThaiDate(isoDate: string): string {
+  return new Intl.DateTimeFormat("th-TH", {
+    day: "numeric",
+    month: "short",
+    timeZone: "UTC",
+  }).format(new Date(`${isoDate}T00:00:00Z`));
+}

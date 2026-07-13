@@ -188,7 +188,7 @@ export function CheckinForm({
     <Card>
       <CardHeader>
         <CardTitle>
-          {isBackfill ? "บันทึกย้อนหลัง" : "เช็คอิน"} · {STEPS[step]}
+          {date === today() ? "เช็คอิน" : "บันทึกย้อนหลัง"} · {STEPS[step]}
         </CardTitle>
         <CardDescription>
           {formatThaiDate(date)} · ขั้นที่ {step + 1} จาก {STEPS.length}
