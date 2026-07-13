@@ -1,5 +1,10 @@
-import { ComingSoon } from "@/components/coming-soon";
+import { CheckinForm } from "@/components/checkin/checkin-form";
+import { today } from "@/lib/checkins/date";
+import { getCheckinByDate } from "@/lib/checkins/queries";
 
-export default function CheckinPage() {
-  return <ComingSoon title="เช็คอินประจำวัน" issue="F1-01 / F1-02" owner="A" />;
+export default async function CheckinPage() {
+  const date = today();
+  const existing = await getCheckinByDate(date);
+
+  return <CheckinForm date={date} existing={existing} />;
 }

@@ -1,20 +1,15 @@
 import type { Checkin } from "@/lib/patterns/types";
 import { createClient } from "@/lib/supabase/server";
+import { daysAgo } from "./date";
 import { toCheckin } from "./mapper";
 import { CHECKIN_COLUMNS, type CheckinRow } from "./types";
-
-function isoDaysAgo(days: number) {
-  const date = new Date();
-  date.setDate(date.getDate() - days);
-  return date.toISOString().slice(0, 10);
-}
 
 export async function getCheckins(days: number): Promise<Checkin[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("checkins")
     .select(CHECKIN_COLUMNS)
-    .gte("checkin_date", isoDaysAgo(days - 1))
+    .gte("checkin_date", daysAgo(days - 1))
     .order("checkin_date", { ascending: true });
 
   if (error || !data) return [];

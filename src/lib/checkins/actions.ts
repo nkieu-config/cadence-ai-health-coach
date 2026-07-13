@@ -3,11 +3,18 @@
 import { revalidatePath } from "next/cache";
 import type { Checkin } from "@/lib/patterns/types";
 import { createClient } from "@/lib/supabase/server";
+import { today } from "./date";
 import { toRow } from "./mapper";
+import { validateCheckin } from "./validate";
 
 export type SaveCheckinResult = { ok: true } | { error: string };
 
 export async function saveCheckin(input: Checkin): Promise<SaveCheckinResult> {
+  const invalid = validateCheckin(input, today());
+  if (invalid) {
+    return { error: invalid };
+  }
+
   const supabase = await createClient();
   const {
     data: { user },

@@ -1,6 +1,6 @@
 # F1-01: Check-in form UI
 
-Status: ready-for-human
+Status: done
 Owner: A
 Sprint: 1
 Priority: M — เส้นตาย 12 ก.ค.
@@ -8,10 +8,10 @@ Refs: FR-1.1, FR-1.2, FR-1.4, docs/05 (ฟิลด์ + ค่า)
 
 ## งาน
 
-- [ ] ฟอร์ม 4 กลุ่ม: กิน / นอน / เคลื่อนไหว / บริบทวัน — ทุกคำถามเป็นปุ่ม/ชิป ไม่มีพิมพ์ ยกเว้น note
-- [ ] คำถามเสริม (meal_feeling, late_reason, movement_blocker) แสดงเฉพาะเมื่อเกี่ยวข้อง และข้ามได้
-- [ ] Note จำกัด 200 ตัวอักษร
-- [ ] Mobile-first — dogfooding ส่วนใหญ่จะกรอกจากมือถือก่อนนอน
+- [x] ฟอร์ม 4 กลุ่ม: กิน / นอน / เคลื่อนไหว / บริบทวัน — ทุกคำถามเป็นปุ่ม/ชิป ไม่มีพิมพ์ ยกเว้น note
+- [x] คำถามเสริม (meal_feeling, late_reason, movement_blocker) แสดงเฉพาะเมื่อเกี่ยวข้อง และข้ามได้
+- [x] Note จำกัด 200 ตัวอักษร
+- [x] Mobile-first — dogfooding ส่วนใหญ่จะกรอกจากมือถือก่อนนอน
 
 ## Acceptance criteria
 
@@ -54,3 +54,13 @@ Refs: FR-1.1, FR-1.2, FR-1.4, docs/05 (ฟิลด์ + ค่า)
 3. ต่อ F1-02 (server action upsert) เป็น PR ถัดไป — ให้ขึ้น prod เร็วที่สุด ทีมจะได้เริ่ม dogfooding
 
 **ก่อนลงงานจริง:** ถ้ายังไม่เคย push ในโปรเจกต์นี้ ให้เปิด PR จิ๋ว 1 อันลองระบบก่อน (กติกาใน `.scratch/BOARD.md`)
+
+---
+
+2026-07-13 (A): เสร็จแล้ว — branch `feat/f1-checkin`
+
+- ฟอร์ม: `src/components/checkin/checkin-form.tsx` · หน้า: `src/app/(app)/checkin/page.tsx`
+- คำถามเสริมโผล่ตามเงื่อนไข: ข้ามมื้อ (เมื่อกิน < 3 มื้อ) · เหตุผลนอนดึก (เมื่อเข้านอนหลังเที่ยงคืน) · อะไรขวางการขยับ (เมื่อ 0 นาที)
+- `none` ใน "ขยับร่างกาย" และ "มีอะไรพิเศษ" เป็นตัวเลือกที่ตัดตัวอื่นออกอัตโนมัติ
+- **ของแถมที่ทีมใช้ต่อได้:** `src/lib/checkins/labels.ts` (ชื่อภาษาไทยของทุกค่า — Dashboard/ประวัติ ใช้ตัวนี้ อย่าตั้งชื่อเอง) และ `src/components/ui/chip.tsx` (Chip กลาง ย้ายออกจาก onboarding-form)
+- **แก้บั๊ก timezone:** `getCheckins` เดิมใช้เวลาเซิร์ฟเวอร์ (Vercel = UTC) — คนกรอกตอนตี 1 เวลาไทยจะถูกนับเป็นเมื่อวาน → เพิ่ม `src/lib/checkins/date.ts` (`today()`, `daysAgo()`) อิง Asia/Bangkok **ห้ามใช้ `new Date().toISOString()` หาวันที่เองอีก**

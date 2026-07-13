@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useTransition, type ReactNode } from "react";
+import { useState, useTransition } from "react";
 import { completeOnboarding } from "@/lib/onboarding/actions";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Chip, toggleValue } from "@/components/ui/chip";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -40,36 +40,6 @@ const DISCLAIMER =
   "HealthCoach เป็นผู้ช่วยดูแลสุขภาพประจำวัน (wellness coach) ไม่ใช่บริการทางการแพทย์ — ไม่วินิจฉัยโรค ไม่แนะนำยาหรืออาหารเสริม ไม่ให้แผนลดน้ำหนัก หากมีอาการผิดปกติหรือกังวลเรื่องสุขภาพ ควรปรึกษาแพทย์หรือผู้เชี่ยวชาญ";
 
 const TOTAL_STEPS = 4;
-
-function toggle(list: string[], value: string) {
-  return list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
-}
-
-function Chip({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={cn(
-        "rounded-full border px-3 py-1.5 text-sm transition-colors",
-        active
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-border bg-background hover:bg-muted"
-      )}
-    >
-      {children}
-    </button>
-  );
-}
 
 export function OnboardingForm({ defaultName }: { defaultName: string }) {
   const [step, setStep] = useState(0);
@@ -140,7 +110,7 @@ export function OnboardingForm({ defaultName }: { defaultName: string }) {
                   <Chip
                     key={d.value}
                     active={earlyDays.includes(d.value)}
-                    onClick={() => setEarlyDays(toggle(earlyDays, d.value))}
+                    onClick={() => setEarlyDays(toggleValue(earlyDays, d.value))}
                   >
                     {d.label}
                   </Chip>
@@ -158,7 +128,7 @@ export function OnboardingForm({ defaultName }: { defaultName: string }) {
                   <Chip
                     key={c.value}
                     active={constraints.includes(c.value)}
-                    onClick={() => setConstraints(toggle(constraints, c.value))}
+                    onClick={() => setConstraints(toggleValue(constraints, c.value))}
                   >
                     {c.label}
                   </Chip>

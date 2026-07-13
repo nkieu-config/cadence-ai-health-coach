@@ -1,31 +1,31 @@
-# Board — HealthCoach (อัปเดต 12 ก.ค. 2026)
+# Board — HealthCoach (อัปเดต 13 ก.ค. 2026)
 
 ภาพรวมว่าใครทำอะไร — **วิธีเริ่มงานอยู่ใน kickoff comment ของ issue แรกของสายตัวเอง** (บอกครบว่าเริ่มตรงไหน มีอะไรก๊อปใช้ได้บ้าง)
 
 > 🧱 **โครงแอปวางให้แล้ว** — `src/app/(app)/layout.tsx` จัดการ login guard + เมนู + safety notice ให้ทุกหน้าอัตโนมัติ
 > หน้าของแต่ละคนมี **placeholder** รออยู่แล้ว → **แค่แทนที่เนื้อหาในไฟล์ของตัวเอง** ไม่ต้องสร้างหน้าใหม่ ไม่ต้องเขียน guard เอง
 
-## สถานะ: เสร็จ 7 / 37 งาน
+## สถานะ: เสร็จ 9 / 37 งาน
 
 - ✅ **Sprint 0 (infra)** — repo, Supabase + RLS, Vercel, Gemini พร้อมหมด
-- ✅ **F0** — สมัคร/ล็อกอิน (Google + รหัสผ่าน), onboarding, disclaimer → **ใช้งานได้จริงบน prod แล้ว**
-- ⚠️ **F1 check-in** — เลย deadline (12 ก.ค.) แล้ว **เร่งด่วนที่สุด** ทุกคนรอเริ่ม dogfooding
+- ✅ **F0** — สมัคร/ล็อกอิน (Google + รหัสผ่าน), onboarding, disclaimer
+- ✅ **F1-01 + F1-02 check-in** — ฟอร์ม + บันทึกลง DB ใช้ได้แล้ว → **เริ่ม dogfooding ได้ ทุกคนกรอกทุกวัน**
 
 ## ใครทำอะไร — 4 สาย ทำพร้อมกันได้ ไม่ต้องรอกัน
 
 | สาย | ตอนนี้ใครถือ | งานตามลำดับ | โฟลเดอร์ของสาย | Branch |
 | --- | --- | --- | --- | --- |
-| **Check-in** ⚠️ | **A** → ส่งต่อเพื่อน | F1-01 form → F1-02 API → *(ส่งไม้)* → F1-03 → F1-04 | `app/checkin/` | `feat/f1-checkin` |
+| **Check-in** | **ว่าง — รอเพื่อนรับ** | ~~F1-01~~ ✅ → ~~F1-02~~ ✅ → **F1-03 แก้ย้อนหลัง** → F1-04 สรุปหลังบันทึก | `app/checkin/` | `feat/f1-checkin` |
 | **Dashboard** | **B** | F2-01 layout → F2-02 กราฟ | `app/dashboard/` | `feat/f2-dashboard` |
 | **AI** | **C** | F3-01 patterns → F3-02 guardrail | `lib/patterns/`, `lib/ai/` | `feat/f3-patterns` |
 | **Privacy** | **D** | F7-01 หน้า privacy → F7-02 ลบข้อมูล | `app/settings/` | `feat/f7-privacy` |
-| **Seed data** | **A** (หลังทำ F1-02 เสร็จ) | INFRA-06 seed script | `scripts/seed.ts` | `feat/seed` |
+| **Seed data** | **A** (ทำอยู่) | INFRA-06 seed script | `scripts/seed.ts` | `feat/seed` |
 
 ### แผนสลับคน (ตกลง 12 ก.ค.)
 
-1. **A ทำ F1-01 + F1-02 ให้ขึ้น prod ก่อน** (เร่งด่วน — ปลดล็อก dogfooding ให้ทั้งทีม)
-2. จากนั้น **A ย้ายไปทำ seed script** (งานนี้ต้องใช้สิทธิ์ Supabase ที่ A ถืออยู่)
-3. **เพื่อนรับ F1-03 + F1-04 ต่อ** — ตอนนั้นฟอร์มมีแล้วให้ดูเป็นตัวอย่าง หยิบทำง่าย
+1. ~~A ทำ F1-01 + F1-02~~ ✅ **เสร็จแล้ว 13 ก.ค.**
+2. **A ย้ายไปทำ seed script** (ต้องใช้สิทธิ์ Supabase ที่ A ถืออยู่) ← ตอนนี้
+3. **เพื่อนรับ F1-03 + F1-04 ต่อ** — ฟอร์มมีแล้วให้ดูเป็นตัวอย่าง หยิบทำง่าย
 
 ## กติกา 5 ข้อ
 
@@ -35,12 +35,14 @@
    **npm package:** ที่ต้องใช้ติดตั้งให้ครบแล้ว (กราฟ + test) — ถ้าจำเป็นต้องเพิ่มจริง ๆ **ห้ามลงบน branch ตัวเอง** (จะทำ `package-lock.json` ชนกัน) ให้แจ้งกลุ่ม → A ลงบน main → ทุกคน `git pull` + `npm install`
 4. **ห้ามแก้ฐานข้อมูลเอง** — ถ้าเจอว่าต้องเพิ่ม/แก้คอลัมน์ ให้แจ้งกลุ่ม แล้วให้ **A เขียน migration ใหม่** (DB ใช้ร่วมกันทั้งทีม ถ้าต่างคนต่างแก้จะพังหมด)
    **ห้ามเรียก `supabase.from("checkins")` ตรง ๆ** — อ่าน/เขียน check-in ผ่าน `src/lib/checkins/` เท่านั้น (`getCheckins`, `getCheckinByDate`, `saveCheckin`) เพราะ DB เป็น snake_case แต่ type เป็น camelCase — มีประตูเดียว แก้ที่เดียว
+   **ห้ามหาวันที่เองด้วย `new Date()`** — ใช้ `today()` / `daysAgo()` จาก `src/lib/checkins/date.ts` (เซิร์ฟเวอร์ Vercel เป็น UTC ถ้าหาเอง คนกรอกตอนตี 1 จะถูกนับเป็นเมื่อวาน)
+   **ชื่อไทยของค่าต่าง ๆ** (disruptor, มื้ออาหาร, ระดับพลังงาน ฯลฯ) ใช้จาก `src/lib/checkins/labels.ts` อย่าพิมพ์เอง จะได้ตรงกันทั้งแอป
 5. **ส่งไม้ต่อ (ตอนสลับคน):** คนเดิมเขียน comment ใน issue ว่า **ทำถึงไหน / เหลืออะไร / ติดอะไร** → merge PR ที่ค้างให้จบ → แก้ช่อง "ตอนนี้ใครถือ" ในตารางข้างบน
 6. **UI ใช้ theme กลาง** — สี/ฟอนต์/มุมโค้ง ฝังใน `globals.css` แล้ว เขียนด้วย class ปกติ (`bg-primary` ฯลฯ) **ห้าม hardcode สี** · แนวทางเต็มอยู่ท้ายไฟล์ `DESIGN.md`
 
 ## จุดที่ต้องรอกัน (มีแค่ 3 จุด นอกนั้นอิสระ)
 
-1. **F1 ขึ้น prod** → ทุกคนเริ่มบันทึก check-in จริง (dogfooding)
+1. ~~F1 ขึ้น prod~~ ✅ **13 ก.ค. — ทุกคนเริ่มบันทึก check-in จริงได้แล้ว (dogfooding)**
 2. **Seed script เสร็จ (~15 ก.ค.)** → B เลิกใส่ข้อมูลมือ มาใช้ seed แทน
 3. **C ประกาศรูปแบบ JSON ของ insight (ต้น Sprint 2)** → B เอาไปทำ pattern table ต่อ
 
@@ -53,8 +55,8 @@
 | Issue | งาน | คนถือ | สถานะ |
 | --- | --- | --- | --- |
 | f0/01–03 | Auth + onboarding + disclaimer | A | ✅ |
-| f1/01 | Check-in form ⚠️ | A | ⬜ |
-| f1/02 | Check-in API (upsert) ⚠️ | A | ⬜ |
+| f1/01 | Check-in form | A | ✅ |
+| f1/02 | Check-in API (upsert) | A | ✅ |
 | f1/03 | แก้ check-in ย้อนหลัง | เพื่อน (รับช่วง) | ⬜ |
 | f1/04 | สรุปสั้นหลังบันทึก | เพื่อน (รับช่วง) | ⬜ |
 | f2/01 | Dashboard layout | B | ⬜ |
