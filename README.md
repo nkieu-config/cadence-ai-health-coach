@@ -6,6 +6,27 @@ AI Personal Health Coach สำหรับนักศึกษาและ fir
 
 เอกสารทั้งหมดอยู่ที่ [docs/README.md](docs/README.md) | ศัพท์กลางที่ต้องใช้: [CONTEXT.md](CONTEXT.md) | งาน: [.scratch/BOARD.md](.scratch/BOARD.md)
 
+## เริ่มยังไง (เพื่อนร่วมทีมอ่านตรงนี้)
+
+```bash
+git clone <repo> && cd HealthCoach
+cp .env.example .env.local      # ขอค่า Supabase จาก A · Gemini key ใช้ของตัวเอง
+npm ci
+npm run dev
+```
+
+ล็อกอินด้วยบัญชี demo: **`palm@example.com` / `PalmDemo2026!`** → มีข้อมูล 24 วันพร้อม pattern ให้เทสต์ทันที **ไม่ต้องนั่งกรอก check-in เอง**
+
+**ก่อนเปิด PR:** `npm run format && npm run lint && npm test && npm run build`
+(CI ตรวจ 5 ด่านนี้ทุก PR — รันเองก่อนจะได้ไม่ต้องรอ CI แดง)
+
+**ถ้าแตะ UI ให้รัน `npm run e2e` ด้วย** (~40 วินาที) — เปิดทุกหน้าจริงบนมือถือ+เดสก์ท็อป × light+dark แล้วเช็คว่า:
+h1 อันเดียว · ไม่มี horizontal scroll · ปุ่มสูง ≥ 44px · **ข้อความอ่านออก (contrast ≥ 4.5:1)** · ไม่มี console error · เช็คอินบันทึกได้จริง
+
+> unit test 87 ตัวทดสอบแต่ตรรกะใน `lib/` — **PR ที่ทำ layout พังหรือ dashboard ขาว จะผ่าน CI เขียวหมด** `e2e` คือด่านเดียวที่จับได้
+
+**กฎ UI:** ส่วนแรกของ [DESIGN.md](DESIGN.md) — งาน: [.scratch/BOARD.md](.scratch/BOARD.md)
+
 ## Stack
 
 Next.js 16 (App Router, TypeScript) + Tailwind v4 + shadcn/ui + Supabase + Gemini API — ดูเหตุผลใน [docs/adr/](docs/adr/)

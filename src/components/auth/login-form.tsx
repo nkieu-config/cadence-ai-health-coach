@@ -32,7 +32,10 @@ export function LoginForm() {
       </Button>
       <p className="text-center text-sm text-muted-foreground">
         ยังไม่มีบัญชี?{" "}
-        <Link href="/register" className="inline-flex min-h-11 items-center px-1 underline underline-offset-4">
+        <Link
+          href="/register"
+          className="inline-flex min-h-11 items-center px-1 underline underline-offset-4"
+        >
           สมัครสมาชิก
         </Link>
       </p>

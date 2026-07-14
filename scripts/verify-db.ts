@@ -109,7 +109,9 @@ async function checkCrossUserIsolation(a: ReturnType<typeof adminClient>) {
 
 async function main() {
   if (!URL?.trim() || !ANON?.trim() || !SERVICE?.trim()) {
-    console.error("env ไม่ครบ — ต้องมี NEXT_PUBLIC_SUPABASE_URL / _ANON_KEY / SUPABASE_SERVICE_ROLE_KEY ใน .env.local");
+    console.error(
+      "env ไม่ครบ — ต้องมี NEXT_PUBLIC_SUPABASE_URL / _ANON_KEY / SUPABASE_SERVICE_ROLE_KEY ใน .env.local"
+    );
     process.exit(1);
   }
 

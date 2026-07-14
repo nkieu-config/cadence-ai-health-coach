@@ -84,7 +84,7 @@ getLatestReflection() · getReflections() · generateReflection()  // @/lib/ai-o
    ⚠️ **โควตา Gemini ฟรี = 20 ครั้ง/วัน ทั้งแอปรวมกัน** → แชทจำกัด 5 ข้อความ/คน/วัน · **อย่ากดปุ่มวิเคราะห์รัว ๆ เล่น** (มี cache กันให้แล้ว แต่รู้ไว้)
    ห้ามหาวันที่ด้วย `new Date()` → ใช้ `today()` / `daysAgo()` จาก `lib/checkins/date.ts`
    ชื่อไทยของค่าต่าง ๆ → `lib/checkins/labels.ts` · คำต้องห้าม → `lib/safety/language.ts`
-5. **UI: อ่าน 60 บรรทัดแรกของ `DESIGN.md`** — `<PageContainer>` · ห้ามใส่ `<main>` เอง · ทุกหน้ามี `<h1>` 1 อัน · **ทุกอย่างที่กดได้สูง ≥ 44px** (รวม `<Link>` ที่แต่งเป็นปุ่ม) · **ห้าม hardcode สี** (dark mode จะพัง)
+5. **UI: อ่านส่วนแรกของ `DESIGN.md` (ถึงเส้น `---` แรก ~60 บรรทัด)** — ตอนนี้กฎแอปอยู่บนสุดแล้ว ส่วน Cohere ข้างล่างคือเอกสารอ้างอิงสี/ฟอนต์เท่านั้น — `<PageContainer>` · ห้ามใส่ `<main>` เอง · ทุกหน้ามี `<h1>` 1 อัน · **ทุกอย่างที่กดได้สูง ≥ 44px** (รวม `<Link>` ที่แต่งเป็นปุ่ม) · **ห้าม hardcode สี** (dark mode จะพัง)
 6. **เช็ค git config ก่อน commit แรก** — `git config user.email` ต้องตรงกับอีเมลที่ Verified บน GitHub ไม่งั้น**ผลงานไม่ถูกนับ**
 
 ---

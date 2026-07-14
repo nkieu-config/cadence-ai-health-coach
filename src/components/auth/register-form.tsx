@@ -34,7 +34,10 @@ export function RegisterForm() {
       </Button>
       <p className="text-center text-sm text-muted-foreground">
         มีบัญชีอยู่แล้ว?{" "}
-        <Link href="/login" className="inline-flex min-h-11 items-center px-1 underline underline-offset-4">
+        <Link
+          href="/login"
+          className="inline-flex min-h-11 items-center px-1 underline underline-offset-4"
+        >
           เข้าสู่ระบบ
         </Link>
       </p>

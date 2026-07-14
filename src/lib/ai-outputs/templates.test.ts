@@ -105,13 +105,16 @@ function palmFortnight() {
   return makeCheckins(14, (index) => WEEK[index % 7] as Partial<Checkin>);
 }
 
-describe("ทุก candidate ต้องมี template — ไม่งั้นถูกทิ้งเงียบ ๆ ไม่มีใครรู้", () => {
-  it("candidate ทุกตัวที่ lib/patterns คำนวณได้ ต้องแปลงเป็น InsightPattern ได้", () => {
-    const candidates = computePatternCandidates(palmFortnight());
-    const dropped = candidates.filter((candidate) => toInsightPattern(candidate) === null);
+describe("ทุก candidate ต้องแปลงเป็น InsightPattern ได้ — ตอนนี้ TypeScript บังคับให้แล้ว", () => {
+  it("candidate ทุกตัวได้ observation / meaning / nextStep / evidence ครบ", () => {
+    const patterns = computePatternCandidates(palmFortnight()).map(toInsightPattern);
 
-    expect(dropped.map((candidate) => candidate.id)).toEqual([]);
-    expect(candidates.length).toBeGreaterThan(0);
+    expect(patterns.length).toBeGreaterThan(0);
+    for (const pattern of patterns) {
+      expect(pattern.observation).not.toBe("");
+      expect(pattern.nextStep).not.toBe("");
+      expect(pattern.evidence.metric).not.toMatch(/^[a-z_]+$/);
+    }
   });
 });
 

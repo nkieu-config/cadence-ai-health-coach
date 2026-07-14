@@ -1,4 +1,11 @@
-import type { BedTimeBucket, Checkin, PatternCandidate, Pillar } from "./types";
+import type {
+  BedTimeBucket,
+  Checkin,
+  PatternCandidate,
+  PatternId,
+  PatternMetric,
+  Pillar,
+} from "./types";
 
 export const MIN_DAYS_FOR_ANALYSIS = 7;
 export const MIN_DAYS_PER_GROUP = 3;
@@ -65,9 +72,9 @@ function round(value: number): number {
 }
 
 function toCandidate<T>(
-  id: string,
+  id: PatternId,
   pillars: Pillar[],
-  metric: string,
+  metric: PatternMetric,
   a: Group<T>,
   b: Group<T>,
   valueA: number,
@@ -83,9 +90,9 @@ function toCandidate<T>(
 }
 
 function rateCandidate<T>(
-  id: string,
+  id: PatternId,
   pillars: Pillar[],
-  metric: string,
+  metric: PatternMetric,
   a: Group<T>,
   b: Group<T>,
   matches: (item: T) => boolean
@@ -100,9 +107,9 @@ function rateCandidate<T>(
 }
 
 function averageCandidate<T>(
-  id: string,
+  id: PatternId,
   pillars: Pillar[],
-  metric: string,
+  metric: PatternMetric,
   a: Group<T>,
   b: Group<T>,
   value: (item: T) => number

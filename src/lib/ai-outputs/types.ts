@@ -48,6 +48,10 @@ export type AiOutputRow = {
 
 export const REFLECTION_HISTORY_LIMIT = 12;
 
-export const AI_OUTPUT_COLUMNS = ["kind", "period_start", "period_end", "content", "created_at"].join(
-  ", "
-);
+export const AI_OUTPUT_COLUMNS = [
+  "kind",
+  "period_start",
+  "period_end",
+  "content",
+  "created_at",
+].join(", ");

@@ -6,13 +6,7 @@ import type { Checkin } from "@/lib/patterns/types";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-export function CheckinSummary({
-  checkin,
-  onEdit,
-}: {
-  checkin: Checkin;
-  onEdit: () => void;
-}) {
+export function CheckinSummary({ checkin, onEdit }: { checkin: Checkin; onEdit: () => void }) {
   const { lines, encouragement } = buildCheckinSummary(checkin);
 
   return (

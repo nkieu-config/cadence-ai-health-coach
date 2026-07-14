@@ -51,10 +51,7 @@ async function callModel(turns: ChatTurn[], options: GenerateOptions): Promise<s
   return text;
 }
 
-export async function generate(
-  turns: ChatTurn[],
-  options: GenerateOptions = {}
-): Promise<string> {
+export async function generate(turns: ChatTurn[], options: GenerateOptions = {}): Promise<string> {
   try {
     return await callModel(turns, options);
   } catch (error) {

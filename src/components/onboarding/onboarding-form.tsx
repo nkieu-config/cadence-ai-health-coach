@@ -17,13 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Chip, toggleValue } from "@/components/ui/chip";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const DISCLAIMER =
   "HealthCoach เป็นผู้ช่วยดูแลสุขภาพประจำวัน (wellness coach) ไม่ใช่บริการทางการแพทย์ — ไม่วินิจฉัยโรค ไม่แนะนำยาหรืออาหารเสริม ไม่ให้แผนลดน้ำหนัก หากมีอาการผิดปกติหรือกังวลเรื่องสุขภาพ ควรปรึกษาแพทย์หรือผู้เชี่ยวชาญ";
@@ -162,7 +156,9 @@ export function OnboardingForm({ defaultName }: { defaultName: string }) {
                   onChange={(e) => setAccepted(e.target.checked)}
                   className="mt-1"
                 />
-                <span>ฉันเข้าใจว่า HealthCoach เป็นผู้ช่วยดูแลสุขภาพทั่วไป ไม่ใช่คำแนะนำทางการแพทย์</span>
+                <span>
+                  ฉันเข้าใจว่า HealthCoach เป็นผู้ช่วยดูแลสุขภาพทั่วไป ไม่ใช่คำแนะนำทางการแพทย์
+                </span>
               </label>
             </div>
           )}

@@ -1,8 +1,7 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { LogOut } from "lucide-react";
-import { createClient } from "@/lib/supabase/server";
-import { hasCompletedOnboarding } from "@/lib/auth/onboarding";
+import { getCurrentUser, hasCompletedOnboarding } from "@/lib/auth/user";
 import { signOut } from "@/lib/auth/actions";
 import { AppNav } from "@/components/app-nav";
 import { AppSidebar } from "@/components/app-sidebar";
@@ -11,13 +10,9 @@ import { SafetyNotice } from "@/components/safety-notice";
 import { Button } from "@/components/ui/button";
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+  const user = await getCurrentUser();
   if (!user) redirect("/login");
-  if (!(await hasCompletedOnboarding(supabase, user.id))) redirect("/onboarding");
+  if (!(await hasCompletedOnboarding())) redirect("/onboarding");
 
   return (
     <div className="flex min-h-dvh flex-col lg:flex-row">

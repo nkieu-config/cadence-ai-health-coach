@@ -2,19 +2,9 @@ export type UserStatus = "student" | "first_jobber";
 
 export type EarlyDay = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
 
-export type Constraint =
-  | "no_time"
-  | "no_place"
-  | "limited_budget"
-  | "poor_rest"
-  | "long_commute";
+export type Constraint = "no_time" | "no_place" | "limited_budget" | "poor_rest" | "long_commute";
 
-export type BusyPeriod =
-  | "exam"
-  | "project_deadline"
-  | "month_end"
-  | "weekly"
-  | "unpredictable";
+export type BusyPeriod = "exam" | "project_deadline" | "month_end" | "weekly" | "unpredictable";
 
 export const STATUS_LABELS: Record<UserStatus, string> = {
   student: "นักศึกษา",

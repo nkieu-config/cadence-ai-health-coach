@@ -23,7 +23,9 @@ const QUOTA_PER_MINUTE = new Error(
     error: {
       code: 429,
       status: "RESOURCE_EXHAUSTED",
-      details: [{ violations: [{ quotaId: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier" }] }],
+      details: [
+        { violations: [{ quotaId: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier" }] },
+      ],
     },
   })
 );

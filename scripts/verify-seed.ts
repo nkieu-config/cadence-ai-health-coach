@@ -2,17 +2,18 @@ import { toCheckin } from "../src/lib/checkins/mapper";
 import { CHECKIN_COLUMNS, type CheckinRow } from "../src/lib/checkins/types";
 import { toInsightPattern } from "../src/lib/ai-outputs/templates";
 import { computePatternCandidates, hasEnoughData } from "../src/lib/patterns";
+import type { PatternId } from "../src/lib/patterns/types";
 import { createAdminClient } from "../src/lib/supabase/admin";
 
 const EMAIL = process.env.DEMO_EMAIL ?? "palm@example.com";
 const PERIODS = [7, 14, 30];
 const DEFAULT_PERIOD = 14;
 
-const FEATURE_2_ROWS: Record<string, string> = {
-  "early-class-skip-breakfast": "กิน — ข้ามมื้อเช้าในวันที่มีเรียนเช้า",
-  "deadline-sleep-bedtime": "นอน — นอนดึกในคืนก่อน deadline",
-  "online-class-movement": "ออกกำลังกาย — เดินน้อยในวันที่เรียน online",
-};
+const FEATURE_2_ROWS: { id: PatternId; label: string }[] = [
+  { id: "early-class-skip-breakfast", label: "กิน — ข้ามมื้อเช้าในวันที่มีเรียนเช้า" },
+  { id: "deadline-sleep-bedtime", label: "นอน — นอนดึกในคืนก่อน deadline" },
+  { id: "online-class-movement", label: "ออกกำลังกาย — เดินน้อยในวันที่เรียน online" },
+];
 
 function daysAgo(days: number): string {
   const date = new Date(Date.now() + 7 * 60 * 60 * 1000);
@@ -46,9 +47,7 @@ async function run() {
     const window = all.filter((checkin) => checkin.checkinDate >= from);
     const enough = hasEnoughData(window);
 
-    const patterns = computePatternCandidates(window)
-      .map(toInsightPattern)
-      .filter((pattern) => pattern !== null);
+    const patterns = computePatternCandidates(window).map(toInsightPattern);
 
     const marker = period === DEFAULT_PERIOD ? " ← ค่าเริ่มต้นของ dashboard" : "";
     console.log(`━━ ${period} วัน (บันทึก ${window.length} วัน)${marker}`);
@@ -71,7 +70,7 @@ async function run() {
     if (period === DEFAULT_PERIOD) {
       const ids = computePatternCandidates(window).map((candidate) => candidate.id);
       console.log("   ตรวจตาราง Feature 2 (โจทย์บังคับ 3 แถว):");
-      for (const [id, label] of Object.entries(FEATURE_2_ROWS)) {
+      for (const { id, label } of FEATURE_2_ROWS) {
         const found = ids.includes(id);
         if (!found) failed = true;
         console.log(`   ${found ? "✅" : "❌"} ${label}`);

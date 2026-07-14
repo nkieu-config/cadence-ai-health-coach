@@ -6,8 +6,9 @@ import type { TooltipValueType } from "recharts"
 
 import { cn } from "@/lib/utils"
 
-// Format: { THEME_NAME: CSS_SELECTOR }
-const THEMES = { light: "", dark: ".dark" } as const
+// dark mode ของแอปนี้มาจากค่าเครื่อง (prefers-color-scheme) ไม่ใช่คลาส .dark
+const CHART_THEMES = ["light", "dark"] as const
+type ChartTheme = (typeof CHART_THEMES)[number]
 
 const INITIAL_DIMENSION = { width: 320, height: 200 } as const
 type TooltipNameType = number | string
@@ -19,7 +20,7 @@ export type ChartConfig = Record<
     icon?: React.ComponentType
   } & (
     | { color?: string; theme?: never }
-    | { color?: never; theme: Record<keyof typeof THEMES, string> }
+    | { color?: never; theme: Record<ChartTheme, string> }
   )
 >
 
@@ -82,33 +83,32 @@ function ChartContainer({
 }
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
-  const colorConfig = Object.entries(config).filter(
-    ([, config]) => config.theme ?? config.color
-  )
+  const colorConfig = Object.entries(config).filter(([, item]) => item.theme ?? item.color)
 
   if (!colorConfig.length) {
     return null
   }
 
+  const variables = (theme: ChartTheme) =>
+    colorConfig
+      .map(([key, item]) => {
+        const color = item.theme?.[theme] ?? item.color
+        return color ? `    --color-${key}: ${color};` : null
+      })
+      .filter(Boolean)
+      .join("\n")
+
   return (
     <style
       dangerouslySetInnerHTML={{
-        __html: Object.entries(THEMES)
-          .map(
-            ([theme, prefix]) => `
-${prefix} [data-chart=${id}] {
-${colorConfig
-  .map(([key, itemConfig]) => {
-    const color =
-      itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ??
-      itemConfig.color
-    return color ? `  --color-${key}: ${color};` : null
-  })
-  .join("\n")}
+        __html: `[data-chart=${id}] {
+${variables("light")}
 }
-`
-          )
-          .join("\n"),
+@media (prefers-color-scheme: dark) {
+  [data-chart=${id}] {
+${variables("dark")}
+  }
+}`,
       }}
     />
   )

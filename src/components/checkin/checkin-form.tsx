@@ -78,13 +78,14 @@ function Field({
 export function CheckinForm({
   date,
   existing,
-  isBackfill = false,
+  heading,
+  beforeSave,
 }: {
   date: string;
   existing: Checkin | null;
-  isBackfill?: boolean;
+  heading: string;
+  beforeSave?: () => string | null;
 }) {
-  const router = useRouter();
   const [step, setStep] = useState(0);
   const [saved, setSaved] = useState<Checkin | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -151,7 +152,12 @@ export function CheckinForm({
       setMovementTypes(didNotMove ? [] : ["none"]);
       return;
     }
-    setMovementTypes(toggleValue(movementTypes.filter((t) => t !== "none"), type));
+    setMovementTypes(
+      toggleValue(
+        movementTypes.filter((t) => t !== "none"),
+        type
+      )
+    );
   }
 
   function pickDisruptor(disruptor: Disruptor) {
@@ -159,15 +165,20 @@ export function CheckinForm({
       setDisruptors(disruptors.includes("none") ? [] : ["none"]);
       return;
     }
-    setDisruptors(toggleValue(disruptors.filter((d) => d !== "none"), disruptor));
+    setDisruptors(
+      toggleValue(
+        disruptors.filter((d) => d !== "none"),
+        disruptor
+      )
+    );
   }
 
   function submit() {
     setError(null);
 
-    if (!isBackfill && today() !== date) {
-      setError("ข้ามไปวันใหม่แล้ว — กำลังเปลี่ยนเป็นบันทึกของวันนี้ กดบันทึกอีกครั้ง");
-      router.refresh();
+    const blocked = beforeSave?.();
+    if (blocked) {
+      setError(blocked);
       return;
     }
 
@@ -210,7 +221,7 @@ export function CheckinForm({
     <Card>
       <CardHeader>
         <CardTitle>
-          {date === today() ? "เช็คอิน" : "บันทึกย้อนหลัง"} · {STEPS[step]}
+          {heading} · {STEPS[step]}
         </CardTitle>
         <CardDescription>
           {formatThaiDate(date)} · ขั้นที่ {step + 1} จาก {STEPS.length}
@@ -313,7 +324,11 @@ export function CheckinForm({
           <>
             <Field label="เมื่อคืนนอนกี่ชั่วโมง">
               {SLEEP_HOURS.map((hours) => (
-                <Chip key={hours} active={sleepHours === hours} onClick={() => setSleepHours(hours)}>
+                <Chip
+                  key={hours}
+                  active={sleepHours === hours}
+                  onClick={() => setSleepHours(hours)}
+                >
                   {hours === 3 ? "≤3" : countLabel(hours, 10)} ชม.
                 </Chip>
               ))}
@@ -393,9 +408,7 @@ export function CheckinForm({
                   <Chip
                     key={blocker}
                     active={movementBlocker === blocker}
-                    onClick={() =>
-                      setMovementBlocker(movementBlocker === blocker ? null : blocker)
-                    }
+                    onClick={() => setMovementBlocker(movementBlocker === blocker ? null : blocker)}
                   >
                     {MOVEMENT_BLOCKER_LABELS[blocker]}
                   </Chip>
@@ -409,9 +422,7 @@ export function CheckinForm({
                   <Chip
                     key={feeling}
                     active={movementFeeling === feeling}
-                    onClick={() =>
-                      setMovementFeeling(movementFeeling === feeling ? null : feeling)
-                    }
+                    onClick={() => setMovementFeeling(movementFeeling === feeling ? null : feeling)}
                   >
                     {MOVEMENT_FEELING_LABELS[feeling]}
                   </Chip>

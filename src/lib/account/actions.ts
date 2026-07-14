@@ -37,6 +37,13 @@ export async function deleteAccount(): Promise<AccountActionResult> {
     return { error: "เซสชันหมดอายุ กรุณาเข้าสู่ระบบใหม่" };
   }
 
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return {
+      error:
+        "เครื่องนี้ไม่มี service role key จึงลบบัญชีไม่ได้ — เป็นเรื่องปกติบน dev (key อยู่กับ A คนเดียว) ไม่ใช่โค้ดคุณผิด · ปุ่ม “ลบข้อมูลทั้งหมด” เทสต์ได้ตามปกติ ส่วนขั้นนี้ A ตรวจบน production ให้",
+    };
+  }
+
   const { error } = await createAdminClient().auth.admin.deleteUser(user.id);
   if (error) {
     return { error: "ลบบัญชีไม่สำเร็จ — ลองใหม่อีกครั้ง" };

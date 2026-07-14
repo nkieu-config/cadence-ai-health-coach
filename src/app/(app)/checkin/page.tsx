@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PageContainer } from "@/components/page-container";
 import { CalendarPlus, History } from "lucide-react";
-import { CheckinForm } from "@/components/checkin/checkin-form";
+import { TodayCheckinForm } from "@/components/checkin/today-checkin-form";
 import { buttonVariants } from "@/components/ui/button";
 import { daysAgo, formatThaiDate, today } from "@/lib/checkins/date";
 import { getCheckins } from "@/lib/checkins/queries";
@@ -35,7 +35,7 @@ export default async function CheckinPage() {
         </Link>
       )}
 
-      <CheckinForm date={date} existing={existing} />
+      <TodayCheckinForm date={date} existing={existing} />
 
       {recent.length > 0 && (
         <Link

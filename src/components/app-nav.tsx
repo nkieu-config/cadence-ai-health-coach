@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { NavIcon } from "./nav-pending";
 import { NAV_ITEMS, isActivePath } from "./nav-items";
 
 export function AppNav() {
@@ -22,11 +23,11 @@ export function AppNav() {
                 href={href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex min-h-14 flex-col items-center justify-center gap-1 py-2 text-xs transition-colors",
+                  "flex min-h-14 flex-col items-center justify-center gap-1 py-2 text-xs transition-colors active:opacity-60",
                   active ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 )}
               >
-                <Icon className="size-5" />
+                <NavIcon icon={Icon} className="size-5" />
                 {label}
               </Link>
             </li>
