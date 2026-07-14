@@ -6,7 +6,7 @@
 > ทุกอย่างที่แตะ **Supabase / Gemini / service role / Safety 🔒** เป็นของ A
 > **3 สายเรียกฟังก์ชันที่มีอยู่แล้ว → วาด UI → จบ** ไม่ต้องแตะ DB ไม่ต้องแตะ AI ไม่มีไฟล์ทับกัน
 
-## สถานะ: เสร็จ 15 / 37 งาน (ยกเลิก 1)
+## สถานะ: เสร็จ 16 / 38 งาน (ยกเลิก 1)
 
 - ✅ **Sprint 0** — repo · Supabase + RLS · Vercel · Gemini
 - ✅ **F0** — สมัคร/ล็อกอิน (Google + รหัสผ่าน) · onboarding · disclaimer
@@ -14,6 +14,7 @@
 - ✅ **F2-01** dashboard layout · **F3-01** lib/patterns · **F7-01** หน้า privacy
 - ✅ **UI/UX** — touch target 44px · dark mode ตามค่าเครื่อง · เดสก์ท็อป sidebar
 - ✅ **Data layer ครบ** — `checkins` · `account` · `chat` · `ai-outputs` · `goals`
+- ✅ **F3-02 guardrail 🔒** — รัน checklist 10 เคสจริง เจอรูรั่ว 4 จุด แก้หมด · หลักฐานอยู่ที่ `.scratch/ai-safety-test/`
 - ⛔ **INFRA-05 wireframe — ยกเลิก** (DESIGN.md + UI จริงแทนไปแล้ว)
 
 > 🔍 **14 ก.ค. — audit แผน+เอกสารทั้งระบบเทียบโจทย์** พบว่า **Required Input ของโจทย์ข้อ 5 ขาดไป 4 ช่อง** (ความรู้สึกหลังขยับ · เวลามื้อแรก · ของว่าง/ผัก-ผลไม้ · ช่วงที่งานหนัก) → ปิดครบใน F1-05 แล้ว
@@ -33,7 +34,7 @@
 
 ### 🔧 งานของ A (ไม่บล็อกใคร ทำคู่ขนานไปเรื่อย ๆ)
 
-F3-02 guardrail 🔒 → F3-03 insight → F3-04 ข้อมูลไม่พอ 🔒 → F4-02 context → F4-04 escalation 🔒 → F5-01 goal AI 🔒 → F6-01 reflection AI → **INFRA-06 seed** → QA-01 🔒 · QA-03 pitch · QA-04
+~~F3-02 guardrail 🔒~~ ✅ → **INFRA-07 โควตา** → F3-03 insight → F3-04 ข้อมูลไม่พอ 🔒 → F4-02 context → F4-04 escalation 🔒 → F5-01 goal AI 🔒 → F6-01 reflection AI → **INFRA-06 seed** → QA-01 🔒 · QA-03 pitch · QA-04
 
 > **AI ทั้งหมดอัปเกรดอยู่ "ข้างหลัง" ฟังก์ชันเดิม** — signature ไม่เปลี่ยน **3 สายไม่ต้องแก้โค้ดแม้แต่บรรทัดเดียว**
 
@@ -98,7 +99,7 @@ getLatestReflection() · getReflections() · generateReflection()  // @/lib/ai-o
 | f7/02 | ลบข้อมูล/บัญชี 🔒 | 🟨 | โค้ดลบเขียนให้แล้ว ทำแค่ UI + confirm |
 | f5/02 | หน้า goals | 🟨 | |
 | f6/02 | หน้า reflection | 🟨 | |
-| f3/02 🔒 | **หลักฐาน guardrail** — รัน 10 เคส เก็บผลลง `.scratch/ai-safety-test/` | A | deliverable ข้อ 12 ต้องใช้ |
+| **infra/07** | 🚨 **โควตา Gemini = 20 ครั้ง/วัน ทั้งแอป** | A | **ถ้าไม่แก้ demo วัน pitch ล่มกลางเวที** |
 | f3/03 · f3/04 🔒 | AI insight + ข้อมูลไม่พอ | A | |
 | f4/02 · f4/04 🔒 | AI coach context + escalation | A | |
 | f5/01 🔒 · f6/01 | AI goal + reflection | A | |

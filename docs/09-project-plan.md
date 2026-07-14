@@ -75,7 +75,7 @@ repo + Next.js + Tailwind/shadcn + Vercel + Supabase schema + RLS + Gemini spike
 
 | ความเสี่ยง | โอกาส | ผลกระทบ | แผนรับมือ |
 |---|---|---|---|
-| Gemini rate limit/ล่ม ตอน demo | กลาง | สูง | Cache ใน `ai_outputs`, ซ้อมด้วย cache, screenshot สำรอง, สลับ Typhoon ได้ (ADR-0003) |
+| **โควตา Gemini ฟรี = 20 ครั้ง/วัน ทั้งแอป** (วัดจริง 14 ก.ค.) | **สูง** | **สูง** | **INFRA-07** — cache ต้องกันการยิงซ้ำจริง · จำกัดแชทต่อคนต่อวัน · generate ของ demo ล่วงหน้า 1 วัน · key สำรองพร้อมสลับใน Vercel · screenshot สำรอง (ADR-0003) |
 | 3 สายทำ UI ไม่ทัน | กลาง | สูง | ทุกสายเริ่มได้ทันทีตั้งแต่ 14 ก.ค. (ฟังก์ชันพร้อมหมดแล้ว) · ถ้าสายไหนช้า A เข้าไปช่วยได้เพราะไม่ติดคอขวด AI แล้ว |
 | ทีมมีสอบ/ภาระอื่นกลางทาง | สูง | กลาง | งานแต่ละสายเป็น issue เล็ก merge ทีละอัน — คนอื่นรับช่วงต่อได้ · งาน M น้อยกว่า capacity |
 | AI output หลุด guardrail ตอน demo | ต่ำ | สูง | Guardrail อยู่ใน `lib/ai` ประตูเดียว + `lib/safety/language.ts` บังคับด้วย CI + safety checklist 10 ข้อก่อน freeze |

@@ -86,4 +86,22 @@ describe("validateGoalTitle", () => {
     expect(validateGoalTitle("   ")).not.toBeNull();
     expect(validateGoalTitle("ก".repeat(81))).toContain("ยาวเกิน");
   });
+
+  it("ปฏิเสธเป้าหมายที่ให้อดอาหาร — FR-5.3 (เจอตอนรัน F3-02 ว่ารั่วจริง)", () => {
+    expect(validateGoalTitle("อดข้าวเย็นทุกวัน")).not.toBeNull();
+    expect(validateGoalTitle("อดอาหาร 16 ชั่วโมงต่อวัน")).not.toBeNull();
+    expect(validateGoalTitle("อดมื้อเช้าเพื่อให้ผอมลง")).not.toBeNull();
+    expect(validateGoalTitle("งดข้าวเย็น 3 วัน")).not.toBeNull();
+    expect(validateGoalTitle("ลองทำคีโตสัปดาห์นี้")).not.toBeNull();
+    expect(validateGoalTitle("ดีท็อกซ์ล้างพิษ 7 วัน")).not.toBeNull();
+    expect(validateGoalTitle("เริ่ม intermittent fasting")).not.toBeNull();
+  });
+
+  it("คำต้องห้ามใหม่ต้องไม่เผลอปฏิเสธเป้าหมายที่ดี — 'อด' เดี่ยว ๆ อยู่ใน 'ตลอด' 'ปลอดภัย'", () => {
+    expect(validateGoalTitle("เดินเล่นตลอดทางกลับบ้าน 10 นาที")).toBeNull();
+    expect(validateGoalTitle("เลือกทางเดินที่ปลอดภัยตอนกลางคืน")).toBeNull();
+    expect(validateGoalTitle("อดทนกับตัวเองในวันที่พลังงานน้อย")).toBeNull();
+    expect(validateGoalTitle("กินข้าวเช้าให้ได้ 3 วัน")).toBeNull();
+    expect(validateGoalTitle("ไม่ข้ามมื้อเช้าในวันที่เรียนเช้า")).toBeNull();
+  });
 });
