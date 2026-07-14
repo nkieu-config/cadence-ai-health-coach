@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { PendingBar } from "@/components/nav-pending";
 
 export const DASHBOARD_PERIODS = [7, 14, 30] as const;
 
@@ -29,13 +30,14 @@ export function PeriodToggle({ period }: { period: DashboardPeriod }) {
             href={`/dashboard?days=${days}`}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "inline-flex min-h-11 flex-1 items-center justify-center rounded-full px-4 text-sm font-medium transition-colors lg:flex-none",
+              "relative inline-flex min-h-11 flex-1 items-center justify-center rounded-full px-4 text-sm font-medium transition-colors active:opacity-70 lg:flex-none",
               active
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-background hover:text-foreground"
             )}
           >
             {days} วัน
+            <PendingBar />
           </Link>
         );
       })}

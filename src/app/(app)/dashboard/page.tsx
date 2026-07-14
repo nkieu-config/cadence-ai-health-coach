@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { CalendarCheck } from "lucide-react";
 import {
@@ -8,6 +9,7 @@ import {
 } from "@/components/dashboard/period-toggle";
 import { CurrentGoalCard } from "@/components/goals/current-goal-card";
 import { PageContainer } from "@/components/page-container";
+import { CardSkeleton } from "@/components/page-skeleton";
 import { ReflectionCard } from "@/components/reflection/reflection-card";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -77,8 +79,9 @@ export default async function DashboardPage({
 }: {
   searchParams: Promise<{ days?: string }>;
 }) {
+  const checkins = getCheckins(MAX_PERIOD);
   const period = parsePeriod((await searchParams).days);
-  const recent = await getCheckins(MAX_PERIOD);
+  const recent = await checkins;
 
   if (recent.length === 0) {
     return (
@@ -111,8 +114,12 @@ export default async function DashboardPage({
         <div className="grid gap-5 lg:grid-cols-3 lg:items-start">
           <div className="space-y-5 lg:col-span-1">
             <TodayCard checkin={todaysCheckin} />
-            <CurrentGoalCard />
-            <ReflectionCard />
+            <Suspense fallback={<CardSkeleton rows={1} />}>
+              <CurrentGoalCard />
+            </Suspense>
+            <Suspense fallback={<CardSkeleton rows={1} />}>
+              <ReflectionCard />
+            </Suspense>
           </div>
 
           <Card className="lg:col-span-2">

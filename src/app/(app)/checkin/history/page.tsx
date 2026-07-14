@@ -13,7 +13,7 @@ export default async function CheckinHistoryPage() {
   return (
     <PageContainer width="content" className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold lg:text-2xl">บันทึกย้อนหลัง</h1>
+        <h1 className="text-xl font-semibold lg:text-2xl">บันทึกย้อนหลัง</h1>
         <Link href="/checkin" className={buttonVariants({ variant: "ghost", size: "sm" })}>
           <ChevronLeft className="size-4" />
           เช็คอิน

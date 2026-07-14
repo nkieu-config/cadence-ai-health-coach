@@ -13,7 +13,8 @@
     "verify:db": "node --env-file=.env.local --import tsx scripts/verify-db.ts",
     "verify:user": "node --env-file=.env.local --import tsx scripts/verify-user.ts",
     "seed": "node --env-file=.env.local --import tsx scripts/seed.ts",
-    "verify:seed": "node --env-file=.env.local --import tsx scripts/verify-seed.ts"
+    "verify:seed": "node --env-file=.env.local --import tsx scripts/verify-seed.ts",
+    "verify:rls": "node --env-file=.env.local --import tsx scripts/verify-rls.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

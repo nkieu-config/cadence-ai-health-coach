@@ -78,13 +78,14 @@ function Field({
 export function CheckinForm({
   date,
   existing,
-  isBackfill = false,
+  heading,
+  beforeSave,
 }: {
   date: string;
   existing: Checkin | null;
-  isBackfill?: boolean;
+  heading: string;
+  beforeSave?: () => string | null;
 }) {
-  const router = useRouter();
   const [step, setStep] = useState(0);
   const [saved, setSaved] = useState<Checkin | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -165,9 +166,9 @@ export function CheckinForm({
   function submit() {
     setError(null);
 
-    if (!isBackfill && today() !== date) {
-      setError("ข้ามไปวันใหม่แล้ว — กำลังเปลี่ยนเป็นบันทึกของวันนี้ กดบันทึกอีกครั้ง");
-      router.refresh();
+    const blocked = beforeSave?.();
+    if (blocked) {
+      setError(blocked);
       return;
     }
 
@@ -210,7 +211,7 @@ export function CheckinForm({
     <Card>
       <CardHeader>
         <CardTitle>
-          {date === today() ? "เช็คอิน" : "บันทึกย้อนหลัง"} · {STEPS[step]}
+          {heading} · {STEPS[step]}
         </CardTitle>
         <CardDescription>
           {formatThaiDate(date)} · ขั้นที่ {step + 1} จาก {STEPS.length}

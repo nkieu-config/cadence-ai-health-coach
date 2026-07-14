@@ -1,4 +1,4 @@
-import type { PatternCandidate } from "@/lib/patterns/types";
+import type { PatternCandidate, PatternId } from "@/lib/patterns/types";
 import { formatMetric, METRIC_LABELS } from "./format";
 import type { InsightPattern } from "./types";
 
@@ -8,7 +8,7 @@ type Template = {
   nextStep: string;
 };
 
-const TEMPLATES: Record<string, Template> = {
+const TEMPLATES: Record<PatternId, Template> = {
   "sleep-eating-skip-breakfast": {
     observation: (a, b) => `วันที่นอนน้อยกว่า 6 ชม. คุณข้ามมื้อเช้า ${a} เทียบกับ ${b} ในวันที่นอนพอ`,
     meaning: "เป็นสัญญาณที่น่าติดตาม ยังสรุปเป็นเหตุและผลไม่ได้จากข้อมูลเท่านี้",
@@ -64,9 +64,8 @@ const TEMPLATES: Record<string, Template> = {
   },
 };
 
-export function toInsightPattern(candidate: PatternCandidate): InsightPattern | null {
+export function toInsightPattern(candidate: PatternCandidate): InsightPattern {
   const template = TEMPLATES[candidate.id];
-  if (!template) return null;
 
   const valueA = formatMetric(candidate.metric, candidate.groupA.value);
   const valueB = formatMetric(candidate.metric, candidate.groupB.value);
@@ -77,7 +76,7 @@ export function toInsightPattern(candidate: PatternCandidate): InsightPattern | 
     meaning: template.meaning,
     nextStep: template.nextStep,
     evidence: {
-      metric: METRIC_LABELS[candidate.metric] ?? candidate.metric,
+      metric: METRIC_LABELS[candidate.metric],
       groupA: candidate.groupA,
       groupB: candidate.groupB,
     },

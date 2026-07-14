@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { CheckinForm } from "@/components/checkin/checkin-form";
+import { BackfillCheckinForm } from "@/components/checkin/backfill-checkin-form";
 import { PageContainer } from "@/components/page-container";
 import { today } from "@/lib/checkins/date";
 import { getCheckinByDate } from "@/lib/checkins/queries";
@@ -17,7 +17,7 @@ export default async function EditCheckinPage({ params }: { params: Promise<{ da
   return (
     <PageContainer>
       <h1 className="sr-only">บันทึกย้อนหลัง</h1>
-      <CheckinForm date={date} existing={existing} isBackfill />
+      <BackfillCheckinForm date={date} existing={existing} />
     </PageContainer>
   );
 }

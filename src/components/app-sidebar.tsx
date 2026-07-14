@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { signOut } from "@/lib/auth/actions";
 import { cn } from "@/lib/utils";
+import { NavIcon } from "./nav-pending";
 import { NAV_ITEMS, isActivePath } from "./nav-items";
 import { Button } from "@/components/ui/button";
 
@@ -32,7 +33,7 @@ export function AppSidebar() {
                         : "text-muted-foreground hover:bg-muted hover:text-foreground"
                     )}
                   >
-                    <Icon className="size-5 shrink-0" />
+                    <NavIcon icon={Icon} className="size-5 shrink-0" />
                     {label}
                   </Link>
                 </li>

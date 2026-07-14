@@ -9,7 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 import { isFresh } from "./cache";
 import { periodFor } from "./queries";
 import { toInsightPattern } from "./templates";
-import type { AiOutputKind, InsightPattern, ReflectionPillar } from "./types";
+import type { AiOutputKind, ReflectionPillar } from "./types";
 
 export const REFLECTION_DAYS = 7;
 
@@ -91,9 +91,7 @@ export async function generateInsight(days: number): Promise<GenerateResult> {
     };
   }
 
-  const patterns = computePatternCandidates(checkins)
-    .map(toInsightPattern)
-    .filter((pattern): pattern is InsightPattern => pattern !== null);
+  const patterns = computePatternCandidates(checkins).map(toInsightPattern);
 
   const result = await replaceOutput("pattern_analysis", period, { patterns });
   if ("error" in result) return result;
@@ -154,7 +152,7 @@ export async function generateReflection(): Promise<GenerateResult> {
   }
 
   const candidates = computePatternCandidates(checkins);
-  const topStep = candidates.map(toInsightPattern).find((pattern) => pattern !== null)?.nextStep;
+  const topStep = candidates.map(toInsightPattern).at(0)?.nextStep;
 
   const content = {
     daysRecorded: checkins.length,
