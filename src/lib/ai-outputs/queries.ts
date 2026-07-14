@@ -2,6 +2,7 @@ import { daysAgo, today } from "@/lib/checkins/date";
 import { createClient } from "@/lib/supabase/server";
 import {
   AI_OUTPUT_COLUMNS,
+  REFLECTION_HISTORY_LIMIT,
   type AiOutputKind,
   type AiOutputRow,
   type Insight,
@@ -43,14 +44,29 @@ export async function getLatestInsight(days: number): Promise<Insight | null> {
   };
 }
 
-export async function getLatestReflection(): Promise<Reflection | null> {
-  const row = await latest("weekly_reflection");
-  if (!row) return null;
-
+function toReflection(row: AiOutputRow): Reflection {
   return {
     periodStart: row.period_start,
     periodEnd: row.period_end,
     createdAt: row.created_at,
     ...(row.content as Omit<Reflection, "periodStart" | "periodEnd" | "createdAt">),
   };
+}
+
+export async function getLatestReflection(): Promise<Reflection | null> {
+  const row = await latest("weekly_reflection");
+  return row ? toReflection(row) : null;
+}
+
+export async function getReflections(): Promise<Reflection[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("ai_outputs")
+    .select(AI_OUTPUT_COLUMNS)
+    .eq("kind", "weekly_reflection")
+    .order("period_start", { ascending: false })
+    .limit(REFLECTION_HISTORY_LIMIT);
+
+  if (error || !data) return [];
+  return (data as unknown as AiOutputRow[]).map(toReflection);
 }

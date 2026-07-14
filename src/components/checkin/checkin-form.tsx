@@ -9,10 +9,13 @@ import {
   BED_TIME_LABELS,
   DISRUPTOR_LABELS,
   ENERGY_LABELS,
+  FIRST_MEAL_TIME_LABELS,
+  FOOD_TYPE_LABELS,
   LATE_REASON_LABELS,
   MEAL_FEELING_LABELS,
   MEAL_LABELS,
   MOVEMENT_BLOCKER_LABELS,
+  MOVEMENT_FEELING_LABELS,
   MOVEMENT_TYPE_LABELS,
   SLEEP_QUALITY_LABELS,
 } from "@/lib/checkins/labels";
@@ -22,10 +25,13 @@ import type {
   Checkin,
   Disruptor,
   EnergyLevel,
+  FirstMealTime,
+  FoodType,
   LateReason,
   Meal,
   MealFeeling,
   MovementBlocker,
+  MovementFeeling,
   MovementType,
 } from "@/lib/patterns/types";
 import { Button } from "@/components/ui/button";
@@ -86,6 +92,10 @@ export function CheckinForm({
 
   const [mealsCount, setMealsCount] = useState<number | null>(existing?.mealsCount ?? null);
   const [skippedMeals, setSkippedMeals] = useState<Meal[]>(existing?.skippedMeals ?? []);
+  const [firstMealTime, setFirstMealTime] = useState<FirstMealTime | null>(
+    existing?.firstMealTime ?? null
+  );
+  const [foodTypes, setFoodTypes] = useState<FoodType[]>(existing?.foodTypes ?? []);
   const [sweetDrinks, setSweetDrinks] = useState<number | null>(existing?.sweetDrinks ?? null);
   const [mealFeeling, setMealFeeling] = useState<MealFeeling | null>(existing?.mealFeeling ?? null);
 
@@ -105,6 +115,9 @@ export function CheckinForm({
   const [movementBlocker, setMovementBlocker] = useState<MovementBlocker | null>(
     existing?.movementBlocker ?? null
   );
+  const [movementFeeling, setMovementFeeling] = useState<MovementFeeling | null>(
+    existing?.movementFeeling ?? null
+  );
 
   const [energyLevel, setEnergyLevel] = useState<EnergyLevel | null>(existing?.energyLevel ?? null);
   const [disruptors, setDisruptors] = useState<Disruptor[]>(existing?.disruptors ?? []);
@@ -113,11 +126,17 @@ export function CheckinForm({
   const didNotMove = movementTypes.includes("none");
   const minutes = didNotMove ? 0 : movementMinutes;
 
+  const ate = mealsCount !== null && mealsCount > 0;
+  const moved = !didNotMove && movementTypes.length > 0 && (minutes ?? 0) > 0;
+
   const asks = {
     skippedMeals: mealsCount !== null && mealsCount < TOTAL_MEALS,
+    firstMealTime: ate,
+    mealFeeling: ate,
     lateReason: bedTimeBucket !== null && LATE_BUCKETS.includes(bedTimeBucket),
     movementMinutes: !didNotMove && movementTypes.length > 0,
     movementBlocker: movementTypes.length > 0 && (didNotMove || minutes === 0),
+    movementFeeling: moved,
   };
 
   const canProceed = [
@@ -156,8 +175,10 @@ export function CheckinForm({
       checkinDate: date,
       mealsCount: mealsCount!,
       skippedMeals: asks.skippedMeals ? skippedMeals : [],
+      firstMealTime: asks.firstMealTime ? firstMealTime : null,
+      foodTypes,
       sweetDrinks: sweetDrinks!,
-      mealFeeling,
+      mealFeeling: asks.mealFeeling ? mealFeeling : null,
       sleepHours: sleepHours!,
       bedTimeBucket: bedTimeBucket!,
       sleepQuality: sleepQuality!,
@@ -165,6 +186,7 @@ export function CheckinForm({
       movementTypes,
       movementMinutes: minutes ?? 0,
       movementBlocker: asks.movementBlocker ? movementBlocker : null,
+      movementFeeling: asks.movementFeeling ? movementFeeling : null,
       energyLevel: energyLevel!,
       disruptors,
       note: note.trim() || null,
@@ -233,6 +255,32 @@ export function CheckinForm({
               </Field>
             )}
 
+            {asks.firstMealTime && (
+              <Field label="มื้อแรกของวันกินตอนไหน" hint="ข้ามได้">
+                {keysOf(FIRST_MEAL_TIME_LABELS).map((time) => (
+                  <Chip
+                    key={time}
+                    active={firstMealTime === time}
+                    onClick={() => setFirstMealTime(firstMealTime === time ? null : time)}
+                  >
+                    {FIRST_MEAL_TIME_LABELS[time]}
+                  </Chip>
+                ))}
+              </Field>
+            )}
+
+            <Field label="วันนี้ได้กินอะไรอีกไหม" hint="เลือกได้หลายอย่าง · ข้ามได้">
+              {keysOf(FOOD_TYPE_LABELS).map((type) => (
+                <Chip
+                  key={type}
+                  active={foodTypes.includes(type)}
+                  onClick={() => setFoodTypes(toggleValue(foodTypes, type))}
+                >
+                  {FOOD_TYPE_LABELS[type]}
+                </Chip>
+              ))}
+            </Field>
+
             <Field label="เครื่องดื่มหวานวันนี้" hint="ชานม น้ำอัดลม กาแฟใส่น้ำตาล">
               {SWEET_DRINKS.map((count) => (
                 <Chip
@@ -245,17 +293,19 @@ export function CheckinForm({
               ))}
             </Field>
 
-            <Field label="หลังกินรู้สึกยังไง" hint="ข้ามได้">
-              {keysOf(MEAL_FEELING_LABELS).map((feeling) => (
-                <Chip
-                  key={feeling}
-                  active={mealFeeling === feeling}
-                  onClick={() => setMealFeeling(mealFeeling === feeling ? null : feeling)}
-                >
-                  {MEAL_FEELING_LABELS[feeling]}
-                </Chip>
-              ))}
-            </Field>
+            {asks.mealFeeling && (
+              <Field label="หลังกินรู้สึกยังไง" hint="ข้ามได้">
+                {keysOf(MEAL_FEELING_LABELS).map((feeling) => (
+                  <Chip
+                    key={feeling}
+                    active={mealFeeling === feeling}
+                    onClick={() => setMealFeeling(mealFeeling === feeling ? null : feeling)}
+                  >
+                    {MEAL_FEELING_LABELS[feeling]}
+                  </Chip>
+                ))}
+              </Field>
+            )}
           </>
         )}
 
@@ -348,6 +398,22 @@ export function CheckinForm({
                     }
                   >
                     {MOVEMENT_BLOCKER_LABELS[blocker]}
+                  </Chip>
+                ))}
+              </Field>
+            )}
+
+            {asks.movementFeeling && (
+              <Field label="หลังขยับรู้สึกยังไง" hint="ข้ามได้">
+                {keysOf(MOVEMENT_FEELING_LABELS).map((feeling) => (
+                  <Chip
+                    key={feeling}
+                    active={movementFeeling === feeling}
+                    onClick={() =>
+                      setMovementFeeling(movementFeeling === feeling ? null : feeling)
+                    }
+                  >
+                    {MOVEMENT_FEELING_LABELS[feeling]}
                   </Chip>
                 ))}
               </Field>

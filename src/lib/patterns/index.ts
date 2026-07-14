@@ -153,6 +153,13 @@ export function computePatternCandidates(input: Checkin[]): PatternCandidate[] {
     (checkin) => checkin.skippedMeals.length === 0
   );
 
+  const [ateOnTime, ateLate] = split(
+    checkins.filter((checkin) => checkin.firstMealTime !== null),
+    "วันที่กินมื้อแรกก่อน 9:00",
+    "วันที่กินมื้อแรกหลัง 9:00",
+    (checkin) => checkin.firstMealTime === "before_9"
+  );
+
   return [
     rateCandidate(
       "sleep-eating-skip-breakfast",
@@ -208,6 +215,14 @@ export function computePatternCandidates(input: Checkin[]): PatternCandidate[] {
       "high_energy_rate",
       ateEveryMeal,
       skippedAMeal,
+      (checkin) => checkin.energyLevel === "high"
+    ),
+    rateCandidate(
+      "eating-on-time-energy",
+      ["eating"],
+      "high_energy_rate",
+      ateOnTime,
+      ateLate,
       (checkin) => checkin.energyLevel === "high"
     ),
   ].filter((candidate): candidate is PatternCandidate => candidate !== null);
