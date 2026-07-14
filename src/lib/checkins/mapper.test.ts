@@ -11,6 +11,8 @@ describe("toCheckin", () => {
       checkin_date: "2026-07-12",
       meals_count: 2,
       skipped_meals: ["breakfast"],
+      first_meal_time: "after_12",
+      food_types: ["snack"],
       sweet_drinks: 2,
       meal_feeling: "hungry_fast",
       sleep_hours: 5.5,
@@ -20,6 +22,7 @@ describe("toCheckin", () => {
       movement_types: ["walk"],
       movement_minutes: 15,
       movement_blocker: "no_time",
+      movement_feeling: "tired",
       energy_level: "low",
       disruptors: ["deadline"],
       note: "คืนก่อน deadline",
@@ -29,6 +32,8 @@ describe("toCheckin", () => {
       checkinDate: "2026-07-12",
       mealsCount: 2,
       skippedMeals: ["breakfast"],
+      firstMealTime: "after_12",
+      foodTypes: ["snack"],
       sweetDrinks: 2,
       mealFeeling: "hungry_fast",
       sleepHours: 5.5,
@@ -38,6 +43,7 @@ describe("toCheckin", () => {
       movementTypes: ["walk"],
       movementMinutes: 15,
       movementBlocker: "no_time",
+      movementFeeling: "tired",
       energyLevel: "low",
       disruptors: ["deadline"],
       note: "คืนก่อน deadline",
@@ -50,6 +56,8 @@ describe("toCheckin", () => {
       checkin_date: "2026-07-12",
       meals_count: 3,
       skipped_meals: null,
+      first_meal_time: null,
+      food_types: null,
       sweet_drinks: null,
       meal_feeling: null,
       sleep_hours: 7,
@@ -59,6 +67,7 @@ describe("toCheckin", () => {
       movement_types: null,
       movement_minutes: null,
       movement_blocker: null,
+      movement_feeling: null,
       energy_level: "high",
       disruptors: null,
       note: null,
@@ -66,10 +75,13 @@ describe("toCheckin", () => {
 
     const checkin = toCheckin(row);
     expect(checkin.skippedMeals).toEqual([]);
+    expect(checkin.foodTypes).toEqual([]);
     expect(checkin.movementTypes).toEqual([]);
     expect(checkin.disruptors).toEqual([]);
     expect(checkin.sweetDrinks).toBe(0);
     expect(checkin.movementMinutes).toBe(0);
+    expect(checkin.firstMealTime).toBeNull();
+    expect(checkin.movementFeeling).toBeNull();
   });
 
   it("sleep_hours ที่ Postgres ส่งมาเป็น string ถูกแปลงเป็นตัวเลข", () => {
@@ -93,6 +105,8 @@ describe("round-trip", () => {
     const original = makeCheckin({
       mealsCount: 2,
       skippedMeals: ["breakfast", "lunch"],
+      firstMealTime: "after_12",
+      foodTypes: ["snack", "veg_fruit"],
       sweetDrinks: 3,
       mealFeeling: "sleepy",
       sleepHours: 5.5,
@@ -102,6 +116,7 @@ describe("round-trip", () => {
       movementTypes: ["stretch", "stairs"],
       movementMinutes: 30,
       movementBlocker: "tired",
+      movementFeeling: "relaxed",
       energyLevel: "medium",
       disruptors: ["exam", "commute"],
       note: "อ่านสอบถึงตี 1",

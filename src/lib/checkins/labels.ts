@@ -3,10 +3,13 @@ import type {
   Checkin,
   Disruptor,
   EnergyLevel,
+  FirstMealTime,
+  FoodType,
   LateReason,
   Meal,
   MealFeeling,
   MovementBlocker,
+  MovementFeeling,
   MovementType,
 } from "@/lib/patterns/types";
 
@@ -14,6 +17,17 @@ export const MEAL_LABELS: Record<Meal, string> = {
   breakfast: "เช้า",
   lunch: "กลางวัน",
   dinner: "เย็น",
+};
+
+export const FIRST_MEAL_TIME_LABELS: Record<FirstMealTime, string> = {
+  before_9: "ก่อน 9:00",
+  "9_12": "9:00–12:00",
+  after_12: "หลัง 12:00",
+};
+
+export const FOOD_TYPE_LABELS: Record<FoodType, string> = {
+  snack: "ของว่าง",
+  veg_fruit: "ผัก / ผลไม้",
 };
 
 export const MEAL_FEELING_LABELS: Record<MealFeeling, string> = {
@@ -53,6 +67,13 @@ export const MOVEMENT_BLOCKER_LABELS: Record<MovementBlocker, string> = {
   rain: "ฝนตก",
   tired: "เหนื่อยเกิน",
   long_sitting: "นั่งยาว",
+};
+
+export const MOVEMENT_FEELING_LABELS: Record<MovementFeeling, string> = {
+  refreshed: "สดชื่นขึ้น",
+  relaxed: "ผ่อนคลาย",
+  tired: "เหนื่อย",
+  no_change: "เหมือนเดิม",
 };
 
 export const ENERGY_LABELS: Record<EnergyLevel, string> = {

@@ -4,7 +4,7 @@ Status: done
 Owner: D
 Sprint: 0
 Priority: M
-Refs: docs/05 (schema เต็ม), docs/08 Part 2
+Refs: FR-7.1, docs/05, docs/08 Part 2
 
 ## งาน
 

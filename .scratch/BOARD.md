@@ -6,14 +6,18 @@
 > ทุกอย่างที่แตะ **Supabase / Gemini / service role / Safety 🔒** เป็นของ A
 > **3 สายเรียกฟังก์ชันที่มีอยู่แล้ว → วาด UI → จบ** ไม่ต้องแตะ DB ไม่ต้องแตะ AI ไม่มีไฟล์ทับกัน
 
-## สถานะ: เสร็จ 14 / 37 งาน
+## สถานะ: เสร็จ 15 / 37 งาน (ยกเลิก 1)
 
 - ✅ **Sprint 0** — repo · Supabase + RLS · Vercel · Gemini
 - ✅ **F0** — สมัคร/ล็อกอิน (Google + รหัสผ่าน) · onboarding · disclaimer
-- ✅ **F1** — เช็คอิน · บันทึก · แก้/ลบย้อนหลัง · สรุปหลังบันทึก
+- ✅ **F1** — เช็คอิน · บันทึก · แก้/ลบย้อนหลัง · สรุปหลังบันทึก · **F1-05 ปิดช่องโหว่โจทย์ข้อ 5**
 - ✅ **F2-01** dashboard layout · **F3-01** lib/patterns · **F7-01** หน้า privacy
 - ✅ **UI/UX** — touch target 44px · dark mode ตามค่าเครื่อง · เดสก์ท็อป sidebar
 - ✅ **Data layer ครบ** — `checkins` · `account` · `chat` · `ai-outputs` · `goals`
+- ⛔ **INFRA-05 wireframe — ยกเลิก** (DESIGN.md + UI จริงแทนไปแล้ว)
+
+> 🔍 **14 ก.ค. — audit แผน+เอกสารทั้งระบบเทียบโจทย์** พบว่า **Required Input ของโจทย์ข้อ 5 ขาดไป 4 ช่อง** (ความรู้สึกหลังขยับ · เวลามื้อแรก · ของว่าง/ผัก-ผลไม้ · ช่วงที่งานหนัก) → ปิดครบใน F1-05 แล้ว
+> **มี migration ใหม่** `supabase/migrations/0002_mission_input_coverage.sql` — A รันบน Supabase ให้แล้ว ทุกคนแค่ `git pull` ก็ใช้ได้เลย
 
 ---
 
@@ -54,7 +58,8 @@ clearChatHistory()                     // = F4-05 เกือบเสร็จ
 deleteAllData() · deleteAccount()      // @/lib/account/actions
 getGoals() · getActiveGoals()          // @/lib/goals/queries
 recommendGoals() · acceptGoal() · toggleGoalDay() · updateGoalStatus()  // @/lib/goals/actions
-getLatestReflection() · generateReflection()  // @/lib/ai-outputs/*
+getLatestReflection() · getReflections() · generateReflection()  // @/lib/ai-outputs/*
+//                     ↑ ย้อนหลัง (F6-02 / FR-6.2)
 ```
 
 ---
@@ -93,11 +98,12 @@ getLatestReflection() · generateReflection()  // @/lib/ai-outputs/*
 | f7/02 | ลบข้อมูล/บัญชี 🔒 | 🟨 | โค้ดลบเขียนให้แล้ว ทำแค่ UI + confirm |
 | f5/02 | หน้า goals | 🟨 | |
 | f6/02 | หน้า reflection | 🟨 | |
-| f3/02 · f3/03 · f3/04 🔒 | AI pattern | A | |
+| f3/02 🔒 | **หลักฐาน guardrail** — รัน 10 เคส เก็บผลลง `.scratch/ai-safety-test/` | A | deliverable ข้อ 12 ต้องใช้ |
+| f3/03 · f3/04 🔒 | AI insight + ข้อมูลไม่พอ | A | |
 | f4/02 · f4/04 🔒 | AI coach context + escalation | A | |
 | f5/01 🔒 · f6/01 | AI goal + reflection | A | |
 | infra/06 | Seed "ปาล์ม" | A | ⚠️ ใช้ service role — A เท่านั้น |
-| qa/01 🔒 · qa/02 · qa/03 · qa/04 | Safety checklist · QA · Pitch · Limitations | A + ทุกคน | 27–29 ก.ค. |
+| qa/01 🔒 · qa/02 · qa/03 · qa/04 | Safety checklist · QA · Pitch · Limitations | A + ทุกคน | 27–29 ก.ค. · **qa/02 ต้องจับเวลา check-in จริง** |
 
 **🔒 = ห้ามตัดทิ้งแม้เวลาไม่พอ** (เกณฑ์ Safety / Privacy โดยตรง) — **อยู่ในมือ A ทั้งหมด**
 

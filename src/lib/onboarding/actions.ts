@@ -3,13 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-
-export type OnboardingInput = {
-  displayName: string;
-  status: "student" | "first_jobber";
-  earlyDays: string[];
-  constraints: string[];
-};
+import { validateOnboarding, type OnboardingInput } from "./types";
 
 export async function completeOnboarding(input: OnboardingInput) {
   const supabase = await createClient();
@@ -18,20 +12,18 @@ export async function completeOnboarding(input: OnboardingInput) {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const displayName = input.displayName?.trim();
-  if (!displayName) {
-    return { error: "กรอกชื่อเล่นก่อน" };
-  }
-  if (input.status !== "student" && input.status !== "first_jobber") {
-    return { error: "เลือกสถานะก่อน" };
+  const invalid = validateOnboarding(input);
+  if (invalid) {
+    return { error: invalid };
   }
 
   const { error } = await supabase.from("profiles").upsert({
     user_id: user.id,
-    display_name: displayName,
+    display_name: input.displayName.trim(),
     status: input.status,
-    early_days: input.earlyDays ?? [],
-    typical_constraints: input.constraints ?? [],
+    early_days: input.earlyDays,
+    typical_constraints: input.constraints,
+    busy_periods: input.busyPeriods,
     disclaimer_accepted_at: new Date().toISOString(),
   });
   if (error) {

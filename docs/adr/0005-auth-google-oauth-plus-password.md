@@ -25,7 +25,7 @@ F0-01 เดิมทำ email/password (Supabase Auth) แต่ทีมต้
 - **Redirect URLs allowlist** (Supabase → Authentication → URL Configuration) — ค่าจริงที่ใช้ได้ (โปรเจกต์ `kiznhpgxpewhlxwnnito`):
   - `https://personal-healthcoach.vercel.app/**` — prod
   - `https://healthcoach-*-nkieus-projects.vercel.app/**` — preview ทุก branch (⚠️ ขึ้นต้น `healthcoach-` ไม่ใช่ `personal-healthcoach-` ดู gotcha #1)
-  - `http://localhost:3002/auth/callback` — dev (ระวังพอร์ต ดู gotcha #4)
+  - `http://localhost:3000/**` `http://localhost:3001/**` `http://localhost:3002/**` `http://localhost:3003/**` — dev ทุกพอร์ตที่ Next.js อาจเลือกเอง (ดู gotcha #4 + #6)
   - **Site URL:** `https://personal-healthcoach.vercel.app`
 - **OAuth consent screen**: scope พื้นฐาน (email/profile) ไม่ต้อง verify; ถ้าอยากให้คนนอกทีม (กรรมการ) ล็อกอิน Google ได้ ต้อง publish app — หรือให้กรรมการใช้ **demo account (email/password)** แทน ซึ่งเป็นเหตุผลหนึ่งที่คง password ไว้
 - demo/seed account ใช้ email/password → **seed script (INFRA-06) ไม่ต้องแก้**
@@ -47,8 +47,12 @@ Setup เสียเวลาหลายรอบเพราะ Redirect URLs
 
 3. **ใส่ค่าจริง อย่าทิ้ง placeholder** — เคยพลาดเพราะก๊อป `https://*-<scope>.vercel.app/**` มาวางโดยไม่แทน `<scope>` → ไม่ match อะไรเลย
 
-4. **dev port** — โค้ดใช้ origin จริงของ request; ถ้า `npm run dev` ขึ้น 3002 (เพราะ 3000 ถูกจอง) allowlist ต้องมี `localhost:3002` ให้ตรง — แนะนำเคลียร์พอร์ต 3000 ให้ว่างแล้วใช้ `http://localhost:3000/**` ทั้งทีมจะได้พอร์ตเดียวกัน
+4. **dev port** — โค้ดใช้ origin จริงของ request; ถ้า `npm run dev` ขึ้น 3002 (เพราะ 3000 ถูกจอง) allowlist ต้องมี `localhost:3002` ให้ตรง
 
 5. **แก้ allowlist ในโปรเจกต์ที่แอปคุยด้วยเท่านั้น:** ref `kiznhpgxpewhlxwnnito` (จาก `NEXT_PUBLIC_SUPABASE_URL`) — ไม่ใช่โปรเจกต์อื่น
+
+6. **(2026-07-13) เพื่อนร่วมทีม login บน localhost แล้วเด้งไป production** — สาเหตุเดียวกับ gotcha #2 แต่คนละอาการ: allowlist มีแค่ `localhost:3002` ส่วนเพื่อนรัน dev ที่พอร์ต 3000 → `redirect_to` ไม่ match → Supabase fallback ไป Site URL (= prod) เงียบ ๆ → **เพื่อนแก้โค้ดใน local แล้วไม่เห็นผลงานตัวเอง**
+   - **แก้แล้ว:** ใส่ `localhost:3000–3003` ทั้งหมดใน allowlist (แทนที่จะบังคับทุกคนใช้พอร์ตเดียวกัน ซึ่งพังทันทีที่พอร์ตถูกจอง)
+   - **Google Cloud console ไม่ต้องแก้อะไรเลย** — Google redirect กลับไปที่ callback ของ Supabase เสมอ ไม่เคยรู้จัก localhost ของเรา · แก้ที่ Supabase allowlist ที่เดียวจบ
 
 **วิธี debug ที่ได้ผล:** ดู `redirect_to` จริงที่โค้ดส่ง — ทำ temporary route ที่เรียก `signInWithOAuth({ skipBrowserRedirect: true })` แล้วอ่าน `data.url` (ต้องวางใต้ `/auth/*` เพราะ proxy กัน path อื่น) เทียบกับ allowlist ตรง ๆ
