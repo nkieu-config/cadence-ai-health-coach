@@ -1,13 +1,14 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { COACH_SYSTEM_PROMPT, generate, type ChatTurn } from "@/lib/ai";
+import { COACH_SYSTEM_PROMPT, aiErrorMessage, generate, type ChatTurn } from "@/lib/ai";
 import { createClient } from "@/lib/supabase/server";
 import { buildCoachContext } from "./context";
-import { getChatHistory } from "./queries";
+import { countMessagesToday, getChatHistory } from "./queries";
 import {
   CHAT_COLUMNS,
   CONTEXT_TURN_LIMIT,
+  DAILY_MESSAGE_LIMIT,
   type ChatMessage,
   type ChatMessageRow,
   toChatMessage,
@@ -51,8 +52,8 @@ async function replyToHistory(
   let reply: string;
   try {
     reply = await generate(turns, { system });
-  } catch {
-    return { error: "โค้ชตอบไม่ได้ตอนนี้ — ข้อความของคุณถูกเก็บไว้แล้ว กด “ลองใหม่” ได้เลย" };
+  } catch (error) {
+    return { error: aiErrorMessage(error) };
   }
 
   const message = await insertMessage(supabase, userId, "coach", reply);
@@ -79,6 +80,12 @@ export async function sendCoachMessage(text: string): Promise<ChatResult> {
   } = await supabase.auth.getUser();
   if (!user) {
     return { error: "เซสชันหมดอายุ กรุณาเข้าสู่ระบบใหม่" };
+  }
+
+  if ((await countMessagesToday()) >= DAILY_MESSAGE_LIMIT) {
+    return {
+      error: `วันนี้คุยกับโค้ชครบ ${DAILY_MESSAGE_LIMIT} ข้อความแล้ว — พรุ่งนี้กลับมาคุยต่อได้ ระหว่างนี้ยังเช็คอินและดูข้อมูลย้อนหลังได้ตามปกติ`,
+    };
   }
 
   const saved = await insertMessage(supabase, user.id, "user", content);

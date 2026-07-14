@@ -6,7 +6,7 @@
 > ทุกอย่างที่แตะ **Supabase / Gemini / service role / Safety 🔒** เป็นของ A
 > **3 สายเรียกฟังก์ชันที่มีอยู่แล้ว → วาด UI → จบ** ไม่ต้องแตะ DB ไม่ต้องแตะ AI ไม่มีไฟล์ทับกัน
 
-## สถานะ: เสร็จ 16 / 38 งาน (ยกเลิก 1)
+## สถานะ: เสร็จ 17 / 38 งาน (ยกเลิก 1)
 
 - ✅ **Sprint 0** — repo · Supabase + RLS · Vercel · Gemini
 - ✅ **F0** — สมัคร/ล็อกอิน (Google + รหัสผ่าน) · onboarding · disclaimer
@@ -15,6 +15,7 @@
 - ✅ **UI/UX** — touch target 44px · dark mode ตามค่าเครื่อง · เดสก์ท็อป sidebar
 - ✅ **Data layer ครบ** — `checkins` · `account` · `chat` · `ai-outputs` · `goals`
 - ✅ **F3-02 guardrail 🔒** — รัน checklist 10 เคสจริง เจอรูรั่ว 4 จุด แก้หมด · หลักฐานอยู่ที่ `.scratch/ai-safety-test/`
+- ✅ **INFRA-07 โควตา** — cache-first + จำกัดแชท 5 ข้อความ/คน/วัน + ข้อความโควตาหมดเป็นมิตร
 - ⛔ **INFRA-05 wireframe — ยกเลิก** (DESIGN.md + UI จริงแทนไปแล้ว)
 
 > 🔍 **14 ก.ค. — audit แผน+เอกสารทั้งระบบเทียบโจทย์** พบว่า **Required Input ของโจทย์ข้อ 5 ขาดไป 4 ช่อง** (ความรู้สึกหลังขยับ · เวลามื้อแรก · ของว่าง/ผัก-ผลไม้ · ช่วงที่งานหนัก) → ปิดครบใน F1-05 แล้ว
@@ -34,7 +35,7 @@
 
 ### 🔧 งานของ A (ไม่บล็อกใคร ทำคู่ขนานไปเรื่อย ๆ)
 
-~~F3-02 guardrail 🔒~~ ✅ → **INFRA-07 โควตา** → F3-03 insight → F3-04 ข้อมูลไม่พอ 🔒 → F4-02 context → F4-04 escalation 🔒 → F5-01 goal AI 🔒 → F6-01 reflection AI → **INFRA-06 seed** → QA-01 🔒 · QA-03 pitch · QA-04
+~~F3-02 guardrail 🔒~~ ✅ → ~~INFRA-07 โควตา~~ ✅ → **F3-03 insight** → F3-04 ข้อมูลไม่พอ 🔒 → F4-02 context → F4-04 escalation 🔒 → F5-01 goal AI 🔒 → F6-01 reflection AI → **INFRA-06 seed** → QA-01 🔒 · QA-03 pitch · QA-04
 
 > **AI ทั้งหมดอัปเกรดอยู่ "ข้างหลัง" ฟังก์ชันเดิม** — signature ไม่เปลี่ยน **3 สายไม่ต้องแก้โค้ดแม้แต่บรรทัดเดียว**
 
@@ -78,6 +79,7 @@ getLatestReflection() · getReflections() · generateReflection()  // @/lib/ai-o
 3. **อยู่ในโซนของสายตัวเอง** — ถ้าต้องแตะไฟล์นอกโซน **แจ้งกลุ่มก่อน**
    **ห้ามลง npm package เอง** (จะทำ `package-lock.json` ชนกัน) → แจ้งกลุ่ม → A ลงบน main
 4. **ห้ามแตะ DB / Supabase / Gemini ตรง ๆ** — เรียกฟังก์ชันจาก `src/lib/` เท่านั้น
+   ⚠️ **โควตา Gemini ฟรี = 20 ครั้ง/วัน ทั้งแอปรวมกัน** → แชทจำกัด 5 ข้อความ/คน/วัน · **อย่ากดปุ่มวิเคราะห์รัว ๆ เล่น** (มี cache กันให้แล้ว แต่รู้ไว้)
    ห้ามหาวันที่ด้วย `new Date()` → ใช้ `today()` / `daysAgo()` จาก `lib/checkins/date.ts`
    ชื่อไทยของค่าต่าง ๆ → `lib/checkins/labels.ts` · คำต้องห้าม → `lib/safety/language.ts`
 5. **UI: อ่าน 60 บรรทัดแรกของ `DESIGN.md`** — `<PageContainer>` · ห้ามใส่ `<main>` เอง · ทุกหน้ามี `<h1>` 1 อัน · **ทุกอย่างที่กดได้สูง ≥ 44px** (รวม `<Link>` ที่แต่งเป็นปุ่ม) · **ห้าม hardcode สี** (dark mode จะพัง)
@@ -99,7 +101,6 @@ getLatestReflection() · getReflections() · generateReflection()  // @/lib/ai-o
 | f7/02 | ลบข้อมูล/บัญชี 🔒 | 🟨 | โค้ดลบเขียนให้แล้ว ทำแค่ UI + confirm |
 | f5/02 | หน้า goals | 🟨 | |
 | f6/02 | หน้า reflection | 🟨 | |
-| **infra/07** | 🚨 **โควตา Gemini = 20 ครั้ง/วัน ทั้งแอป** | A | **ถ้าไม่แก้ demo วัน pitch ล่มกลางเวที** |
 | f3/03 · f3/04 🔒 | AI insight + ข้อมูลไม่พอ | A | |
 | f4/02 · f4/04 🔒 | AI coach context + escalation | A | |
 | f5/01 🔒 · f6/01 | AI goal + reflection | A | |

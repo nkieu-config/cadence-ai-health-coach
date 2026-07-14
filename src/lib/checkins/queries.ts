@@ -16,6 +16,19 @@ export async function getCheckins(days: number): Promise<Checkin[]> {
   return (data as unknown as CheckinRow[]).map(toCheckin);
 }
 
+export async function latestCheckinAt(): Promise<string | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("checkins")
+    .select("updated_at")
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error || !data) return null;
+  return (data as { updated_at: string }).updated_at;
+}
+
 export async function getCheckinByDate(date: string): Promise<Checkin | null> {
   const supabase = await createClient();
   const { data, error } = await supabase

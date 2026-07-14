@@ -2,21 +2,48 @@
 
 import { revalidatePath } from "next/cache";
 import { daysAgo, today } from "@/lib/checkins/date";
-import { getCheckins } from "@/lib/checkins/queries";
+import { getCheckins, latestCheckinAt } from "@/lib/checkins/queries";
 import { MIN_DAYS_FOR_ANALYSIS, computePatternCandidates, hasEnoughData } from "@/lib/patterns";
 import type { Checkin } from "@/lib/patterns/types";
 import { createClient } from "@/lib/supabase/server";
+import { isFresh } from "./cache";
 import { periodFor } from "./queries";
 import { toInsightPattern } from "./templates";
 import type { AiOutputKind, InsightPattern, ReflectionPillar } from "./types";
 
 export const REFLECTION_DAYS = 7;
 
-export type GenerateResult = { ok: true } | { error: string };
+export type GenerateResult = { ok: true; cached?: boolean } | { error: string };
+
+type Period = { periodStart: string; periodEnd: string };
+
+async function cachedOutputAt(kind: AiOutputKind, period: Period): Promise<string | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("ai_outputs")
+    .select("created_at")
+    .eq("kind", kind)
+    .eq("period_start", period.periodStart)
+    .eq("period_end", period.periodEnd)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error || !data) return null;
+  return (data as { created_at: string }).created_at;
+}
+
+async function isCacheUsable(kind: AiOutputKind, period: Period): Promise<boolean> {
+  const [cachedAt, checkinAt] = await Promise.all([
+    cachedOutputAt(kind, period),
+    latestCheckinAt(),
+  ]);
+  return isFresh(cachedAt, checkinAt);
+}
 
 async function replaceOutput(
   kind: AiOutputKind,
-  period: { periodStart: string; periodEnd: string },
+  period: Period,
   content: unknown
 ): Promise<GenerateResult> {
   const supabase = await createClient();
@@ -50,6 +77,12 @@ async function replaceOutput(
 }
 
 export async function generateInsight(days: number): Promise<GenerateResult> {
+  const period = periodFor(days);
+
+  if (await isCacheUsable("pattern_analysis", period)) {
+    return { ok: true, cached: true };
+  }
+
   const checkins = await getCheckins(days);
 
   if (!hasEnoughData(checkins)) {
@@ -62,7 +95,7 @@ export async function generateInsight(days: number): Promise<GenerateResult> {
     .map(toInsightPattern)
     .filter((pattern): pattern is InsightPattern => pattern !== null);
 
-  const result = await replaceOutput("pattern_analysis", periodFor(days), { patterns });
+  const result = await replaceOutput("pattern_analysis", period, { patterns });
   if ("error" in result) return result;
 
   revalidatePath("/dashboard");
@@ -108,6 +141,12 @@ function summarisePillars(checkins: Checkin[]): ReflectionPillar[] {
 }
 
 export async function generateReflection(): Promise<GenerateResult> {
+  const period = { periodStart: daysAgo(REFLECTION_DAYS - 1), periodEnd: today() };
+
+  if (await isCacheUsable("weekly_reflection", period)) {
+    return { ok: true, cached: true };
+  }
+
   const checkins = await getCheckins(REFLECTION_DAYS);
 
   if (checkins.length === 0) {
@@ -125,11 +164,7 @@ export async function generateReflection(): Promise<GenerateResult> {
       topStep ?? "เลือกก้าวเล็ก ๆ สัก 1 ข้อที่ทำได้แม้ในวันที่ตารางแน่น แล้วลองดูสัปดาห์หน้า",
   };
 
-  const result = await replaceOutput(
-    "weekly_reflection",
-    { periodStart: daysAgo(REFLECTION_DAYS - 1), periodEnd: today() },
-    content
-  );
+  const result = await replaceOutput("weekly_reflection", period, content);
   if ("error" in result) return result;
 
   revalidatePath("/reflection");

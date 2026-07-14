@@ -20,6 +20,8 @@ export const CHAT_HISTORY_LIMIT = 50;
 
 export const CONTEXT_TURN_LIMIT = 20;
 
+export const DAILY_MESSAGE_LIMIT = 5;
+
 export function toChatMessage(row: ChatMessageRow): ChatMessage {
   return {
     id: row.id,
