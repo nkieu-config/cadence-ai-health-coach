@@ -72,7 +72,7 @@
 | ฟิลด์ | ชนิด | ค่า | ใช้ทำอะไร |
 |---|---|---|---|
 | `energy_level` | text | `low` `medium` `high` | ตัวแปรผลลัพธ์หลักของ pattern analysis |
-| `disruptors` | text[] | `deadline` `long_meeting` `early_class` `commute` `exam` `none` | เชื่อมพฤติกรรมกับตารางชีวิต — หัวใจของ personalization |
+| `disruptors` | text[] | `deadline` `long_meeting` `early_class` `online_class` `commute` `exam` `none` | เชื่อมพฤติกรรมกับตารางชีวิต — หัวใจของ personalization |
 | `note` | text? | อิสระ ≤ 200 ตัวอักษร | ให้ AI ใช้เป็นบริบท เช่น "ประชุมยาวเลยกินช้า" |
 
 ### บริบทชีวิต — ถามครั้งเดียวตอน onboarding (โจทย์ 5.1)

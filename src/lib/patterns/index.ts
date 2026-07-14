@@ -160,6 +160,20 @@ export function computePatternCandidates(input: Checkin[]): PatternCandidate[] {
     (checkin) => checkin.firstMealTime === "before_9"
   );
 
+  const [earlyClass, noEarlyClass] = split(
+    checkins,
+    "วันที่มีเรียนหรือทำงานเช้า",
+    "วันที่ไม่ต้องตื่นเช้า",
+    (checkin) => checkin.disruptors.includes("early_class")
+  );
+
+  const [onlineDays, onsiteDays] = split(
+    checkins,
+    "วันที่เรียนหรือทำงาน online",
+    "วันที่ได้ออกจากบ้าน",
+    (checkin) => checkin.disruptors.includes("online_class")
+  );
+
   return [
     rateCandidate(
       "sleep-eating-skip-breakfast",
@@ -224,6 +238,22 @@ export function computePatternCandidates(input: Checkin[]): PatternCandidate[] {
       ateOnTime,
       ateLate,
       (checkin) => checkin.energyLevel === "high"
+    ),
+    rateCandidate(
+      "early-class-skip-breakfast",
+      ["eating"],
+      "skip_breakfast_rate",
+      earlyClass,
+      noEarlyClass,
+      (checkin) => checkin.skippedMeals.includes("breakfast")
+    ),
+    averageCandidate(
+      "online-class-movement",
+      ["movement"],
+      "movement_minutes_avg",
+      onlineDays,
+      onsiteDays,
+      (checkin) => checkin.movementMinutes
     ),
   ].filter((candidate): candidate is PatternCandidate => candidate !== null);
 }

@@ -86,6 +86,7 @@ export const DISRUPTOR_LABELS: Record<Disruptor, string> = {
   deadline: "เดดไลน์",
   long_meeting: "ประชุมยาว",
   early_class: "เรียนเช้า",
+  online_class: "เรียน/ทำงาน online",
   commute: "เดินทางไกล",
   exam: "สอบ",
   none: "ไม่มีอะไรพิเศษ",

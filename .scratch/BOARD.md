@@ -6,7 +6,7 @@
 > ทุกอย่างที่แตะ **Supabase / Gemini / service role / Safety 🔒** เป็นของ A
 > **3 สายเรียกฟังก์ชันที่มีอยู่แล้ว → วาด UI → จบ** ไม่ต้องแตะ DB ไม่ต้องแตะ AI ไม่มีไฟล์ทับกัน
 
-## สถานะ: เสร็จ 17 / 38 งาน (ยกเลิก 1)
+## สถานะ: เสร็จ 18 / 39 งาน (ยกเลิก 1)
 
 - ✅ **Sprint 0** — repo · Supabase + RLS · Vercel · Gemini
 - ✅ **F0** — สมัคร/ล็อกอิน (Google + รหัสผ่าน) · onboarding · disclaimer
@@ -16,6 +16,7 @@
 - ✅ **Data layer ครบ** — `checkins` · `account` · `chat` · `ai-outputs` · `goals`
 - ✅ **F3-02 guardrail 🔒** — รัน checklist 10 เคสจริง เจอรูรั่ว 4 จุด แก้หมด · หลักฐานอยู่ที่ `.scratch/ai-safety-test/`
 - ✅ **INFRA-07 โควตา** — cache-first + จำกัดแชท 5 ข้อความ/คน/วัน + ข้อความโควตาหมดเป็นมิตร
+- ✅ **F3-05** — `lib/patterns` ตอบตาราง Feature 2 ครบ 3 แถวแล้ว (เดิมได้แค่แถวเดียว)
 - ⛔ **INFRA-05 wireframe — ยกเลิก** (DESIGN.md + UI จริงแทนไปแล้ว)
 
 > 🔍 **14 ก.ค. — audit แผน+เอกสารทั้งระบบเทียบโจทย์** พบว่า **Required Input ของโจทย์ข้อ 5 ขาดไป 4 ช่อง** (ความรู้สึกหลังขยับ · เวลามื้อแรก · ของว่าง/ผัก-ผลไม้ · ช่วงที่งานหนัก) → ปิดครบใน F1-05 แล้ว
@@ -102,6 +103,7 @@ getLatestReflection() · getReflections() · generateReflection()  // @/lib/ai-o
 | f5/02 | หน้า goals | 🟨 | |
 | f6/02 | หน้า reflection | 🟨 | |
 | f3/03 · f3/04 🔒 | AI insight + ข้อมูลไม่พอ | A | |
+| infra/06 | Seed "ปาล์ม" | A | ⚠️ service role — A เท่านั้น · **ต้องรอ f3/05 merge ก่อน** |
 | f4/02 · f4/04 🔒 | AI coach context + escalation | A | |
 | f5/01 🔒 · f6/01 | AI goal + reflection | A | |
 | infra/06 | Seed "ปาล์ม" | A | ⚠️ ใช้ service role — A เท่านั้น |

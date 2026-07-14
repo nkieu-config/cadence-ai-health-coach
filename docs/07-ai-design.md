@@ -38,7 +38,7 @@
 
 ## งานที่ 1: Pattern Analysis
 
-`lib/patterns` คำนวณ candidates **8 ตัว** ครอบคลุมตัวอย่างทั้ง 4 ข้อในโจทย์ Feature 3 (ไม่มี LLM ในขั้นนี้ — ตัวเลขทั้งหมดมาจากสถิติจริง):
+`lib/patterns` คำนวณ candidates **10 ตัว** ครอบคลุม**ทั้งตัวอย่าง 4 ข้อของ Feature 3 และตาราง 3 แถวของ Feature 2** (ไม่มี LLM ในขั้นนี้ — ตัวเลขทั้งหมดมาจากสถิติจริง):
 
 | โจทย์ Feature 3 ถามว่า | Pattern candidate (id) | วิธีคำนวณ |
 |---|---|---|
@@ -46,6 +46,16 @@
 | Deadline → นอนดึก? ขยับน้อยลง? | `deadline-sleep-bedtime`, `deadline-movement-minutes` | เทียบเวลาเข้านอน (สเกลต่อเนื่อง) และ `movement_minutes` วันที่มี disruptor `deadline`/`exam` กับวันปกติ |
 | ได้ขยับ → นอน/พลังงานดีขึ้น? | `movement-next-day-sleep`, `movement-next-day-energy` | เทียบ `sleep_quality` และอัตรา energy สูง **ของวันถัดไป** หลังวันที่ขยับ ≥ 15 นาที (จับคู่เฉพาะวันที่ติดกันจริงตามปฏิทิน) |
 | กินเป็นเวลา → พลังงานดีขึ้น? | `eating-energy` (ครบมื้อ), **`eating-on-time-energy`** (เวลามื้อแรก) | เทียบอัตรา energy สูง: วันที่กินครบมื้อ vs ข้ามมื้อ · และวันที่กินมื้อแรกก่อน 9:00 vs หลัง 9:00 (ใช้ `first_meal_time`) |
+
+**ตาราง Feature 2 ของโจทย์ (FR-2.3) บังคับ 3 แถวนี้ — ต้องมี candidate รองรับทุกแถว:**
+
+| แถวในโจทย์ | candidate | เพิ่มเมื่อ |
+|---|---|---|
+| กิน — มักข้ามมื้อเช้าในวันที่มีเรียน/งานเช้า | **`early-class-skip-breakfast`** | 14 ก.ค. (เดิมไม่มี) |
+| นอน — นอนดึกในคืนก่อน deadline | `deadline-sleep-bedtime` | มีอยู่แล้ว |
+| ออกกำลังกาย — เดินน้อยในวันที่เรียน/ทำงาน online | **`online-class-movement`** | 14 ก.ค. (เดิมไม่มี · ต้องเพิ่ม disruptor `online_class` ด้วย) |
+
+⚠️ **ทุก candidate ต้องมี template ใน `lib/ai-outputs/templates.ts`** — `toInsightPattern()` คืน `null` ถ้าไม่เจอ template แล้ว candidate นั้นจะ**ถูกทิ้งเงียบ ๆ ไม่ขึ้นหน้าจอ** (เคยเกิดจริงกับ `eating-on-time-energy`) · มีเทสต์คุมแล้ว
 
 ส่งเป็น JSON ให้ Gemini พร้อมกติกา: เลือกเฉพาะ candidate ที่ต่างกันชัด (heuristic ใน `lib/patterns`: ต่างกัน ≥ 20% และมีข้อมูล ≥ 3 วันต่อกลุ่ม), เขียนแบบ "สัญญาณ", ปิดท้ายด้วย next step เล็ก 1 ข้อ ต่อ pattern
 

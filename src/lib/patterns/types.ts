@@ -29,6 +29,7 @@ export type Disruptor =
   | "deadline"
   | "long_meeting"
   | "early_class"
+  | "online_class"
   | "commute"
   | "exam"
   | "none";
