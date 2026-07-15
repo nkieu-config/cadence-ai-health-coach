@@ -20,3 +20,26 @@ Blocked by: 01
 - Gemini ล่ม → แสดง cache ล่าสุด ไม่ crash
 
 ## Comments
+
+---
+
+15 ก.ค. (A) — kickoff · **ไม่ต้องรอ F3-03** — ตอนนี้เป็น template ที่ใช้ได้จริง AI มาเสียบทีหลังหน้าตาเดิม
+
+**ไฟล์**
+
+- สร้าง `src/components/dashboard/pattern-table.tsx`
+- แก้ `src/app/(app)/dashboard/page.tsx` — วางการ์ด (ครอบ `<Suspense>` ถ้าดึงข้อมูลเอง)
+
+**เรียกใช้** — ทั้งหมดจาก `@/lib/ai-outputs/*`
+
+- `getLatestInsight(days)` → `Insight | null` — อ่าน cache ไม่เรียก AI · `null` = ยังไม่เคยวิเคราะห์ → โชว์ปุ่ม
+- `generateInsight(days)` → เรียก AI ~10 วิ — **ผูกกับปุ่มเท่านั้น ห้ามเรียกตอน render** (โควตา 20 ครั้ง/วันทั้งแอป)
+- `formatMetric(metric, value)` → แปลง evidence เป็นข้อความไทย
+
+**ตาราง 4 คอลัมน์ = `insight.patterns[]`:** `pillars` → ด้าน · `observation` → pattern ที่พบ · `meaning` → ความหมาย · `nextStep` → next step
+**โชว์ `evidence` ด้วย** (`groupA/groupB: { label, days, value }`) — คือหลักฐานว่า AI ไม่ได้มโน
+
+**ระวัง**
+
+1. มือถือ: ตารางพับเป็นการ์ดรายแถว (ห้าม horizontal scroll — e2e เช็ค)
+2. ข้อความ "ข้อมูลไม่พอ" action คืนมาเองใน `error` — แค่แสดง ไม่ต้องเช็คเงื่อนไขเอง

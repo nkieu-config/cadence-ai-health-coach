@@ -19,3 +19,22 @@ Blocked by: 01
 - กดจาก reflection ไปตั้ง goal ได้จบเส้น
 
 ## Comments
+
+---
+
+15 ก.ค. (A) — kickoff · **ไม่ต้องรอ F6-01** — โครงพร้อม reflection จริงมาเสียบทีหลังหน้าตาเดิม
+
+**ไฟล์**
+
+- แก้ `src/app/(app)/reflection/page.tsx` — แทน placeholder · สร้าง `loading.tsx` คู่กัน
+- component เพิ่มลง `src/components/reflection/` (การ์ดบน dashboard มีแล้ว: `reflection-card.tsx` — ห้ามแตะ dashboard)
+
+**เรียกใช้** — ทั้งหมดจาก `@/lib/ai-outputs/*`
+
+- `getLatestReflection()` → `Reflection | null` · `null` = โชว์ปุ่ม "สร้างสรุปสัปดาห์" → `generateReflection()` (~10 วิ **ผูกปุ่มเท่านั้น**)
+- `getReflections()` → ย้อนหลังทั้งหมด ใหม่→เก่า — ไว้ทำตัวเลือกดูสัปดาห์ก่อน (FR-6.2)
+- โครง `Reflection`: `{ daysRecorded, totalDays, pillars: [{ pillar, summary }], nextWeek, periodStart, periodEnd }`
+
+**ทำ:** หน้าอ่านสรุปล่าสุด แบ่ง section ตาม `pillars` + `nextWeek` · เลือกดูสัปดาห์เก่า · ปุ่ม "ตั้งเป้าสัปดาห์หน้า" → **ลิงก์ไป `/goals` ไปก่อน** (สลับเป็น guided flow เมื่อ F4-03 เสร็จ — จะมาคอมเม้นบอก)
+
+**ระวัง:** AC "เห็น ≥ 2 สัปดาห์" ต้องรอ F6-01 ของ A สร้างข้อมูลจริงให้ปาล์ม — UI คุณจบก่อนได้เลย
