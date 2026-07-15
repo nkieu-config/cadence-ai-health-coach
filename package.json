@@ -18,6 +18,7 @@
     "verify:db": "node --env-file=.env.local --import tsx scripts/verify-db.ts",
     "verify:user": "node --env-file=.env.local --import tsx scripts/verify-user.ts",
     "seed": "node --env-file=.env.local --import tsx scripts/seed.ts",
+    "backfill:demo-ai": "node --env-file=.env.local --import tsx scripts/backfill-demo-ai.ts",
     "verify:seed": "node --env-file=.env.local --import tsx scripts/verify-seed.ts",
     "verify:rls": "node --env-file=.env.local --import tsx scripts/verify-rls.ts",
     "format": "prettier --write .",

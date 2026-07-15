@@ -46,3 +46,9 @@ Blocked by: 01
 `Reflection` type เพิ่ม `strengths: string` (จุดแข็งที่ควรรักษาของสัปดาห์นั้น — ข้อความสั้น 1 ย่อหน้า เหมือน `nextWeek`) ของเดิมทั้งหมด (`daysRecorded` `totalDays` `pillars` `nextWeek`) **ยังหน้าตาเดิมทุกอย่าง ไม่ต้องแก้โค้ดที่มีอยู่**
 
 ถ้าอยากโชว์เป็น section แยกในหน้า reflection ก็ใช้ `reflection.strengths` ได้เลย (ไม่บังคับ ถ้าไม่มีเวลาไม่ใส่ก็ได้ ไม่ทำให้อะไรพัง)
+
+---
+
+16 ก.ค. (A) — ✅ **ข้อมูล demo พร้อมแล้ว (INFRA-16)** ไม่ต้องรออะไรแล้ว
+
+ปาล์มมี reflection **4 สัปดาห์** cache บน production — `getReflections()` คืน 4 อัน, `getLatestReflection()` มีของจริง · AC "เห็น ≥ 2 สัปดาห์" ผ่านทันทีที่ต่อ UI · เปิดมาเห็นข้อมูลจริงเลย **ไม่ต้องกดปุ่ม generate** (กัน quota)

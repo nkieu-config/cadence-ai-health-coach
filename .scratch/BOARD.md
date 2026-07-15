@@ -111,4 +111,4 @@ getLatestReflection() · getReflections() · generateReflection()  // @/lib/ai-o
 
 **F4-03 ปลดล็อกแล้ว** (F4-02 + F5-01 merge ครบ) — ทุกสายเดินได้เต็มที่ · stub-OK ทั้งหมด (F2-04 / F5-02 / F6-02) ได้ผล AI จริงหลัง signature เดิม ไม่ต้องแก้โค้ด
 
-> หางเดียวที่เหลือ: F6-02 AC "เห็น reflection ≥ 2 สัปดาห์" รอ A generate reflection ล่วงหน้าให้ปาล์มตอนเตรียม demo (ไม่บล็อกการทำ UI — วาดจบก่อนได้)
+> ✅ หางของ F6-02 ปิดแล้ว (INFRA-16) — ปาล์มมี reflection 4 สัปดาห์ + pattern 14/30 วัน cache ไว้บน production · เพื่อน 🟨/🟦 เปิดมาเห็นข้อมูลจริงเลย ไม่ต้องกด generate เปลือง quota
