@@ -3,15 +3,16 @@
 import { revalidatePath } from "next/cache";
 import { daysAgo, today } from "@/lib/checkins/date";
 import { getCheckins, latestCheckinAt } from "@/lib/checkins/queries";
+import { getGoals } from "@/lib/goals/queries";
 import { computePatternCandidates } from "@/lib/patterns";
-import type { Checkin } from "@/lib/patterns/types";
 import { createClient } from "@/lib/supabase/server";
 import { isFresh } from "./cache";
 import { generateInsightText, mergeInsightPatterns } from "./insight-ai";
 import { periodFor } from "./queries";
+import { buildWeekFacts, MIN_DAYS_FOR_REFLECTION, shortReflection } from "./reflection-facts";
+import { generateReflectionText, mergeReflectionText } from "./reflection-ai";
 import { checkDataSufficiency } from "./sufficiency";
-import { toInsightPattern } from "./templates";
-import type { AiOutputKind, ReflectionPillar } from "./types";
+import type { AiOutputKind, Reflection } from "./types";
 
 export const REFLECTION_DAYS = 7;
 
@@ -111,45 +112,6 @@ export async function generateInsight(days: number): Promise<GenerateResult> {
   return { ok: true };
 }
 
-function countDays(checkins: Checkin[], matches: (checkin: Checkin) => boolean) {
-  return checkins.filter(matches).length;
-}
-
-function average(checkins: Checkin[], value: (checkin: Checkin) => number) {
-  if (checkins.length === 0) return 0;
-  return (
-    Math.round(
-      (checkins.reduce((sum, checkin) => sum + value(checkin), 0) / checkins.length) * 10
-    ) / 10
-  );
-}
-
-function summarisePillars(checkins: Checkin[]): ReflectionPillar[] {
-  const complete = countDays(checkins, (checkin) => checkin.skippedMeals.length === 0);
-  const skippedBreakfast = countDays(checkins, (checkin) =>
-    checkin.skippedMeals.includes("breakfast")
-  );
-  const lateNights = countDays(checkins, (checkin) =>
-    ["00_01", "01_02", "after_02"].includes(checkin.bedTimeBucket)
-  );
-  const stillDays = countDays(checkins, (checkin) => checkin.movementMinutes === 0);
-
-  return [
-    {
-      pillar: "eating",
-      summary: `กินครบทุกมื้อ ${complete} จาก ${checkins.length} วันที่บันทึก · ข้ามมื้อเช้า ${skippedBreakfast} วัน`,
-    },
-    {
-      pillar: "sleep",
-      summary: `นอนเฉลี่ย ${average(checkins, (checkin) => checkin.sleepHours)} ชม. · เข้านอนหลังเที่ยงคืน ${lateNights} วัน`,
-    },
-    {
-      pillar: "movement",
-      summary: `ขยับเฉลี่ย ${average(checkins, (checkin) => checkin.movementMinutes)} นาทีต่อวัน · ไม่ได้ขยับ ${stillDays} วัน`,
-    },
-  ];
-}
-
 export async function generateReflection(): Promise<GenerateResult> {
   const period = { periodStart: daysAgo(REFLECTION_DAYS - 1), periodEnd: today() };
 
@@ -163,16 +125,23 @@ export async function generateReflection(): Promise<GenerateResult> {
     return { error: "ยังไม่มีบันทึกในสัปดาห์นี้ ลองเช็คอินก่อน" };
   }
 
-  const candidates = computePatternCandidates(checkins);
-  const topStep = candidates.map(toInsightPattern).at(0)?.nextStep;
+  let content: Omit<Reflection, "periodStart" | "periodEnd" | "createdAt">;
 
-  const content = {
-    daysRecorded: checkins.length,
-    totalDays: REFLECTION_DAYS,
-    pillars: summarisePillars(checkins),
-    nextWeek:
-      topStep ?? "เลือกก้าวเล็ก ๆ สัก 1 ข้อที่ทำได้แม้ในวันที่ตารางแน่น แล้วลองดูสัปดาห์หน้า",
-  };
+  if (checkins.length < MIN_DAYS_FOR_REFLECTION) {
+    content = shortReflection(checkins.length, REFLECTION_DAYS);
+  } else {
+    const goals = await getGoals();
+    const facts = buildWeekFacts(checkins, goals, REFLECTION_DAYS);
+    const aiText = await generateReflectionText(facts);
+    const { pillars, strengths, nextWeek } = mergeReflectionText(facts, aiText);
+    content = {
+      daysRecorded: checkins.length,
+      totalDays: REFLECTION_DAYS,
+      pillars,
+      strengths,
+      nextWeek,
+    };
+  }
 
   const result = await replaceOutput("weekly_reflection", period, content);
   if ("error" in result) return result;

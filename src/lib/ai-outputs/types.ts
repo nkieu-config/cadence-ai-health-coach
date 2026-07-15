@@ -33,6 +33,7 @@ export type Reflection = {
   daysRecorded: number;
   totalDays: number;
   pillars: ReflectionPillar[];
+  strengths: string;
   nextWeek: string;
 };
 

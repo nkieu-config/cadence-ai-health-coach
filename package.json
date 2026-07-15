@@ -14,6 +14,7 @@
     "test:insight": "node --env-file=.env.local --import tsx scripts/test-insight.ts",
     "test:coach": "node --env-file=.env.local --import tsx scripts/test-coach-context.ts",
     "test:goal": "node --env-file=.env.local --import tsx scripts/test-goal-ai.ts",
+    "test:reflection": "node --env-file=.env.local --import tsx scripts/test-reflection.ts",
     "verify:db": "node --env-file=.env.local --import tsx scripts/verify-db.ts",
     "verify:user": "node --env-file=.env.local --import tsx scripts/verify-user.ts",
     "seed": "node --env-file=.env.local --import tsx scripts/seed.ts",
