@@ -11,6 +11,7 @@
     "test:watch": "vitest",
     "test:ai": "node --env-file=.env.local --import tsx scripts/test-ai.ts",
     "test:insight": "node --env-file=.env.local --import tsx scripts/test-insight.ts",
+    "test:coach": "node --env-file=.env.local --import tsx scripts/test-coach-context.ts",
     "verify:db": "node --env-file=.env.local --import tsx scripts/verify-db.ts",
     "verify:user": "node --env-file=.env.local --import tsx scripts/verify-user.ts",
     "seed": "node --env-file=.env.local --import tsx scripts/seed.ts",
