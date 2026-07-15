@@ -7,6 +7,7 @@ import { MIN_DAYS_FOR_ANALYSIS, computePatternCandidates, hasEnoughData } from "
 import type { Checkin } from "@/lib/patterns/types";
 import { createClient } from "@/lib/supabase/server";
 import { isFresh } from "./cache";
+import { generateInsightText, mergeInsightPatterns } from "./insight-ai";
 import { periodFor } from "./queries";
 import { toInsightPattern } from "./templates";
 import type { AiOutputKind, ReflectionPillar } from "./types";
@@ -91,7 +92,9 @@ export async function generateInsight(days: number): Promise<GenerateResult> {
     };
   }
 
-  const patterns = computePatternCandidates(checkins).map(toInsightPattern);
+  const candidates = computePatternCandidates(checkins);
+  const aiById = await generateInsightText(candidates);
+  const patterns = mergeInsightPatterns(candidates, aiById);
 
   const result = await replaceOutput("pattern_analysis", period, { patterns });
   if ("error" in result) return result;
