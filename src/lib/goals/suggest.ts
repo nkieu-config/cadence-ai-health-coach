@@ -15,43 +15,42 @@ export function fallbackGoal(situation: Situation): string {
   return FALLBACK_GOALS[situation];
 }
 
-function scoreSituations(checkins: Checkin[]): Record<Situation, number> {
+const SITUATION_MATCHERS: Record<Situation, (checkin: Checkin) => boolean> = {
+  deadline: (c) => c.disruptors.includes("deadline") || c.disruptors.includes("exam"),
+  early_class: (c) => c.disruptors.includes("early_class") || c.skippedMeals.includes("breakfast"),
+  long_screen: (c) => c.disruptors.includes("long_meeting") || c.movementBlocker === "long_sitting",
+  long_commute: (c) => c.disruptors.includes("commute"),
+  phone_before_bed: (c) => c.lateReason === "phone",
+  no_exercise_time: (c) => c.movementBlocker === "no_time" || c.movementMinutes === 0,
+};
+
+export function chooseSituations(checkins: Checkin[], limit: number): Situation[] {
   const score = Object.fromEntries(SITUATIONS.map((s) => [s, 0])) as Record<Situation, number>;
 
   for (const checkin of checkins) {
-    if (checkin.disruptors.includes("deadline") || checkin.disruptors.includes("exam")) {
-      score.deadline += 1;
-    }
-    if (checkin.disruptors.includes("early_class") || checkin.skippedMeals.includes("breakfast")) {
-      score.early_class += 1;
-    }
-    if (checkin.disruptors.includes("long_meeting") || checkin.movementBlocker === "long_sitting") {
-      score.long_screen += 1;
-    }
-    if (checkin.disruptors.includes("commute")) {
-      score.long_commute += 1;
-    }
-    if (checkin.lateReason === "phone") {
-      score.phone_before_bed += 1;
-    }
-    if (checkin.movementBlocker === "no_time" || checkin.movementMinutes === 0) {
-      score.no_exercise_time += 1;
+    for (const situation of SITUATIONS) {
+      if (SITUATION_MATCHERS[situation](checkin)) {
+        score[situation] += 1;
+      }
     }
   }
-
-  return score;
-}
-
-export function suggestGoals(checkins: Checkin[], limit: number): GoalSuggestion[] {
-  const score = scoreSituations(checkins);
 
   const ranked = SITUATIONS.filter((situation) => score[situation] > 0).sort(
     (a, b) => score[b] - score[a]
   );
 
-  const chosen = ranked.length > 0 ? ranked.slice(0, limit) : (["no_exercise_time"] as Situation[]);
+  return ranked.length > 0 ? ranked.slice(0, limit) : (["no_exercise_time"] as Situation[]);
+}
 
-  return chosen.map((situation) => ({ situation, title: fallbackGoal(situation) }));
+export function matchingCheckins(checkins: Checkin[], situation: Situation): Checkin[] {
+  return checkins.filter(SITUATION_MATCHERS[situation]);
+}
+
+export function suggestGoals(checkins: Checkin[], limit: number): GoalSuggestion[] {
+  return chooseSituations(checkins, limit).map((situation) => ({
+    situation,
+    title: fallbackGoal(situation),
+  }));
 }
 
 export function validateGoalTitle(title: string): string | null {

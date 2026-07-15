@@ -3,8 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { getCheckins } from "@/lib/checkins/queries";
 import { createClient } from "@/lib/supabase/server";
+import { generateGoalSuggestions, mergeGoalSuggestions } from "./goal-ai";
 import { getActiveGoals, getGoals } from "./queries";
-import { suggestGoals, validateGoalTitle } from "./suggest";
+import { chooseSituations, validateGoalTitle } from "./suggest";
 import {
   MAX_ACTIVE_GOALS,
   SITUATIONS,
@@ -38,7 +39,10 @@ export async function recommendGoals(): Promise<SuggestResult> {
     return { error: "ยังไม่มีบันทึกให้ดู — ลองเช็คอินสัก 2–3 วันก่อน แล้วค่อยกลับมาขอคำแนะนำ" };
   }
 
-  return { ok: true, suggestions: suggestGoals(checkins, MAX_ACTIVE_GOALS) };
+  const situations = chooseSituations(checkins, MAX_ACTIVE_GOALS);
+  const aiBySituation = await generateGoalSuggestions(situations, checkins);
+
+  return { ok: true, suggestions: mergeGoalSuggestions(situations, aiBySituation) };
 }
 
 export async function acceptGoal(title: string, situation: Situation): Promise<GoalResult> {
