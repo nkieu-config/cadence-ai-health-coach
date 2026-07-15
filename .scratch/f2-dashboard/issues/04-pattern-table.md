@@ -34,12 +34,15 @@ Blocked by: 01
 
 - `getLatestInsight(days)` → `Insight | null` — อ่าน cache ไม่เรียก AI · `null` = ยังไม่เคยวิเคราะห์ → โชว์ปุ่ม
 - `generateInsight(days)` → เรียก AI ~10 วิ — **ผูกกับปุ่มเท่านั้น ห้ามเรียกตอน render** (โควตา 20 ครั้ง/วันทั้งแอป)
+- `checkDataSufficiency(checkins.length)` — `@/lib/ai-outputs/sufficiency` · pure ไม่แตะ DB/AI · `{ enough: false, message, daysNeeded }` เมื่อ < 7 วัน
 - `formatMetric(metric, value)` → แปลง evidence เป็นข้อความไทย
 
 **ตาราง 4 คอลัมน์ = `insight.patterns[]`:** `pillars` → ด้าน · `observation` → pattern ที่พบ · `meaning` → ความหมาย · `nextStep` → next step
 **โชว์ `evidence` ด้วย** (`groupA/groupB: { label, days, value }`) — คือหลักฐานว่า AI ไม่ได้มโน
 
+**ข้อมูล < 7 วัน (F3-04):** เช็ค `checkDataSufficiency(checkins.length)` **ก่อนโชว์ปุ่มวิเคราะห์** — `enough: false` → โชว์ `message` ชวนบันทึก (ไม่ต้องมีปุ่ม ไม่ยิง AI) · `enough: true` → โชว์ปุ่ม/ตาราง · ถ้าเผลอกดปุ่มตอนข้อมูลไม่พอ `generateInsight` ก็คืน `{ notEnoughData: true, message }` ให้แสดงได้เหมือนกัน
+
 **ระวัง**
 
 1. มือถือ: ตารางพับเป็นการ์ดรายแถว (ห้าม horizontal scroll — e2e เช็ค)
-2. ข้อความ "ข้อมูลไม่พอ" action คืนมาเองใน `error` — แค่แสดง ไม่ต้องเช็คเงื่อนไขเอง
+2. `generateInsight` คืน 3 แบบ: `{ ok }` · `{ notEnoughData, message }` · `{ error }` — เช็ค `"notEnoughData" in result` ก่อน `"error" in result`

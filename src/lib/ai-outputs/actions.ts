@@ -3,18 +3,22 @@
 import { revalidatePath } from "next/cache";
 import { daysAgo, today } from "@/lib/checkins/date";
 import { getCheckins, latestCheckinAt } from "@/lib/checkins/queries";
-import { MIN_DAYS_FOR_ANALYSIS, computePatternCandidates, hasEnoughData } from "@/lib/patterns";
+import { computePatternCandidates } from "@/lib/patterns";
 import type { Checkin } from "@/lib/patterns/types";
 import { createClient } from "@/lib/supabase/server";
 import { isFresh } from "./cache";
 import { generateInsightText, mergeInsightPatterns } from "./insight-ai";
 import { periodFor } from "./queries";
+import { checkDataSufficiency } from "./sufficiency";
 import { toInsightPattern } from "./templates";
 import type { AiOutputKind, ReflectionPillar } from "./types";
 
 export const REFLECTION_DAYS = 7;
 
-export type GenerateResult = { ok: true; cached?: boolean } | { error: string };
+export type GenerateResult =
+  | { ok: true; cached?: boolean }
+  | { notEnoughData: true; daysRecorded: number; daysNeeded: number; message: string }
+  | { error: string };
 
 type Period = { periodStart: string; periodEnd: string };
 
@@ -86,9 +90,13 @@ export async function generateInsight(days: number): Promise<GenerateResult> {
 
   const checkins = await getCheckins(days);
 
-  if (!hasEnoughData(checkins)) {
+  const sufficiency = checkDataSufficiency(checkins.length);
+  if (!sufficiency.enough) {
     return {
-      error: `ต้องมีบันทึกอย่างน้อย ${MIN_DAYS_FOR_ANALYSIS} วันจึงจะวิเคราะห์ได้ — ตอนนี้มี ${checkins.length} วัน`,
+      notEnoughData: true,
+      daysRecorded: sufficiency.daysRecorded,
+      daysNeeded: sufficiency.daysNeeded,
+      message: sufficiency.message,
     };
   }
 
