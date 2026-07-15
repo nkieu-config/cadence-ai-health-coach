@@ -10,20 +10,26 @@ AI Personal Health Coach สำหรับนักศึกษาและ fir
 
 ```bash
 git clone <repo> && cd HealthCoach
-cp .env.example .env.local      # ขอค่า Supabase จาก A · Gemini key ใช้ของตัวเอง
+cp .env.example .env.local      # เติมค่าตามด้านล่าง
 npm ci
 npm run dev
 ```
 
-ล็อกอินด้วยบัญชี demo: **`palm@example.com` / `PalmDemo2026!`** → มีข้อมูล 24 วันพร้อม pattern ให้เทสต์ทันที **ไม่ต้องนั่งกรอก check-in เอง**
+**ค่าใน `.env.local`:**
 
-**ก่อนเปิด PR:** `npm run format && npm run lint && npm test && npm run build`
+- `NEXT_PUBLIC_SUPABASE_URL` · `NEXT_PUBLIC_SUPABASE_ANON_KEY` — ขอจาก A
+- `SUPABASE_SERVICE_ROLE_KEY` — เฉพาะ seed / งาน server ห้ามใช้ฝั่ง client
+- `GEMINI_API_KEY` — **ของแต่ละคนเอง** สมัครฟรีที่ [aistudio.google.com](https://aistudio.google.com) (กันแย่ง rate limit ตอน dev); production ใช้ key เดียวใน Vercel
+
+Migration อยู่ที่ `supabase/migrations/` (`0001`→`0003`) — project กลาง A รันให้แล้ว เพื่อนแค่ `git pull` ก็ใช้ได้ · ล็อกอิน demo **`palm@example.com` / `PalmDemo2026!`** → มีข้อมูล 24 วันพร้อม pattern **ไม่ต้องกรอก check-in เอง**
+
+**ก่อนเปิด PR:** `npm run format && npm run lint && npx tsc --noEmit && npm test && npm run build`
 (CI ตรวจ 5 ด่านนี้ทุก PR — รันเองก่อนจะได้ไม่ต้องรอ CI แดง)
 
-**ถ้าแตะ UI ให้รัน `npm run e2e` ด้วย** (~40 วินาที) — เปิดทุกหน้าจริงบนมือถือ+เดสก์ท็อป × light+dark แล้วเช็คว่า:
+**ถ้าแตะ UI ให้รัน `npm run e2e` ด้วย** (~40 วินาที) — เปิดทุกหน้าจริงบนมือถือ+เดสก์ท็อป × light+dark แล้วเช็ค:
 h1 อันเดียว · ไม่มี horizontal scroll · ปุ่มสูง ≥ 44px · **ข้อความอ่านออก (contrast ≥ 4.5:1)** · ไม่มี console error · เช็คอินบันทึกได้จริง
 
-> unit test 87 ตัวทดสอบแต่ตรรกะใน `lib/` — **PR ที่ทำ layout พังหรือ dashboard ขาว จะผ่าน CI เขียวหมด** `e2e` คือด่านเดียวที่จับได้
+> unit test ครอบแค่ตรรกะใน `lib/` — **PR ที่ทำ layout พังหรือ dashboard ขาว จะผ่าน CI เขียวหมด** `e2e` คือด่านเดียวที่จับได้
 
 **กฎ UI:** ส่วนแรกของ [DESIGN.md](DESIGN.md) — งาน: [.scratch/BOARD.md](.scratch/BOARD.md)
 
@@ -32,32 +38,6 @@ h1 อันเดียว · ไม่มี horizontal scroll · ปุ่ม
 Next.js 16 (App Router, TypeScript) + Tailwind v4 + shadcn/ui + Supabase + Gemini API — ดูเหตุผลใน [docs/adr/](docs/adr/)
 
 ข้อควรรู้ Next.js 16: auth guard อยู่ที่ `src/proxy.ts` (convention ใหม่แทน `middleware.ts`) และก่อนเขียนโค้ดให้อ่าน docs ใน `node_modules/next/dist/docs/` เพราะ API ต่างจากเวอร์ชันเก่า
-
-## Setup (ครั้งแรก ~10 นาที)
-
-1. Clone แล้วติดตั้ง dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. สร้างไฟล์ env จากตัวอย่าง แล้วเติมค่า
-
-   ```bash
-   cp .env.example .env.local
-   ```
-
-   - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` — จาก Supabase project settings (ถาม A)
-   - `SUPABASE_SERVICE_ROLE_KEY` — ใช้เฉพาะ seed script และงาน server ห้ามใช้ใน client
-   - `GEMINI_API_KEY` — **ของแต่ละคนเอง** สมัครฟรีที่ [aistudio.google.com](https://aistudio.google.com) (กันแย่ง rate limit ตอน dev); production ใช้ key เดียวที่ตั้งใน Vercel
-
-3. รัน migration บน Supabase: เปิด SQL Editor แล้วรันไฟล์ใน `supabase/migrations/` เรียงเลข `0001` → `0003` (ทำครั้งเดียวต่อ project — A รันให้แล้วสำหรับ project กลาง เพื่อนแค่ `git pull` ก็ใช้ได้)
-
-4. รัน dev server
-
-   ```bash
-   npm run dev
-   ```
 
 ## คำสั่งที่มี
 
