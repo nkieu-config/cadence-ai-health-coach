@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { getProfile } from "@/lib/auth/user";
 import { getCheckins } from "@/lib/checkins/queries";
 import { createClient } from "@/lib/supabase/server";
 import { generateGoalSuggestions, mergeGoalSuggestions } from "./goal-ai";
@@ -9,6 +10,7 @@ import { chooseSituations, validateGoalTitle } from "./suggest";
 import {
   MAX_ACTIVE_GOALS,
   SITUATIONS,
+  type GoalProfile,
   type GoalStatus,
   type GoalSuggestion,
   type Situation,
@@ -34,13 +36,25 @@ export async function recommendGoals(): Promise<SuggestResult> {
     return { error: "เซสชันหมดอายุ กรุณาเข้าสู่ระบบใหม่" };
   }
 
-  const checkins = await getCheckins(SUGGESTION_WINDOW_DAYS);
+  const [checkins, profileRow] = await Promise.all([
+    getCheckins(SUGGESTION_WINDOW_DAYS),
+    getProfile(),
+  ]);
+
   if (checkins.length === 0) {
     return { error: "ยังไม่มีบันทึกให้ดู — ลองเช็คอินสัก 2–3 วันก่อน แล้วค่อยกลับมาขอคำแนะนำ" };
   }
 
+  const profile: GoalProfile | null = profileRow
+    ? {
+        earlyDays: profileRow.early_days ?? [],
+        busyPeriods: profileRow.busy_periods ?? [],
+        constraints: profileRow.typical_constraints ?? [],
+      }
+    : null;
+
   const situations = chooseSituations(checkins, MAX_ACTIVE_GOALS);
-  const aiBySituation = await generateGoalSuggestions(situations, checkins);
+  const aiBySituation = await generateGoalSuggestions(situations, checkins, profile);
 
   return { ok: true, suggestions: mergeGoalSuggestions(situations, aiBySituation) };
 }

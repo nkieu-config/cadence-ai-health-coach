@@ -1,5 +1,12 @@
-import { daysAgo, today } from "@/lib/checkins/date";
+import { daysAgo, shiftDate, today } from "@/lib/checkins/date";
+import { getCheckinsBetween } from "@/lib/checkins/queries";
 import { createClient } from "@/lib/supabase/server";
+import {
+  buildWeekComparison,
+  buildWeekFacts,
+  REFLECTION_DAYS,
+  type WeekComparison,
+} from "./reflection-facts";
 import {
   AI_OUTPUT_COLUMNS,
   REFLECTION_HISTORY_LIMIT,
@@ -56,6 +63,24 @@ function toReflection(row: AiOutputRow): Reflection {
 export async function getLatestReflection(): Promise<Reflection | null> {
   const row = await latest("weekly_reflection");
   return row ? toReflection(row) : null;
+}
+
+export async function getWeekComparison(
+  periodStart: string,
+  periodEnd: string
+): Promise<WeekComparison | null> {
+  const previousEnd = shiftDate(periodStart, -1);
+  const previousStart = shiftDate(previousEnd, -(REFLECTION_DAYS - 1));
+
+  const [currentCheckins, previousCheckins] = await Promise.all([
+    getCheckinsBetween(periodStart, periodEnd),
+    getCheckinsBetween(previousStart, previousEnd),
+  ]);
+
+  const current = buildWeekFacts(currentCheckins, [], REFLECTION_DAYS);
+  const previous = buildWeekFacts(previousCheckins, [], REFLECTION_DAYS);
+
+  return buildWeekComparison(current, previous, previousStart, previousEnd);
 }
 
 export async function getReflections(): Promise<Reflection[]> {

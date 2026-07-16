@@ -2,12 +2,15 @@ import { toCheckin } from "../src/lib/checkins/mapper";
 import { CHECKIN_COLUMNS, type CheckinRow } from "../src/lib/checkins/types";
 import { GOAL_COLUMNS, type GoalRow, toGoal } from "../src/lib/goals/types";
 import { generateReflectionText, mergeReflectionText } from "../src/lib/ai-outputs/reflection-ai";
-import { buildWeekFacts, MIN_DAYS_FOR_REFLECTION } from "../src/lib/ai-outputs/reflection-facts";
+import {
+  buildWeekFacts,
+  MIN_DAYS_FOR_REFLECTION,
+  REFLECTION_DAYS,
+} from "../src/lib/ai-outputs/reflection-facts";
 import { findForbiddenTerms } from "../src/lib/safety/language";
 import { createAdminClient } from "../src/lib/supabase/admin";
 
 const EMAIL = process.env.DEMO_EMAIL ?? "palm@example.com";
-const REFLECTION_DAYS = 7;
 
 function daysAgo(days: number): string {
   const date = new Date(Date.now() + 7 * 60 * 60 * 1000);

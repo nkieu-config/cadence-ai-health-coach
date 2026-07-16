@@ -2,7 +2,12 @@ import { toCheckin } from "../src/lib/checkins/mapper";
 import { CHECKIN_COLUMNS, type CheckinRow } from "../src/lib/checkins/types";
 import { generateGoalSuggestions, mergeGoalSuggestions } from "../src/lib/goals/goal-ai";
 import { chooseSituations, fallbackGoal, validateGoalTitle } from "../src/lib/goals/suggest";
-import { MAX_ACTIVE_GOALS, SITUATION_LABELS } from "../src/lib/goals/types";
+import { MAX_ACTIVE_GOALS, SITUATION_LABELS, type GoalProfile } from "../src/lib/goals/types";
+import {
+  BUSY_PERIOD_LABELS,
+  CONSTRAINT_LABELS,
+  EARLY_DAY_LABELS,
+} from "../src/lib/onboarding/types";
 import { createAdminClient } from "../src/lib/supabase/admin";
 
 const EMAIL = process.env.DEMO_EMAIL ?? "palm@example.com";
@@ -30,14 +35,33 @@ async function run() {
     .order("checkin_date", { ascending: true });
   if (error) throw error;
 
+  const { data: profileRow } = await admin
+    .from("profiles")
+    .select("early_days, busy_periods, typical_constraints")
+    .eq("user_id", demo.id)
+    .maybeSingle();
+
+  const profile: GoalProfile | null = profileRow
+    ? {
+        earlyDays: profileRow.early_days ?? [],
+        busyPeriods: profileRow.busy_periods ?? [],
+        constraints: profileRow.typical_constraints ?? [],
+      }
+    : null;
+
   const checkins = (data as unknown as CheckinRow[]).map(toCheckin);
   const situations = chooseSituations(checkins, MAX_ACTIVE_GOALS);
   console.log(
-    `บัญชี ${EMAIL} · ${checkins.length} วัน · สถานการณ์ที่เลือก: ${situations.join(", ")}\n`
+    `บัญชี ${EMAIL} · ${checkins.length} วัน · สถานการณ์ที่เลือก: ${situations.join(", ")}`
+  );
+  console.log(
+    profile
+      ? `โปรไฟล์: ตื่นเช้า [${profile.earlyDays.map((d) => EARLY_DAY_LABELS[d as keyof typeof EARLY_DAY_LABELS]).join(" ")}] · งานหนัก [${profile.busyPeriods.map((p) => BUSY_PERIOD_LABELS[p as keyof typeof BUSY_PERIOD_LABELS]).join(", ")}] · ข้อจำกัด [${profile.constraints.map((c) => CONSTRAINT_LABELS[c as keyof typeof CONSTRAINT_LABELS]).join(", ")}]\n`
+      : "⚠️ ไม่มีโปรไฟล์ — goal จะไม่ผูกกับข้อจำกัด\n"
   );
   console.log("ยิง Gemini หนึ่งครั้ง...\n");
 
-  const aiBySituation = await generateGoalSuggestions(situations, checkins);
+  const aiBySituation = await generateGoalSuggestions(situations, checkins, profile);
   const suggestions = mergeGoalSuggestions(situations, aiBySituation);
 
   let fromAi = 0;

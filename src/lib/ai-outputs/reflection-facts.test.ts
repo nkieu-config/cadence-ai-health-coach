@@ -3,8 +3,10 @@ import type { Goal } from "@/lib/goals/types";
 import { findForbiddenTerms } from "@/lib/safety/language";
 import { makeCheckins } from "@/lib/patterns/test-fixtures";
 import {
+  buildWeekComparison,
   buildWeekFacts,
   MIN_DAYS_FOR_REFLECTION,
+  REFLECTION_DAYS,
   shortReflection,
   templateReflection,
 } from "./reflection-facts";
@@ -96,5 +98,53 @@ describe("shortReflection", () => {
       reflection.nextWeek,
     ].join(" ");
     expect(findForbiddenTerms(combined)).toEqual([]);
+  });
+});
+
+describe("buildWeekComparison", () => {
+  const facts = (checkins: Parameters<typeof buildWeekFacts>[0]) =>
+    buildWeekFacts(checkins, [], REFLECTION_DAYS);
+
+  it("บอกส่วนต่างของค่าที่เทียบกันได้จริง (เกณฑ์ Reflection and Improvement)", () => {
+    const previous = facts(
+      makeCheckins(4, () => ({ sleepHours: 5, movementMinutes: 10, skippedMeals: ["breakfast"] }))
+    );
+    const current = facts(makeCheckins(6, () => ({ sleepHours: 7, movementMinutes: 25 })));
+
+    const comparison = buildWeekComparison(current, previous, "2026-07-03", "2026-07-09");
+    const by = (metric: string) => comparison?.changes.find((c) => c.metric === metric);
+
+    expect(comparison?.previousStart).toBe("2026-07-03");
+    expect(comparison?.daysRecordedPrevious).toBe(4);
+    expect(by("daysRecorded")).toMatchObject({ current: 6, previous: 4, delta: 2 });
+    expect(by("sleepHours")).toMatchObject({ current: 7, previous: 5, delta: 2 });
+    expect(by("movementMinutes")).toMatchObject({ current: 25, previous: 10, delta: 15 });
+    expect(by("completeMealRate")).toMatchObject({ current: 1, previous: 0, delta: 1 });
+  });
+
+  it("สัปดาห์ก่อนไม่มีบันทึกเลย → คืน null ไม่หารศูนย์ ไม่โชว์ส่วนต่างมั่ว", () => {
+    const current = facts(makeCheckins(5));
+    expect(buildWeekComparison(current, facts([]), "2026-07-03", "2026-07-09")).toBeNull();
+  });
+
+  it("เทียบเป็นค่าเฉลี่ยต่อวัน ไม่ใช่ผลรวม — จำนวนวันบันทึกต่างกันจึงไม่หลอกตา", () => {
+    const previous = facts(makeCheckins(2, () => ({ movementMinutes: 30 })));
+    const current = facts(makeCheckins(7, () => ({ movementMinutes: 30 })));
+
+    const comparison = buildWeekComparison(current, previous, "2026-07-03", "2026-07-09");
+    const movement = comparison?.changes.find((c) => c.metric === "movementMinutes");
+
+    expect(movement?.delta).toBe(0);
+  });
+
+  it("ปัดเศษให้อ่านง่าย ไม่หลุดทศนิยมยาว", () => {
+    const previous = facts(makeCheckins(3, (i) => ({ sleepHours: [5, 6, 8][i] })));
+    const current = facts(makeCheckins(3, (i) => ({ sleepHours: [7, 7, 8][i] })));
+
+    const sleep = buildWeekComparison(current, previous, "2026-07-03", "2026-07-09")?.changes.find(
+      (c) => c.metric === "sleepHours"
+    );
+
+    expect(sleep).toMatchObject({ current: 7.3, previous: 6.3, delta: 1 });
   });
 });

@@ -81,7 +81,7 @@ describe("mergeGoalSuggestions", () => {
 describe("buildGoalPrompt", () => {
   it("ใส่ few-shot goal มาตรฐานและตัวอย่างวันจริงของผู้ใช้ลงใน prompt", () => {
     const checkins = makeCheckins(5, () => ({ disruptors: ["deadline" as const] }));
-    const prompt = buildGoalPrompt(["deadline"], checkins);
+    const prompt = buildGoalPrompt(["deadline"], checkins, null);
 
     expect(prompt).toContain("deadline");
     expect(prompt).toContain(fallbackGoal("deadline"));
@@ -89,7 +89,45 @@ describe("buildGoalPrompt", () => {
   });
 
   it("ไม่มีวันที่ตรงสถานการณ์ ก็ยังสร้าง prompt ได้ไม่พัง", () => {
-    const prompt = buildGoalPrompt(["long_commute"], []);
+    const prompt = buildGoalPrompt(["long_commute"], [], null);
     expect(prompt).toContain("long_commute");
+  });
+
+  it("ส่งข้อจำกัดและตารางชีวิตของผู้ใช้เข้า prompt เป็นภาษาไทย (เกณฑ์ Personalization)", () => {
+    const prompt = buildGoalPrompt(["no_exercise_time"], [], {
+      earlyDays: ["mon", "wed"],
+      busyPeriods: ["exam"],
+      constraints: ["no_place", "limited_budget"],
+    });
+
+    expect(prompt).toContain("ไม่มีสถานที่ออกกำลังกาย");
+    expect(prompt).toContain("งบจำกัด");
+    expect(prompt).toContain("ช่วงสอบ");
+    expect(prompt).toContain("ห้ามเสนอสิ่งที่ขัดกับข้อจำกัด");
+  });
+
+  it("ไม่มีโปรไฟล์ หรือโปรไฟล์ว่างเปล่า → ไม่มีบล็อกข้อจำกัด แต่ prompt ยังใช้ได้", () => {
+    const empty = buildGoalPrompt(["deadline"], [], {
+      earlyDays: [],
+      busyPeriods: [],
+      constraints: [],
+    });
+    const missing = buildGoalPrompt(["deadline"], [], null);
+
+    expect(empty).not.toContain("ข้อจำกัด");
+    expect(missing).not.toContain("ข้อจำกัด");
+    expect(empty).toContain(fallbackGoal("deadline"));
+    expect(missing).toContain(fallbackGoal("deadline"));
+  });
+
+  it("ค่าที่ระบบไม่รู้จักถูกตัดทิ้ง ไม่หลุดเข้า prompt ดิบ ๆ", () => {
+    const prompt = buildGoalPrompt(["deadline"], [], {
+      earlyDays: [],
+      busyPeriods: [],
+      constraints: ["no_place", "ค่าที่ไม่มีในระบบ"],
+    });
+
+    expect(prompt).toContain("ไม่มีสถานที่ออกกำลังกาย");
+    expect(prompt).not.toContain("ค่าที่ไม่มีในระบบ");
   });
 });
