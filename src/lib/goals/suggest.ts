@@ -1,5 +1,11 @@
-import type { Checkin } from "@/lib/patterns/types";
-import { GOAL_TITLE_MAX_LENGTH, SITUATIONS, type GoalSuggestion, type Situation } from "./types";
+import type { Checkin, Pillar } from "@/lib/patterns/types";
+import {
+  GOAL_TITLE_MAX_LENGTH,
+  SITUATION_PILLARS,
+  SITUATIONS,
+  type GoalSuggestion,
+  type Situation,
+} from "./types";
 import { findForbiddenTerms } from "@/lib/safety/language";
 
 const FALLBACK_GOALS: Record<Situation, string> = {
@@ -24,7 +30,7 @@ const SITUATION_MATCHERS: Record<Situation, (checkin: Checkin) => boolean> = {
   no_exercise_time: (c) => c.movementBlocker === "no_time" || c.movementMinutes === 0,
 };
 
-export function chooseSituations(checkins: Checkin[], limit: number): Situation[] {
+export function chooseSituations(checkins: Checkin[], limit: number, pillar?: Pillar): Situation[] {
   const score = Object.fromEntries(SITUATIONS.map((s) => [s, 0])) as Record<Situation, number>;
 
   for (const checkin of checkins) {
@@ -35,11 +41,19 @@ export function chooseSituations(checkins: Checkin[], limit: number): Situation[
     }
   }
 
-  const ranked = SITUATIONS.filter((situation) => score[situation] > 0).sort(
-    (a, b) => score[b] - score[a]
-  );
+  const byScore = (a: Situation, b: Situation) => score[b] - score[a];
+  const ranked = SITUATIONS.filter((situation) => score[situation] > 0).sort(byScore);
 
-  return ranked.length > 0 ? ranked.slice(0, limit) : (["no_exercise_time"] as Situation[]);
+  if (!pillar) {
+    return ranked.length > 0 ? ranked.slice(0, limit) : (["no_exercise_time"] as Situation[]);
+  }
+
+  const chosen = SITUATIONS.filter((situation) => SITUATION_PILLARS[situation] === pillar).sort(
+    byScore
+  );
+  const rest = ranked.filter((situation) => SITUATION_PILLARS[situation] !== pillar);
+
+  return [...chosen, ...rest].slice(0, limit);
 }
 
 export function matchingCheckins(checkins: Checkin[], situation: Situation): Checkin[] {
