@@ -75,11 +75,11 @@ export function DeleteZone() {
 
       <CardContent className="space-y-4">
         {mode === null ? (
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Button variant="destructive" onClick={() => open("data")} className="flex-1">
+          <div className="grid gap-2 lg:grid-cols-2">
+            <Button variant="destructive" onClick={() => open("data")}>
               {MODES.data.button}
             </Button>
-            <Button variant="destructive" onClick={() => open("account")} className="flex-1">
+            <Button variant="destructive" onClick={() => open("account")}>
               {MODES.account.button}
             </Button>
           </div>
@@ -110,15 +110,14 @@ export function DeleteZone() {
               />
             </div>
 
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <Button variant="outline" onClick={cancel} disabled={isPending} className="flex-1">
+            <div className="grid gap-2 lg:grid-cols-2">
+              <Button variant="outline" onClick={cancel} disabled={isPending}>
                 ยกเลิก
               </Button>
               <Button
                 variant="destructive"
                 onClick={confirm}
                 disabled={confirmText !== MODES[mode].phrase || isPending}
-                className="flex-1"
               >
                 {isPending && <Loader2 className="size-4 animate-spin" />}
                 {isPending ? "กำลังลบ..." : "ยืนยัน"}
