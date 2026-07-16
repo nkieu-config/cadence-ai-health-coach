@@ -34,6 +34,12 @@ export type GoalSuggestion = {
   situation: Situation;
 };
 
+export type GoalProfile = {
+  earlyDays: string[];
+  busyPeriods: string[];
+  constraints: string[];
+};
+
 export type Goal = {
   id: string;
   weekStart: string;

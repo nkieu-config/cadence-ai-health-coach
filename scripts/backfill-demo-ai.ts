@@ -6,6 +6,7 @@ import { generateReflectionText, mergeReflectionText } from "../src/lib/ai-outpu
 import {
   buildWeekFacts,
   MIN_DAYS_FOR_REFLECTION,
+  REFLECTION_DAYS,
   shortReflection,
 } from "../src/lib/ai-outputs/reflection-facts";
 import { checkDataSufficiency } from "../src/lib/ai-outputs/sufficiency";
@@ -15,7 +16,6 @@ import { findForbiddenTerms } from "../src/lib/safety/language";
 import { createAdminClient } from "../src/lib/supabase/admin";
 
 const EMAIL = process.env.DEMO_EMAIL ?? "palm@example.com";
-const REFLECTION_DAYS = 7;
 const REFLECTION_WEEKS_BACK = [0, 1, 2, 3];
 const PATTERN_RANGES = [14, 30];
 const DRY = process.argv.includes("--dry");

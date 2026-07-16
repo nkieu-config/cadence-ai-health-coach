@@ -36,7 +36,3 @@ export async function getChatHistory(limit = CHAT_HISTORY_LIMIT): Promise<ChatMe
   if (error || !data) return [];
   return (data as unknown as ChatMessageRow[]).map(toChatMessage).reverse();
 }
-
-export function needsReply(history: ChatMessage[]): boolean {
-  return history.at(-1)?.role === "user";
-}

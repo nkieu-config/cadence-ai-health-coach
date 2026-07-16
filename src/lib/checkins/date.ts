@@ -11,10 +11,14 @@ export function today(): string {
   return formatter.format(new Date());
 }
 
-export function daysAgo(days: number): string {
-  const date = new Date(`${today()}T00:00:00Z`);
-  date.setUTCDate(date.getUTCDate() - days);
+export function shiftDate(isoDate: string, days: number): string {
+  const date = new Date(`${isoDate}T00:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + days);
   return date.toISOString().slice(0, 10);
+}
+
+export function daysAgo(days: number): string {
+  return shiftDate(today(), -days);
 }
 
 export function formatThaiDate(isoDate: string): string {

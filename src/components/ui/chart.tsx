@@ -7,8 +7,7 @@ import type { TooltipValueType } from "recharts"
 import { cn } from "@/lib/utils"
 
 // dark mode ของแอปนี้มาจากค่าเครื่อง (prefers-color-scheme) ไม่ใช่คลาส .dark
-const CHART_THEMES = ["light", "dark"] as const
-type ChartTheme = (typeof CHART_THEMES)[number]
+type ChartTheme = "light" | "dark"
 
 const INITIAL_DIMENSION = { width: 320, height: 200 } as const
 type TooltipNameType = number | string

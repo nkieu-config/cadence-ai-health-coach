@@ -9,14 +9,15 @@ import {
   CHAT_COLUMNS,
   CONTEXT_TURN_LIMIT,
   DAILY_MESSAGE_LIMIT,
+  MESSAGE_MAX_LENGTH,
   type ChatMessage,
   type ChatMessageRow,
   toChatMessage,
 } from "./types";
 
-export const MESSAGE_MAX_LENGTH = 500;
-
-export type ChatResult = { ok: true; message: ChatMessage } | { error: string };
+export type ChatResult =
+  | { ok: true; message: ChatMessage }
+  | { error: string; userMessage?: ChatMessage; quotaLeft?: number };
 export type ClearResult = { ok: true } | { error: string };
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
@@ -85,6 +86,7 @@ export async function sendCoachMessage(text: string): Promise<ChatResult> {
   if ((await countMessagesToday()) >= DAILY_MESSAGE_LIMIT) {
     return {
       error: `วันนี้คุยกับโค้ชครบ ${DAILY_MESSAGE_LIMIT} ข้อความแล้ว — พรุ่งนี้กลับมาคุยต่อได้ ระหว่างนี้ยังเช็คอินและดูข้อมูลย้อนหลังได้ตามปกติ`,
+      quotaLeft: 0,
     };
   }
 
@@ -95,7 +97,8 @@ export async function sendCoachMessage(text: string): Promise<ChatResult> {
   revalidatePath("/coach");
 
   const history = await getChatHistory();
-  return replyToHistory(supabase, user.id, history);
+  const result = await replyToHistory(supabase, user.id, history);
+  return "error" in result ? { ...result, userMessage: saved } : result;
 }
 
 export async function retryCoachReply(): Promise<ChatResult> {
