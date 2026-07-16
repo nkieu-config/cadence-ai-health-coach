@@ -9,12 +9,15 @@ import { createClient } from "@/lib/supabase/server";
 import { isFresh } from "./cache";
 import { generateInsightText, mergeInsightPatterns } from "./insight-ai";
 import { periodFor } from "./queries";
-import { buildWeekFacts, MIN_DAYS_FOR_REFLECTION, shortReflection } from "./reflection-facts";
+import {
+  buildWeekFacts,
+  MIN_DAYS_FOR_REFLECTION,
+  REFLECTION_DAYS,
+  shortReflection,
+} from "./reflection-facts";
 import { generateReflectionText, mergeReflectionText } from "./reflection-ai";
 import { checkDataSufficiency } from "./sufficiency";
 import type { AiOutputKind, Reflection } from "./types";
-
-export const REFLECTION_DAYS = 7;
 
 export type GenerateResult =
   | { ok: true; cached?: boolean }

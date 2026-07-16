@@ -5,6 +5,8 @@ import type { Reflection } from "./types";
 
 export const MIN_DAYS_FOR_REFLECTION = 3;
 
+export const REFLECTION_DAYS = 7;
+
 export type GoalOutcomeFact = {
   title: string;
   situation: string | null;
@@ -44,6 +46,25 @@ export type ReflectionText = {
   movement: string;
   strengths: string;
   nextWeek: string;
+};
+
+export type WeekChangeMetric =
+  "daysRecorded" | "sleepHours" | "movementMinutes" | "completeMealRate";
+
+export type WeekChange = {
+  metric: WeekChangeMetric;
+  label: string;
+  unit: string;
+  current: number;
+  previous: number;
+  delta: number;
+};
+
+export type WeekComparison = {
+  previousStart: string;
+  previousEnd: string;
+  daysRecordedPrevious: number;
+  changes: WeekChange[];
 };
 
 const LATE_NIGHT_BUCKETS = new Set(["00_01", "01_02", "after_02"]);
@@ -104,6 +125,65 @@ export function buildWeekFacts(checkins: Checkin[], goals: Goal[], totalDays: nu
     sleep,
     movement,
     goals: goalFacts,
+  };
+}
+
+function change(
+  metric: WeekChangeMetric,
+  label: string,
+  unit: string,
+  current: number,
+  previous: number,
+  decimals = 1
+): WeekChange {
+  const factor = 10 ** decimals;
+  return {
+    metric,
+    label,
+    unit,
+    current,
+    previous,
+    delta: Math.round((current - previous) * factor) / factor,
+  };
+}
+
+export function buildWeekComparison(
+  current: WeekFacts,
+  previous: WeekFacts,
+  previousStart: string,
+  previousEnd: string
+): WeekComparison | null {
+  if (previous.daysRecorded === 0) return null;
+
+  return {
+    previousStart,
+    previousEnd,
+    daysRecordedPrevious: previous.daysRecorded,
+    changes: [
+      change("daysRecorded", "บันทึก", "วัน", current.daysRecorded, previous.daysRecorded, 0),
+      change(
+        "sleepHours",
+        "นอนเฉลี่ย",
+        "ชม. ต่อวัน",
+        current.sleep.avgHours,
+        previous.sleep.avgHours
+      ),
+      change(
+        "movementMinutes",
+        "ขยับเฉลี่ย",
+        "นาทีต่อวัน",
+        current.movement.avgMinutes,
+        previous.movement.avgMinutes
+      ),
+      change(
+        "completeMealRate",
+        "กินครบทุกมื้อ",
+        "ของวันที่บันทึก",
+        rate(current.eating.completeDays, current.daysRecorded),
+        rate(previous.eating.completeDays, previous.daysRecorded),
+        2
+      ),
+    ],
   };
 }
 
