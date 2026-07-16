@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { CalendarCheck } from "lucide-react";
 import { getCheckins } from "@/lib/checkins/queries";
+import { today } from "@/lib/checkins/date";
 import { MAX_PERIOD, parsePeriod, PeriodToggle } from "@/components/dashboard/period-toggle";
 import { PageContainer } from "@/components/page-container";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { TodaySummary } from "@/components/dashboard/today-summary";
 import { ComingSoon } from "@/components/coming-soon";
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ days?: string }> }) {
@@ -24,7 +26,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary"><CalendarCheck className="size-6" /></div>
             <div className="space-y-2">
               <h2 className="text-lg font-semibold">ยังไม่มีข้อมูลสุขภาพ</h2>
-              <p className="text-sm text-muted-foreground">บันทึกสุขภาพรายวันครั้งแรกของคุณเพื่อเริ่มต้นวิเคราะห์แนวโน้มสุขภาพทั้ง 3 pillar การกิน การนอน และการเคลื่อนไหว</p>
+              <p className="text-sm text-muted-foreground">บันทึกสุขภาพรายวันครั้งแรกของคุณเพื่อเริ่มต้นวิเคราะห์แนวโน้มสุขภาพทั้ง 3 ด้าน (การกิน การนอน และการเคลื่อนไหว)</p>
             </div>
             <Link href="/checkin" className={buttonVariants({ className: "w-full sm:w-auto" })}>เช็คอินวันนี้</Link>
           </CardContent>
@@ -32,6 +34,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       </PageContainer>
     );
   }
+
+  const todayDate = today();
+  const todayCheckin = checkins.find((c) => c.checkinDate === todayDate) ?? null;
 
   return (
     <PageContainer width="content" className="space-y-6">
@@ -43,6 +48,23 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         </div>
         <div className="flex items-center gap-2"><PeriodToggle period={period} /></div>
       </div>
+
+      {/* Content Grid */}
+      <div className="grid gap-5 lg:grid-cols-3">
+        <div className="lg:col-span-1"><TodaySummary checkin={todayCheckin} date={todayDate} /></div>
+        <div className="lg:col-span-2">
+          <Card className="h-full flex flex-col justify-between">
+            <CardHeader>
+              <CardTitle className="text-lg">กราฟแนวโน้มพฤติกรรม (การกิน การนอน และการเคลื่อนไหว)</CardTitle>
+              <CardDescription>กราฟแสดงการเปรียบเทียบพฤติกรรมการกิน การนอน และการเคลื่อนไหว ย้อนหลัง {period} วัน</CardDescription>
+            </CardHeader>
+            <CardContent className="h-[200px] flex items-center justify-center border-2 border-dashed border-muted rounded-lg m-6 mt-0">
+              <span className="text-sm text-muted-foreground">ส่วนของกราฟ (กำลังอยู่ในขั้นตอนพัฒนาในสปรินต์ถัดไป)</span>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
       <ComingSoon title="ภาพรวมสุขภาพ" issue="F2-01 / F2-02" owner="แพรรี่" />
     </PageContainer>
   );
