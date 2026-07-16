@@ -7,7 +7,7 @@ import { PageContainer } from "@/components/page-container";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { TodaySummary } from "@/components/dashboard/today-summary";
-import { ComingSoon } from "@/components/coming-soon";
+import { PatternTable } from "@/components/dashboard/pattern-table";
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ days?: string }> }) {
   const { days } = await searchParams;
@@ -65,7 +65,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         </div>
       </div>
 
-      <ComingSoon title="ภาพรวมสุขภาพ" issue="F2-01 / F2-02" owner="แพรรี่" />
+      {/* Pattern Insights Table */}
+      <PatternTable />
     </PageContainer>
   );
 }
