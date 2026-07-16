@@ -1,7 +1,7 @@
 # F2-02: กราฟ 3 pillars + energy
 
 Status: ready-for-human
-Owner: B
+Owner: 🟦 กราฟ
 Sprint: 1
 Priority: M
 Refs: FR-2.1, docs/05
@@ -21,3 +21,26 @@ Blocked by: 01
 - ไม่มีการให้คะแนน/เกรดสุขภาพที่ไหนเลย
 
 ## Comments
+
+---
+
+15 ก.ค. (A) — kickoff
+
+**ไฟล์**
+
+- สร้าง component กราฟใน `src/components/dashboard/` (แตกกี่ไฟล์ก็ได้ในโฟลเดอร์นี้)
+- แก้ `src/app/(app)/dashboard/page.tsx` — วางการ์ดกราฟ (หน้ารับ `?days=` และดึงข้อมูลให้แล้ว ส่ง `Checkin[]` ลงมาเป็น prop พอ)
+- **โค้ดกราฟตัวอย่างที่ใช้ได้จริง ก๊อปจาก `DESIGN.md` หัวข้อ "กราฟ"**
+
+**เรียกใช้**
+
+- `getCheckins(days)` — `@/lib/checkins/queries` → `Checkin[]` เรียงเก่า→ใหม่
+- ชื่อไทยทุกค่า: `MOVEMENT_TYPE_LABELS` `ENERGY_LABELS` ฯลฯ — `@/lib/checkins/labels` (ห้ามพิมพ์เอง)
+
+**ระวัง**
+
+1. สีใช้ `color: "var(--chart-N)"` เท่านั้น (นอน=1 · กิน=2 · เคลื่อนไหว=3) — **ห้าม** `theme: { light, dark }` ไม่งั้นแท่งหายใน dark mode และ e2e จะกัน merge
+2. วันไม่มีบันทึก = **ช่องว่าง ไม่ใช่ 0** — ปาล์มขาดเสาร์-อาทิตย์ 2 สัปดาห์แรก ถ้าพล็อต 0 กราฟจะโกหกว่า "นอน 0 ชม."
+3. ห้ามมีคะแนน/เกรดสุขภาพที่ไหนเลย
+
+ทดสอบ: ล็อกอิน `palm@example.com / PalmDemo2026!` → มีข้อมูล 24 วันทันที

@@ -1,0 +1,18 @@
+function required(value: string | undefined, name: string): string {
+  if (!value) {
+    throw new Error(
+      `ขาด environment variable: ${name} — คัดลอก .env.example เป็น .env.local แล้วใส่ค่าให้ครบ`
+    );
+  }
+  return value;
+}
+
+export const SUPABASE_URL = required(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  "NEXT_PUBLIC_SUPABASE_URL"
+);
+
+export const SUPABASE_ANON_KEY = required(
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+);

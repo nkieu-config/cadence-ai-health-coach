@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { PageContainer } from "@/components/page-container";
 import { CalendarPlus, History } from "lucide-react";
-import { CheckinForm } from "@/components/checkin/checkin-form";
+import { TodayCheckinForm } from "@/components/checkin/today-checkin-form";
 import { buttonVariants } from "@/components/ui/button";
 import { daysAgo, formatThaiDate, today } from "@/lib/checkins/date";
 import { getCheckins } from "@/lib/checkins/queries";
@@ -15,34 +16,37 @@ export default async function CheckinPage() {
   const hasEarlierCheckin = recent.some((checkin) => checkin.checkinDate !== date);
   const missedYesterday = !recent.some((checkin) => checkin.checkinDate === yesterday);
 
-  return (
-    <div className="space-y-4">
-      {hasEarlierCheckin && missedYesterday && (
-        <Link
-          href={`/checkin/edit/${yesterday}`}
-          className="flex items-center gap-3 rounded-lg border border-dashed p-3 text-sm transition-colors hover:bg-muted"
-        >
-          <CalendarPlus className="size-4 shrink-0 text-primary" />
-          <span>
-            ยังไม่ได้บันทึกของ{formatThaiDate(yesterday)}
-            <span className="block text-xs text-muted-foreground">
-              ลืมกรอกก่อนนอนก็ย้อนกลับไปบันทึกได้
-            </span>
+  const nudge =
+    hasEarlierCheckin && missedYesterday ? (
+      <Link
+        href={`/checkin/edit/${yesterday}`}
+        className="flex items-center gap-3 rounded-lg border border-dashed p-3 text-sm transition-colors hover:bg-muted"
+      >
+        <CalendarPlus className="size-4 shrink-0 text-primary" />
+        <span>
+          ยังไม่ได้บันทึกของ{formatThaiDate(yesterday)}
+          <span className="block text-xs text-muted-foreground">
+            ลืมกรอกก่อนนอนก็ย้อนกลับไปบันทึกได้
           </span>
-        </Link>
-      )}
+        </span>
+      </Link>
+    ) : null;
 
-      <CheckinForm date={date} existing={existing} />
+  const footer =
+    recent.length > 0 ? (
+      <Link
+        href="/checkin/history"
+        className={buttonVariants({ variant: "ghost", className: "w-full" })}
+      >
+        <History className="size-4" />
+        ดูบันทึกย้อนหลัง
+      </Link>
+    ) : null;
 
-      {recent.length > 0 && (
-        <Link
-          href="/checkin/history"
-          className={buttonVariants({ variant: "ghost", className: "w-full" })}
-        >
-          <History className="size-4" />
-          ดูบันทึกย้อนหลัง
-        </Link>
-      )}
-    </div>
+  return (
+    <PageContainer width="content">
+      <h1 className="sr-only">เช็คอินประจำวัน</h1>
+      <TodayCheckinForm date={date} existing={existing} nudge={nudge} footer={footer} />
+    </PageContainer>
   );
 }

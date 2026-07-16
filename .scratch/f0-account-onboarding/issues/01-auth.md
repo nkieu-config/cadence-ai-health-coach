@@ -1,6 +1,6 @@
 # F0-01: Auth — สมัคร/ล็อกอิน/ล็อกเอาต์
 
-Status: resolved
+Status: done
 Owner: D
 Sprint: 1
 Priority: M

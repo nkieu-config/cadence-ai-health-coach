@@ -1,5 +1,9 @@
 # PRD: Infrastructure & Foundation
 
+> ⚠️ **ตาราง Owner ด้านล่างเป็นของแผนเก่า (A/B/C/D)** — แผนปัจจุบันแบ่งเป็น 3 สาย (14 ก.ค. 2026)
+> **ยึด `Owner:` ในไฟล์ issue เอง และ `.scratch/BOARD.md` เป็นหลัก** ดู [docs/09](../../docs/09-project-plan.md)
+
+
 งานวางฐานทั้งหมดของ Sprint 0 + seed script — ไม่ใช่ feature ที่ผู้ใช้เห็นตรง ๆ แต่ทุก feature อื่น blocked ด้วยงานชุดนี้
 
 อ้างอิง: [docs/06-system-architecture.md](../../docs/06-system-architecture.md), ADR-0002, ADR-0004

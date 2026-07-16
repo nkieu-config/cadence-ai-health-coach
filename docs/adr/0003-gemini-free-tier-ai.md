@@ -15,9 +15,31 @@
 
 ## Consequences
 
-- ฟรีจริง ไม่ต้องผูกบัตร โควตา free tier เพียงพอสำหรับ dogfooding 4 คน + demo
+- ฟรีจริง ไม่ต้องผูกบัตร
 - ภาษาไทยอยู่ในระดับใช้งานได้ดีสำหรับงาน coaching
 - Safety guardrail ทำผ่าน system prompt กลางที่ใช้ร่วมทุก feature (ดู [../08-safety-privacy.md](../08-safety-privacy.md))
 - ความเสี่ยง rate limit ช่วง demo — บรรเทาด้วย: (1) cache ผลลัพธ์ pattern/reflection ใน DB (2) service module สลับไป Typhoon ได้ (3) เตรียม screenshot สำรองตอน pitch
 - API key เก็บใน environment variable ฝั่ง server เท่านั้น ห้ามเรียก Gemini จาก client
-- **การจัดสรร key (อัปเดต 2026-07-07):** dev แต่ละคนใช้ Gemini key ของตัวเองใน `.env.local` เพื่อกันแย่ง rate limit ตอนพัฒนา/รัน `npm run test:ai`; production บน Vercel ใช้ **key เดียว**ที่ตั้งใน Vercel env — dogfooding บน prod แชร์ key นั้น รับได้เพราะทราฟฟิกเบา (check-in ไม่กี่ครั้ง/วัน/คน) ถ้าเข้าใกล้ลิมิตให้พึ่ง mitigation เดิม (cache ผลใน DB + สลับ provider ได้) — ไม่แยก key เฉพาะ prod
+- **การจัดสรร key (อัปเดต 2026-07-07):** dev แต่ละคนใช้ Gemini key ของตัวเองใน `.env.local` เพื่อกันแย่ง rate limit ตอนพัฒนา/รัน `npm run test:ai`; production บน Vercel ใช้ **key เดียว**ที่ตั้งใน Vercel env
+
+## ⚠️ โควตาจริง (วัดเมื่อ 2026-07-14 — แก้ข้อสันนิษฐานที่ผิดของ ADR นี้เอง)
+
+ADR ฉบับแรกเขียนว่า *"โควตา free tier เพียงพอสำหรับ dogfooding 4 คน + demo"* — **ตอนรัน safety checklist (F3-02) ยิงชนเพดานจริงและพบว่าไม่จริง**
+
+ตัวเลขนี้มาจาก error ของ Gemini API ไม่ใช่จากเอกสารหรือการเดา:
+
+```json
+"quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+"quotaValue": "20"
+"model": "gemini-2.5-flash"
+```
+
+| โมเดล | โควตา free tier |
+|---|---|
+| `gemini-2.5-flash` ← ที่ใช้อยู่ | **20 ครั้ง/วัน/โปรเจกต์/โมเดล** |
+| `gemini-2.5-flash-lite` | HTTP 404 — ไม่เปิดให้ผู้ใช้ใหม่แล้ว |
+| `gemini-2.0-flash-lite` | `limit: 0` |
+
+**ผลที่ตามมา:** prod ใช้ key เดียว → **ทั้งแอปมีโควตารวม 20 ครั้ง/วัน** · แชทโค้ช 1 ข้อความ = 1 ครั้ง
+
+ข้อสรุปนี้เปลี่ยนสถานะของ cache: **cache ใน `ai_outputs` ไม่ใช่ optimization แต่เป็นเงื่อนไขที่ทำให้แอปใช้งานได้จริงบน free tier** · แผนรับมือทั้งหมดอยู่ใน **INFRA-07**

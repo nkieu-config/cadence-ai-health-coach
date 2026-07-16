@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { hasCompletedOnboarding } from "@/lib/auth/onboarding";
+import { hasCompletedOnboarding } from "@/lib/auth/user";
 
 export type AuthState = { error: string } | undefined;
 
@@ -34,10 +34,7 @@ export async function signIn(_prev: AuthState, formData: FormData): Promise<Auth
     return { error: "อีเมลหรือรหัสผ่านไม่ถูกต้อง" };
   }
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const onboarded = user ? await hasCompletedOnboarding(supabase, user.id) : false;
+  const onboarded = await hasCompletedOnboarding();
 
   revalidatePath("/", "layout");
   redirect(onboarded ? "/" : "/onboarding");
@@ -59,7 +56,8 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   }
   if (!data.session) {
     return {
-      error: "สมัครสำเร็จ แต่ต้องยืนยันอีเมลก่อนเข้าใช้งาน — ปิด Confirm email ใน Supabase สำหรับ prototype",
+      error:
+        "สมัครสำเร็จ แต่ต้องยืนยันอีเมลก่อนเข้าใช้งาน — ปิด Confirm email ใน Supabase สำหรับ prototype",
     };
   }
 

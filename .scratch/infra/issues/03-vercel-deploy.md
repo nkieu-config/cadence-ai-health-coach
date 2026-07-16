@@ -1,6 +1,6 @@
 # INFRA-03: Vercel deploy pipeline
 
-Status: resolved
+Status: done
 Owner: D
 Sprint: 0
 Priority: M

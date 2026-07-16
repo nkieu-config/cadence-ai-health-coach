@@ -1,6 +1,6 @@
 # INFRA-01: ตั้ง GitHub repo + Next.js scaffold
 
-Status: resolved
+Status: done
 Owner: D
 Sprint: 0
 Priority: M

@@ -114,7 +114,7 @@ export function CheckinHistory({ checkins }: { checkins: Checkin[] }) {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
       {checkins.map((checkin) => (
         <HistoryRow key={checkin.checkinDate} checkin={checkin} />
       ))}

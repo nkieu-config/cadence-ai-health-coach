@@ -3,10 +3,13 @@ import {
   BED_TIME_LABELS,
   DISRUPTOR_LABELS,
   ENERGY_LABELS,
+  FIRST_MEAL_TIME_LABELS,
+  FOOD_TYPE_LABELS,
   LATE_REASON_LABELS,
   MEAL_FEELING_LABELS,
   MEAL_LABELS,
   MOVEMENT_BLOCKER_LABELS,
+  MOVEMENT_FEELING_LABELS,
   MOVEMENT_TYPE_LABELS,
 } from "./labels";
 
@@ -21,10 +24,13 @@ function allowed(labels: Record<string, string>) {
 const BED_TIME_BUCKETS = allowed(BED_TIME_LABELS);
 const ENERGY_LEVELS = allowed(ENERGY_LABELS);
 const MEALS = allowed(MEAL_LABELS);
+const FIRST_MEAL_TIMES = allowed(FIRST_MEAL_TIME_LABELS);
+const FOOD_TYPES = allowed(FOOD_TYPE_LABELS);
 const MEAL_FEELINGS = allowed(MEAL_FEELING_LABELS);
 const LATE_REASONS = allowed(LATE_REASON_LABELS);
 const MOVEMENT_TYPES = allowed(MOVEMENT_TYPE_LABELS);
 const MOVEMENT_BLOCKERS = allowed(MOVEMENT_BLOCKER_LABELS);
+const MOVEMENT_FEELINGS = allowed(MOVEMENT_FEELING_LABELS);
 const DISRUPTORS = allowed(DISRUPTOR_LABELS);
 
 function isBetween(value: number, min: number, max: number) {
@@ -72,11 +78,23 @@ export function validateCheckin(checkin: Checkin, today: string): string | null 
   if (checkin.skippedMeals.length > TOTAL_MEALS - checkin.mealsCount) {
     return "จำนวนมื้อที่ข้ามขัดแย้งกับจำนวนมื้อที่กิน";
   }
+  if (!isKnownOrNull(checkin.firstMealTime, FIRST_MEAL_TIMES)) {
+    return "เวลามื้อแรกไม่ถูกต้อง";
+  }
+  if (checkin.mealsCount === 0 && checkin.firstMealTime !== null) {
+    return "ไม่ได้กินเลย แต่มีเวลามื้อแรกไม่ได้";
+  }
+  if (!isKnownList(checkin.foodTypes, FOOD_TYPES)) {
+    return "ประเภทอาหารไม่ถูกต้อง";
+  }
   if (!isBetween(checkin.sweetDrinks, 0, 20)) {
     return "จำนวนเครื่องดื่มหวานไม่ถูกต้อง";
   }
   if (!isKnownOrNull(checkin.mealFeeling, MEAL_FEELINGS)) {
     return "ความรู้สึกหลังกินไม่ถูกต้อง";
+  }
+  if (checkin.mealsCount === 0 && checkin.mealFeeling !== null) {
+    return "ไม่ได้กินเลย แต่มีความรู้สึกหลังกินไม่ได้";
   }
 
   if (!isBetween(checkin.sleepHours, 0, 24)) {
@@ -109,6 +127,12 @@ export function validateCheckin(checkin: Checkin, today: string): string | null 
   }
   if (!isKnownOrNull(checkin.movementBlocker, MOVEMENT_BLOCKERS)) {
     return "อุปสรรคการเคลื่อนไหวไม่ถูกต้อง";
+  }
+  if (!isKnownOrNull(checkin.movementFeeling, MOVEMENT_FEELINGS)) {
+    return "ความรู้สึกหลังขยับไม่ถูกต้อง";
+  }
+  if (checkin.movementMinutes === 0 && checkin.movementFeeling !== null) {
+    return "ไม่ได้ขยับ แต่มีความรู้สึกหลังขยับไม่ได้";
   }
 
   if (!ENERGY_LEVELS.has(checkin.energyLevel)) {

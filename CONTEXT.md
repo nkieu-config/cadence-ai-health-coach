@@ -9,7 +9,7 @@ Glossary ของโปรเจกต์ **AI Personal Health Coach for Studen
 | **Pillar** | 3 ด้านสุขภาพหลักที่ระบบติดตาม: `eating` (การกิน), `sleep` (การนอน), `movement` (การเคลื่อนไหว) | ใช้คำว่า movement ไม่ใช่ exercise — ครอบคลุมการขยับเล็ก ๆ เช่น เดิน ยืดเหยียด ไม่ใช่แค่ออกกำลังกาย |
 | **Check-in** | บันทึกประจำวัน 1 ครั้ง/วัน ครอบคลุมทั้ง 3 pillars + energy + disruptor ต้องกรอกเสร็จใน **ไม่เกิน 3 นาที** | Low-burden เป็นข้อบังคับจากโจทย์ — ห้ามเพิ่มคำถามจนเกิน 3 นาที |
 | **Energy Level** | ระดับพลังงานรายวันที่ผู้ใช้ประเมินเอง: `low` / `medium` / `high` | เป็น self-reported เสมอ ระบบไม่คำนวณให้ |
-| **Disruptor** | เหตุการณ์ที่กระทบ routine ในวันนั้น: `deadline`, `long_meeting`, `early_class`, `commute`, `exam`, `other` | เป็นหัวใจของ personalization — pattern ทุกอย่างต้องเชื่อมกับ disruptor ได้ |
+| **Disruptor** | เหตุการณ์ที่กระทบ routine ในวันนั้น: `deadline`, `long_meeting`, `early_class`, `online_class`, `commute`, `exam`, `none` | เป็นหัวใจของ personalization — pattern ทุกอย่างต้องเชื่อมกับ disruptor ได้ · ค่าจริงอยู่ที่ `lib/checkins/labels.ts` |
 | **Pattern** | ความสัมพันธ์ที่พบจากข้อมูล check-in หลายวัน เช่น "วันที่นอน < 6 ชม. มักข้ามมื้อเช้า" | Pattern คือ**สัญญาณ (signal)** ไม่ใช่ข้อสรุปเชิงเหตุผล (causation) — ทุกข้อความที่แสดง pattern ต้องสื่อว่า "น่าติดตามต่อ" ไม่ใช่ "เป็นเพราะ" |
 | **Insight** | Pattern ที่ AI แปลความหมายแล้ว พร้อม next step ที่ทำได้จริง | ต้องแยกส่วน "ข้อมูลบอกว่า" กับ "ข้อเสนอ" ชัดเจนเสมอ |
 | **Micro Goal** | เป้าหมายเล็กรายสัปดาห์ที่ผูกกับสถานการณ์จริง เช่น "เตรียมมื้อเช้าล่วงหน้า 2 วัน" | ห้ามผูกกับน้ำหนัก รูปร่าง หรือแคลอรี ห้ามสุดโต่ง ต้องล้มเหลวยาก |
@@ -17,7 +17,7 @@ Glossary ของโปรเจกต์ **AI Personal Health Coach for Studen
 | **Coach** | AI conversation ที่คุยแบบไม่ตัดสิน ถามนำ และแนะนำ practical | Coach คือ wellness coach **ไม่ใช่แพทย์** — ดู guardrail ใน [docs/08-safety-privacy.md](docs/08-safety-privacy.md) |
 | **Guardrail** | กติกาความปลอดภัยที่บังคับใน system prompt และ UI: ไม่วินิจฉัยโรค ไม่แนะนำยา/อาหารเสริม ไม่ให้แผนลดน้ำหนัก ไม่วิจารณ์รูปร่าง | ทุก feature ที่มี AI output ต้องผ่าน guardrail เดียวกัน |
 | **Persona** | ผู้ใช้ต้นแบบของ prototype: **"ปาล์ม" นักศึกษาปี 3 ช่วงทำ project และใกล้สอบ** | ทุกตัวอย่างใน UI, seed data และ pitch ใช้ persona นี้ |
-| **Seed Data** | ข้อมูล check-in จำลอง 3–4 สัปดาห์ของ persona ที่ฝัง pattern ไว้ให้ demo เห็นชัด | ใช้เฉพาะ demo account แยกจากข้อมูลจริงของทีม |
+| **Seed Data** | ข้อมูล check-in จำลอง 4 สัปดาห์ของ persona ที่ฝัง pattern ไว้ให้ demo เห็นชัด (ADR-0004) | ใช้เฉพาะ demo account แยกจากข้อมูลจริงของทีม |
 | **Dogfooding** | ทีม 4 คนใช้แอปบันทึกจริงทุกวันตั้งแต่ check-in ใช้งานได้ | เริ่มเป้าหมาย 13 ก.ค. 2026 เพื่อให้มีข้อมูลจริง ~2.5 สัปดาห์ก่อน pitch |
 | **Pitching Day** | วันนำเสนอ 30 ก.ค. 2026 — deadline สุดท้ายของทุกงาน | Code freeze 29 ก.ค. 2026 |
 

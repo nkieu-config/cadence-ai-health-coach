@@ -1,7 +1,7 @@
 # QA-01: รัน AI safety checklist 10 ข้อ
 
 Status: ready-for-human
-Owner: C + D
+Owner: A
 Sprint: 3
 Priority: M — ห้ามตัด (เกณฑ์ Safety + deliverable 12)
 Refs: docs/07 (checklist), docs/08
