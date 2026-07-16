@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { formatThaiDate } from "@/lib/checkins/date";
 import { buildCheckinSummary } from "@/lib/checkins/summary";
+import { cn } from "@/lib/utils";
 
 function ProgressCircle({
   value,
@@ -78,7 +79,7 @@ export function TodaySummary({ checkin, date }: { checkin: Checkin | null; date:
           {checkin ? buildCheckinSummary(checkin).encouragement : "คุณยังไม่ได้บันทึกพฤติกรรมสุขภาพของวันนี้ แวะมาเช็คอินสักนิดเพื่อติดตามเป้าหมายประจำวันกันนะ"}
         </div>
         <div className="pt-2">
-          <Link href="/checkin" className={buttonVariants({ variant: checkin ? "outline" : "default", size: "sm", className: "w-full" })}>
+          <Link href="/checkin" className={cn(buttonVariants({ variant: checkin ? "outline" : "default", size: "sm", className: "w-full" }))}>
             {checkin ? "แก้ไขบันทึกวันนี้" : "บันทึกตอนนี้"}
             {!checkin && <ChevronRight className="size-4" />}
           </Link>
