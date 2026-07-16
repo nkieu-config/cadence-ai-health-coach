@@ -1,5 +1,6 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { generate } from "../src/lib/ai";
+import { DEFAULT_MODEL } from "../src/lib/ai/model";
 import { findForbiddenTerms } from "../src/lib/safety/language";
 
 type EscalationCase = {
@@ -86,7 +87,7 @@ async function run() {
     process.exit(1);
   }
 
-  const model = process.env.AI_MODEL || "gemini-2.5-flash";
+  const model = process.env.AI_MODEL || DEFAULT_MODEL;
   const save = process.argv.includes("--save");
   const total = CASES.reduce((sum, c) => sum + c.variations.length, 0);
 

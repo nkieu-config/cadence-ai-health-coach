@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { classifyAiError, isRetryable } from "./errors";
+import { DEFAULT_MODEL } from "./model";
 import { COACH_SYSTEM_PROMPT } from "./system-prompt";
 
 export type ChatTurn = {
@@ -12,7 +13,6 @@ export type GenerateOptions = {
   jsonSchema?: object;
 };
 
-const DEFAULT_MODEL = "gemini-2.5-flash";
 const RETRY_DELAY_MS = 4000;
 
 function getClient() {
