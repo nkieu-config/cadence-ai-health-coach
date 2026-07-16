@@ -1,9 +1,10 @@
 import { generateJson, isQuotaExhausted } from "@/lib/ai";
 import { GOAL_SYSTEM_PROMPT } from "@/lib/ai/system-prompt";
 import { DISRUPTOR_LABELS } from "@/lib/checkins/labels";
+import { BUSY_PERIOD_LABELS, CONSTRAINT_LABELS, EARLY_DAY_LABELS } from "@/lib/onboarding/types";
 import type { Checkin } from "@/lib/patterns/types";
 import { fallbackGoal, matchingCheckins, validateGoalTitle } from "./suggest";
-import { SITUATION_LABELS, type GoalSuggestion, type Situation } from "./types";
+import { SITUATION_LABELS, type GoalProfile, type GoalSuggestion, type Situation } from "./types";
 
 export const GOAL_RESPONSE_SCHEMA = {
   type: "OBJECT",
@@ -36,7 +37,32 @@ function describeCheckin(checkin: Checkin): string {
   return parts.join(" · ");
 }
 
-export function buildGoalPrompt(situations: Situation[], checkins: Checkin[]): string {
+function mapLabels(values: string[], labels: Record<string, string>): string[] {
+  return values.map((value) => labels[value]).filter(Boolean);
+}
+
+function profileFacts(profile: GoalProfile | null): Record<string, string[]> | null {
+  if (!profile) return null;
+
+  const facts: Record<string, string[]> = {};
+
+  const earlyDays = mapLabels(profile.earlyDays, EARLY_DAY_LABELS);
+  if (earlyDays.length > 0) facts["วันที่ต้องตื่นเช้า"] = earlyDays;
+
+  const busyPeriods = mapLabels(profile.busyPeriods, BUSY_PERIOD_LABELS);
+  if (busyPeriods.length > 0) facts["ช่วงที่งานหนักเป็นประจำ"] = busyPeriods;
+
+  const constraints = mapLabels(profile.constraints, CONSTRAINT_LABELS);
+  if (constraints.length > 0) facts["ข้อจำกัดที่บอกไว้ตอนสมัคร"] = constraints;
+
+  return Object.keys(facts).length > 0 ? facts : null;
+}
+
+export function buildGoalPrompt(
+  situations: Situation[],
+  checkins: Checkin[],
+  profile: GoalProfile | null
+): string {
   const fewShot = situations.map((situation) => ({
     situation,
     สถานการณ์: SITUATION_LABELS[situation],
@@ -53,7 +79,26 @@ export function buildGoalPrompt(situations: Situation[], checkins: Checkin[]): s
     };
   });
 
-  return `ตารางมาตรฐาน (few-shot):\n${JSON.stringify(fewShot, null, 2)}\n\nสถานการณ์จริงของผู้ใช้คนนี้ (ปรับ goal มาตรฐานด้านบนให้เข้ากับข้อมูลนี้ ตอบครบทุก situation):\n${JSON.stringify(facts, null, 2)}`;
+  const blocks = [`ตารางมาตรฐาน (few-shot):\n${JSON.stringify(fewShot, null, 2)}`];
+
+  const constraints = profileFacts(profile);
+  if (constraints) {
+    blocks.push(
+      [
+        "ตารางชีวิตและข้อจำกัดของผู้ใช้คนนี้ (ผู้ใช้กรอกไว้เอง):",
+        JSON.stringify(constraints, null, 2),
+        "goal ทุกข้อต้องทำได้จริงภายใต้เงื่อนไขนี้ ห้ามเสนอสิ่งที่ขัดกับข้อจำกัด —",
+        'เช่น "ไม่มีสถานที่ออกกำลังกาย" ห้ามชวนไปฟิตเนสหรือสนามกีฬา · "งบจำกัด" ห้ามเสนอสิ่งที่ต้องจ่ายเงิน · "ไม่ค่อยมีเวลา" ให้เลือกก้าวที่ใช้เวลาน้อยที่สุด',
+        "ถ้าอ้างถึงวันหรือช่วงเวลา ให้ใช้วันจากตารางด้านบนเท่านั้น ห้ามเดาวันเอง",
+      ].join("\n")
+    );
+  }
+
+  blocks.push(
+    `สถานการณ์จริงของผู้ใช้คนนี้ (ปรับ goal มาตรฐานด้านบนให้เข้ากับข้อมูลนี้ ตอบครบทุก situation):\n${JSON.stringify(facts, null, 2)}`
+  );
+
+  return blocks.join("\n\n");
 }
 
 function cleanString(value: unknown): string {
@@ -87,12 +132,13 @@ export function parseGoalSuggestions(
 
 export async function generateGoalSuggestions(
   situations: Situation[],
-  checkins: Checkin[]
+  checkins: Checkin[],
+  profile: GoalProfile | null
 ): Promise<Map<Situation, string> | null> {
   if (situations.length === 0) return null;
 
   const allowed = new Set(situations);
-  const prompt = buildGoalPrompt(situations, checkins);
+  const prompt = buildGoalPrompt(situations, checkins, profile);
 
   for (let attempt = 0; attempt < 2; attempt += 1) {
     try {
