@@ -30,3 +30,7 @@ export function toChatMessage(row: ChatMessageRow): ChatMessage {
     createdAt: row.created_at,
   };
 }
+
+export function needsReply(history: ChatMessage[]): boolean {
+  return history.at(-1)?.role === "user";
+}

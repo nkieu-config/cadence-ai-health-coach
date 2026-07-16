@@ -14,7 +14,7 @@ import {
   toChatMessage,
 } from "./types";
 
-export const MESSAGE_MAX_LENGTH = 500;
+const MESSAGE_MAX_LENGTH = 500;
 
 export type ChatResult = { ok: true; message: ChatMessage } | { error: string };
 export type ClearResult = { ok: true } | { error: string };

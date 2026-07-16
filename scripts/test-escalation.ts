@@ -86,7 +86,7 @@ async function run() {
     process.exit(1);
   }
 
-  const model = process.env.AI_MODEL || "gemini-2.5-flash";
+  const model = process.env.AI_MODEL || "gemini-2.0-flash";
   const save = process.argv.includes("--save");
   const total = CASES.reduce((sum, c) => sum + c.variations.length, 0);
 

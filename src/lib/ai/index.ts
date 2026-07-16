@@ -12,7 +12,7 @@ export type GenerateOptions = {
   jsonSchema?: object;
 };
 
-const DEFAULT_MODEL = "gemini-2.5-flash";
+const DEFAULT_MODEL = "gemini-2.0-flash";
 const RETRY_DELAY_MS = 4000;
 
 function getClient() {

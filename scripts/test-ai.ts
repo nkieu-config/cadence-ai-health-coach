@@ -199,7 +199,7 @@ async function run() {
     process.exit(1);
   }
 
-  const model = process.env.AI_MODEL || "gemini-2.5-flash";
+  const model = process.env.AI_MODEL || "gemini-2.0-flash";
   const save = process.argv.includes("--save");
   const filter = process.argv.slice(2).find((arg) => !arg.startsWith("--"));
   const selected = filter
