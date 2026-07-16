@@ -19,7 +19,7 @@
 | 11 | ตัวอย่าง weekly reflection | ในแอป + ตัวอย่างเต็ม 1 ฉบับ | A | ✅ **หน้า `/reflection` ใช้งานจริง — ปาล์มมี 4 สัปดาห์ + เทียบสัปดาห์ก่อน** (F6-01/02/03) |
 | 12 | Safety guardrail | [08](08-safety-privacy.md) Part 1 + `lib/ai` + `lib/safety/language.ts` + ผลทดสอบ 10 ข้อ | A | ✅ design + guardrail (CI บังคับ) · escalation ยืนยัน 9/9 (F4-04) / ⬜ checklist เต็ม 10 ข้อ (QA-01) |
 | 13 | Privacy design | [08](08-safety-privacy.md) Part 2 + `/settings/privacy` | A + 🟨 | ✅ design + หน้าในแอป (ตอบโจทย์ข้อ 9 ครบ 6/6) / ⬜ ปุ่มลบ Sprint 2 |
-| 14 | Limitations & future improvement plan | เขียน Sprint 3 → `docs/11-limitations-future.md` | A | ⬜ Sprint 3 |
+| 14 | Limitations & future improvement plan | [11](11-limitations-future.md) | A | ✅ **เขียนแล้ว** — ทุกข้อจำกัดมีสิ่งที่ทำแล้ว + แผนถ้าไปต่อ · รวมบทเรียนจาก dogfooding |
 
 ## Mapping กับ Evaluation Criteria 9 ข้อ (Mission ข้อ 11)
 
