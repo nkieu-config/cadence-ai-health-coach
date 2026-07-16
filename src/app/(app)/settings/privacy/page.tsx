@@ -3,6 +3,7 @@ import { AlertCircle, Database, Eye, Fingerprint, History, Lock, Shield } from "
 import { PageContainer } from "@/components/page-container";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { DeleteZone } from "@/components/settings/delete-zone";
 
 export default function PrivacyPage() {
   return (
@@ -184,6 +185,8 @@ export default function PrivacyPage() {
             </Link>
           </CardContent>
         </Card>
+
+        <DeleteZone />
       </div>
     </PageContainer>
   );
