@@ -49,6 +49,9 @@ function profileFacts(profile: GoalProfile | null): Record<string, string[]> | n
   const earlyDays = mapLabels(profile.earlyDays, EARLY_DAY_LABELS);
   if (earlyDays.length > 0) facts["วันที่ต้องตื่นเช้า"] = earlyDays;
 
+  const busyDaysNextWeek = mapLabels(profile.busyDaysNextWeek ?? [], EARLY_DAY_LABELS);
+  if (busyDaysNextWeek.length > 0) facts["วันที่ตารางแน่นสัปดาห์หน้า"] = busyDaysNextWeek;
+
   const busyPeriods = mapLabels(profile.busyPeriods, BUSY_PERIOD_LABELS);
   if (busyPeriods.length > 0) facts["ช่วงที่งานหนักเป็นประจำ"] = busyPeriods;
 

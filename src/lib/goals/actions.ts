@@ -7,9 +7,12 @@ import { createClient } from "@/lib/supabase/server";
 import { generateGoalSuggestions, mergeGoalSuggestions } from "./goal-ai";
 import { getActiveGoals, getGoals } from "./queries";
 import { chooseSituations, validateGoalTitle } from "./suggest";
+import { BUSY_PERIOD_LABELS, CONSTRAINT_LABELS, EARLY_DAY_LABELS } from "@/lib/onboarding/types";
 import {
   MAX_ACTIVE_GOALS,
+  PILLARS,
   SITUATIONS,
+  type GoalContext,
   type GoalProfile,
   type GoalStatus,
   type GoalSuggestion,
@@ -18,6 +21,28 @@ import {
 import { weekStart } from "./week";
 
 const SUGGESTION_WINDOW_DAYS = 14;
+
+type ProfileRow = Awaited<ReturnType<typeof getProfile>>;
+
+function knownOnly(values: string[] | undefined, labels: Record<string, string>): string[] {
+  return (values ?? []).filter((value) => value in labels);
+}
+
+function mergeContext(profileRow: ProfileRow, context: GoalContext | undefined): GoalProfile {
+  const fromProfile = {
+    earlyDays: knownOnly(profileRow?.early_days ?? [], EARLY_DAY_LABELS),
+    busyPeriods: knownOnly(profileRow?.busy_periods ?? [], BUSY_PERIOD_LABELS),
+    constraints: knownOnly(profileRow?.typical_constraints ?? [], CONSTRAINT_LABELS),
+  };
+
+  const fromFlow = knownOnly(context?.constraints, CONSTRAINT_LABELS);
+
+  return {
+    ...fromProfile,
+    constraints: [...new Set([...fromProfile.constraints, ...fromFlow])],
+    busyDaysNextWeek: knownOnly(context?.busyDays, EARLY_DAY_LABELS),
+  };
+}
 
 export type GoalResult = { ok: true } | { error: string };
 export type SuggestResult = { ok: true; suggestions: GoalSuggestion[] } | { error: string };
@@ -30,7 +55,7 @@ async function currentUser() {
   return { supabase, user };
 }
 
-export async function recommendGoals(): Promise<SuggestResult> {
+export async function recommendGoals(context?: GoalContext): Promise<SuggestResult> {
   const { user } = await currentUser();
   if (!user) {
     return { error: "เซสชันหมดอายุ กรุณาเข้าสู่ระบบใหม่" };
@@ -45,15 +70,12 @@ export async function recommendGoals(): Promise<SuggestResult> {
     return { error: "ยังไม่มีบันทึกให้ดู — ลองเช็คอินสัก 2–3 วันก่อน แล้วค่อยกลับมาขอคำแนะนำ" };
   }
 
-  const profile: GoalProfile | null = profileRow
-    ? {
-        earlyDays: profileRow.early_days ?? [],
-        busyPeriods: profileRow.busy_periods ?? [],
-        constraints: profileRow.typical_constraints ?? [],
-      }
-    : null;
+  const profile = profileRow || context ? mergeContext(profileRow, context) : null;
+  const pillar = PILLARS.includes(context?.pillar as (typeof PILLARS)[number])
+    ? context?.pillar
+    : undefined;
 
-  const situations = chooseSituations(checkins, MAX_ACTIVE_GOALS);
+  const situations = chooseSituations(checkins, MAX_ACTIVE_GOALS, pillar);
   const aiBySituation = await generateGoalSuggestions(situations, checkins, profile);
 
   return { ok: true, suggestions: mergeGoalSuggestions(situations, aiBySituation) };

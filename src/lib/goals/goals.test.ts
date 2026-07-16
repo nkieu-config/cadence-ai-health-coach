@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { makeCheckins } from "@/lib/patterns/test-fixtures";
 import { findForbiddenTerms } from "@/lib/safety/language";
-import { fallbackGoal, suggestGoals, validateGoalTitle } from "./suggest";
-import { MAX_ACTIVE_GOALS, SITUATIONS, SITUATION_LABELS } from "./types";
+import { chooseSituations, fallbackGoal, suggestGoals, validateGoalTitle } from "./suggest";
+import { MAX_ACTIVE_GOALS, SITUATIONS, SITUATION_LABELS, SITUATION_PILLARS } from "./types";
 import { weekDates, weekStart } from "./week";
 
 describe("weekStart", () => {
@@ -103,5 +103,34 @@ describe("validateGoalTitle", () => {
     expect(validateGoalTitle("อดทนกับตัวเองในวันที่พลังงานน้อย")).toBeNull();
     expect(validateGoalTitle("กินข้าวเช้าให้ได้ 3 วัน")).toBeNull();
     expect(validateGoalTitle("ไม่ข้ามมื้อเช้าในวันที่เรียนเช้า")).toBeNull();
+  });
+});
+
+describe("chooseSituations กับ pillar ที่ผู้ใช้เลือกใน guided flow (F5-04)", () => {
+  const deadlineHeavy = makeCheckins(6, () => ({ disruptors: ["deadline" as const] }));
+
+  it("เลือกด้านไหน ต้องได้ situation ของด้านนั้นมาก่อนเสมอ แม้ข้อมูลจะชี้ไปทางอื่น", () => {
+    const situations = chooseSituations(deadlineHeavy, 2, "eating");
+
+    expect(SITUATION_PILLARS[situations[0]]).toBe("eating");
+  });
+
+  it("ด้านที่เลือกมี situation ไม่พอ 2 ข้อ → เติมจากอันดับที่เหลือ ไม่คืนสั้นกว่าที่ขอ", () => {
+    const situations = chooseSituations(deadlineHeavy, 2, "sleep");
+
+    expect(situations).toHaveLength(2);
+    expect(SITUATION_PILLARS[situations[0]]).toBe("sleep");
+    expect(SITUATION_PILLARS[situations[1]]).not.toBe("sleep");
+  });
+
+  it("ไม่ส่ง pillar → พฤติกรรมเดิมเป๊ะ ไม่กระทบผู้เรียกเดิม", () => {
+    expect(chooseSituations(deadlineHeavy, 2)).toEqual(chooseSituations(deadlineHeavy, 2));
+    expect(chooseSituations(deadlineHeavy, 1)).toEqual(["deadline"]);
+  });
+
+  it("ไม่มีสัญญาณอะไรเลยแต่เลือกด้านไว้ → ยังเสนอ goal ของด้านนั้นได้", () => {
+    const situations = chooseSituations([], 2, "sleep");
+
+    expect(SITUATION_PILLARS[situations[0]]).toBe("sleep");
   });
 });

@@ -1,3 +1,5 @@
+import type { Pillar } from "@/lib/patterns/types";
+
 export const SITUATIONS = [
   "early_class",
   "deadline",
@@ -38,6 +40,24 @@ export type GoalProfile = {
   earlyDays: string[];
   busyPeriods: string[];
   constraints: string[];
+  busyDaysNextWeek?: string[];
+};
+
+export const SITUATION_PILLARS: Record<Situation, Pillar> = {
+  early_class: "eating",
+  phone_before_bed: "sleep",
+  deadline: "movement",
+  long_screen: "movement",
+  long_commute: "movement",
+  no_exercise_time: "movement",
+};
+
+export const PILLARS: Pillar[] = ["eating", "sleep", "movement"];
+
+export type GoalContext = {
+  pillar?: Pillar;
+  busyDays?: string[];
+  constraints?: string[];
 };
 
 export type Goal = {
