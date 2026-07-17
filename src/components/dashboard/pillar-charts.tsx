@@ -156,15 +156,10 @@ export function PillarCharts({ checkins, period }: { checkins: Checkin[]; period
                 <YAxis domain={[0, "auto"]} axisLine={false} tickLine={false} />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <ChartLegend content={<ChartLegendContent />} />
-                <Bar dataKey="walk" name="walk" stackId="move" fill="var(--color-walk)" />
-                <Bar dataKey="stretch" name="stretch" stackId="move" fill="var(--color-stretch)" />
-                <Bar dataKey="stairs" name="stairs" stackId="move" fill="var(--color-stairs)" />
-                <Bar dataKey="bike" name="bike" stackId="move" fill="var(--color-bike)" />
                 <Bar
-                  dataKey="sport"
-                  name="sport"
-                  stackId="move"
-                  fill="var(--color-sport)"
+                  dataKey="movementMinutes"
+                  name="movementMinutes"
+                  fill="var(--chart-3)"
                   radius={[4, 4, 0, 0]}
                 />
               </BarChart>

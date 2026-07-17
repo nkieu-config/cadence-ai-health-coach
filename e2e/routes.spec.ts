@@ -128,6 +128,39 @@ test("dashboard — ปุ่มช่วงเวลา 7/14/30 เปลี่
   await expect(page.getByText(/บันทึกแล้ว \d+ วัน จาก 7 วัน/)).toBeVisible();
 });
 
+const PILLAR_TABS = [
+  { tab: "ชั่วโมงนอน", legend: "ชั่วโมงนอน (ชม.)" },
+  { tab: "การกิน", legend: "มื้อที่กิน (มื้อ)" },
+  { tab: "การเคลื่อนไหว", legend: "นาทีเคลื่อนไหว" },
+];
+
+function trendCard(page: Page) {
+  return page.locator('[data-slot="card"]').filter({ hasText: "กราฟแนวโน้มพฤติกรรม" });
+}
+
+async function tallestBar(page: Page) {
+  return trendCard(page)
+    .locator(".recharts-bar-rectangle path")
+    .evaluateAll((bars) => Math.max(0, ...bars.map((bar) => bar.getBoundingClientRect().height)));
+}
+
+for (const { tab, legend } of PILLAR_TABS) {
+  test(`dashboard — กราฟแนวโน้มแท็บ "${tab}" วาดแท่งจริง`, async ({ page }) => {
+    await page.goto("/dashboard?days=14");
+    await page.waitForLoadState("networkidle");
+
+    await page.getByRole("button", { name: tab, exact: true }).click();
+
+    await expect
+      .poll(() => tallestBar(page), {
+        message: `แท็บ "${tab}" ต้องมีแท่งที่สูงจริง — แท่งสูง 0 ยังนับเป็น node ใน DOM ได้ การนับ node จึงจับกราฟว่างไม่เจอ`,
+      })
+      .toBeGreaterThan(1);
+
+    await expect(trendCard(page).getByText(legend), `แท็บ "${tab}" ต้องมี legend`).toBeVisible();
+  });
+}
+
 test("dashboard — ข้อมูล seed ของปาล์มโผล่จริง ไม่ใช่หน้าว่าง", async ({ page }) => {
   await page.goto("/dashboard");
   await page.waitForLoadState("networkidle");
