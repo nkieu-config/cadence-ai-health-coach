@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
-import type { Checkin } from "@/lib/domain";
+import type { Checkin, Disruptor } from "@/lib/domain";
 import { daysAgo, formatShortThaiDate, formatThaiDate } from "@/lib/checkins/date";
-import { DISRUPTOR_LABELS, ENERGY_LABELS } from "@/lib/checkins/labels";
+import { ENERGY_LABELS } from "@/lib/checkins/labels";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, type ChartConfig } from "@/components/ui/chart";
 import { cn } from "@/lib/utils";
@@ -14,16 +14,58 @@ const chartConfig = {
   energy: { label: "ระดับพลังงาน", color: "var(--chart-4)" },
 } satisfies ChartConfig;
 
+interface ProcessedDataItem {
+  day: string;
+  date: string;
+  disruptors: Disruptor[];
+  note: string | null;
+  energyRaw: number | null;
+}
+
+interface ActiveDisruptor extends ProcessedDataItem {
+  x: number;
+  y: number;
+  isLocked?: boolean;
+}
+
+interface CustomXAxisTickProps {
+  x?: number;
+  y?: number;
+  payload?: {
+    value: string;
+    index: number;
+  };
+  processedData: ProcessedDataItem[];
+  period: number;
+  onMarkerHover: (data: ProcessedDataItem | null, coords?: { x: number; y: number }) => void;
+  onMarkerClick: (data: ProcessedDataItem | null, coords?: { x: number; y: number }) => void;
+  activeDate?: string | null;
+}
+
+interface TooltipPayloadItem {
+  payload: ProcessedDataItem;
+  value: number;
+  name: string;
+  dataKey: string;
+}
+
+interface CustomTooltipContentProps {
+  active?: boolean;
+  payload?: TooltipPayloadItem[];
+}
+
 // Config for disruptor markers with colors using dark-mode safe tokens
-const disruptorConfig: Record<
-  string,
-  {
-    icon: React.ComponentType<{ className?: string }>;
-    color: string;
-    bg: string;
-    border: string;
-    label: string;
-  }
+const disruptorConfig: Partial<
+  Record<
+    Disruptor,
+    {
+      icon: React.ComponentType<{ className?: string }>;
+      color: string;
+      bg: string;
+      border: string;
+      label: string;
+    }
+  >
 > = {
   deadline: {
     icon: AlertCircle,
@@ -87,17 +129,15 @@ const CustomXAxisTick = ({
   onMarkerHover,
   onMarkerClick,
   activeDate,
-}: any) => {
+}: CustomXAxisTickProps) => {
   if (!payload) return null;
   const dataItem = processedData[payload.index];
   if (!dataItem) return null;
 
   const { day, disruptors } = dataItem;
-  const activeDisruptors = (disruptors || []).filter((d: string) => d && d !== "none");
+  const activeDisruptors = (disruptors || []).filter((d: Disruptor) => d && d !== "none");
   const primaryDisruptor = activeDisruptors[0];
-  const iconConfig = primaryDisruptor
-    ? disruptorConfig[primaryDisruptor as keyof typeof disruptorConfig]
-    : null;
+  const iconConfig = primaryDisruptor ? disruptorConfig[primaryDisruptor] : null;
   const IconComponent = iconConfig?.icon;
   const is30Days = period === 30;
 
@@ -106,13 +146,13 @@ const CustomXAxisTick = ({
       <div
         className="flex flex-col items-center justify-start w-full h-full cursor-pointer select-none"
         onMouseEnter={() => IconComponent && onMarkerHover(dataItem, { x, y })}
-        onMouseLeave={() => IconComponent && onMarkerHover(null)}
+        onMouseLeave={() => onMarkerHover(null)}
         onClick={(e) => {
           e.stopPropagation();
           if (IconComponent) onMarkerClick(dataItem, { x, y });
         }}
       >
-        {IconComponent ? (
+        {IconComponent && iconConfig ? (
           <div
             className={cn(
               "flex items-center justify-center rounded-full border transition-all duration-200 bg-background",
@@ -145,10 +185,10 @@ const CustomXAxisTick = ({
 };
 
 // Custom Tooltip content showing metrics + disruptor list
-const CustomTooltipContent = ({ active, payload }: any) => {
+const CustomTooltipContent = ({ active, payload }: CustomTooltipContentProps) => {
   if (!active || !payload || !payload.length) return null;
   const data = payload[0].payload;
-  const activeDisruptors = (data.disruptors || []).filter((d: string) => d && d !== "none");
+  const activeDisruptors = (data.disruptors || []).filter((d: Disruptor) => d && d !== "none");
   const energyValue = payload[0].value;
 
   const formatEnergy = (val: number) => {
@@ -171,8 +211,8 @@ const CustomTooltipContent = ({ active, payload }: any) => {
         {activeDisruptors.length > 0 && (
           <div className="border-t pt-1.5 mt-1 text-[10px] text-muted-foreground space-y-1">
             <span className="font-semibold block text-[9px] uppercase">ปัจจัยรบกวน:</span>
-            {activeDisruptors.map((d: string) => {
-              const config = disruptorConfig[d as keyof typeof disruptorConfig];
+            {activeDisruptors.map((d: Disruptor) => {
+              const config = disruptorConfig[d];
               if (!config) return null;
               const Icon = config.icon;
               return (
@@ -203,6 +243,7 @@ function DisruptorLegend() {
     <div className="flex flex-wrap gap-x-4 gap-y-2 pt-3.5 mt-3.5 border-t text-xs text-muted-foreground justify-center">
       <span className="font-medium text-foreground mr-1">สัญลักษณ์วันพิเศษ (Disruptors):</span>
       {Object.entries(disruptorConfig).map(([key, config]) => {
+        if (!config) return null;
         const Icon = config.icon;
         return (
           <div key={key} className="flex items-center gap-1.5">
@@ -224,7 +265,7 @@ function DisruptorLegend() {
 }
 
 export function EnergyChart({ checkins, period }: { checkins: Checkin[]; period: number }) {
-  const [activeDisruptor, setActiveDisruptor] = React.useState<any>(null);
+  const [activeDisruptor, setActiveDisruptor] = React.useState<ActiveDisruptor | null>(null);
 
   const processedData = React.useMemo(() => {
     const dates = getPastDates(period);
@@ -244,12 +285,16 @@ export function EnergyChart({ checkins, period }: { checkins: Checkin[]; period:
     });
   }, [checkins, period]);
 
-  const handleMarkerHover = (data: any | null, coords?: any) => {
+  const handleMarkerHover = (data: ProcessedDataItem | null, coords?: { x: number; y: number }) => {
     if (activeDisruptor?.isLocked) return;
-    setActiveDisruptor(data && coords ? { ...data, ...coords, isLocked: false } : null);
+    if (data && coords) {
+      setActiveDisruptor({ ...data, x: coords.x, y: coords.y, isLocked: false });
+    } else {
+      setActiveDisruptor(null);
+    }
   };
 
-  const handleMarkerClick = (data: any | null, coords?: any) => {
+  const handleMarkerClick = (data: ProcessedDataItem | null, coords?: { x: number; y: number }) => {
     if (!data || !coords) {
       setActiveDisruptor(null);
       return;
@@ -257,7 +302,7 @@ export function EnergyChart({ checkins, period }: { checkins: Checkin[]; period:
     if (activeDisruptor?.date === data.date && activeDisruptor.isLocked) {
       setActiveDisruptor(null);
     } else {
-      setActiveDisruptor({ ...data, ...coords, isLocked: true });
+      setActiveDisruptor({ ...data, x: coords.x, y: coords.y, isLocked: true });
     }
   };
 
@@ -335,8 +380,8 @@ export function EnergyChart({ checkins, period }: { checkins: Checkin[]; period:
               </div>
               <div className="space-y-2">
                 <div className="flex flex-col gap-1.5">
-                  {activeDisruptor.disruptors.map((d: string) => {
-                    const config = disruptorConfig[d as keyof typeof disruptorConfig];
+                  {activeDisruptor.disruptors.map((d: Disruptor) => {
+                    const config = disruptorConfig[d];
                     if (!config) return null;
                     const Icon = config.icon;
                     return (
@@ -357,7 +402,7 @@ export function EnergyChart({ checkins, period }: { checkins: Checkin[]; period:
                 </div>
                 {activeDisruptor.note ? (
                   <div className="bg-muted/50 p-2 rounded border text-[11px] text-muted-foreground italic">
-                    "{activeDisruptor.note}"
+                    &quot;{activeDisruptor.note}&quot;
                   </div>
                 ) : (
                   <div className="text-[10px] text-muted-foreground/60 italic">
