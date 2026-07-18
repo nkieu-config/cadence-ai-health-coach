@@ -169,3 +169,19 @@ test("dashboard — ข้อมูล seed ของปาล์มโผล่
   await expect(page.getByText("เป้าหมายสัปดาห์นี้")).toBeVisible();
   await expect(page.getByText("ยินดีต้อนรับสู่ HealthCoach 👋")).toBeHidden();
 });
+
+test("dashboard — marker ปัจจัยรบกวนกดด้วยคีย์บอร์ดได้ (ไม่ต้องใช้เมาส์)", async ({ page }) => {
+  await page.goto("/dashboard?days=30");
+  await page.waitForLoadState("networkidle");
+
+  const markers = page.getByRole("button", { name: /^ปัจจัยรบกวน/ });
+  await expect(markers.first(), "seed ของปาล์มต้องมีวันที่มี disruptor").not.toHaveCount(0);
+
+  await markers.first().focus();
+  await page.keyboard.press("Enter");
+
+  await expect(
+    page.getByRole("button", { name: "ปิด" }),
+    "Enter บน marker ต้องเปิด popover (ปุ่มปิดโผล่เมื่อ locked)"
+  ).toBeVisible();
+});

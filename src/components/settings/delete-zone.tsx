@@ -120,7 +120,7 @@ export function DeleteZone() {
                 disabled={confirmText !== MODES[mode].phrase || isPending}
               >
                 {isPending && <Loader2 className="size-4 animate-spin" />}
-                {isPending ? "กำลังลบ..." : "ยืนยัน"}
+                {isPending ? "กำลังลบ…" : "ยืนยัน"}
               </Button>
             </div>
           </div>

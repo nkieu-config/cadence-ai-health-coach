@@ -125,17 +125,41 @@ export function DisruptorTick({
   const style = primary ? disruptorConfig[primary] : null;
   const is30Days = period === 30;
   const size = is30Days ? "w-4.5 h-4.5" : "w-6 h-6";
+  const interactive = Boolean(primary && style);
+  const label = interactive
+    ? `ปัจจัยรบกวน ${formatThaiDate(point.date)}: ${knownDisruptors(point.disruptors)
+        .map((d) => DISRUPTOR_LABELS[d])
+        .join(", ")}`
+    : undefined;
 
   return (
     <foreignObject x={x - 22} y={y} width={44} height={48} className="overflow-visible">
       <div
-        className="flex h-full w-full cursor-pointer flex-col items-center justify-start select-none"
-        onMouseEnter={() => style && onMarkerHover(point, { x, y })}
+        className={cn(
+          "flex h-full w-full flex-col items-center justify-start select-none",
+          interactive && "cursor-pointer"
+        )}
+        role={interactive ? "button" : undefined}
+        tabIndex={interactive ? 0 : undefined}
+        aria-label={label}
+        aria-expanded={interactive ? activeDate === point.date : undefined}
+        onMouseEnter={() => interactive && onMarkerHover(point, { x, y })}
         onMouseLeave={() => onMarkerHover(null)}
         onClick={(e) => {
           e.stopPropagation();
-          if (style) onMarkerClick(point, { x, y });
+          if (interactive) onMarkerClick(point, { x, y });
         }}
+        onKeyDown={
+          interactive
+            ? (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onMarkerClick(point, { x, y });
+                }
+              }
+            : undefined
+        }
       >
         {primary && style ? (
           <DisruptorBadge

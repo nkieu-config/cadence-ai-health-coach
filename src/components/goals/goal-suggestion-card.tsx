@@ -72,7 +72,7 @@ export function GoalSuggestionCard({ initialGoals }: GoalSuggestionCardProps) {
           <Button onClick={handleRequestGoals} disabled={isPending} className="min-h-11 px-6">
             {isPending ? (
               <>
-                <Loader2 className="mr-2 size-4 animate-spin" /> กำลังประมวลผล...
+                <Loader2 className="mr-2 size-4 animate-spin" /> กำลังประมวลผล…
               </>
             ) : (
               "ขอคำแนะนำเป้าหมาย"
@@ -94,7 +94,7 @@ export function GoalSuggestionCard({ initialGoals }: GoalSuggestionCardProps) {
       >
         {isPending ? (
           <>
-            <Loader2 className="mr-2 size-4 animate-spin" /> กำลังประมวลผลคำแนะนำ...
+            <Loader2 className="mr-2 size-4 animate-spin" /> กำลังประมวลผลคำแนะนำ…
           </>
         ) : (
           "ขอคำแนะนำเป้าหมายเพิ่มเติม"
@@ -113,7 +113,10 @@ export function GoalSuggestionCard({ initialGoals }: GoalSuggestionCardProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         {error && (
-          <div className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
+          <div
+            role="alert"
+            className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive"
+          >
             <AlertCircle className="mt-0.5 size-4 shrink-0" />
             <span>{error}</span>
           </div>
@@ -162,7 +165,7 @@ export function GoalSuggestionCard({ initialGoals }: GoalSuggestionCardProps) {
               value={customText}
               onChange={(e) => setCustomText(e.target.value)}
               maxLength={GOAL_TITLE_MAX_LENGTH}
-              placeholder="พิมพ์เป้าหมายของคุณเอง..."
+              placeholder="พิมพ์เป้าหมายของคุณเอง…"
               disabled={isPending}
               className="min-h-11"
               autoComplete="off"

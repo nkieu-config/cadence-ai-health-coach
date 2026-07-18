@@ -91,7 +91,10 @@ export function GoalProgressCard({ goal }: GoalProgressCardProps) {
 
       <CardContent className="space-y-4">
         {error && (
-          <div className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
+          <div
+            role="alert"
+            className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive"
+          >
             <AlertCircle className="mt-0.5 size-4 shrink-0" />
             <span>{error}</span>
           </div>

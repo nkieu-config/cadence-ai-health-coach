@@ -410,7 +410,12 @@ export function CoachChatClient({ initialMessages, initialQuotaLeft }: CoachChat
       {/* Chat Container Card */}
       <Card className="flex flex-col justify-between border-border/40 shadow-sm bg-card">
         <CardContent className="p-4">
-          <div className="h-[400px] overflow-y-auto pr-1 space-y-4 flex flex-col scrollbar-thin">
+          <div
+            role="log"
+            aria-live="polite"
+            aria-label="บทสนทนากับโค้ช"
+            className="h-[400px] overflow-y-auto pr-1 space-y-4 flex flex-col scrollbar-thin"
+          >
             {displayMessages.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center p-6 space-y-3">
                 <div className="p-3 rounded-full bg-primary/5 text-primary">
@@ -633,7 +638,7 @@ export function CoachChatClient({ initialMessages, initialQuotaLeft }: CoachChat
                       disabled={isPending}
                       maxLength={GOAL_TITLE_MAX_LENGTH}
                       className="w-full min-h-11 bg-background text-sm focus-visible:border-ring focus-visible:ring-3"
-                      placeholder="ปรับเปลี่ยนเป้าหมายของคุณที่นี่..."
+                      placeholder="ปรับเปลี่ยนเป้าหมายของคุณที่นี่…"
                     />
                   </div>
 
@@ -653,7 +658,7 @@ export function CoachChatClient({ initialMessages, initialQuotaLeft }: CoachChat
                       disabled={isPending || !goalOptions || !editedGoalTitle.trim()}
                       className="min-h-11 text-xs bg-primary text-primary-foreground hover:bg-primary/95"
                     >
-                      {isPending ? "กำลังบันทึก..." : "บันทึกเป้าหมาย"}
+                      {isPending ? "กำลังบันทึก…" : "บันทึกเป้าหมาย"}
                     </Button>
                   </div>
                 </div>
@@ -690,7 +695,10 @@ export function CoachChatClient({ initialMessages, initialQuotaLeft }: CoachChat
               )}
 
               {error && (
-                <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive">
+                <div
+                  role="alert"
+                  className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive"
+                >
                   <span className="leading-normal">{error}</span>
                 </div>
               )}
@@ -726,7 +734,7 @@ export function CoachChatClient({ initialMessages, initialQuotaLeft }: CoachChat
                 <div className="relative flex-1">
                   <Input
                     type="text"
-                    placeholder={quotaLeft > 0 ? "คุยกับโค้ชได้เลย..." : "วันนี้โควตาแชทหมดแล้ว"}
+                    placeholder={quotaLeft > 0 ? "คุยกับโค้ชได้เลย…" : "วันนี้โควตาแชทหมดแล้ว"}
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     disabled={quotaLeft <= 0 || isPending}
