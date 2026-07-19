@@ -28,7 +28,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 async function callModel(turns: ChatTurn[], options: GenerateOptions): Promise<string> {
   const client = getClient();
   const response = await client.models.generateContent({
-    model: process.env.AI_MODEL ?? DEFAULT_MODEL,
+    model: process.env.AI_MODEL?.trim() || DEFAULT_MODEL,
     contents: turns.map((turn) => ({
       role: turn.role === "user" ? "user" : "model",
       parts: [{ text: turn.content }],
