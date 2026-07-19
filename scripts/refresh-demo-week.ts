@@ -1,8 +1,12 @@
+import { spawnSync } from "node:child_process";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { today } from "../src/lib/checkins/date";
 import { weekDates, weekStart } from "../src/lib/goals/week";
 import { createAdminClient } from "../src/lib/supabase/admin";
 
 const EMAIL = process.env.DEMO_EMAIL ?? "palm@example.com";
+const SKIP_AI = process.argv.includes("--goal-only");
 
 const DEMO_GOAL = {
   title: "เตรียมมื้อเช้าง่าย ๆ ไว้ล่วงหน้า สำหรับวันจันทร์กับพุธที่เรียนเช้า",
@@ -28,14 +32,8 @@ function elapsedWeekdaysThisWeek(): string[] {
   });
 }
 
-async function run() {
-  const admin = createAdminClient();
+async function ensureCurrentWeekGoal(admin: Admin, userId: string) {
   const week = weekStart();
-
-  console.log(`บัญชี demo: ${EMAIL}`);
-  const userId = await findUserId(admin);
-  console.log(`สัปดาห์ปัจจุบัน: ${week}`);
-
   const { data: existing, error: readError } = await admin
     .from("goals")
     .select("id, title, status")
@@ -45,7 +43,7 @@ async function run() {
   if (readError) throw new Error(`อ่าน goals ไม่ได้: ${readError.message}`);
 
   if (existing && existing.length > 0) {
-    console.log(`\nมี goal active ของสัปดาห์นี้อยู่แล้ว ${existing.length} ข้อ — ไม่ต้องทำอะไร`);
+    console.log(`\nมี goal active ของสัปดาห์นี้อยู่แล้ว ${existing.length} ข้อ — ไม่แตะ`);
     for (const goal of existing) console.log(`  • ${goal.title}`);
     return;
   }
@@ -63,7 +61,41 @@ async function run() {
 
   console.log(`\nเพิ่ม goal ของสัปดาห์นี้แล้ว: "${DEMO_GOAL.title}"`);
   console.log(`ความคืบหน้า: ${progress.length} วัน (${progress.join(", ") || "ยังไม่มี"})`);
-  console.log(`\nแตะเฉพาะตาราง goals — check-in / reflection / แชท ที่ cache ไว้ยังอยู่ครบ`);
+}
+
+function warmAiCache() {
+  if (SKIP_AI) {
+    console.log(`\nข้าม AI warm (--goal-only)`);
+    return;
+  }
+  if (!process.env.GEMINI_API_KEY?.trim()) {
+    console.log(
+      `\n⚠️ ไม่มี GEMINI_API_KEY — ข้าม AI warm · goal อัปเดตแล้ว แต่ insight/reflection ยังไม่อุ่น`
+    );
+    return;
+  }
+
+  console.log(`\n━━━ อุ่น AI cache (insight + reflection) ให้ตรงกับ today() ━━━`);
+  const backfill = join(dirname(fileURLToPath(import.meta.url)), "backfill-demo-ai.ts");
+  const result = spawnSync(process.execPath, ["--import", "tsx", backfill], {
+    stdio: "inherit",
+    env: process.env,
+  });
+  if (result.status !== 0) {
+    throw new Error(`อุ่น AI cache ไม่สำเร็จ (exit ${result.status})`);
+  }
+}
+
+async function run() {
+  const admin = createAdminClient();
+
+  console.log(`บัญชี demo: ${EMAIL} · สัปดาห์ปัจจุบัน: ${weekStart()}`);
+  const userId = await findUserId(admin);
+
+  await ensureCurrentWeekGoal(admin, userId);
+  warmAiCache();
+
+  console.log(`\nเสร็จ · goal ของสัปดาห์นี้พร้อมสำหรับ demo`);
 }
 
 run().catch((error) => {

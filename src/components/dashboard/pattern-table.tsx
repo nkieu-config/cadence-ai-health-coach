@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { GenerateInsightButton } from "./generate-insight-button";
 
+const MAX_PATTERNS_SHOWN = 4;
+
 function EvidenceRow({ pattern }: { pattern: InsightPattern }) {
   const { metric, groupA, groupB } = pattern.evidence;
   return (
@@ -97,15 +99,24 @@ export async function PatternTable({ days, recordedDays }: { days: number; recor
     );
   }
 
+  const shown = insight.patterns.slice(0, MAX_PATTERNS_SHOWN);
+  const hiddenCount = insight.patterns.length - shown.length;
+
   return (
     <Shell
       description={`ช่วง ${insight.periodStart} – ${insight.periodEnd} · ${insight.patterns.length} รูปแบบที่พบ`}
     >
       <div className="space-y-4">
-        {insight.patterns.map((pattern, index) => (
+        {shown.map((pattern, index) => (
           <PatternRow key={index} pattern={pattern} />
         ))}
       </div>
+      {hiddenCount > 0 && (
+        <p className="text-sm text-muted-foreground">
+          แสดง {shown.length} รูปแบบเด่นที่สุด · ระบบพบทั้งหมด {insight.patterns.length}{" "}
+          รูปแบบในช่วงนี้
+        </p>
+      )}
       <p className="text-xs text-muted-foreground">
         ตัวเลขทั้งหมดคำนวณจากบันทึกจริงของคุณ · AI ช่วยเรียบเรียงเป็นภาษา ไม่ได้เดาเอง
       </p>
