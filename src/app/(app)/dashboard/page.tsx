@@ -93,7 +93,9 @@ export default async function DashboardPage({
         </Suspense>
       </div>
 
-      <PatternTable />
+      <Suspense fallback={<CardSkeleton rows={3} />}>
+        <PatternTable days={period} recordedDays={inPeriod.length} />
+      </Suspense>
     </PageContainer>
   );
 }

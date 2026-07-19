@@ -1,6 +1,6 @@
 # F2-04: ตาราง Pattern → ความหมาย → Next Step
 
-Status: ready-for-human
+Status: done
 Owner: 🟦 กราฟ
 Sprint: 2
 Priority: M
@@ -46,3 +46,19 @@ Blocked by: 01
 
 1. มือถือ: ตารางพับเป็นการ์ดรายแถว (ห้าม horizontal scroll — e2e เช็ค)
 2. `generateInsight` คืน 3 แบบ: `{ ok }` · `{ notEnoughData, message }` · `{ error }` — เช็ค `"notEnoughData" in result` ก่อน `"error" in result`
+
+---
+
+20 ก.ค. (A — ทำแทน 🟦 เพื่อปิดก่อน freeze) — **เสร็จ · deliverable ครบ 14/14**
+
+สร้าง `pattern-table.tsx` (server component) + `generate-insight-button.tsx` (client) · เดินหน้า dashboard ผ่าน Suspense · ครบ 4 สถานะ: ข้อมูลไม่พอ / ยังไม่เคยวิเคราะห์ (ปุ่ม) / มี pattern / วิเคราะห์แล้วไม่พบรูปแบบ
+
+**⚠️ กับดักที่ kickoff เขียนผิด — ห้ามใช้ `formatMetric(evidence.metric, value)`:**
+
+`toInsightPattern` เก็บ `evidence.metric` เป็น **ป้ายไทยแล้ว** ("อัตราการข้ามมื้อเช้า") ไม่ใช่ enum key · `value` เป็นเลขดิบ (1, 0.27) แต่ **enum key หายตอนเก็บ** จึง format ค่าไม่ได้ · `formatMetric()` เจอ default case → **throw → dashboard ขาว 500 ทั้งหน้า** (จับได้เพราะเทสกับ cache จริงที่อุ่นด้วย backfill ไม่ใช่แค่ stub)
+
+**แก้:** evidence โชว์ `metric` (ป้าย) ตรง ๆ + label กลุ่ม + จำนวนวัน (ขนาดตัวอย่าง = หลักฐานว่าไม่มโน) · ตัวเลขเชิงปริมาณอยู่ใน `observation` อยู่แล้ว ("100% เทียบกับ 27%")
+
+**เพิ่ม e2e:** `routes.spec.ts` — การ์ด "วิเคราะห์รูปแบบพฤติกรรม" แสดงทุกสถานะ cache · 43/43 ผ่าน
+
+**หมายเหตุ demo:** insight cache ผูก `period_end = today()` → เน่ารายวันเหมือน goal (INFRA-24) · วัน pitch ต้องรัน `npm run backfill:demo-ai` อุ่น หรือกดปุ่มวิเคราะห์สด · ปาล์มตอนนี้ให้ ~10 รูปแบบ (เยอะ) — การเลือกโชว์กี่อันเป็นการตัดสินใจ demo (QA-03)

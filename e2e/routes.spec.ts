@@ -170,6 +170,13 @@ test("dashboard — ข้อมูล seed ของปาล์มโผล่
   await expect(page.getByText("ยินดีต้อนรับสู่ HealthCoach 👋")).toBeHidden();
 });
 
+test("dashboard — การ์ดวิเคราะห์รูปแบบ (F2-04) แสดงทุกสถานะ cache", async ({ page }) => {
+  await page.goto("/dashboard");
+  await page.waitForLoadState("networkidle");
+
+  await expect(page.getByText("วิเคราะห์รูปแบบพฤติกรรม")).toBeVisible();
+});
+
 test("dashboard — marker ปัจจัยรบกวนกดด้วยคีย์บอร์ดได้ (ไม่ต้องใช้เมาส์)", async ({ page }) => {
   await page.goto("/dashboard?days=30");
   await page.waitForLoadState("networkidle");
