@@ -166,7 +166,7 @@ test("dashboard — ข้อมูล seed ของปาล์มโผล่
   await page.waitForLoadState("networkidle");
 
   await expect(page.getByText("สรุปวันนี้")).toBeVisible();
-  await expect(page.getByText("เป้าหมายสัปดาห์นี้")).toBeVisible();
+  await expect(page.getByText("เป้าหมายสัปดาห์นี้", { exact: true })).toBeVisible();
   await expect(page.getByText("ยินดีต้อนรับสู่ HealthCoach 👋")).toBeHidden();
 });
 
