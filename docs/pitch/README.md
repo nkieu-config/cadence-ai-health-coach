@@ -6,8 +6,9 @@
 
 | ที่ | อะไร | สถานะ |
 |---|---|---|
-| `deck.pdf` (หรือลิงก์ deck) | สไลด์เดินเรื่อง: ปัญหา → ปาล์ม → demo สด → safety/privacy → บทเรียน dogfooding → limitations/future | ⬜ |
-| `demo-script.md` | บทเดิน demo รายคลิก + ใครพูดท่อนไหน | ⬜ |
+| [deck-outline.md](deck-outline.md) | โครงสไลด์ 13 หน้า + speaker notes + เกณฑ์ที่แต่ละสไลด์ปิด | ✅ ร่างแล้ว |
+| [demo-script.md](demo-script.md) | บทเดิน demo รายคลิก + ใครพูดท่อนไหน | ✅ ร่างแล้ว (รอเติมชื่อคนพูด) |
+| `deck.pdf` (หรือลิงก์ deck) | สไลด์จริงทำใน Canva/Slides ตาม deck-outline แล้ว export | ⬜ |
 | `screenshots/` | ภาพสำรองทุกจอสำคัญ — plan B เมื่อเน็ต/AI ล่มกลางเวที | ⬜ |
 
 ## เช็คก่อนขึ้นเวที (ย่อจาก issue QA-03)
