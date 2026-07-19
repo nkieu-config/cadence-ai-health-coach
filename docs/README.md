@@ -16,6 +16,7 @@
 | [09-project-plan.md](09-project-plan.md) | Sprint plan, แบ่งงาน 3 สาย + A, risk register |
 | [10-deliverables-checklist.md](10-deliverables-checklist.md) | เช็คลิสต์ deliverables 14 ข้อ + mapping เกณฑ์คะแนน |
 | [11-limitations-future.md](11-limitations-future.md) | ข้อจำกัดที่รู้ตัว + สิ่งที่ทำแล้วเพื่อรับมือ + แผนถ้าไปต่อ |
+| [pitch/](pitch/) | ของนำเสนอวัน pitch: deck, demo script, screenshot สำรอง (QA-03) |
 
 เอกสารอ้างอิงระดับ root:
 
