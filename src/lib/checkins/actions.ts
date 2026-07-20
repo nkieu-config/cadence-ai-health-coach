@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import type { Checkin } from "@/lib/patterns/types";
+import type { Checkin } from "@/lib/domain";
 import { createClient } from "@/lib/supabase/server";
 import { today } from "./date";
 import { toRow } from "./mapper";

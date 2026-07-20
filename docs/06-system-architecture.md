@@ -7,7 +7,7 @@ graph TB
     U[ผู้ใช้ - Browser mobile/desktop]
     subgraph Vercel
         FE[Next.js App Router<br/>UI: Tailwind + shadcn/ui]
-        API[Next.js API Routes / Server Actions]
+        API[Next.js Server Actions]
         AI[lib/ai — AI service module<br/>system prompt guardrail กลาง]
         PA[lib/patterns — pattern computation<br/>คำนวณสถิติด้วยโค้ด]
     end
@@ -98,21 +98,30 @@ src/
 ├── app/
 │   ├── (auth)/login, register
 │   ├── onboarding/
-│   ├── checkin/
-│   ├── dashboard/
-│   ├── coach/
-│   ├── goals/
-│   ├── reflection/
-│   ├── settings/privacy/
-│   └── api/ai/...
-├── lib/
-│   ├── supabase/
-│   ├── patterns/
-│   └── ai/          ← system prompt + Gemini client (สลับ provider ได้)
+│   ├── auth/callback/          ← OAuth PKCE (ADR-0005)
+│   └── (app)/                  ← ทุกหน้าหลัง login ใช้ layout + guard ร่วมกัน
+│       ├── checkin/            ← + /history, /edit/[date]
+│       ├── dashboard/
+│       ├── coach/
+│       ├── goals/
+│       ├── reflection/
+│       └── settings/privacy/
+├── lib/                        ← "เครื่องยนต์" ทั้งหมด · UI เรียกผ่านที่นี่เท่านั้น
+│   ├── supabase/               ← client (RLS) + admin (service role — ลบบัญชีเท่านั้น)
+│   ├── checkins/               ← queries, actions, validate, labels, summary, date, derive
+│   ├── patterns/               ← คำนวณ pattern candidates จากสถิติจริง (ไม่มี LLM)
+│   ├── ai/                     ← ประตูเดียวสู่ Gemini: system prompt + client (สลับ provider ได้)
+│   ├── ai-outputs/             ← ประตูเดียวสู่ตาราง ai_outputs (insight + reflection)
+│   ├── chat/ · goals/ · account/ · onboarding/
+│   └── safety/language.ts      ← รายการคำต้องห้าม (ชุดเดียวทั้งระบบ — CI บังคับ)
 └── components/
 scripts/
-└── seed.ts          ← seed data ของ demo account (ADR-0004)
+├── seed.ts                     ← seed data ของ demo account (ADR-0004)
+└── verify-user.ts              ← พิสูจน์ว่าลบข้อมูลแล้วไม่มีแถวตกค้าง (หลักฐาน FR-7.2)
+supabase/migrations/            ← 0001_init.sql, 0002_mission_input_coverage.sql
 ```
+
+**ไม่มี `app/api/` — ทุก mutation เป็น Server Action** (`"use server"` ใน `lib/*/actions.ts`) ทำให้ API key และ service role อยู่ฝั่ง server เสมอโดยไม่ต้องเขียน route handler เอง
 
 ## Environments
 

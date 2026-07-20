@@ -13,10 +13,12 @@
 | [06-system-architecture.md](06-system-architecture.md) | สถาปัตยกรรม + workflow diagrams |
 | [07-ai-design.md](07-ai-design.md) | System prompt, pattern analysis, แผนทดสอบ AI |
 | [08-safety-privacy.md](08-safety-privacy.md) | Safety guardrail + privacy design |
-| [09-project-plan.md](09-project-plan.md) | Sprint plan, แบ่งงาน 4 คน, risk register |
+| [09-project-plan.md](09-project-plan.md) | Sprint plan, แบ่งงาน 3 สาย + A, risk register |
 | [10-deliverables-checklist.md](10-deliverables-checklist.md) | เช็คลิสต์ deliverables 14 ข้อ + mapping เกณฑ์คะแนน |
+| [11-limitations-future.md](11-limitations-future.md) | ข้อจำกัดที่รู้ตัว + สิ่งที่ทำแล้วเพื่อรับมือ + แผนถ้าไปต่อ |
+| [pitch/](pitch/) | ของนำเสนอวัน pitch: deck, demo script, screenshot สำรอง (QA-03) |
 
 เอกสารอ้างอิงระดับ root:
 
 - [../CONTEXT.md](../CONTEXT.md) — glossary ภาษากลางของโปรเจกต์ (อ่านก่อนตั้งชื่อตัวแปร/เขียน UI copy)
-- [adr/](adr/) — บันทึกการตัดสินใจทางเทคนิค (ADR-0001 ถึง 0004)
+- [adr/](adr/) — บันทึกการตัดสินใจทางเทคนิค (ADR-0001 ถึง 0005)

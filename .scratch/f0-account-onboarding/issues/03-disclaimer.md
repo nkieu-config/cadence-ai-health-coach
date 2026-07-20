@@ -1,6 +1,6 @@
 # F0-03: Safety disclaimer บังคับรับทราบ
 
-Status: resolved
+Status: done
 Owner: A
 Sprint: 1
 Priority: M — ห้ามตัด (เกณฑ์ Safety)

@@ -2,35 +2,32 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, CalendarCheck, MessageCircle, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const ITEMS = [
-  { href: "/checkin", label: "เช็คอิน", icon: CalendarCheck },
-  { href: "/dashboard", label: "ภาพรวม", icon: BarChart3 },
-  { href: "/coach", label: "โค้ช", icon: MessageCircle },
-  { href: "/settings/privacy", label: "ตั้งค่า", icon: Settings },
-];
+import { NavIcon } from "./nav-pending";
+import { NAV_ITEMS, isActivePath } from "./nav-items";
 
 export function AppNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="sticky bottom-0 border-t bg-background">
+    <nav
+      aria-label="เมนูหลัก"
+      className="sticky bottom-0 border-t bg-background pb-[env(safe-area-inset-bottom)] lg:hidden"
+    >
       <ul className="mx-auto flex w-full max-w-md">
-        {ITEMS.map(({ href, label, icon: Icon }) => {
-          const active = pathname === href || pathname.startsWith(`${href}/`);
+        {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+          const active = isActivePath(pathname, href);
           return (
             <li key={href} className="flex-1">
               <Link
                 href={href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex flex-col items-center gap-1 py-2.5 text-xs transition-colors",
+                  "flex min-h-14 flex-col items-center justify-center gap-1 py-2 text-xs transition-colors active:opacity-60",
                   active ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 )}
               >
-                <Icon className="size-5" />
+                <NavIcon icon={Icon} className="size-5" />
                 {label}
               </Link>
             </li>

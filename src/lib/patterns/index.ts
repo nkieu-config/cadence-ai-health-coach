@@ -1,4 +1,5 @@
-import type { BedTimeBucket, Checkin, PatternCandidate, Pillar } from "./types";
+import type { BedTimeBucket, Checkin, Pillar } from "@/lib/domain";
+import type { PatternCandidate, PatternId, PatternMetric } from "./types";
 
 export const MIN_DAYS_FOR_ANALYSIS = 7;
 export const MIN_DAYS_PER_GROUP = 3;
@@ -65,9 +66,9 @@ function round(value: number): number {
 }
 
 function toCandidate<T>(
-  id: string,
+  id: PatternId,
   pillars: Pillar[],
-  metric: string,
+  metric: PatternMetric,
   a: Group<T>,
   b: Group<T>,
   valueA: number,
@@ -83,9 +84,9 @@ function toCandidate<T>(
 }
 
 function rateCandidate<T>(
-  id: string,
+  id: PatternId,
   pillars: Pillar[],
-  metric: string,
+  metric: PatternMetric,
   a: Group<T>,
   b: Group<T>,
   matches: (item: T) => boolean
@@ -100,9 +101,9 @@ function rateCandidate<T>(
 }
 
 function averageCandidate<T>(
-  id: string,
+  id: PatternId,
   pillars: Pillar[],
-  metric: string,
+  metric: PatternMetric,
   a: Group<T>,
   b: Group<T>,
   value: (item: T) => number
@@ -151,6 +152,27 @@ export function computePatternCandidates(input: Checkin[]): PatternCandidate[] {
     "วันที่กินครบทุกมื้อ",
     "วันที่ข้ามมื้อ",
     (checkin) => checkin.skippedMeals.length === 0
+  );
+
+  const [ateOnTime, ateLate] = split(
+    checkins.filter((checkin) => checkin.firstMealTime !== null),
+    "วันที่กินมื้อแรกก่อน 9:00",
+    "วันที่กินมื้อแรกหลัง 9:00",
+    (checkin) => checkin.firstMealTime === "before_9"
+  );
+
+  const [earlyClass, noEarlyClass] = split(
+    checkins,
+    "วันที่มีเรียนหรือทำงานเช้า",
+    "วันที่ไม่ต้องตื่นเช้า",
+    (checkin) => checkin.disruptors.includes("early_class")
+  );
+
+  const [onlineDays, onsiteDays] = split(
+    checkins,
+    "วันที่เรียนหรือทำงาน online",
+    "วันที่ได้ออกจากบ้าน",
+    (checkin) => checkin.disruptors.includes("online_class")
   );
 
   return [
@@ -209,6 +231,30 @@ export function computePatternCandidates(input: Checkin[]): PatternCandidate[] {
       ateEveryMeal,
       skippedAMeal,
       (checkin) => checkin.energyLevel === "high"
+    ),
+    rateCandidate(
+      "eating-on-time-energy",
+      ["eating"],
+      "high_energy_rate",
+      ateOnTime,
+      ateLate,
+      (checkin) => checkin.energyLevel === "high"
+    ),
+    rateCandidate(
+      "early-class-skip-breakfast",
+      ["eating"],
+      "skip_breakfast_rate",
+      earlyClass,
+      noEarlyClass,
+      (checkin) => checkin.skippedMeals.includes("breakfast")
+    ),
+    averageCandidate(
+      "online-class-movement",
+      ["movement"],
+      "movement_minutes_avg",
+      onlineDays,
+      onsiteDays,
+      (checkin) => checkin.movementMinutes
     ),
   ].filter((candidate): candidate is PatternCandidate => candidate !== null);
 }

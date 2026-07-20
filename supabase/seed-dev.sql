@@ -17,21 +17,24 @@ days as (
   select generate_series(0, 13) as d
 )
 insert into checkins (
-  user_id, checkin_date, meals_count, skipped_meals, sweet_drinks,
+  user_id, checkin_date, meals_count, skipped_meals, first_meal_time, food_types, sweet_drinks,
   sleep_hours, bed_time_bucket, sleep_quality,
-  movement_types, movement_minutes, energy_level, disruptors, note
+  movement_types, movement_minutes, movement_feeling, energy_level, disruptors, note
 )
 select
   me.id,
   current_date - d,
   case when d % 3 = 0 then 2 else 3 end,
   case when d % 3 = 0 then array['breakfast'] else array[]::text[] end,
+  case when d % 3 = 0 then 'after_12' else 'before_9' end,
+  case when d % 3 = 0 then array['snack'] else array['veg_fruit']::text[] end,
   case when d % 3 = 0 then 2 else 0 end,
   case when d % 3 = 0 then 5.5 else 7.0 end,
   case when d % 3 = 0 then 'after_02' else '23_00' end,
   case when d % 3 = 0 then 2 else 4 end,
   case when d % 2 = 0 then array['walk'] else array['none']::text[] end,
   case when d % 2 = 0 then 25 else 0 end,
+  case when d % 2 = 0 then 'refreshed' else null end,
   case when d % 3 = 0 then 'low' else 'high' end,
   case when d % 3 = 0 then array['deadline'] else array[]::text[] end,
   case when d % 3 = 0 then 'คืนก่อน deadline นอนดึก' else null end

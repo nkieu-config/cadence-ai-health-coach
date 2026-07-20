@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { Checkin } from "./types";
+import type { Checkin } from "@/lib/domain";
 import {
   ACTIVE_MOVEMENT_MINUTES,
   MIN_DAYS_FOR_ANALYSIS,
@@ -7,7 +7,7 @@ import {
   computePatternCandidates,
   hasEnoughData,
 } from "./index";
-import { makeCheckins, withMissingDays } from "./test-fixtures";
+import { makeCheckins, withMissingDays } from "@/test/fixtures";
 
 const find = (checkins: Checkin[], id: string) =>
   computePatternCandidates(checkins).find((candidate) => candidate.id === id);

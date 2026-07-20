@@ -1,6 +1,6 @@
 # INFRA-04: Gemini spike + โครง lib/ai
 
-Status: resolved
+Status: done
 Owner: C
 Sprint: 0
 Priority: M

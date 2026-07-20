@@ -1,4 +1,4 @@
-import type { Checkin } from "@/lib/patterns/types";
+import type { Checkin } from "@/lib/domain";
 import { createClient } from "@/lib/supabase/server";
 import { daysAgo } from "./date";
 import { toCheckin } from "./mapper";
@@ -14,6 +14,32 @@ export async function getCheckins(days: number): Promise<Checkin[]> {
 
   if (error || !data) return [];
   return (data as unknown as CheckinRow[]).map(toCheckin);
+}
+
+export async function getCheckinsBetween(start: string, end: string): Promise<Checkin[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("checkins")
+    .select(CHECKIN_COLUMNS)
+    .gte("checkin_date", start)
+    .lte("checkin_date", end)
+    .order("checkin_date", { ascending: true });
+
+  if (error || !data) return [];
+  return (data as unknown as CheckinRow[]).map(toCheckin);
+}
+
+export async function latestCheckinAt(): Promise<string | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("checkins")
+    .select("updated_at")
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error || !data) return null;
+  return (data as { updated_at: string }).updated_at;
 }
 
 export async function getCheckinByDate(date: string): Promise<Checkin | null> {

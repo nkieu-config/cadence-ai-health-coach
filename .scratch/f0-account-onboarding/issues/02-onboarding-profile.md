@@ -1,6 +1,6 @@
 # F0-02: Onboarding เก็บบริบทชีวิต
 
-Status: resolved
+Status: done
 Owner: A
 Sprint: 1
 Priority: M

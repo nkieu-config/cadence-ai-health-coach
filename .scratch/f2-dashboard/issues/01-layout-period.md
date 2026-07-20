@@ -1,17 +1,17 @@
 # F2-01: Dashboard layout + ตัวเลือกช่วง 7/14/30 วัน
 
-Status: ready-for-human
+Status: done
 Owner: B
 Sprint: 1
 Priority: M
-Refs: FR-2.1, wireframe (INFRA-05)
+Refs: FR-2.1
 
 ## งาน
 
-- [ ] โครงหน้า dashboard: การ์ดสรุปวันนี้, ส่วนกราฟ 3 pillars, ส่วน pattern table (placeholder ก่อน)
-- [ ] Toggle ช่วงเวลา 7/14/30 วัน มีผลกับทุกส่วน
-- [ ] Empty state เมื่อยังไม่มีข้อมูล → ชวนไป check-in
-- [ ] ข้อความกำกับ safety ถาวรท้ายหน้า (ประสาน F0-03)
+- [x] โครงหน้า dashboard: การ์ดสรุปวันนี้, ส่วนกราฟ 3 pillars, ส่วน pattern table (placeholder ก่อน)
+- [x] Toggle ช่วงเวลา 7/14/30 วัน มีผลกับทุกส่วน
+- [x] Empty state เมื่อยังไม่มีข้อมูล → ชวนไป check-in
+- [x] ข้อความกำกับ safety ถาวรท้ายหน้า (ประสาน F0-03)
 
 ## Acceptance criteria
 
@@ -23,7 +23,7 @@ Refs: FR-2.1, wireframe (INFRA-05)
 2026-07-12 (kickoff → B): **สาย Dashboard — ทำขนานได้เลย ไม่ต้องรอ F1 check-in ของ A**
 
 **ไฟล์ที่คุณแก้:** `src/app/(app)/dashboard/page.tsx` (มี placeholder อยู่แล้ว — **แทนที่เนื้อหาในไฟล์นี้**) + สร้าง component เพิ่มใน `src/components/dashboard/`
-อย่าแตะโซนคนอื่น: `lib/patterns` + `lib/ai` = ไม้ · `app/(app)/settings` = คีตะ · `app/(app)/checkin` = A
+อย่าแตะโซนคนอื่น: `lib/**` = A · `app/(app)/coach` = 🟩 · `app/(app)/settings` `goals` `reflection` = 🟨 · `app/(app)/checkin` = A (zone เต็มใน BOARD)
 **Branch:** `feat/f2-dashboard`
 
 **ปลดล็อกข้อมูล (ตาราง `checkins` ยังว่าง) — 1 นาทีจบ:**
@@ -42,3 +42,9 @@ Refs: FR-2.1, wireframe (INFRA-05)
 **Starter step:** แทน placeholder ด้วยโครงหน้าจริง (empty state + toggle 7/14/30) → เปิด PR เล็ก merge เลย → ค่อยต่อกราฟใน F2-02 เป็น PR ถัดไป
 
 **ก่อนลงงานจริง:** เปิด PR จิ๋ว 1 อันลองระบบก่อน (ดูกติกาใน `.scratch/BOARD.md`) — ยังไม่มีใครในทีมเคย push เลย
+
+2026-07-14 (A): ยืนยันปิดงาน — merge แล้ว (PR แพรรี่ `Feat/f2 layout period`)
+
+ทุกข้อทำครบและใช้งานบน production แล้ว · ติ๊กกล่องย้อนหลังเพราะตอน merge ลืมติ๊ก (บอร์ดนับ done อยู่แล้ว แต่ไฟล์ยังดูเหมือนไม่ได้เริ่ม)
+
+**สิ่งที่แก้เพิ่มหลัง review:** หน้าเป็น Server Component (เดิมเป็น `"use client"` ทำให้เรียก `getCheckins()` ไม่ได้ → empty state ซึ่งเป็น AC ข้อ 2 ไปไม่ถึง) · ตัด `<main>` ซ้อนและ `max-w-7xl` ที่ตายใต้ shell · period toggle ทำใหม่เป็น segmented control (ของเดิมสูง 36px ไม่ถึง 44px และยืดผิดบนมือถือ)

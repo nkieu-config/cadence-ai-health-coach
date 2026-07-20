@@ -1,101 +1,128 @@
-# Board — HealthCoach (อัปเดต 13 ก.ค. 2026)
+# Board — HealthCoach (อัปเดต 20 ก.ค. 2026)
 
-ภาพรวมว่าใครทำอะไร — **วิธีเริ่มงานอยู่ใน kickoff comment ของ issue แรกของสายตัวเอง** (บอกครบว่าเริ่มตรงไหน มีอะไรก๊อปใช้ได้บ้าง)
+## Pitch 30 ก.ค. · Code freeze 29 ก.ค. · เหลือ 10 วัน
 
-> 🧱 **โครงแอปวางให้แล้ว** — `src/app/(app)/layout.tsx` จัดการ login guard + เมนู + safety notice ให้ทุกหน้าอัตโนมัติ
-> หน้าของแต่ละคนมี **placeholder** รออยู่แล้ว → **แค่แทนที่เนื้อหาในไฟล์ของตัวเอง** ไม่ต้องสร้างหน้าใหม่ ไม่ต้องเขียน guard เอง
+> 🎯 **หลักการจัดงาน: A สร้าง "เครื่องยนต์" · 3 สายสร้าง "หน้าจอ"**
+> ทุกอย่างที่แตะ **Supabase / Gemini / service role / Safety 🔒** เป็นของ A
+> **3 สายเรียกฟังก์ชันที่มีอยู่แล้ว → วาด UI → จบ** ไม่ต้องแตะ DB ไม่ต้องแตะ AI ไม่มีไฟล์ทับกัน
 
-## สถานะ: เสร็จ 11 / 37 งาน
+## สถานะ: เสร็จ 56 / 63 งาน (ยกเลิก 1) — เหลือ 6
 
-- ✅ **Sprint 0 (infra)** — repo, Supabase + RLS, Vercel, Gemini พร้อมหมด
-- ✅ **F0** — สมัคร/ล็อกอิน (Google + รหัสผ่าน), onboarding, disclaimer
-- ✅ **F1 check-in ครบทั้งสาย** — ฟอร์ม + บันทึก + แก้ย้อนหลัง/ลบ + สรุปหลังบันทึก → **เริ่ม dogfooding ได้ ทุกคนกรอกทุกวัน**
+> **Deliverable 14 ข้อ เหลือมองไม่เห็นแค่ชิ้นเดียว: ตาราง pattern (F2-04 · 🟦)** — ปิดเกณฑ์ AI Usefulness (15%) · engine + cache 14/30 วันรออยู่แล้ว
+> **QA-01 Safety ปิดสมบูรณ์แล้ว** — 20/20 บน `gemini-3.1-flash-lite` + คีตะเซ็นตรวจอิสระ (PR #58)
+> **เปลี่ยนโมเดลแล้ว (INFRA-23):** production = `gemini-3.1-flash-lite` โควตา **500 ครั้ง/วัน** (เดิม 20) — ทุกคน**ลบ `AI_MODEL` ออกจาก `.env.local` ตัวเอง**ถ้ายังมี
 
-## ใครทำอะไร — 4 สาย ทำพร้อมกันได้ ไม่ต้องรอกัน
+- ✅ **Sprint 0** — repo · Supabase + RLS · Vercel · Gemini
+- ✅ **F0** — สมัคร/ล็อกอิน (Google + รหัสผ่าน) · onboarding · disclaimer
+- ✅ **F1** — เช็คอิน · บันทึก · แก้/ลบย้อนหลัง · สรุปหลังบันทึก · **F1-05 ปิดช่องโหว่โจทย์ข้อ 5**
+- ✅ **F2-01** dashboard layout · **F3-01 / F3-05** lib/patterns (ตาราง Feature 2 ครบ 3 แถว) · **F7-01** หน้า privacy
+- ✅ **Data layer ครบ** — `checkins` · `account` · `chat` · `ai-outputs` · `goals`
+- ✅ **F3-02 guardrail 🔒** — รัน checklist 10 เคสจริง เจอรูรั่ว 4 จุด แก้หมด · หลักฐาน `.scratch/ai-safety-test/`
+- ✅ **เครื่องยนต์ AI ครบ** — F3-03 insight · F3-04 ข้อมูลไม่พอ 🔒 · F4-02 coach context · F5-01 goal AI 🔒 · F4-04 escalation 🔒 · F6-01 weekly reflection · ทุกตัวพิสูจน์ด้วย Gemini จริง + fallback ปลอดภัยเมื่อ AI ล่ม
+- ✅ **INFRA-07 โควตา** — cache-first + จำกัดแชท 5 ข้อความ/คน/วัน + ข้อความโควตาหมดเป็นมิตร
+- ✅ **INFRA-06 seed "ปาล์ม"** — 24 วันบน production · pattern ครบ 3 แถว · **`palm@example.com / PalmDemo2026!`**
+- ✅ **INFRA-08→15 ก่อนเปิดสาย (PR #22)** — DESIGN.md ขึ้นกฎแอปก่อน · loading/nav feedback · Suspense กันการ์ดบล็อก · แยกฟอร์มแทน boolean prop · RLS เร็วขึ้น + CHECK กันข้อมูลขยะ · type ปิดบั๊ก pattern เงียบ · กราฟไม่หายใน dark mode · **e2e เปิดทุกหน้าจริง + CI ตรวจ main + บังคับเป็น required check แล้ว**
+- ⛔ **INFRA-05 wireframe — ยกเลิก** (DESIGN.md + UI จริงแทนไปแล้ว)
 
-| สาย | ตอนนี้ใครถือ | งานตามลำดับ | โฟลเดอร์ของสาย | Branch |
-| --- | --- | --- | --- | --- |
-| **Check-in** | ✅ **เสร็จทั้งสาย** | F1-01 ✅ F1-02 ✅ F1-03 ✅ F1-04 ✅ | `app/checkin/` | — |
-| **Dashboard** | **B** | F2-01 layout → F2-02 กราฟ | `app/dashboard/` | `feat/f2-01-…` |
-| **AI** | **C** | F3-01 patterns → F3-02 guardrail | `lib/patterns/`, `lib/ai/` | `feat/f3-01-…` |
-| **Privacy** | **D** | F7-01 หน้า privacy → F7-02 ลบข้อมูล | `app/settings/` | `feat/f7-01-…` |
-| **Seed data** | **A** (ทำอยู่) | INFRA-06 seed script | `scripts/seed.ts` | `feat/infra-06-…` |
-
-### ชื่อ branch (ตกลง 13 ก.ค.)
-
-**1 issue = 1 branch = 1 PR** → `feat/<เลข issue>-<คำสั้น>` เช่น `feat/f2-01-dashboard-layout`
-(PR เล็ก รีวิวง่าย merge ไว · GitHub ลบ branch ให้เองหลัง merge)
-
-## กติกา 5 ข้อ
-
-1. **วันแรก:** clone → ขอ `.env.local` จาก A → `npm run dev` ให้ขึ้นได้ → **เปิด PR จิ๋ว 1 อันลองระบบก่อน** (ยังไม่มีใครเคย push เลย ลองให้ชินก่อนลงงานจริง)
-2. **1 สาย = 1 branch** · PR เล็ก merge บ่อย **อย่าดองเกิน 2 วัน**
-3. **อยู่ในโฟลเดอร์ของสายตัวเอง** — ถ้าต้องแตะไฟล์ของคนอื่น ให้ **แจ้งกลุ่มก่อน**
-   **npm package:** ที่ต้องใช้ติดตั้งให้ครบแล้ว (กราฟ + test) — ถ้าจำเป็นต้องเพิ่มจริง ๆ **ห้ามลงบน branch ตัวเอง** (จะทำ `package-lock.json` ชนกัน) ให้แจ้งกลุ่ม → A ลงบน main → ทุกคน `git pull` + `npm install`
-4. **ห้ามแก้ฐานข้อมูลเอง** — ถ้าเจอว่าต้องเพิ่ม/แก้คอลัมน์ ให้แจ้งกลุ่ม แล้วให้ **A เขียน migration ใหม่** (DB ใช้ร่วมกันทั้งทีม ถ้าต่างคนต่างแก้จะพังหมด)
-   **ห้ามเรียก `supabase.from("checkins")` ตรง ๆ** — อ่าน/เขียน/ลบ check-in ผ่าน `src/lib/checkins/` เท่านั้น (`getCheckins`, `getCheckinByDate`, `saveCheckin`, `deleteCheckin`) เพราะ DB เป็น snake_case แต่ type เป็น camelCase — มีประตูเดียว แก้ที่เดียว
-   **ห้ามหาวันที่เองด้วย `new Date()`** — ใช้ `today()` / `daysAgo()` จาก `src/lib/checkins/date.ts` (เซิร์ฟเวอร์ Vercel เป็น UTC ถ้าหาเอง คนกรอกตอนตี 1 จะถูกนับเป็นเมื่อวาน)
-   **ชื่อไทยของค่าต่าง ๆ** (disruptor, มื้ออาหาร, ระดับพลังงาน ฯลฯ) ใช้จาก `src/lib/checkins/labels.ts` อย่าพิมพ์เอง จะได้ตรงกันทั้งแอป
-   **คำต้องห้ามตาม CONTEXT.md** (น้ำหนัก/รูปร่าง/แคลอรี + คำตัดสิน) อยู่ที่ `src/lib/safety/language.ts` — ทั้งข้อความ template และ output ของ AI ใช้รายการเดียวกัน **ห้ามสร้างรายการชุดที่สอง**
-5. **ส่งไม้ต่อ (ตอนสลับคน):** คนเดิมเขียน comment ใน issue ว่า **ทำถึงไหน / เหลืออะไร / ติดอะไร** → merge PR ที่ค้างให้จบ → แก้ช่อง "ตอนนี้ใครถือ" ในตารางข้างบน
-6. **UI ใช้ theme กลาง** — สี/ฟอนต์/มุมโค้ง ฝังใน `globals.css` แล้ว เขียนด้วย class ปกติ (`bg-primary` ฯลฯ) **ห้าม hardcode สี** · แนวทางเต็มอยู่ท้ายไฟล์ `DESIGN.md`
-
-## จุดที่ต้องรอกัน (มีแค่ 3 จุด นอกนั้นอิสระ)
-
-1. ~~F1 ขึ้น prod~~ ✅ **13 ก.ค. — ทุกคนเริ่มบันทึก check-in จริงได้แล้ว (dogfooding)**
-2. **Seed script เสร็จ (~15 ก.ค.)** → B เลิกใส่ข้อมูลมือ มาใช้ seed แทน
-3. **C ประกาศรูปแบบ JSON ของ insight (ต้น Sprint 2)** → B เอาไปทำ pattern table ต่อ
+> 🔒 **CI ใหม่บังคับแล้ว** — ทุก PR ต้องผ่าน `verify` (format/lint/tsc/test/build) + `e2e (เปิดแอปจริง)` ก่อน merge · **PR ที่ทำ layout พังหรือ dashboard ขาวจะ merge ไม่ได้** (ก่อนหน้านี้ผ่านเขียวหมด)
 
 ---
 
-## รายการงานทั้งหมด
+## 👥 3 สาย — เดินขนานกัน ไม่มีจุดรอ A แล้ว
 
-### Sprint 1 (ถึง 15 ก.ค.)
+| สาย | โซนไฟล์ (ไม่ทับกันเลย) | งานตามลำดับ |
+| --- | --- | --- |
+| 🟦 **กราฟ** | `components/dashboard/` · `app/(app)/dashboard/page.tsx` | ~~F2-02~~ ~~F2-03~~ ✅ → **F2-04 ตาราง** *(ชิ้นสุดท้ายของ deliverable ทั้ง 14 ข้อ)* → F2-05 streak *(ตัดได้)* |
+| 🟩 **โค้ช** | `app/(app)/coach/` · `components/coach/` | ~~F4-01~~ ~~F4-05~~ ~~F4-03~~ ✅ — **หมดคิวแล้ว** → ช่วย QA-02 จับเวลา check-in |
+| 🟨 **สิทธิ์+เป้าหมาย** | `app/(app)/goals/` · `components/goals/` | ~~F7-02~~ ~~F5-02~~ ✅ — **หมดคิวแล้ว** → ช่วย QA-02 จับเวลา check-in |
 
-| Issue | งาน | คนถือ | สถานะ |
+kickoff อยู่ในคอมเม้นของแต่ละ issue
+
+### 🔧 คิวงาน A
+
+~~F3-03~~ ~~F3-04~~ ~~F4-02~~ ~~F5-01~~ ~~F4-04~~ ~~F6-01~~ ~~F5-03~~ ~~F5-04~~ ~~F6-02~~ ~~F6-03~~ ~~INFRA-16→19~~ ✅
+
+~~QA-01 🔒~~ ~~QA-04~~ ~~INFRA-21→23~~ ✅
+
+**ถัดไป:** **QA-02 เริ่มจับเวลา 21 ก.ค.** (ทุกคน — ต้อง 3 วันติด × ≥4 คน) → **QA-03 deck + script ลง `docs/pitch/`** → F4-06 markdown → INFRA-20 โควตา
+
+> **AI ทุกตัวอัปเกรดเป็น Gemini จริงแล้ว "ข้างหลัง" ฟังก์ชันเดิม** — signature ไม่เปลี่ยน 3 สายได้ผล AI จริงแทน stub อัตโนมัติ ไม่ต้องแก้โค้ด
+
+---
+
+## 📞 ฟังก์ชันที่แต่ละสายเรียกใช้ (ไม่ต้องแตะ Supabase/Gemini เลย)
+
+```tsx
+// 🟦 กราฟ
+getCheckins(days)                      // @/lib/checkins/queries
+getLatestInsight(days)                 // @/lib/ai-outputs/queries   ← อ่าน cache เร็ว
+generateInsight(days)                  // @/lib/ai-outputs/actions   ← กดปุ่ม ~10 วิ
+formatMetric(metric, value)            // @/lib/ai-outputs/format
+
+// 🟩 โค้ช
+getChatHistory() · needsReply(history) // @/lib/chat/queries
+messagesLeftToday()                    // @/lib/chat/queries   ← 0 = โชว์ QuotaReachedNotice
+sendCoachMessage(text)                 // @/lib/chat/actions
+retryCoachReply()                      // ⚠️ ปุ่ม "ลองใหม่" ต้องเรียกตัวนี้ ไม่ใช่ send ซ้ำ
+clearChatHistory()                     // = F4-05 เกือบเสร็จเลย
+
+// 🟨 สิทธิ์+เป้าหมาย
+deleteAllData() · deleteAccount()      // @/lib/account/actions
+getGoals() · getActiveGoals()          // @/lib/goals/queries
+acceptGoal() · toggleGoalDay() · updateGoalStatus()          // @/lib/goals/actions
+recommendGoals()                       // เดิม: ไม่ส่งอะไรก็ได้ ปั้นจาก check-in + โปรไฟล์
+recommendGoals({ pillar, busyDays, constraints })            // ใหม่ (F5-04): ส่งคำตอบจากฟอร์ม/flow เข้าไปได้
+                                       // pillar: "eating" | "sleep" | "movement" — ดันด้านนั้นขึ้นก่อน
+                                       // busyDays/constraints: คีย์เดิมจาก lib/onboarding/types
+getLatestReflection() · getReflections() · generateReflection()  // @/lib/ai-outputs/*
+getWeekComparison(periodStart, periodEnd)  // ใหม่ (F6-03): ส่วนต่างเทียบสัปดาห์ก่อน · null = ไม่มีให้เทียบ
+```
+
+---
+
+## กติกา 7 ข้อ
+
+1. **เปิด issue ก่อนเขียนโค้ดเสมอ** · 1 issue = 1 branch = 1 PR → `feat/<เลข issue>-<คำสั้น>` เช่น `feat/f2-02-charts`
+2. **อัปเดตโค้ด 3 จังหวะ:** ก่อนเริ่มงาน · **ก่อน push/เปิด PR** ⭐ · เมื่อมีคนประกาศว่า merge
+
+   ```bash
+   git checkout main && git pull
+   git checkout <branch ตัวเอง> && git merge main
+   ```
+
+3. **ก่อนเปิด PR รัน `npm run format` เสมอ** · ถ้าแตะ UI รัน `npm run e2e` ด้วย (~40 วิ) — **CI บังคับ 2 ด่านนี้ ไม่ผ่าน = merge ไม่ได้**
+4. **อยู่ในโซนของสายตัวเอง** — ถ้าต้องแตะไฟล์นอกโซน **แจ้งกลุ่มก่อน**
+   **ห้ามลง npm package เอง** (จะทำ `package-lock.json` ชนกัน) → แจ้งกลุ่ม → A ลงบน main
+5. **ห้ามแตะ DB / Supabase / Gemini ตรง ๆ** — เรียกฟังก์ชันจาก `src/lib/` เท่านั้น
+   type กลางของโปรเจกต์ (`Checkin` `Pillar` `Disruptor` …) → **`@/lib/domain`** (INFRA-21 — เดิมอยู่ `lib/patterns/types`)
+   ⚠️ **โควตา Gemini ฟรี = 500 ครั้ง/วัน ทั้งแอปรวมกัน** (INFRA-23 — เดิม 20) → หายใจคล่องขึ้นมาก แต่**อย่ากดปุ่มวิเคราะห์/แชทรัว ๆ เล่น** (มี cache + จำกัดแชท 5 ข้อความ/คน/วันเหมือนเดิม)
+   ห้ามหาวันที่ด้วย `new Date()` → ใช้ `today()` / `daysAgo()` จาก `lib/checkins/date.ts`
+   ชื่อไทยของค่าต่าง ๆ → `lib/checkins/labels.ts` · คำต้องห้าม → `lib/safety/language.ts`
+6. **UI: อ่านส่วนแรกของ `DESIGN.md` (ถึงเส้น `---` แรก)** — `<PageContainer>` · ห้ามใส่ `<main>` เอง · ทุกหน้ามี `<h1>` 1 อัน · ทุกหน้าใหม่มี `loading.tsx` · การ์ดที่ดึงข้อมูลเองครอบ `<Suspense>` · **ทุกอย่างที่กดได้สูง ≥ 44px** · **ห้าม hardcode สี** · **ไม่มี boolean prop คุมพฤติกรรม**
+7. **เช็ค git config ก่อน commit แรก** — `git config user.email` ต้องตรงกับอีเมลที่ Verified บน GitHub ไม่งั้น**ผลงานไม่ถูกนับ**
+
+---
+
+## รายการงานที่เหลือ — 1 UI + QA + เก็บเล็ก
+
+| Issue | งาน | สาย | หมายเหตุ |
 | --- | --- | --- | --- |
-| f0/01–03 | Auth + onboarding + disclaimer | A | ✅ |
-| f1/01 | Check-in form | A | ✅ |
-| f1/02 | Check-in API (upsert) | A | ✅ |
-| f1/03 | แก้/ลบ check-in ย้อนหลัง | A | ✅ |
-| f1/04 | สรุปสั้นหลังบันทึก | A | ✅ |
-| f2/01 | Dashboard layout | B | ⬜ |
-| f2/02 | กราฟ 3 ด้าน | B | ⬜ |
-| f3/01 | lib/patterns + tests | C | ⬜ |
-| f3/02 | System prompt guardrail 🔒 | C | ⬜ เกือบเสร็จ (เหลือรัน + บันทึกผล) |
-| f7/01 | หน้า privacy 🔒 | D | ⬜ |
-| f7/02 | ลบข้อมูล/บัญชี 🔒 | D | ⬜ |
-| infra/05 | Wireframes | — | ⬜ ข้ามได้ (ทำ UI ตรงไปแล้ว) |
+| f2/04 | ตาราง Pattern | 🟦 | AI + cache พร้อม วาด UI ตาม signature เดิมได้เลย · **ชิ้นสุดท้ายของ deliverable 14 ข้อ — ปิดเกณฑ์ AI Usefulness (15%)** |
+| qa/02 | จับเวลา check-in | ทุกคน | **เริ่ม 21 ก.ค.** (ต้อง 3 วันติด × ≥4 คน — ยิ่งช้ายิ่งแก้ไม่ได้) |
+| qa/03 | Pitch deck + demo script | A + ทุกคน | ของลง `docs/pitch/` · ซ้อม 2 รอบวันที่ 29 |
+| f2/05 | Streak | 🟦 | **ตัดได้ถ้าไม่ทัน** (Priority C) |
+| f4/06 · infra/20 | markdown ในฟองแชท · อุดโควตารีเซ็ต | A | เก็บเล็ก — ไม่บล็อกอะไร |
 
-### Sprint 2 (16–22 ก.ค.) — AI
+**🔒 = ห้ามตัดทิ้งแม้เวลาไม่พอ** (เกณฑ์ Safety / Privacy โดยตรง)
 
-| Issue | งาน | คนถือ |
-| --- | --- | --- |
-| f3/03 | Insight endpoint + cache | C |
-| f3/04 | เคสข้อมูลไม่พอ 🔒 | C |
-| f4/01–05 | AI coach (แชท, context, ตั้งเป้า, escalation 🔒) | C |
-| f5/01 | แนะนำ micro goal + validation 🔒 | C |
-| f5/02 | หน้า goals | B |
-| f2/03–04 | Disruptor overlay + pattern table | B |
-| infra/06 | Seed script | A |
+## กติกาการทดสอบ (เพิ่ม 16 ก.ค.)
 
-### Sprint 3 (23–28 ก.ค.) — Polish + Pitch
+**อย่าเทสด้วยบัญชีปาล์ม** — สมัครบัญชีทิ้ง ๆ แทน · ปาล์มคือบัญชีที่ใช้ demo วัน pitch ข้อความเทสที่ค้างไว้จะโผล่บนจอตอนนำเสนอ และการกดปุ่ม AI เล่นกินโควตาที่ใช้ร่วมกันทั้งทีม
 
-| Issue | งาน | คนถือ |
-| --- | --- | --- |
-| f6/01–02 | Weekly reflection | C + B |
-| f2/05 | Streak (ทำถ้าว่างเท่านั้น) | B |
-| qa/01 | AI safety checklist 10 ข้อ 🔒 | C + D |
-| qa/02 | QA เต็มรอบ | ทุกคน |
-| qa/03 | Pitch deck + demo script | A |
-| qa/04 | Limitations & future | A |
+**ล้างประวัติแชท = โควตา 5 ข้อความ/วันรีเซ็ตด้วย** (`countMessagesToday()` นับแถวใน DB) — อย่าใช้เป็นทางลัดคุยเกินโควตา · เปิดเป็น **INFRA-20** แล้ว A รับไป
 
-## สัญลักษณ์
+## ไม่มีจุดรอระหว่างสายแล้ว
 
-- ⚠️ = **เร่งด่วน** ทั้งทีมรออยู่
-- 🔒 = **ห้ามตัดทิ้งแม้เวลาไม่พอ** (เป็นเกณฑ์ให้คะแนน Safety / Privacy โดยตรง)
+ทุกสายเดินได้เต็มที่ · F2-04 / F5-02 ได้ผล AI จริงหลัง signature เดิม ไม่ต้องแก้โค้ด
 
-## หมายเหตุโหลดงาน
-
-**C หนักสุด** — Sprint 2 แบก AI เกือบทั้งหมด (F3 → F4 → F5) ถ้าเริ่มช้าจะเป็นคอขวด → **ให้ C เริ่มก่อนเพื่อน**
-ถ้า C ไม่ไหว งานที่โอนออกง่ายสุดคือ **f4/01 (Chat UI)** ให้ B หรือ D ช่วย
+> ✅ ปาล์มมี reflection 4 สัปดาห์ + pattern 14/30 วัน cache ไว้บน production แล้ว (INFRA-16) — เปิดมาเห็นข้อมูลจริงเลย ไม่ต้องกด generate เปลือง quota

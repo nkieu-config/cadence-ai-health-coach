@@ -1,4 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
+import { classifyAiError, isRetryable } from "./errors";
+import { DEFAULT_MODEL } from "./model";
 import { COACH_SYSTEM_PROMPT } from "./system-prompt";
 
 export type ChatTurn = {
@@ -11,7 +13,7 @@ export type GenerateOptions = {
   jsonSchema?: object;
 };
 
-const DEFAULT_MODEL = "gemini-2.5-flash";
+const RETRY_DELAY_MS = 4000;
 
 function getClient() {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -21,13 +23,12 @@ function getClient() {
   return new GoogleGenAI({ apiKey });
 }
 
-export async function generate(
-  turns: ChatTurn[],
-  options: GenerateOptions = {}
-): Promise<string> {
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function callModel(turns: ChatTurn[], options: GenerateOptions): Promise<string> {
   const client = getClient();
   const response = await client.models.generateContent({
-    model: process.env.AI_MODEL ?? DEFAULT_MODEL,
+    model: process.env.AI_MODEL?.trim() || DEFAULT_MODEL,
     contents: turns.map((turn) => ({
       role: turn.role === "user" ? "user" : "model",
       parts: [{ text: turn.content }],
@@ -50,6 +51,22 @@ export async function generate(
   return text;
 }
 
+export async function generate(turns: ChatTurn[], options: GenerateOptions = {}): Promise<string> {
+  try {
+    return await callModel(turns, options);
+  } catch (error) {
+    const classified = classifyAiError(error);
+    if (!isRetryable(classified)) throw classified;
+
+    await sleep(RETRY_DELAY_MS);
+    try {
+      return await callModel(turns, options);
+    } catch (retryError) {
+      throw classifyAiError(retryError);
+    }
+  }
+}
+
 export async function generateJson<T>(
   turns: ChatTurn[],
   jsonSchema: object,
@@ -60,3 +77,11 @@ export async function generateJson<T>(
 }
 
 export { COACH_SYSTEM_PROMPT };
+export {
+  AiError,
+  aiErrorMessage,
+  classifyAiError,
+  isQuotaExhausted,
+  isRetryable,
+  type AiFailure,
+} from "./errors";

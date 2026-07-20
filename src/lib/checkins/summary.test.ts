@@ -1,19 +1,25 @@
 import { describe, expect, it } from "vitest";
-import { makeCheckin } from "@/lib/patterns/test-fixtures";
+import { makeCheckin } from "@/test/fixtures";
 import type {
   BedTimeBucket,
   Checkin,
   Disruptor,
   EnergyLevel,
+  FirstMealTime,
+  FoodType,
+  MovementFeeling,
   MovementType,
-} from "@/lib/patterns/types";
+} from "@/lib/domain";
 import { findForbiddenTerms } from "@/lib/safety/language";
 import { buildCheckinSummary } from "./summary";
 
 const WORST_DAY = makeCheckin({
   mealsCount: 0,
   skippedMeals: ["breakfast", "lunch", "dinner"],
+  firstMealTime: null,
+  foodTypes: [],
   sweetDrinks: 4,
+  mealFeeling: null,
   sleepHours: 3,
   bedTimeBucket: "after_02",
   sleepQuality: 1,
@@ -21,6 +27,7 @@ const WORST_DAY = makeCheckin({
   movementTypes: ["none"],
   movementMinutes: 0,
   movementBlocker: "tired",
+  movementFeeling: null,
   energyLevel: "low",
   disruptors: ["deadline", "exam"],
 });
@@ -30,6 +37,15 @@ function everyCheckin(): Checkin[] {
   const energies: EnergyLevel[] = ["low", "medium", "high"];
   const movements: MovementType[][] = [["none"], ["walk"], ["stretch", "stairs"]];
   const disruptorSets: Disruptor[][] = [[], ["none"], ["deadline"], ["exam", "commute"]];
+  const mealTimes: (FirstMealTime | null)[] = [null, "before_9", "9_12", "after_12"];
+  const foodTypeSets: FoodType[][] = [[], ["snack"], ["veg_fruit"], ["snack", "veg_fruit"]];
+  const movementFeelings: (MovementFeeling | null)[] = [
+    null,
+    "refreshed",
+    "relaxed",
+    "tired",
+    "no_change",
+  ];
 
   const checkins: Checkin[] = [];
   for (const bedTimeBucket of buckets) {
@@ -37,21 +53,31 @@ function everyCheckin(): Checkin[] {
       for (const movementTypes of movements) {
         for (const disruptors of disruptorSets) {
           for (let mealsCount = 0; mealsCount <= 3; mealsCount++) {
-            checkins.push(
-              makeCheckin({
-                mealsCount,
-                skippedMeals: ["breakfast", "lunch", "dinner"].slice(
-                  0,
-                  3 - mealsCount
-                ) as Checkin["skippedMeals"],
-                bedTimeBucket,
-                energyLevel,
-                movementTypes,
-                movementMinutes: movementTypes.includes("none") ? 0 : 20,
-                movementBlocker: movementTypes.includes("none") ? "no_time" : null,
-                disruptors,
-              })
-            );
+            for (const firstMealTime of mealTimes) {
+              for (const foodTypes of foodTypeSets) {
+                for (const movementFeeling of movementFeelings) {
+                  const didNotMove = movementTypes.includes("none");
+                  checkins.push(
+                    makeCheckin({
+                      mealsCount,
+                      skippedMeals: ["breakfast", "lunch", "dinner"].slice(
+                        0,
+                        3 - mealsCount
+                      ) as Checkin["skippedMeals"],
+                      firstMealTime: mealsCount === 0 ? null : firstMealTime,
+                      foodTypes,
+                      bedTimeBucket,
+                      energyLevel,
+                      movementTypes,
+                      movementMinutes: didNotMove ? 0 : 20,
+                      movementBlocker: didNotMove ? "no_time" : null,
+                      movementFeeling: didNotMove ? null : movementFeeling,
+                      disruptors,
+                    })
+                  );
+                }
+              }
+            }
           }
         }
       }
@@ -66,34 +92,45 @@ describe("buildCheckinSummary", () => {
       makeCheckin({
         mealsCount: 2,
         skippedMeals: ["breakfast"],
+        firstMealTime: "after_12",
+        foodTypes: ["veg_fruit"],
         sweetDrinks: 2,
         sleepHours: 5.5,
         bedTimeBucket: "after_02",
         sleepQuality: 2,
         movementTypes: ["walk"],
         movementMinutes: 20,
+        movementFeeling: "refreshed",
       })
     );
 
     expect(summary.lines).toEqual([
-      "กิน 2 มื้อ · ข้ามเช้า · เครื่องดื่มหวาน 2 แก้ว",
-      "นอน 5.5 ชม. · เข้านอนหลัง 02:00 · คุณภาพการนอนที่ประเมินเอง 2/5",
-      "เดิน 20 นาที",
+      "กิน 2 มื้อ · มื้อแรก หลัง 12:00 · ข้ามเช้า · ผัก / ผลไม้ · เครื่องดื่มหวาน 2 แก้ว",
+      "นอน 5.5 ชม. · เข้านอน หลัง 02:00 · ตื่นราว 07:00–08:00 · คุณภาพการนอนที่ประเมินเอง 2/5",
+      "เดิน 20 นาที · หลังขยับรู้สึกสดชื่นขึ้น",
     ]);
+  });
+
+  it("เวลาตื่นนอน (โจทย์ 5.3) คำนวณจากเวลาเข้านอน + ชั่วโมงนอน ไม่ต้องถามซ้ำ", () => {
+    const early = buildCheckinSummary(makeCheckin({ bedTimeBucket: "before_23", sleepHours: 8 }));
+    expect(early.lines[1]).toContain("ตื่นราว 06:00–07:00");
+
+    const late = buildCheckinSummary(makeCheckin({ bedTimeBucket: "00_01", sleepHours: 7 }));
+    expect(late.lines[1]).toContain("ตื่นราว 07:00–08:00");
   });
 
   it("วันที่ไม่ได้ขยับ บอกอุปสรรคแทน ไม่ตำหนิ", () => {
     const summary = buildCheckinSummary(
       makeCheckin({ movementTypes: ["none"], movementMinutes: 0, movementBlocker: "tired" })
     );
-    expect(summary.lines[2]).toBe("วันนี้ไม่ได้ขยับ (เหนื่อยเกิน)");
+    expect(summary.lines[2]).toBe("ไม่ได้ขยับ (เหนื่อยเกิน)");
   });
 
   it("ข้อมูลเก่าที่ไม่มีชนิดการเคลื่อนไหว ไม่ทำให้ขึ้นบรรทัดว่าง ๆ", () => {
     const summary = buildCheckinSummary(
       makeCheckin({ movementTypes: [], movementMinutes: 20, movementBlocker: null })
     );
-    expect(summary.lines[2]).toBe("วันนี้ไม่ได้ขยับ");
+    expect(summary.lines[2]).toBe("ไม่ได้ขยับ");
   });
 
   it("มี disruptor → ให้กำลังใจโดยอ้างถึงวันที่ยาก ไม่ใช่โทษผู้ใช้", () => {

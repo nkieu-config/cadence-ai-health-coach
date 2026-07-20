@@ -6,7 +6,7 @@ import { Check, Pencil, Trash2 } from "lucide-react";
 import { deleteCheckin } from "@/lib/checkins/actions";
 import { formatShortThaiDate, formatThaiDate } from "@/lib/checkins/date";
 import { buildCheckinSummary } from "@/lib/checkins/summary";
-import type { Checkin } from "@/lib/patterns/types";
+import type { Checkin } from "@/lib/domain";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -114,7 +114,7 @@ export function CheckinHistory({ checkins }: { checkins: Checkin[] }) {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
       {checkins.map((checkin) => (
         <HistoryRow key={checkin.checkinDate} checkin={checkin} />
       ))}

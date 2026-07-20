@@ -1,4 +1,4 @@
-import type { Checkin } from "@/lib/patterns/types";
+import type { Checkin } from "@/lib/domain";
 import type { CheckinRow } from "./types";
 
 export function toCheckin(row: CheckinRow): Checkin {
@@ -6,6 +6,8 @@ export function toCheckin(row: CheckinRow): Checkin {
     checkinDate: row.checkin_date,
     mealsCount: row.meals_count,
     skippedMeals: (row.skipped_meals ?? []) as Checkin["skippedMeals"],
+    firstMealTime: (row.first_meal_time ?? null) as Checkin["firstMealTime"],
+    foodTypes: (row.food_types ?? []) as Checkin["foodTypes"],
     sweetDrinks: row.sweet_drinks ?? 0,
     mealFeeling: (row.meal_feeling ?? null) as Checkin["mealFeeling"],
     sleepHours: Number(row.sleep_hours),
@@ -15,6 +17,7 @@ export function toCheckin(row: CheckinRow): Checkin {
     movementTypes: (row.movement_types ?? []) as Checkin["movementTypes"],
     movementMinutes: row.movement_minutes ?? 0,
     movementBlocker: (row.movement_blocker ?? null) as Checkin["movementBlocker"],
+    movementFeeling: (row.movement_feeling ?? null) as Checkin["movementFeeling"],
     energyLevel: row.energy_level as Checkin["energyLevel"],
     disruptors: (row.disruptors ?? []) as Checkin["disruptors"],
     note: row.note,
@@ -27,6 +30,8 @@ export function toRow(checkin: Checkin, userId: string) {
     checkin_date: checkin.checkinDate,
     meals_count: checkin.mealsCount,
     skipped_meals: checkin.skippedMeals,
+    first_meal_time: checkin.firstMealTime,
+    food_types: checkin.foodTypes,
     sweet_drinks: checkin.sweetDrinks,
     meal_feeling: checkin.mealFeeling,
     sleep_hours: checkin.sleepHours,
@@ -36,6 +41,7 @@ export function toRow(checkin: Checkin, userId: string) {
     movement_types: checkin.movementTypes,
     movement_minutes: checkin.movementMinutes,
     movement_blocker: checkin.movementBlocker,
+    movement_feeling: checkin.movementFeeling,
     energy_level: checkin.energyLevel,
     disruptors: checkin.disruptors,
     note: checkin.note,

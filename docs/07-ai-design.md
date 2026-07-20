@@ -38,22 +38,38 @@
 
 ## งานที่ 1: Pattern Analysis
 
-`lib/patterns` คำนวณ candidates อย่างน้อย 4 ตัวตามโจทย์ Feature 3:
+`lib/patterns` คำนวณ candidates **10 ตัว** ครอบคลุม**ทั้งตัวอย่าง 4 ข้อของ Feature 3 และตาราง 3 แถวของ Feature 2** (ไม่มี LLM ในขั้นนี้ — ตัวเลขทั้งหมดมาจากสถิติจริง):
 
-| Pattern candidate | วิธีคำนวณ |
-|---|---|
-| นอนน้อย × ข้ามมื้อเช้า / เครื่องดื่มหวาน | เทียบอัตราข้ามมื้อเช้าและค่าเฉลี่ย sweet_drinks ระหว่างวันนอน &lt;6 ชม. กับ ≥6 ชม. |
-| Deadline × นอนดึก + เคลื่อนไหวน้อย | เทียบ bed_time_bucket และ movement_minutes วันที่มี disruptor `deadline`/`exam` กับวันปกติ |
-| เคลื่อนไหว × การนอน/พลังงาน | เทียบ sleep_quality และ energy วันถัดไป หลังวันที่ movement_minutes ≥ 15 |
-| กินเป็นเวลา × พลังงาน | เทียบ energy วันที่กินครบมื้อ ไม่ข้าม กับวันที่ข้าม |
+| โจทย์ Feature 3 ถามว่า | Pattern candidate (id) | วิธีคำนวณ |
+|---|---|---|
+| นอนน้อย → ข้ามมื้อเช้า? ดื่มหวานขึ้น? | `sleep-eating-skip-breakfast`, `sleep-eating-sweet-drinks` | เทียบอัตราข้ามมื้อเช้าและค่าเฉลี่ย `sweet_drinks` ระหว่างวันนอน &lt;6 ชม. กับ ≥6 ชม. |
+| Deadline → นอนดึก? ขยับน้อยลง? | `deadline-sleep-bedtime`, `deadline-movement-minutes` | เทียบเวลาเข้านอน (สเกลต่อเนื่อง) และ `movement_minutes` วันที่มี disruptor `deadline`/`exam` กับวันปกติ |
+| ได้ขยับ → นอน/พลังงานดีขึ้น? | `movement-next-day-sleep`, `movement-next-day-energy` | เทียบ `sleep_quality` และอัตรา energy สูง **ของวันถัดไป** หลังวันที่ขยับ ≥ 15 นาที (จับคู่เฉพาะวันที่ติดกันจริงตามปฏิทิน) |
+| กินเป็นเวลา → พลังงานดีขึ้น? | `eating-energy` (ครบมื้อ), **`eating-on-time-energy`** (เวลามื้อแรก) | เทียบอัตรา energy สูง: วันที่กินครบมื้อ vs ข้ามมื้อ · และวันที่กินมื้อแรกก่อน 9:00 vs หลัง 9:00 (ใช้ `first_meal_time`) |
 
-ส่งเป็น JSON ให้ Gemini พร้อมกติกา: เลือกเฉพาะ candidate ที่ต่างกันชัด (heuristic กำหนดใน `lib/patterns` เช่น ต่างกัน ≥ 20% และมีข้อมูล ≥ 3 วันต่อกลุ่ม), เขียนแบบ "สัญญาณ", ปิดท้ายด้วย next step เล็ก 1 ข้อ ต่อ pattern
+**ตาราง Feature 2 ของโจทย์ (FR-2.3) บังคับ 3 แถวนี้ — ต้องมี candidate รองรับทุกแถว:**
 
-Output format บังคับเป็น JSON schema: `{patterns: [{pillars, observation, meaning, next_step}]}` เพื่อ render ลงตาราง dashboard ได้ตรง
+| แถวในโจทย์ | candidate | เพิ่มเมื่อ |
+|---|---|---|
+| กิน — มักข้ามมื้อเช้าในวันที่มีเรียน/งานเช้า | **`early-class-skip-breakfast`** | 14 ก.ค. (เดิมไม่มี) |
+| นอน — นอนดึกในคืนก่อน deadline | `deadline-sleep-bedtime` | มีอยู่แล้ว |
+| ออกกำลังกาย — เดินน้อยในวันที่เรียน/ทำงาน online | **`online-class-movement`** | 14 ก.ค. (เดิมไม่มี · ต้องเพิ่ม disruptor `online_class` ด้วย) |
+
+⚠️ **ทุก candidate ต้องมี template ใน `lib/ai-outputs/templates.ts`** — `toInsightPattern()` คืน `null` ถ้าไม่เจอ template แล้ว candidate นั้นจะ**ถูกทิ้งเงียบ ๆ ไม่ขึ้นหน้าจอ** (เคยเกิดจริงกับ `eating-on-time-energy`) · มีเทสต์คุมแล้ว
+
+ส่งเป็น JSON ให้ Gemini พร้อมกติกา: เลือกเฉพาะ candidate ที่ต่างกันชัด (heuristic ใน `lib/patterns`: ต่างกัน ≥ 20% และมีข้อมูล ≥ 3 วันต่อกลุ่ม), เขียนแบบ "สัญญาณ", ปิดท้ายด้วย next step เล็ก 1 ข้อ ต่อ pattern
+
+Output format บังคับเป็น JSON schema:
+
+```json
+{ "patterns": [{ "pillars": [], "observation": "", "meaning": "", "next_step": "" }] }
+```
+
+โค้ดแนบ **`evidence`** (กลุ่ม A/B, จำนวนวัน, ค่าที่วัดได้) กลับเข้าไปเองหลัง Gemini ตอบ — **LLM แต่งตัวเลขไม่ได้** และ dashboard เอา `evidence` ไปโชว์เป็นหลักฐานใต้ทุกแถวของตาราง pattern ได้
 
 ## งานที่ 2: Coach Conversation
 
-- Context ที่แนบ: check-in 7 วันล่าสุด (ย่อ), patterns ล่าสุด, goal ปัจจุบัน, โปรไฟล์ (status, early_days, constraints)
+- Context ที่แนบ: check-in 7 วันล่าสุด (ย่อ), patterns ล่าสุด, goal ปัจจุบัน, โปรไฟล์ (status, early_days, **busy_periods**, typical_constraints) — **ไม่แนบชื่อจริงหรืออีเมล**
 - คำถามนำที่ coach ใช้ ยึดตามโจทย์ Feature 4 เช่น "สัปดาห์นี้วันไหนพลังงานดีสุด เกิดอะไรขึ้นวันนั้น"
 - **Guided flow "ตั้งเป้าสัปดาห์หน้า"** (FR-4.3): coach ถาม (1) อยากเริ่มจากด้านไหน (2) สัปดาห์หน้ามีวันไหนตารางแน่น (3) ข้อจำกัดคืออะไร → เสนอ micro goal 2 ตัวเลือก → ผู้ใช้เลือก → บันทึกเป็น goal
 

@@ -24,9 +24,32 @@ export const JUDGING_TERMS = [
   "น่าเสียดาย",
 ];
 
-export const CAUSAL_TERMS = ["เพราะว่า", "ส่งผลให้", "ทำให้คุณ", "สาเหตุคือ"];
+export const RESTRICTION_TERMS = [
+  "อดอาหาร",
+  "อดข้าว",
+  "อดมื้อ",
+  "งดอาหาร",
+  "งดข้าว",
+  "ล้างพิษ",
+  "ดีท็อกซ์",
+  "detox",
+  "คีโต",
+  "keto",
+  "fasting",
+  "ฟาสติ้ง",
+];
 
-const FORBIDDEN = [...BODY_TERMS, ...JUDGING_TERMS, ...CAUSAL_TERMS];
+export const CAUSAL_TERMS = [
+  "เพราะว่า",
+  "เป็นเพราะ",
+  "เกิดจาก",
+  "ส่งผลให้",
+  "ทำให้คุณ",
+  "สาเหตุคือ",
+  "สาเหตุมาจาก",
+];
+
+const FORBIDDEN = [...BODY_TERMS, ...RESTRICTION_TERMS, ...JUDGING_TERMS, ...CAUSAL_TERMS];
 
 export function findForbiddenTerms(text: string): string[] {
   const haystack = text.toLowerCase();

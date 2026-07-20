@@ -2,6 +2,8 @@ export type CheckinRow = {
   checkin_date: string;
   meals_count: number;
   skipped_meals: string[] | null;
+  first_meal_time: string | null;
+  food_types: string[] | null;
   sweet_drinks: number | null;
   meal_feeling: string | null;
   sleep_hours: number | string;
@@ -11,6 +13,7 @@ export type CheckinRow = {
   movement_types: string[] | null;
   movement_minutes: number | null;
   movement_blocker: string | null;
+  movement_feeling: string | null;
   energy_level: string;
   disruptors: string[] | null;
   note: string | null;
@@ -20,6 +23,8 @@ export const CHECKIN_COLUMNS = [
   "checkin_date",
   "meals_count",
   "skipped_meals",
+  "first_meal_time",
+  "food_types",
   "sweet_drinks",
   "meal_feeling",
   "sleep_hours",
@@ -29,6 +34,7 @@ export const CHECKIN_COLUMNS = [
   "movement_types",
   "movement_minutes",
   "movement_blocker",
+  "movement_feeling",
   "energy_level",
   "disruptors",
   "note",
