@@ -57,7 +57,9 @@ export default async function MyPage() {
 | อะไร | ใช้ | หมายเหตุ |
 | --- | --- | --- |
 | หัวข้อหน้า (ที่มองเห็น) | `text-xl font-semibold lg:text-2xl` | ถ้าหัวข้ออยู่ในการ์ดแล้ว h1 เป็น `sr-only` |
-| เนื้อความ | `text-sm` ขึ้นไป | **`text-xs` เฉพาะ caption/meta** (เช่น `CardDescription`) — ห้ามใช้เป็นเนื้อความหลัก |
+| เนื้อความทั่วไป | `text-sm` | **`text-xs` เฉพาะ caption/meta** (เช่น `CardDescription`) — ห้ามใช้เป็นเนื้อความหลัก |
+| **ย่อหน้ายาว** (reflection, บทความ) | `text-base` (16px) | ตัวไทยดูเล็กกว่า Latin ที่ px เท่ากัน · ย่อหน้าอ่านยาวบนมือถือต้องการ 16px |
+| line-height | ตั้งใน `@theme` แล้ว | ไทยมี 4 ชั้นต่อบรรทัด (วรรณยุกต์/สระบน/ตัว/สระล่าง) — leading ตั้งไว้ 1.65–1.75 ให้อัตโนมัติ **ไม่ต้องใส่ `leading-*` เอง** |
 | ระยะห่างระหว่าง section ในหน้า | `space-y-6` | |
 | ระยะห่างในการ์ด | `space-y-4` | |
 | ระยะห่างใน field (label + input) | `space-y-2` | |

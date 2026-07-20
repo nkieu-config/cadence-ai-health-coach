@@ -30,7 +30,7 @@ function PillarSection({ entry }: { entry: ReflectionPillar }) {
         <Icon className="size-4 shrink-0 text-primary" />
         ด้าน{PILLAR_LABELS[entry.pillar]}
       </h3>
-      <p className="text-sm leading-relaxed text-muted-foreground">{entry.summary}</p>
+      <p className="text-base leading-relaxed text-muted-foreground">{entry.summary}</p>
     </div>
   );
 }
@@ -151,7 +151,7 @@ export default async function ReflectionPage({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm leading-relaxed text-muted-foreground">{selected.strengths}</p>
+            <p className="text-base leading-relaxed text-muted-foreground">{selected.strengths}</p>
           </CardContent>
         </Card>
 
@@ -163,7 +163,7 @@ export default async function ReflectionPage({
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm leading-relaxed text-muted-foreground">{selected.nextWeek}</p>
+            <p className="text-base leading-relaxed text-muted-foreground">{selected.nextWeek}</p>
             <Link href="/goals" className={buttonVariants({ className: "w-full" })}>
               ตั้งเป้าสัปดาห์หน้า
             </Link>
