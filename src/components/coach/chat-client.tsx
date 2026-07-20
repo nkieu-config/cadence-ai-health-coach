@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { UserMessage, CoachMessage, PendingReply, QuotaReachedNotice } from "./message-variants";
 import { sendCoachMessage, retryCoachReply, clearChatHistory } from "@/lib/chat/actions";
+import type { CoachOpener } from "@/lib/chat/opener";
 import {
   DAILY_MESSAGE_LIMIT,
   MESSAGE_MAX_LENGTH,
@@ -36,9 +37,14 @@ const CONSTRAINT_OPTIONS = Object.entries(CONSTRAINT_LABELS) as [string, string]
 interface CoachChatClientProps {
   initialMessages: ChatMessage[];
   initialQuotaLeft: number;
+  opener?: CoachOpener | null;
 }
 
-export function CoachChatClient({ initialMessages, initialQuotaLeft }: CoachChatClientProps) {
+export function CoachChatClient({
+  initialMessages,
+  initialQuotaLeft,
+  opener,
+}: CoachChatClientProps) {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [quotaLeft, setQuotaLeft] = useState<number>(initialQuotaLeft);
   const [inputValue, setInputValue] = useState("");
@@ -414,21 +420,39 @@ export function CoachChatClient({ initialMessages, initialQuotaLeft }: CoachChat
             role="log"
             aria-live="polite"
             aria-label="บทสนทนากับโค้ช"
-            className="h-[400px] overflow-y-auto pr-1 space-y-4 flex flex-col scrollbar-thin"
+            className={cn(
+              "flex flex-col space-y-4 overflow-y-auto pr-1 scrollbar-thin",
+              displayMessages.length === 0 && opener ? "py-2" : "h-[400px]"
+            )}
           >
             {displayMessages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full text-center p-6 space-y-3">
-                <div className="p-3 rounded-full bg-primary/5 text-primary">
-                  <MessageSquare className="size-8" />
-                </div>
-                <div className="space-y-1">
-                  <p className="font-medium text-sm">เริ่มคุยกับโค้ชสุขภาพประจำตัวของคุณ</p>
-                  <p className="text-xs text-muted-foreground max-w-[280px]">
-                    ปรึกษาเรื่องพฤติกรรมการกิน การนอน
-                    หรือการขยับร่างกายเพื่อช่วยปรับปรุงชีวิตประจำวัน
+              opener ? (
+                <div className="flex flex-col space-y-4 p-2">
+                  <div className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <MessageSquare className="size-4.5" />
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-sm leading-relaxed text-muted-foreground">{opener.fact}</p>
+                    <p className="text-lg leading-snug font-medium">{opener.question}</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    เล่าให้ฟังได้เลย หรือจะถามเรื่องอื่นก็ได้
                   </p>
                 </div>
-              </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full text-center p-6 space-y-3">
+                  <div className="p-3 rounded-full bg-primary/5 text-primary">
+                    <MessageSquare className="size-8" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="font-medium text-sm">เริ่มคุยกับโค้ชสุขภาพประจำตัวของคุณ</p>
+                    <p className="text-xs text-muted-foreground max-w-[280px]">
+                      ปรึกษาเรื่องพฤติกรรมการกิน การนอน
+                      หรือการขยับร่างกายเพื่อช่วยปรับปรุงชีวิตประจำวัน
+                    </p>
+                  </div>
+                </div>
+              )
             ) : (
               displayMessages.map((m) =>
                 m.role === "user" ? (

@@ -1,11 +1,20 @@
 import { PageContainer } from "@/components/page-container";
 import { CoachChatClient } from "@/components/coach/chat-client";
 import { getChatHistory, messagesLeftToday } from "@/lib/chat/queries";
+import { buildCoachOpener } from "@/lib/chat/opener";
+import { getCheckins } from "@/lib/checkins/queries";
 
 export const dynamic = "force-dynamic";
 
+const OPENER_WINDOW_DAYS = 7;
+
 export default async function CoachPage() {
-  const [history, quotaLeft] = await Promise.all([getChatHistory(), messagesLeftToday()]);
+  const [history, quotaLeft, recent] = await Promise.all([
+    getChatHistory(),
+    messagesLeftToday(),
+    getCheckins(OPENER_WINDOW_DAYS),
+  ]);
+  const opener = buildCoachOpener(recent);
 
   return (
     <PageContainer>
@@ -17,7 +26,7 @@ export default async function CoachPage() {
             รับคำแนะนำเพื่อสร้างนิสัยการกิน การนอน และการเคลื่อนไหวที่ดี
           </p>
         </div>
-        <CoachChatClient initialMessages={history} initialQuotaLeft={quotaLeft} />
+        <CoachChatClient initialMessages={history} initialQuotaLeft={quotaLeft} opener={opener} />
       </div>
     </PageContainer>
   );
