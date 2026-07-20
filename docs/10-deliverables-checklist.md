@@ -10,10 +10,10 @@
 | 2 | User persona | [03-user-persona.md](03-user-persona.md) | A | ✅ |
 | 3 | Health behavior data design | [05-data-design.md](05-data-design.md) | A | ✅ + ตารางตรวจ **โจทย์ข้อ 5 ครบทุกบรรทัด** |
 | 4 | System workflow | [06-system-architecture.md](06-system-architecture.md) | A | ✅ |
-| 5 | Prototype / demo | Web app บน Vercel (demo account ปาล์ม) | ทุกสาย | ✅ F0–F7 ใช้งานจริงบน production · **เหลือชิ้นเดียว: ตาราง pattern F2-04 (🟦)** |
+| 5 | Prototype / demo | Web app บน Vercel (demo account ปาล์ม) | ทุกสาย | ✅ **F0–F7 ครบทุกจอบน production** |
 | 6 | ตัวอย่าง daily check-in | ในแอป (`/checkin`) + screenshot | A | ✅ ใช้งานจริง + dogfooding ตั้งแต่ 13 ก.ค. |
 | 7 | ตัวอย่าง dashboard | ในแอป (demo account) + screenshot | 🟦 | ✅ layout + 7/14/30 + กราฟ 3 ด้าน + disruptor overlay (F2-02/03/06 + INFRA-22 a11y) |
-| 8 | ตัวอย่าง pattern analysis | ในแอป + ตัวอย่าง output ใน pitch deck | A + 🟦 | 🔶 engine + cache ✅ (F3-03) · **รอแค่ UI ตาราง F2-04 (🟦) — ชิ้นสุดท้ายของทั้ง 14 ข้อ** |
+| 8 | ตัวอย่าง pattern analysis | ในแอป (dashboard) + ตัวอย่าง output ใน pitch deck | A + 🟦 | ✅ **เสร็จ 20 ก.ค.** — ตาราง 4 คอลัมน์บนเดสก์ท็อป + การ์ดบนมือถือ (F2-04, PR #63/#64/#66 — A วางฐาน แพรรี่ต่อยอดตารางเดสก์ท็อป) |
 | 9 | ตัวอย่าง AI coaching conversation | ในแอป (guided flow) + transcript | A + 🟩 | ✅ แชท + guided flow + escalation ใช้งานจริง (F4-01→05) |
 | 10 | ตัวอย่าง micro goal recommendation | ในแอป (`/goals`) + ตัวอย่างใน pitch deck | A + 🟨 | ✅ **หน้า goals เสร็จแล้ว (F5-02, PR #54)** · engine ครบ (F5-01/03/04) |
 | 11 | ตัวอย่าง weekly reflection | ในแอป + ตัวอย่างเต็ม 1 ฉบับ | A | ✅ หน้า `/reflection` — ปาล์มมี 4 สัปดาห์ + เทียบสัปดาห์ก่อน (F6-01/02/03) |
@@ -21,7 +21,7 @@
 | 13 | Privacy design | [08](08-safety-privacy.md) Part 2 + `/settings/privacy` | A + 🟨 | ✅ design + หน้าในแอป (ตอบโจทย์ข้อ 9 ครบ 6/6) + **ปุ่มลบข้อมูล/บัญชีใช้งานจริง (F7-02)** |
 | 14 | Limitations & future improvement plan | [11](11-limitations-future.md) | A | ✅ เขียนแล้ว — ทุกข้อจำกัดมีสิ่งที่ทำแล้ว + แผนถ้าไปต่อ · รวมบทเรียนจาก dogfooding |
 
-**สรุป: 13.5 / 14 — ค้างชิ้นเดียวคือ UI ตาราง pattern (F2-04 · 🟦) ซึ่งปิดทั้งข้อ 8 และเป็นหลักฐานหลักของเกณฑ์ AI Usefulness (15%)**
+**สรุป: ✅ 14 / 14 ครบทุกข้อ (20 ก.ค. — 9 วันก่อน freeze)** — ที่เหลือคือทำให้การนำเสนอคู่ควรกับของ: QA-02 (ตัวเลขจริง) + QA-03 (deck + ซ้อม)
 
 ## Mapping กับ Evaluation Criteria 9 ข้อ (Mission ข้อ 11)
 
@@ -51,7 +51,6 @@
 
 **ลำดับงานที่เหลือก่อน freeze 29 ก.ค.:**
 
-1. F2-04 ตาราง pattern (🟦) — ปิด deliverable ตัวสุดท้าย
-2. QA-02 จับเวลา check-in — **ต้องเริ่ม ~21 ก.ค.** (ต้องได้ 3 วันติด × ≥4 คน)
-3. QA-03 deck + script + screenshot ลง [docs/pitch/](pitch/) — ซ้อม 2 รอบวันที่ 29
-4. เก็บเล็ก (ถ้าทัน): F4-06 markdown ในแชท · INFRA-20 · F2-05 streak (ตัดได้)
+1. QA-02 จับเวลา check-in — **ต้องเริ่ม 21 ก.ค.** (ต้องได้ 3 วันติด × ≥4 คน) · โครงพร้อมกรอกที่ [.scratch/qa-pitch/qa-results.md](../.scratch/qa-pitch/qa-results.md)
+2. QA-03 deck + script + screenshot ลง [docs/pitch/](pitch/) — ซ้อม 2 รอบวันที่ 29
+3. เก็บเล็ก (ถ้าทัน): F4-06 markdown ในแชท · INFRA-20 · F2-05 streak (ตัดได้)
