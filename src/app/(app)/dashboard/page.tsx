@@ -12,6 +12,7 @@ import { CurrentGoalCard } from "@/components/goals/current-goal-card";
 import { ReflectionCard } from "@/components/reflection/reflection-card";
 import { TodaySummary } from "@/components/dashboard/today-summary";
 import { PatternTable } from "@/components/dashboard/pattern-table";
+import { DayLines } from "@/components/dashboard/day-lines";
 import { PillarCharts } from "@/components/dashboard/pillar-charts";
 import { EnergyChart } from "@/components/dashboard/energy-chart";
 
@@ -92,6 +93,8 @@ export default async function DashboardPage({
           <ReflectionCard />
         </Suspense>
       </div>
+
+      <DayLines checkins={checkins} />
 
       <Suspense fallback={<CardSkeleton rows={3} />}>
         <PatternTable days={period} recordedDays={inPeriod.length} />
