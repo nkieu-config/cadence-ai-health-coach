@@ -197,7 +197,7 @@ export function PillarCharts({ checkins, period }: { checkins: Checkin[]; period
                     tickLine={false}
                   />
                   {cat.id === "sleep" && (
-                    <ReferenceLine y={6} stroke="var(--destructive)" strokeDasharray="3 3" />
+                    <ReferenceLine y={6} stroke="var(--muted-foreground)" strokeDasharray="3 3" />
                   )}
                   <ChartTooltip content={<PillarTooltip />} />
                   {cat.id === "sleep" && (

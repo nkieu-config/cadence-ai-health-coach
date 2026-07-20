@@ -30,9 +30,9 @@ type DisruptorStyle = {
 const disruptorConfig: Partial<Record<Disruptor, DisruptorStyle>> = {
   deadline: {
     icon: AlertCircle,
-    color: "text-destructive dark:text-destructive",
-    bg: "bg-destructive/10 dark:bg-destructive/15",
-    border: "border-destructive/20 dark:border-destructive/30",
+    color: "text-primary dark:text-primary",
+    bg: "bg-primary/10 dark:bg-primary/15",
+    border: "border-primary/20 dark:border-primary/30",
   },
   long_meeting: {
     icon: Users,

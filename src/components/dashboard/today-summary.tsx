@@ -65,7 +65,7 @@ export function TodaySummary({ checkin, date }: { checkin: Checkin | null; date:
   const energyBadge = (() => {
     if (!checkin) return { label: "ยังไม่ได้บันทึก", variant: "outline" as const };
     const energyMap = {
-      low: { label: "พลังงานต่ำ", variant: "destructive" as const },
+      low: { label: "พลังงานต่ำ", variant: "outline" as const },
       medium: { label: "พลังงานปานกลาง", variant: "secondary" as const },
       high: { label: "พลังงานสูง", variant: "default" as const },
     };
