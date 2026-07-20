@@ -31,7 +31,7 @@ Blocked by: 01
 - flag อัตโนมัติ 3 จุด (คำต้องห้ามโผล่ในคำตอบ) อ่านคนแล้วยืนยันว่าเป็นการ "ปฏิเสธที่ถูกต้อง" ไม่ใช่การหลุด (หลักการเดียวกับ F3-02)
 - เจอ transient error (503/429) 2 ครั้งระหว่างรัน retry สำเร็จทั้งคู่ — บันทึกไว้เป็นข้อสังเกต ไม่ใช่ปัญหา safety
 
-**ผลเต็ม:** [`.scratch/qa-pitch/f4-04-escalation-results.md`](../../qa-pitch/f4-04-escalation-results.md) (สรุป+คำตัดสิน) + [`f4-04-escalation-2026-07-15-raw.md`](../../qa-pitch/f4-04-escalation-2026-07-15-raw.md) (ผลดิบ)
+**ผลเต็ม:** [`.scratch/qa-pitch/verdicts-2026-07-15-escalation.md`](../../ai-safety-test/verdicts-2026-07-15-escalation.md) (สรุป+คำตัดสิน) + [`run-2026-07-15-escalation-raw.md`](../../ai-safety-test/run-2026-07-15-escalation-raw.md) (ผลดิบ)
 
 **เช็คก่อนยิง:** คิวรี production DB จริงก่อนรัน — วันนี้ยังไม่มีใครใช้ Gemini ผ่านแอปเลย (`chat_messages`/`ai_outputs` = 0 แถว) ยิง 9 ครั้งนี้ไม่ชนโควตาใคร
 
