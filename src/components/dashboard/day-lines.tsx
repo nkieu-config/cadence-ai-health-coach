@@ -107,7 +107,7 @@ function DayRow({ date, checkin }: { date: string; checkin: Checkin | undefined 
       <div
         className={cn(
           "relative h-8 flex-1 overflow-hidden rounded-lg",
-          disruptors ? "bg-chart-4/20 ring-1 ring-chart-4/40" : "bg-muted/60"
+          disruptors ? "bg-chart-5/22 ring-1 ring-chart-5/45" : "bg-muted/60"
         )}
         title={
           disruptors
@@ -185,7 +185,7 @@ export function DayLines({ checkins }: { checkins: Checkin[] }) {
           <LegendItem color="var(--chart-2)">มื้อแรกของวัน</LegendItem>
           <LegendItem color="var(--chart-3)">นาทีที่ขยับ (ไม่ได้อ้างเวลา)</LegendItem>
           <span className="flex items-center gap-1.5">
-            <span className="size-2.5 rounded-full bg-chart-4/40 ring-1 ring-chart-4/60" />
+            <span className="size-2.5 rounded-full bg-chart-5/40 ring-1 ring-chart-5/60" />
             วันที่มีปัจจัยรบกวน
           </span>
         </div>
