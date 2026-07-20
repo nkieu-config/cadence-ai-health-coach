@@ -31,6 +31,8 @@ export default async function MyPage() {
 | `<PageContainer>` | 448px ทุกจอ | **ฟอร์ม** (เช็คอิน, onboarding, แชท) — ฟอร์มแคบกรอกง่ายกว่า |
 | `<PageContainer width="content">` | ถึง 1024px | **หน้าดูข้อมูล** (dashboard, ประวัติ, privacy) |
 
+> **ยกเว้น: หน้าแชท** (`/coach`) ไม่ใช้ `<PageContainer>` — แชทเป็นบทสนทนา ไม่ใช่ฟอร์ม · ใช้ `max-w-[46rem]` + ความสูง `calc(100dvh - chrome)` ให้ข้อความเลื่อนในกล่อง input ปักล่าง (โครง 3 ชั้นแบบ LINE/ChatGPT) · ฟอร์มแคบเพราะกรอกง่าย แต่แชทยิ่งแคบยิ่งอึดอัด
+
 **3. Breakpoint ที่ใช้จริงมีตัวเดียว: `lg` (1024px)**
 
 | | < 1024px | ≥ 1024px |

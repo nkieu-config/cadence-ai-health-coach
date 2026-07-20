@@ -1,4 +1,3 @@
-import { PageContainer } from "@/components/page-container";
 import { CoachChatClient } from "@/components/coach/chat-client";
 import { getChatHistory, messagesLeftToday } from "@/lib/chat/queries";
 import { buildCoachOpener } from "@/lib/chat/opener";
@@ -17,17 +16,15 @@ export default async function CoachPage() {
   const opener = buildCoachOpener(recent);
 
   return (
-    <PageContainer>
+    <div className="mx-auto flex w-full max-w-[46rem] flex-col gap-4">
       <h1 className="sr-only">คุยกับโค้ช</h1>
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-xl font-semibold lg:text-2xl">คุยกับโค้ชสุขภาพ</h2>
-          <p className="text-sm text-muted-foreground">
-            รับคำแนะนำเพื่อสร้างนิสัยการกิน การนอน และการเคลื่อนไหวที่ดี
-          </p>
-        </div>
-        <CoachChatClient initialMessages={history} initialQuotaLeft={quotaLeft} opener={opener} />
+      <div className="shrink-0">
+        <h2 className="text-xl font-semibold lg:text-2xl">คุยกับโค้ชสุขภาพ</h2>
+        <p className="text-sm text-muted-foreground">
+          รับคำแนะนำเพื่อสร้างนิสัยการกิน การนอน และการเคลื่อนไหวที่ดี
+        </p>
       </div>
-    </PageContainer>
+      <CoachChatClient initialMessages={history} initialQuotaLeft={quotaLeft} opener={opener} />
+    </div>
   );
 }

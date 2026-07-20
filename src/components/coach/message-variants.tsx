@@ -2,17 +2,13 @@ import { AlertCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import type { ChatMessage } from "@/lib/chat/types";
 import { cn } from "@/lib/utils";
+import { FormattedMessage } from "./formatted-message";
 
 export function UserMessage({ message }: { message: ChatMessage }) {
   return (
     <div className="flex justify-end">
-      <div
-        className={cn(
-          "max-w-[85%] rounded-2xl rounded-tr-none px-4 py-2.5 text-sm shadow-sm",
-          "bg-primary text-primary-foreground"
-        )}
-      >
-        <p className="whitespace-pre-wrap break-words leading-relaxed">{message.content}</p>
+      <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 text-sm text-primary-foreground">
+        <p className="whitespace-pre-wrap break-words">{message.content}</p>
       </div>
     </div>
   );
@@ -21,13 +17,8 @@ export function UserMessage({ message }: { message: ChatMessage }) {
 export function CoachMessage({ message }: { message: ChatMessage }) {
   return (
     <div className="flex justify-start">
-      <div
-        className={cn(
-          "max-w-[85%] rounded-2xl rounded-tl-none px-4 py-2.5 text-sm shadow-sm",
-          "bg-muted text-foreground"
-        )}
-      >
-        <p className="whitespace-pre-wrap break-words leading-relaxed">{message.content}</p>
+      <div className="max-w-[88%] rounded-2xl rounded-bl-sm bg-muted px-4 py-3 text-sm text-foreground">
+        <FormattedMessage content={message.content} />
       </div>
     </div>
   );

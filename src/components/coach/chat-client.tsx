@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, useTransition } from "react";
 import { Trash2, Send, RefreshCw, MessageSquare, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { UserMessage, CoachMessage, PendingReply, QuotaReachedNotice } from "./message-variants";
@@ -392,9 +391,9 @@ export function CoachChatClient({
   const displayMessages = guidedFlow ? [...messages, ...getGuidedMessages()] : messages;
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex h-[calc(100dvh-15rem)] min-h-[24rem] flex-col gap-3 lg:h-[calc(100dvh-13rem)]">
       {/* Top bar controls */}
-      <div className="flex items-center justify-between pb-1">
+      <div className="flex shrink-0 items-center justify-between">
         <Badge variant="outline" className="border-primary/20 bg-primary/5 text-primary text-xs">
           โควตาแชทวันนี้เหลือ: {quotaLeft} ข้อความ
         </Badge>
@@ -413,66 +412,60 @@ export function CoachChatClient({
         )}
       </div>
 
-      {/* Chat Container Card */}
-      <Card className="flex flex-col justify-between border-border/40 shadow-sm bg-card">
-        <CardContent className="p-4">
-          <div
-            role="log"
-            aria-live="polite"
-            aria-label="บทสนทนากับโค้ช"
-            className={cn(
-              "flex flex-col space-y-4 overflow-y-auto pr-1 scrollbar-thin",
-              displayMessages.length === 0 && opener ? "py-2" : "h-[400px]"
-            )}
-          >
-            {displayMessages.length === 0 ? (
-              opener ? (
-                <div className="flex flex-col space-y-4 p-2">
-                  <div className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <MessageSquare className="size-4.5" />
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-sm leading-relaxed text-muted-foreground">{opener.fact}</p>
-                    <p className="text-lg leading-snug font-medium">{opener.question}</p>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    เล่าให้ฟังได้เลย หรือจะถามเรื่องอื่นก็ได้
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border/40 bg-card">
+        <div
+          role="log"
+          aria-live="polite"
+          aria-label="บทสนทนากับโค้ช"
+          className="flex min-h-0 flex-1 flex-col space-y-4 overflow-y-auto p-4 scrollbar-thin"
+        >
+          {displayMessages.length === 0 ? (
+            opener ? (
+              <div className="flex flex-col space-y-4 p-2">
+                <div className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <MessageSquare className="size-4.5" />
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm leading-relaxed text-muted-foreground">{opener.fact}</p>
+                  <p className="text-lg leading-snug font-medium">{opener.question}</p>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  เล่าให้ฟังได้เลย หรือจะถามเรื่องอื่นก็ได้
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full text-center p-6 space-y-3">
+                <div className="p-3 rounded-full bg-primary/5 text-primary">
+                  <MessageSquare className="size-8" />
+                </div>
+                <div className="space-y-1">
+                  <p className="font-medium text-sm">เริ่มคุยกับโค้ชสุขภาพประจำตัวของคุณ</p>
+                  <p className="text-xs text-muted-foreground max-w-[280px]">
+                    ปรึกษาเรื่องพฤติกรรมการกิน การนอน
+                    หรือการขยับร่างกายเพื่อช่วยปรับปรุงชีวิตประจำวัน
                   </p>
                 </div>
+              </div>
+            )
+          ) : (
+            displayMessages.map((m) =>
+              m.role === "user" ? (
+                <UserMessage key={m.id} message={m} />
               ) : (
-                <div className="flex flex-col items-center justify-center h-full text-center p-6 space-y-3">
-                  <div className="p-3 rounded-full bg-primary/5 text-primary">
-                    <MessageSquare className="size-8" />
-                  </div>
-                  <div className="space-y-1">
-                    <p className="font-medium text-sm">เริ่มคุยกับโค้ชสุขภาพประจำตัวของคุณ</p>
-                    <p className="text-xs text-muted-foreground max-w-[280px]">
-                      ปรึกษาเรื่องพฤติกรรมการกิน การนอน
-                      หรือการขยับร่างกายเพื่อช่วยปรับปรุงชีวิตประจำวัน
-                    </p>
-                  </div>
-                </div>
+                <CoachMessage key={m.id} message={m} />
               )
-            ) : (
-              displayMessages.map((m) =>
-                m.role === "user" ? (
-                  <UserMessage key={m.id} message={m} />
-                ) : (
-                  <CoachMessage key={m.id} message={m} />
-                )
-              )
-            )}
+            )
+          )}
 
-            {isPending && displayMessages.length > 0 && displayMessages.at(-1)?.role === "user" && (
-              <PendingReply />
-            )}
+          {isPending && displayMessages.length > 0 && displayMessages.at(-1)?.role === "user" && (
+            <PendingReply />
+          )}
 
-            <div ref={messagesEndRef} />
-          </div>
-        </CardContent>
+          <div ref={messagesEndRef} />
+        </div>
 
         {/* Input & Options panel */}
-        <div className="border-t border-border/40 p-4 space-y-4 bg-muted/10">
+        <div className="shrink-0 border-t border-border/40 p-4 space-y-4 bg-muted/10">
           {guidedFlow ? (
             <div className="space-y-4">
               {guidedStep === "pillar" && (
@@ -785,7 +778,7 @@ export function CoachChatClient({
             </>
           )}
         </div>
-      </Card>
+      </div>
     </div>
   );
 }
