@@ -10,10 +10,12 @@ export function GenerateInsightButton({
   days,
   label = "วิเคราะห์รูปแบบ",
   variant = "default",
+  className,
 }: {
   days: number;
   label?: string;
   variant?: "default" | "outline";
+  className?: string;
 }) {
   const [isPending, startTransition] = useTransition();
   const [message, setMessage] = useState<string | null>(null);
@@ -37,7 +39,12 @@ export function GenerateInsightButton({
 
   return (
     <div className="space-y-3">
-      <Button onClick={handleClick} disabled={isPending} variant={variant} className="w-full">
+      <Button
+        onClick={handleClick}
+        disabled={isPending}
+        variant={variant}
+        className={className ?? "w-full"}
+      >
         <Sparkles className="size-4" />
         {isPending ? "กำลังวิเคราะห์ให้…" : label}
       </Button>

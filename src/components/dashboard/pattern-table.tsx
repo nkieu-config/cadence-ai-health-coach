@@ -3,18 +3,19 @@ import type { InsightPattern } from "@/lib/ai-outputs/types";
 import { getLatestInsight } from "@/lib/ai-outputs/queries";
 import { checkDataSufficiency } from "@/lib/ai-outputs/sufficiency";
 import { PILLAR_LABELS } from "@/lib/checkins/labels";
+import { formatThaiDateLong } from "@/lib/checkins/date";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { GenerateInsightButton } from "./generate-insight-button";
 
-const MAX_PATTERNS_SHOWN = 4;
+const MAX_PATTERNS_SHOWN = 5;
 
 function EvidenceRow({ pattern }: { pattern: InsightPattern }) {
   const { metric, groupA, groupB } = pattern.evidence;
   return (
-    <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground">
+    <div className="rounded-lg bg-muted/50 p-2 text-xs text-muted-foreground">
       <p className="mb-1 font-medium text-foreground">{metric}</p>
-      <div className="flex flex-col gap-1 sm:flex-row sm:gap-4">
+      <div className="flex flex-col gap-1 md:flex-row md:gap-3">
         <span>
           {groupA.label} · {groupA.days} วัน
         </span>
@@ -52,15 +53,71 @@ function PatternRow({ pattern }: { pattern: InsightPattern }) {
   );
 }
 
-function Shell({ description, children }: { description: string; children: React.ReactNode }) {
+function PatternTableDesktop({ patterns }: { patterns: InsightPattern[] }) {
+  return (
+    <div className="hidden lg:block overflow-hidden rounded-xl border bg-card">
+      <table className="w-full border-collapse text-left text-sm">
+        <thead>
+          <tr className="border-b bg-muted/50 text-xs font-semibold text-muted-foreground uppercase">
+            <th className="px-4 py-3 w-[15%]">ด้าน</th>
+            <th className="px-4 py-3 w-[35%]">Pattern ที่พบ</th>
+            <th className="px-4 py-3 w-[25%]">ความหมาย</th>
+            <th className="px-4 py-3 w-[25%]">Next Step</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          {patterns.map((pattern, index) => (
+            <tr key={index} className="align-top hover:bg-muted/30 transition-colors">
+              <td className="px-4 py-4">
+                <div className="flex flex-wrap gap-1">
+                  {pattern.pillars.map((pillar) => (
+                    <Badge key={pillar} variant="secondary" className="whitespace-nowrap">
+                      {PILLAR_LABELS[pillar]}
+                    </Badge>
+                  ))}
+                </div>
+              </td>
+              <td className="px-4 py-4 space-y-3">
+                <p className="font-medium text-foreground">{pattern.observation}</p>
+                <EvidenceRow pattern={pattern} />
+              </td>
+              <td className="px-4 py-4 text-muted-foreground leading-relaxed">{pattern.meaning}</td>
+              <td className="px-4 py-4">
+                <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
+                  <p className="mb-1 text-[10px] font-bold text-primary uppercase tracking-wider">
+                    ลองทำสัปดาห์นี้
+                  </p>
+                  <p className="text-sm text-foreground font-medium">{pattern.nextStep}</p>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function Shell({
+  description,
+  action,
+  children,
+}: {
+  description: string;
+  action?: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
     <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-base">
-          <Sparkles className="size-4 shrink-0 text-primary" />
-          วิเคราะห์รูปแบบพฤติกรรม
-        </CardTitle>
-        <CardDescription>{description}</CardDescription>
+      <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+        <div className="space-y-1">
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Sparkles className="size-4 shrink-0 text-primary" />
+            วิเคราะห์รูปแบบพฤติกรรม
+          </CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </div>
+        {action && <div className="shrink-0">{action}</div>}
       </CardHeader>
       <CardContent className="space-y-4">{children}</CardContent>
     </Card>
@@ -83,44 +140,79 @@ export async function PatternTable({ days, recordedDays }: { days: number; recor
   if (!insight) {
     return (
       <Shell description="วิเคราะห์รูปแบบจากบันทึกของคุณด้วย AI — เชื่อมโยง 3 ด้านเข้ากับตารางชีวิต">
-        <GenerateInsightButton days={days} />
+        <div className="flex flex-col items-center justify-center py-6 text-center space-y-3">
+          <p className="text-sm text-muted-foreground max-w-md">
+            วิเคราะห์ความเชื่อมโยงระหว่างการกิน การนอน และการเคลื่อนไหว
+            เพื่อค้นหาพฤติกรรมที่น่าจับตามองในชีวิตของคุณ
+          </p>
+          <GenerateInsightButton days={days} className="w-full sm:w-auto" />
+        </div>
       </Shell>
     );
   }
 
   if (insight.patterns.length === 0) {
     return (
-      <Shell description={`ช่วง ${insight.periodStart} – ${insight.periodEnd}`}>
+      <Shell
+        description={`${formatThaiDateLong(insight.periodStart)} – ${formatThaiDateLong(insight.periodEnd)}`}
+        action={
+          <GenerateInsightButton
+            days={days}
+            label="วิเคราะห์ใหม่"
+            variant="outline"
+            className="w-full sm:w-auto text-xs"
+          />
+        }
+      >
         <p className="text-sm text-muted-foreground">
           ยังไม่พบรูปแบบที่เด่นชัดในช่วงนี้ — บันทึกต่อไปเรื่อย ๆ ระบบจะเห็นความเชื่อมโยงมากขึ้น
         </p>
-        <GenerateInsightButton days={days} label="วิเคราะห์ใหม่" variant="outline" />
       </Shell>
     );
   }
 
   const shown = insight.patterns.slice(0, MAX_PATTERNS_SHOWN);
-  const hiddenCount = insight.patterns.length - shown.length;
 
   return (
-    <Shell
-      description={`ช่วง ${insight.periodStart} – ${insight.periodEnd} · ${insight.patterns.length} รูปแบบที่พบ`}
-    >
-      <div className="space-y-4">
-        {shown.map((pattern, index) => (
-          <PatternRow key={index} pattern={pattern} />
-        ))}
-      </div>
-      {hiddenCount > 0 && (
-        <p className="text-sm text-muted-foreground">
-          แสดง {shown.length} รูปแบบเด่นที่สุด · ระบบพบทั้งหมด {insight.patterns.length}{" "}
-          รูปแบบในช่วงนี้
+    <Card className="w-full">
+      <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+        <div className="space-y-1">
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Sparkles className="size-4 shrink-0 text-primary" />
+            วิเคราะห์รูปแบบพฤติกรรม
+          </CardTitle>
+          <CardDescription className="space-y-1">
+            <span className="block">
+              ในช่วงวันที่ {formatThaiDateLong(insight.periodStart)} –{" "}
+              {formatThaiDateLong(insight.periodEnd)} พบ {shown.length} รูปแบบพฤติกรรมที่เด่นที่สุด
+              จากทั้งหมด {insight.patterns.length} รูปแบบ
+            </span>
+          </CardDescription>
+        </div>
+        <div className="shrink-0">
+          <GenerateInsightButton
+            days={days}
+            label="วิเคราะห์ใหม่"
+            variant="outline"
+            className="w-full sm:w-auto text-xs"
+          />
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {/* Mobile view */}
+        <div className="space-y-4 lg:hidden">
+          {shown.map((pattern, index) => (
+            <PatternRow key={index} pattern={pattern} />
+          ))}
+        </div>
+
+        {/* Desktop view */}
+        <PatternTableDesktop patterns={shown} />
+
+        <p className="text-xs text-muted-foreground">
+          ตัวเลขทั้งหมดคำนวณจากบันทึกจริงของคุณ · AI ช่วยเรียบเรียงเป็นภาษา ไม่ได้เดาเอง
         </p>
-      )}
-      <p className="text-xs text-muted-foreground">
-        ตัวเลขทั้งหมดคำนวณจากบันทึกจริงของคุณ · AI ช่วยเรียบเรียงเป็นภาษา ไม่ได้เดาเอง
-      </p>
-      <GenerateInsightButton days={days} label="วิเคราะห์ใหม่" variant="outline" />
-    </Shell>
+      </CardContent>
+    </Card>
   );
 }

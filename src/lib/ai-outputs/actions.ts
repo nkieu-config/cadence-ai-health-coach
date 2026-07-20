@@ -86,33 +86,38 @@ async function replaceOutput(
 }
 
 export async function generateInsight(days: number): Promise<GenerateResult> {
-  const period = periodFor(days);
+  try {
+    const period = periodFor(days);
 
-  if (await isCacheUsable("pattern_analysis", period)) {
-    return { ok: true, cached: true };
+    if (await isCacheUsable("pattern_analysis", period)) {
+      return { ok: true, cached: true };
+    }
+
+    const checkins = await getCheckins(days);
+
+    const sufficiency = checkDataSufficiency(checkins.length);
+    if (!sufficiency.enough) {
+      return {
+        notEnoughData: true,
+        daysRecorded: sufficiency.daysRecorded,
+        daysNeeded: sufficiency.daysNeeded,
+        message: sufficiency.message,
+      };
+    }
+
+    const candidates = computePatternCandidates(checkins);
+    const aiById = await generateInsightText(candidates);
+    const patterns = mergeInsightPatterns(candidates, aiById);
+
+    const result = await replaceOutput("pattern_analysis", period, { patterns });
+    if ("error" in result) return result;
+
+    revalidatePath("/dashboard");
+    return { ok: true };
+  } catch (error) {
+    console.error("Failed to generate insight:", error);
+    return { error: "ไม่สามารถวิเคราะห์ข้อมูลได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง" };
   }
-
-  const checkins = await getCheckins(days);
-
-  const sufficiency = checkDataSufficiency(checkins.length);
-  if (!sufficiency.enough) {
-    return {
-      notEnoughData: true,
-      daysRecorded: sufficiency.daysRecorded,
-      daysNeeded: sufficiency.daysNeeded,
-      message: sufficiency.message,
-    };
-  }
-
-  const candidates = computePatternCandidates(checkins);
-  const aiById = await generateInsightText(candidates);
-  const patterns = mergeInsightPatterns(candidates, aiById);
-
-  const result = await replaceOutput("pattern_analysis", period, { patterns });
-  if ("error" in result) return result;
-
-  revalidatePath("/dashboard");
-  return { ok: true };
 }
 
 export async function generateReflection(): Promise<GenerateResult> {

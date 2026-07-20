@@ -115,6 +115,7 @@ export async function generateInsightText(
       const parsed = parseInsightText(raw, allowedIds);
       if (parsed.size > 0) return parsed;
     } catch (error) {
+      console.error(`AI generation attempt ${attempt + 1} failed:`, error);
       if (isQuotaExhausted(error)) return null;
     }
   }
