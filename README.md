@@ -6,6 +6,16 @@ AI Personal Health Coach สำหรับนักศึกษาและ fir
 
 เอกสารทั้งหมดอยู่ที่ [docs/README.md](docs/README.md) | ศัพท์กลางที่ต้องใช้: [CONTEXT.md](CONTEXT.md) | งาน: [.scratch/BOARD.md](.scratch/BOARD.md)
 
+## 🎓 สำหรับกรรมการ / ผู้รีวิว (เริ่มตรงนี้ ~15 นาที)
+
+| ลำดับ | อยากเห็นอะไร | เปิดที่ |
+|---|---|---|
+| 1 | **ระบบจริง** — login `palm@example.com` / `PalmDemo2026!` (นักศึกษาที่บันทึกมา 4 สัปดาห์: dashboard, pattern, coach, goal, reflection มีข้อมูลจริงครบ) | [แอปบน production](https://personal-healthcoach.vercel.app/) |
+| 2 | **Deliverables ครบ 14 ข้อ อยู่ไหนบ้าง** — สารบัญ map ข้อต่อข้อ + mapping เกณฑ์ให้คะแนน 9 ข้อ | [docs/10-deliverables-checklist.md](docs/10-deliverables-checklist.md) |
+| 3 | **หลักฐาน Safety** — checklist 10 เคส × 2 ประโยค = 20/20 บนโมเดล production ผลดิบไม่ตัดต่อ + ลายเซ็นผู้ตรวจอิสระ | [.scratch/ai-safety-test/](.scratch/ai-safety-test/) |
+| 4 | **เอกสารออกแบบ** — ปัญหา → persona → data → architecture → AI → safety/privacy → limitations | [docs/](docs/README.md) อ่านเรียงเลข 01→11 |
+| 5 | **Process ของทีม** — issue tracker 65 งาน, PR history, CI 2 ด่านบังคับ | [.scratch/BOARD.md](.scratch/BOARD.md) + แท็บ Pull requests |
+
 ## เริ่มยังไง (เพื่อนร่วมทีมอ่านตรงนี้)
 
 ```bash
