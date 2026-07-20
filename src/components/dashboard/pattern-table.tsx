@@ -183,7 +183,9 @@ export async function PatternTable({ days, recordedDays }: { days: number; recor
           </CardTitle>
           <CardDescription className="space-y-1">
             <span className="block">
-             ในช่วง {formatThaiDateLong(insight.periodStart)} – {formatThaiDateLong(insight.periodEnd)} พบ {shown.length} รูปแบบพฤติกรรมที่เด่นที่สุด จากทั้งหมด {insight.patterns.length}{" "} รูปแบบ
+              ในช่วงวันที่ {formatThaiDateLong(insight.periodStart)} –{" "}
+              {formatThaiDateLong(insight.periodEnd)} พบ {shown.length} รูปแบบพฤติกรรมที่เด่นที่สุด
+              จากทั้งหมด {insight.patterns.length} รูปแบบ
             </span>
           </CardDescription>
         </div>
