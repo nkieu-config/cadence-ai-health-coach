@@ -76,13 +76,20 @@ function warmAiCache() {
   }
 
   console.log(`\n━━━ อุ่น AI cache (insight + reflection) ให้ตรงกับ today() ━━━`);
-  const backfill = join(dirname(fileURLToPath(import.meta.url)), "backfill-demo-ai.ts");
-  const result = spawnSync(process.execPath, ["--import", "tsx", backfill], {
+  runScript("backfill-demo-ai.ts", "อุ่น AI cache");
+
+  console.log(`\n━━━ บทสนทนาโค้ช (deliverable 9 — ต้องมีตัวอย่างพร้อมโชว์) ━━━`);
+  runScript("seed-coach-chat.ts", "สร้างบทสนทนาโค้ช");
+}
+
+function runScript(name: string, label: string) {
+  const script = join(dirname(fileURLToPath(import.meta.url)), name);
+  const result = spawnSync(process.execPath, ["--import", "tsx", script], {
     stdio: "inherit",
     env: process.env,
   });
   if (result.status !== 0) {
-    throw new Error(`อุ่น AI cache ไม่สำเร็จ (exit ${result.status})`);
+    throw new Error(`${label}ไม่สำเร็จ (exit ${result.status})`);
   }
 }
 

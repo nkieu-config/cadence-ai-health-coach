@@ -20,6 +20,7 @@
     "seed": "node --env-file=.env.local --import tsx scripts/seed.ts",
     "refresh:demo-week": "node --env-file=.env.local --import tsx scripts/refresh-demo-week.ts",
     "backfill:demo-ai": "node --env-file=.env.local --import tsx scripts/backfill-demo-ai.ts",
+    "seed:coach-chat": "node --env-file=.env.local --import tsx scripts/seed-coach-chat.ts",
     "verify:seed": "node --env-file=.env.local --import tsx scripts/verify-seed.ts",
     "verify:rls": "node --env-file=.env.local --import tsx scripts/verify-rls.ts",
     "format": "prettier --write .",
