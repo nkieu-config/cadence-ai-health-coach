@@ -73,7 +73,7 @@ export default async function DashboardPage({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3 lg:items-start">
         <div className="lg:col-span-1 min-w-0">
           <TodaySummary checkin={todayCheckin} date={todayDate} />
         </div>

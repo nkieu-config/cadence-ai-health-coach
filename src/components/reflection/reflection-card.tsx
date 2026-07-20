@@ -21,7 +21,13 @@ export async function ReflectionCard() {
         </CardDescription>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="space-y-4">
+        {reflection?.strengths && (
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            <span className="font-medium text-foreground">จุดแข็งสัปดาห์นี้ · </span>
+            {reflection.strengths}
+          </p>
+        )}
         <Link
           href="/reflection"
           className={buttonVariants({

@@ -100,7 +100,7 @@ export function TodaySummary({ checkin, date }: { checkin: Checkin | null; date:
   ];
 
   return (
-    <Card className="h-full flex flex-col justify-between">
+    <Card>
       <CardHeader className="pb-4 flex flex-row items-start justify-between space-y-0">
         <div className="space-y-1">
           <CardDescription>{formatThaiDate(date)}</CardDescription>
@@ -108,7 +108,7 @@ export function TodaySummary({ checkin, date }: { checkin: Checkin | null; date:
         </div>
         <Badge variant={energyBadge.variant}>{energyBadge.label}</Badge>
       </CardHeader>
-      <CardContent className="space-y-6 flex-1 flex flex-col justify-between">
+      <CardContent className="space-y-4">
         <div className="grid grid-cols-3 gap-2 py-2 bg-muted/20 dark:bg-muted/10 rounded-xl">
           {pillars.map((p) => (
             <ProgressCircle
@@ -127,7 +127,7 @@ export function TodaySummary({ checkin, date }: { checkin: Checkin | null; date:
             ? buildCheckinSummary(checkin).encouragement
             : "คุณยังไม่ได้บันทึกพฤติกรรมสุขภาพของวันนี้ แวะมาเช็คอินสักนิดเพื่อติดตามเป้าหมายประจำวันกันนะ"}
         </div>
-        <div className="pt-2">
+        <div>
           <Link
             href="/checkin"
             className={cn(

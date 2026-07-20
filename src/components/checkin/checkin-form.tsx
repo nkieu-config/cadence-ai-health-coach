@@ -111,6 +111,9 @@ function StepRail({ step }: { step: number }) {
           );
         })}
       </ol>
+      <p className="mt-6 rounded-lg bg-muted/40 px-3 py-3 text-xs leading-relaxed text-muted-foreground">
+        กรอกไม่จบก็ไม่เป็นไร ที่บันทึกไว้แล้วยังอยู่ กลับมาต่อทีหลังได้
+      </p>
     </nav>
   );
 }
