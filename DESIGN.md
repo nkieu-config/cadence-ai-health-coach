@@ -199,7 +199,7 @@ const config = {
 
 > Theme มาจากการวิเคราะห์ design ของ Cohere — เอกสารฉบับเต็ม (~470 บรรทัด) ถูกตัดออกเพราะ token ทั้งหมด **ฝังลง `globals.css` แล้ว** ไม่ต้องเปิดเทียบสีเอง · อยากอ่านต้นฉบับ: git history ของไฟล์นี้ (ก่อน 20 ก.ค. 2026)
 
-### ใช้ยังไง
+## ใช้ยังไง
 
 1. **สี/มุมโค้ง/ฟอนต์ ถูก map ลง `src/app/globals.css` แล้ว** — เขียน UI ด้วย semantic class ของ shadcn ตามปกติ (`bg-primary`, `text-muted-foreground`, `border`, `rounded-lg`) จะได้ theme นี้อัตโนมัติ **ห้าม hardcode hex ในหน้าไหนทั้งนั้น**
 2. **ฟอนต์**: Unica77/CohereText เป็นฟอนต์ proprietary + ไม่รองรับภาษาไทย → แทนด้วย **IBM Plex Sans Thai** (UI ทั้งหมด) และ **IBM Plex Mono** (ตัวเลข/label เชิงเทคนิค เช่น ค่าสถิติใน dashboard — ใช้ class `font-mono`) โหลดผ่าน `next/font` ใน `layout.tsx` แล้ว
@@ -207,12 +207,12 @@ const config = {
 4. **สีกราฟ (สาย Dashboard)**: ใช้ `--chart-1` ถึง `--chart-5` (เขียวเข้ม/น้ำเงิน/coral/เทา/ม่วง) — เช่น นอน=chart-1, กิน=chart-2, เคลื่อนไหว=chart-3
 5. **ปุ่มเป็น pill ทั้งแอป** (แก้ใน `components/ui/button.tsx` แล้ว) ตาม `button-primary` ของ design
 
-### ส่วนที่"ไม่"เอามาใช้ (เป็นของ marketing site ไม่ใช่แอปเรา)
+## ส่วนที่"ไม่"เอามาใช้ (เป็นของ marketing site ไม่ใช่แอปเรา)
 
 - Hero display 96px/72px, announcement bar, trust-logo strip, blog filter chips, dark feature band ยาว 80px padding — แอปเราเป็นฟอร์ม + dashboard บนมือถือ หัวข้อใหญ่สุดที่ใช้จริงคือระดับ `text-2xl`–`text-4xl`
 - อย่าทำหน้าแอปเป็น landing page — ยึด: พื้นขาว การ์ดเรียบ ไม่มีเงาหนัก ช่องว่างเยอะ ปุ่ม pill เขียวเข้ม
 
-### หมายเหตุที่จงใจต่างจากต้นฉบับ
+## หมายเหตุที่จงใจต่างจากต้นฉบับ
 
 - `muted-foreground` ใช้ `#616161` (body-muted) ไม่ใช่ `#93939f` — ตัวหลังอ่อนเกินสำหรับตัวหนังสือเล็กบนพื้นขาว (contrast ไม่ผ่าน)
 - Error ใช้ `#b30000` ตาม design (แทนแดง default ของ shadcn)

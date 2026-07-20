@@ -55,10 +55,12 @@ Next.js 16 (App Router, TypeScript) + Tailwind v4 + shadcn/ui + Supabase + Gemin
 |---|---|
 | `npm run dev` | dev server |
 | `npm run build` / `npm run lint` | build production / เช็ค lint |
+| `npm run e2e` | เปิดทุกหน้าจริง × มือถือ/เดสก์ท็อป × light/dark (~40 วิ) — **ต้องรันถ้าแตะ UI** |
 | `npm run verify:db` | ยืนยัน schema + RLS ของ Supabase (ตารางครบ, anon เข้าไม่ได้, user เห็นข้ามกันไม่ได้) รันซ้ำได้หลังแก้ schema |
 | `npm run test:ai` | ยิงเคสภาษาไทยผ่าน `lib/ai` เช็ค guardrail + latency; เจาะเคสเดียวด้วย `npm run test:ai -- <id/category>` |
+| `npm run refresh:demo-week` | **เตรียมบัญชี demo ก่อนนำเสนอ** — เติม goal ของสัปดาห์ปัจจุบัน + อุ่น insight/reflection ให้ตรงวัน (ของพวกนี้ผูกกับวันที่ จึงเก่าเองทุกวัน) · `-- --goal-only` = ไม่ยิง Gemini |
 
-`verify:db` และ `test:ai` ต้องมี `.env.local` ครบ — เป็นฐานของงาน QA-01 (safety checklist) ตอน Sprint 3
+`verify:db` · `test:ai` · `refresh:demo-week` ต้องมี `.env.local` ครบ · `test:ai` คือสคริปต์ที่ใช้ผลิตหลักฐาน QA-01 (safety checklist 10 เคส × 2 ประโยค — [ผลรันอยู่ที่นี่](.scratch/ai-safety-test/))
 
 ## แผนที่โปรเจกต์
 
