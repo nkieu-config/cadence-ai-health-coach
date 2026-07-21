@@ -61,16 +61,24 @@ function countLabel(value: number, max: number) {
 function Field({
   label,
   hint,
+  id,
+  highlight,
   children,
 }: {
   label: string;
   hint?: string;
+  id?: string;
+  highlight?: boolean;
   children: React.ReactNode;
 }) {
   return (
-    <div className="space-y-2">
+    <div id={id} className="scroll-mt-24 space-y-2">
       <Label>{label}</Label>
-      {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
+      {highlight ? (
+        <p className="text-xs font-medium text-primary">เลือกสักอันก่อนไปต่อนะ</p>
+      ) : (
+        hint && <p className="text-xs text-muted-foreground">{hint}</p>
+      )}
       <div className="flex flex-wrap gap-2 pt-1">{children}</div>
     </div>
   );
@@ -134,6 +142,7 @@ export function CheckinForm({
   footer?: ReactNode;
 }) {
   const [step, setStep] = useState(0);
+  const [highlightField, setHighlightField] = useState<string | null>(null);
   const [saved, setSaved] = useState<Checkin | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -187,12 +196,37 @@ export function CheckinForm({
     movementFeeling: moved,
   };
 
-  const canProceed = [
-    mealsCount !== null && sweetDrinks !== null,
-    sleepHours !== null && bedTimeBucket !== null && sleepQuality !== null,
-    movementTypes.length > 0 && minutes !== null,
-    energyLevel !== null,
-  ][step];
+  function firstMissingField(): string | null {
+    if (step === 0) {
+      if (mealsCount === null) return "field-meals";
+      if (sweetDrinks === null) return "field-sweet";
+    } else if (step === 1) {
+      if (sleepHours === null) return "field-sleep";
+      if (bedTimeBucket === null) return "field-bedtime";
+      if (sleepQuality === null) return "field-quality";
+    } else if (step === 2) {
+      if (movementTypes.length === 0) return "field-movement";
+      if (minutes === null) return "field-minutes";
+    } else if (step === 3) {
+      if (energyLevel === null) return "field-energy";
+    }
+    return null;
+  }
+
+  const shownHighlight =
+    highlightField && firstMissingField() === highlightField ? highlightField : null;
+
+  function goForward() {
+    const missing = firstMissingField();
+    if (missing) {
+      setHighlightField(missing);
+      document.getElementById(missing)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+    setHighlightField(null);
+    if (step < STEPS.length - 1) setStep(step + 1);
+    else submit();
+  }
 
   function pickMovementType(type: MovementType) {
     if (type === "none") {
@@ -295,7 +329,11 @@ export function CheckinForm({
           <CardContent className="space-y-6">
             {step === 0 && (
               <>
-                <Field label="วันนี้กินกี่มื้อ">
+                <Field
+                  id="field-meals"
+                  highlight={shownHighlight === "field-meals"}
+                  label="วันนี้กินกี่มื้อ"
+                >
                   {MEAL_COUNTS.map((count) => (
                     <Chip
                       key={count}
@@ -306,6 +344,12 @@ export function CheckinForm({
                     </Chip>
                   ))}
                 </Field>
+
+                {mealsCount === 0 && (
+                  <p className="rounded-lg bg-muted/50 px-3 py-2.5 text-xs leading-relaxed text-muted-foreground">
+                    วันที่ยุ่งจนไม่ได้กินก็มีนะ บันทึกไว้ก่อน แล้วค่อย ๆ ดูแลตัวเองกันต่อพรุ่งนี้
+                  </p>
+                )}
 
                 {asks.skippedMeals && (
                   <Field label="มื้อไหนที่ข้ามไป" hint="เลือกได้หลายมื้อ">
@@ -347,7 +391,12 @@ export function CheckinForm({
                   ))}
                 </Field>
 
-                <Field label="เครื่องดื่มหวานวันนี้" hint="ชานม น้ำอัดลม กาแฟใส่น้ำตาล">
+                <Field
+                  id="field-sweet"
+                  highlight={shownHighlight === "field-sweet"}
+                  label="เครื่องดื่มหวานวันนี้"
+                  hint="ชานม น้ำอัดลม กาแฟใส่น้ำตาล"
+                >
                   {SWEET_DRINKS.map((count) => (
                     <Chip
                       key={count}
@@ -377,7 +426,11 @@ export function CheckinForm({
 
             {step === 1 && (
               <>
-                <Field label="เมื่อคืนนอนกี่ชั่วโมง">
+                <Field
+                  id="field-sleep"
+                  highlight={shownHighlight === "field-sleep"}
+                  label="เมื่อคืนนอนกี่ชั่วโมง"
+                >
                   {SLEEP_HOURS.map((hours) => (
                     <Chip
                       key={hours}
@@ -389,7 +442,11 @@ export function CheckinForm({
                   ))}
                 </Field>
 
-                <Field label="เข้านอนตอนไหน">
+                <Field
+                  id="field-bedtime"
+                  highlight={shownHighlight === "field-bedtime"}
+                  label="เข้านอนตอนไหน"
+                >
                   {keysOf(BED_TIME_LABELS).map((bucket) => (
                     <Chip
                       key={bucket}
@@ -415,7 +472,11 @@ export function CheckinForm({
                   </Field>
                 )}
 
-                <Field label="ตื่นมารู้สึกว่านอนหลับดีแค่ไหน">
+                <Field
+                  id="field-quality"
+                  highlight={shownHighlight === "field-quality"}
+                  label="ตื่นมารู้สึกว่านอนหลับดีแค่ไหน"
+                >
                   {SLEEP_QUALITIES.map((quality) => (
                     <Chip
                       key={quality}
@@ -431,7 +492,12 @@ export function CheckinForm({
 
             {step === 2 && (
               <>
-                <Field label="วันนี้ขยับร่างกายแบบไหนบ้าง" hint="เลือกได้หลายอย่าง">
+                <Field
+                  id="field-movement"
+                  highlight={shownHighlight === "field-movement"}
+                  label="วันนี้ขยับร่างกายแบบไหนบ้าง"
+                  hint="เลือกได้หลายอย่าง"
+                >
                   {keysOf(MOVEMENT_TYPE_LABELS).map((type) => (
                     <Chip
                       key={type}
@@ -444,7 +510,11 @@ export function CheckinForm({
                 </Field>
 
                 {asks.movementMinutes && (
-                  <Field label="รวมแล้วประมาณกี่นาที">
+                  <Field
+                    id="field-minutes"
+                    highlight={shownHighlight === "field-minutes"}
+                    label="รวมแล้วประมาณกี่นาที"
+                  >
                     {MOVEMENT_MINUTES.map((value) => (
                       <Chip
                         key={value}
@@ -493,7 +563,15 @@ export function CheckinForm({
 
             {step === 3 && (
               <>
-                <Field label="พลังงานวันนี้โดยรวม">
+                <p className="text-sm text-muted-foreground">
+                  ขั้นสุดท้ายแล้ว — เหลือแค่ภาพรวมของวันนี้
+                </p>
+
+                <Field
+                  id="field-energy"
+                  highlight={shownHighlight === "field-energy"}
+                  label="พลังงานวันนี้โดยรวม"
+                >
                   {keysOf(ENERGY_LABELS).map((level) => (
                     <Chip
                       key={level}
@@ -527,9 +605,11 @@ export function CheckinForm({
                     rows={3}
                     placeholder="เช่น วันนี้ประชุมยาว เลยไม่ได้กินข้าวเที่ยง"
                   />
-                  <p className="text-right text-xs text-muted-foreground">
-                    {note.length}/{NOTE_MAX_LENGTH}
-                  </p>
+                  {note.length > NOTE_MAX_LENGTH * 0.8 && (
+                    <p className="text-right text-xs text-muted-foreground">
+                      {note.length}/{NOTE_MAX_LENGTH}
+                    </p>
+                  )}
                 </div>
               </>
             )}
@@ -538,19 +618,24 @@ export function CheckinForm({
 
             <div className="flex gap-2">
               {step > 0 && (
-                <Button variant="outline" onClick={() => setStep(step - 1)} disabled={pending}>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setHighlightField(null);
+                    setStep(step - 1);
+                  }}
+                  disabled={pending}
+                >
                   ย้อนกลับ
                 </Button>
               )}
-              {step < STEPS.length - 1 ? (
-                <Button className="flex-1" onClick={() => setStep(step + 1)} disabled={!canProceed}>
-                  ถัดไป
-                </Button>
-              ) : (
-                <Button className="flex-1" onClick={submit} disabled={!canProceed || pending}>
-                  {pending ? "กำลังบันทึก…" : "บันทึก"}
-                </Button>
-              )}
+              <Button className="flex-1" onClick={goForward} disabled={pending}>
+                {step < STEPS.length - 1
+                  ? "ถัดไป"
+                  : pending
+                    ? "กำลังบันทึก…"
+                    : "บันทึกเช็คอินวันนี้"}
+              </Button>
             </div>
           </CardContent>
         </Card>
