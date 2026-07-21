@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
-import { getCurrentUser, getProfile, hasCompletedOnboarding } from "@/lib/auth/user";
+import { getCurrentUser, hasCompletedOnboarding } from "@/lib/auth/user";
 import { AppNav } from "@/components/app-nav";
 import { AppSidebar } from "@/components/app-sidebar";
 import { PageContainer } from "@/components/page-container";
@@ -12,9 +12,6 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
   if (!user) redirect("/login");
   if (!(await hasCompletedOnboarding())) redirect("/onboarding");
 
-  const profile = await getProfile();
-  const name = profile?.display_name ?? null;
-
   return (
     <div className="relative flex min-h-dvh flex-col lg:flex-row">
       <a
@@ -24,19 +21,12 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
         ข้ามไปเนื้อหาหลัก
       </a>
 
-      <AppSidebar name={name} />
+      <AppSidebar />
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-10 border-b bg-background lg:hidden">
           <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-2">
-            <div className="min-w-0">
-              <span className="block font-semibold">HealthCoach</span>
-              {name && (
-                <span className="block truncate text-xs text-muted-foreground">
-                  สวัสดี {name} 👋
-                </span>
-              )}
-            </div>
+            <span className="font-semibold">HealthCoach</span>
             <SignOutButton compact />
           </div>
         </header>

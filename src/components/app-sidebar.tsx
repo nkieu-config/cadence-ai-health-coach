@@ -7,16 +7,13 @@ import { NavIcon } from "./nav-pending";
 import { NAV_ITEMS, isActivePath } from "./nav-items";
 import { SignOutButton } from "./sign-out-button";
 
-export function AppSidebar({ name }: { name?: string | null }) {
+export function AppSidebar() {
   const pathname = usePathname();
 
   return (
     <aside className="hidden w-64 shrink-0 border-r bg-muted/30 lg:block">
       <div className="sticky top-0 flex h-dvh flex-col gap-8 p-5">
-        <div className="space-y-0.5 px-3 pt-2">
-          <span className="block text-lg font-semibold">HealthCoach</span>
-          {name && <span className="block text-sm text-muted-foreground">สวัสดี {name} 👋</span>}
-        </div>
+        <span className="px-3 pt-2 text-lg font-semibold">HealthCoach</span>
 
         <nav aria-label="เมนูหลัก">
           <ul className="space-y-1">
