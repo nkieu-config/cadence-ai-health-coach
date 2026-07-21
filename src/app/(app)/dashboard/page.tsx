@@ -14,7 +14,6 @@ import { TodaySummary } from "@/components/dashboard/today-summary";
 import { PatternTable } from "@/components/dashboard/pattern-table";
 import { DayLines } from "@/components/dashboard/day-lines";
 import { PillarCharts } from "@/components/dashboard/pillar-charts";
-import { EnergyChart } from "@/components/dashboard/energy-chart";
 
 export default async function DashboardPage({
   searchParams,
@@ -82,8 +81,6 @@ export default async function DashboardPage({
           <PillarCharts checkins={checkins} period={period} />
         </div>
       </div>
-
-      <EnergyChart checkins={checkins} period={period} />
 
       <div className="grid gap-5 lg:grid-cols-2">
         <Suspense fallback={<CardSkeleton rows={1} />}>

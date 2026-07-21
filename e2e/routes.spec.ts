@@ -132,10 +132,11 @@ const PILLAR_TABS = [
   { tab: "ชั่วโมงนอน", legend: "ชั่วโมงนอน (ชม.)" },
   { tab: "การกิน", legend: "มื้อที่กิน (มื้อ)" },
   { tab: "การเคลื่อนไหว", legend: "นาทีเคลื่อนไหว" },
+  { tab: "พลังงาน", legend: "ระดับพลังงาน" },
 ];
 
 function trendCard(page: Page) {
-  return page.locator('[data-slot="card"]').filter({ hasText: "กราฟแนวโน้มพฤติกรรม" });
+  return page.locator('[data-slot="card"]').filter({ hasText: "แนวโน้มรายวัน" });
 }
 
 async function tallestBar(page: Page) {
