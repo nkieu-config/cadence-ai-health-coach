@@ -123,8 +123,8 @@ export function DisruptorTick({
 
   const primary = knownDisruptors(point.disruptors)[0];
   const style = primary ? disruptorConfig[primary] : null;
-  const is30Days = period === 30;
-  const size = is30Days ? "w-4.5 h-4.5" : "w-6 h-6";
+  const dense = period >= 14;
+  const size = dense ? "w-4.5 h-4.5" : "w-6 h-6";
   const interactive = Boolean(primary && style);
   const label = interactive
     ? `ปัจจัยรบกวน ${formatThaiDate(point.date)}: ${knownDisruptors(point.disruptors)
@@ -132,8 +132,16 @@ export function DisruptorTick({
         .join(", ")}`
     : undefined;
 
+  const tickWidth = dense ? 28 : 44;
+
   return (
-    <foreignObject x={x - 22} y={y} width={44} height={48} className="overflow-visible">
+    <foreignObject
+      x={x - tickWidth / 2}
+      y={y}
+      width={tickWidth}
+      height={48}
+      className="overflow-visible"
+    >
       <div
         className={cn(
           "flex h-full w-full flex-col items-center justify-start select-none",
@@ -171,14 +179,14 @@ export function DisruptorTick({
                 ? "scale-110 ring-2 ring-primary border-primary"
                 : "hover:scale-105"
             )}
-            iconClass={is30Days ? "w-2.5 h-2.5" : "w-3.5 h-3.5"}
+            iconClass={dense ? "w-2.5 h-2.5" : "w-3.5 h-3.5"}
           />
         ) : (
           <div className={size} />
         )}
         <span
           className={cn(
-            "mt-1 text-[10px] font-medium sm:text-xs",
+            "mt-1 text-xs font-medium",
             primary ? "font-semibold text-foreground" : "text-muted-foreground"
           )}
         >

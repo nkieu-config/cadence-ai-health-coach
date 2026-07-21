@@ -85,7 +85,7 @@ function PatternTableDesktop({ patterns }: { patterns: InsightPattern[] }) {
               <td className="px-4 py-4 text-muted-foreground ">{pattern.meaning}</td>
               <td className="px-4 py-4">
                 <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
-                  <p className="mb-1 text-[10px] font-bold text-primary uppercase tracking-wider">
+                  <p className="mb-1 text-xs font-bold text-primary uppercase tracking-wider">
                     ลองทำสัปดาห์นี้
                   </p>
                   <p className="text-sm text-foreground font-medium">{pattern.nextStep}</p>

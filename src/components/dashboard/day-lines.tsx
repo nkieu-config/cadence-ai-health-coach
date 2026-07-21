@@ -11,7 +11,7 @@ const AXIS_HOURS = 17;
 
 const TICKS = [
   { hour: 21, label: "21:00" },
-  { hour: 24, label: "เที่ยงคืน" },
+  { hour: 24, label: "00:00" },
   { hour: 27, label: "03:00" },
   { hour: 30, label: "06:00" },
   { hour: 33, label: "09:00" },
@@ -123,11 +123,11 @@ function DayRow({ date, checkin }: { date: string; checkin: Checkin | undefined 
         <div className="h-1.5 flex-1 rounded-full bg-muted">
           <div className="h-full rounded-full bg-chart-3" style={{ width: `${movementWidth}%` }} />
         </div>
-        <span className="font-mono text-[10px] text-muted-foreground">
+        <span className="font-mono text-[11px] text-muted-foreground">
           {checkin.movementMinutes}
         </span>
       </div>
-      <span className="w-14 shrink-0 text-right font-mono text-[10px] text-muted-foreground sm:hidden">
+      <span className="w-14 shrink-0 text-right font-mono text-xs text-muted-foreground sm:hidden">
         {checkin.movementMinutes} น.
       </span>
     </div>
@@ -164,14 +164,14 @@ export function DayLines({ checkins }: { checkins: Checkin[] }) {
             {TICKS.map((tick) => (
               <span
                 key={tick.hour}
-                className="absolute -translate-x-1/2 text-[10px] text-muted-foreground"
+                className="absolute -translate-x-1/2 text-[11px] text-muted-foreground"
                 style={{ left: `${clampPercent(percentOf(tick.hour))}%` }}
               >
                 {tick.label}
               </span>
             ))}
           </div>
-          <span className="w-14 shrink-0 text-right text-[10px] text-muted-foreground">ขยับ</span>
+          <span className="w-14 shrink-0 text-right text-xs text-muted-foreground">ขยับ</span>
         </div>
 
         <div className="space-y-1.5">

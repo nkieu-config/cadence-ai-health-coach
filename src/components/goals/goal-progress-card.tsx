@@ -104,7 +104,7 @@ export function GoalProgressCard({ goal }: GoalProgressCardProps) {
                   )}
                 >
                   <span>{DAY_LABELS[index]}</span>
-                  <span className="font-mono text-[10px] opacity-70">{displayNum}</span>
+                  <span className="font-mono text-xs opacity-70">{displayNum}</span>
                 </button>
               );
             })}

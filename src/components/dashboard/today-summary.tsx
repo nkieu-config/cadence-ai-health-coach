@@ -28,7 +28,7 @@ function StatTile({
         <Icon className="size-5" />
       </div>
       <div className="text-center">
-        <p className="text-[10px] font-semibold text-muted-foreground">{label}</p>
+        <p className="text-xs font-semibold text-muted-foreground">{label}</p>
         <p className="text-sm font-bold">{valueText}</p>
       </div>
     </div>

@@ -141,9 +141,9 @@ export function PillarCharts({ checkins, period }: { checkins: Checkin[]; period
   }, [checkins, period]);
 
   const categories = [
-    { id: "sleep", label: "ชั่วโมงนอน" },
-    { id: "eating", label: "การกิน" },
-    { id: "movement", label: "การเคลื่อนไหว" },
+    { id: "sleep", label: "นอน" },
+    { id: "eating", label: "กิน" },
+    { id: "movement", label: "ขยับ" },
     { id: "energy", label: "พลังงาน" },
   ] as const;
 
@@ -170,7 +170,7 @@ export function PillarCharts({ checkins, period }: { checkins: Checkin[]; period
                 onClick={() => changeTab(cat.id)}
                 aria-pressed={active}
                 className={cn(
-                  "inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full px-4 text-sm font-medium transition-all select-none active:scale-95",
+                  "inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full px-3 text-sm font-medium transition-all select-none active:scale-95 sm:px-4",
                   active
                     ? "bg-primary text-primary-foreground shadow-sm"
                     : "text-muted-foreground hover:bg-background hover:text-foreground"
@@ -197,6 +197,7 @@ export function PillarCharts({ checkins, period }: { checkins: Checkin[]; period
                     dataKey="day"
                     tickLine={false}
                     axisLine={false}
+                    interval={period <= 14 ? 0 : undefined}
                     tick={
                       <DisruptorTick
                         processedData={processedData}
