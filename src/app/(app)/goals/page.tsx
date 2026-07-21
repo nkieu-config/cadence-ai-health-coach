@@ -33,12 +33,7 @@ export default async function GoalsPage() {
         <div className="space-y-4">
           {goals.length > 0 && (
             <>
-              <div className="flex items-center justify-between px-1">
-                <h3 className="text-sm font-semibold text-foreground">เป้าหมายปัจจุบัน</h3>
-                <span className="text-xs font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded">
-                  {goals.length} รายการกำลังติดตาม
-                </span>
-              </div>
+              <h3 className="px-1 text-sm font-semibold text-foreground">เป้าหมายที่กำลังทำ</h3>
               <div className="space-y-4">
                 {goals.map((goal) => (
                   <GoalProgressCard key={goal.id} goal={goal} />
