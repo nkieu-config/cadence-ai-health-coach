@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import { LoginForm } from "@/components/auth/login-form";
 import { AuthMessage } from "@/components/auth/auth-message";
 import { GoogleButton } from "@/components/auth/google-button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+export const metadata: Metadata = { title: "เข้าสู่ระบบ" };
 
 export default async function LoginPage({
   searchParams,

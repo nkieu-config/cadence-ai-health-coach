@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PageContainer } from "@/components/page-container";
 import { Target } from "lucide-react";
@@ -5,6 +6,8 @@ import { getActiveGoals } from "@/lib/goals/queries";
 import { GoalSuggestionCard } from "@/components/goals/goal-suggestion-card";
 import { GoalProgressCard } from "@/components/goals/goal-progress-card";
 import { CardSkeleton } from "@/components/page-skeleton";
+
+export const metadata: Metadata = { title: "เป้าหมายสัปดาห์นี้" };
 
 export const dynamic = "force-dynamic";
 

@@ -1,8 +1,11 @@
+import type { Metadata } from "next";
 import { MessageCircle } from "lucide-react";
 import { CoachChatClient } from "@/components/coach/chat-client";
 import { getChatHistory, messagesLeftToday } from "@/lib/chat/queries";
 import { buildCoachOpener } from "@/lib/chat/opener";
 import { getCheckins } from "@/lib/checkins/queries";
+
+export const metadata: Metadata = { title: "คุยกับโค้ชสุขภาพ" };
 
 export const dynamic = "force-dynamic";
 

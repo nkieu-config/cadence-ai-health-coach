@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import { RegisterForm } from "@/components/auth/register-form";
 import { AuthMessage } from "@/components/auth/auth-message";
 import { GoogleButton } from "@/components/auth/google-button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+export const metadata: Metadata = { title: "สมัครสมาชิก" };
 
 export default async function RegisterPage({
   searchParams,

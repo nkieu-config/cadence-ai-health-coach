@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { AlertCircle, Database, Eye, Fingerprint, History, Lock, Shield } from "lucide-react";
 import { PageContainer } from "@/components/page-container";
@@ -5,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DeleteZone } from "@/components/settings/delete-zone";
+
+export const metadata: Metadata = { title: "ความเป็นส่วนตัว" };
 
 function HealthTag() {
   return (

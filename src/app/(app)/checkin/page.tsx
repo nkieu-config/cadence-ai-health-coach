@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { PageContainer } from "@/components/page-container";
 import { CalendarPlus, History } from "lucide-react";
@@ -6,6 +7,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { daysAgo, formatThaiDate, today } from "@/lib/checkins/date";
 import { getCheckins } from "@/lib/checkins/queries";
 import { MAX_BACKFILL_DAYS } from "@/lib/checkins/validate";
+
+export const metadata: Metadata = { title: "เช็คอินประจำวัน" };
 
 export default async function CheckinPage() {
   const date = today();

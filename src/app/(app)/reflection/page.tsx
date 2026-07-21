@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { NotebookPen, RefreshCw, Sparkles, Target } from "lucide-react";
 import { PILLAR_COLORS, PILLAR_ICONS } from "@/components/pillar-visual";
@@ -13,6 +14,8 @@ import { getReflections, getWeekComparison } from "@/lib/ai-outputs/queries";
 import type { ReflectionPillar } from "@/lib/ai-outputs/types";
 import { formatShortThaiDate } from "@/lib/checkins/date";
 import { latestCheckinAt } from "@/lib/checkins/queries";
+
+export const metadata: Metadata = { title: "สรุปสัปดาห์" };
 
 export const dynamic = "force-dynamic";
 

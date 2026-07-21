@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronLeft, History } from "lucide-react";
 import { CheckinHistory } from "@/components/checkin/checkin-history";
@@ -5,6 +6,8 @@ import { PageContainer } from "@/components/page-container";
 import { buttonVariants } from "@/components/ui/button";
 import { getCheckins } from "@/lib/checkins/queries";
 import { MAX_BACKFILL_DAYS } from "@/lib/checkins/validate";
+
+export const metadata: Metadata = { title: "บันทึกย้อนหลัง" };
 
 export default async function CheckinHistoryPage() {
   const checkins = await getCheckins(MAX_BACKFILL_DAYS);

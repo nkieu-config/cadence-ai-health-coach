@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
 import { BarChart3, CalendarCheck } from "lucide-react";
@@ -14,6 +15,8 @@ import { TodaySummary } from "@/components/dashboard/today-summary";
 import { PatternTable } from "@/components/dashboard/pattern-table";
 import { DayLines } from "@/components/dashboard/day-lines";
 import { PillarChartsLazy } from "@/components/dashboard/pillar-charts-lazy";
+
+export const metadata: Metadata = { title: "ภาพรวมสุขภาพ" };
 
 export default async function DashboardPage({
   searchParams,

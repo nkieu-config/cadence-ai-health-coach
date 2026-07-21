@@ -1,9 +1,21 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BackfillCheckinForm } from "@/components/checkin/backfill-checkin-form";
 import { PageContainer } from "@/components/page-container";
-import { today } from "@/lib/checkins/date";
+import { formatThaiDate, today } from "@/lib/checkins/date";
 import { getCheckinByDate } from "@/lib/checkins/queries";
 import { isCheckinDate, isWithinBackfillWindow } from "@/lib/checkins/validate";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ date: string }>;
+}): Promise<Metadata> {
+  const { date } = await params;
+  return {
+    title: isCheckinDate(date) ? `บันทึกย้อนหลัง ${formatThaiDate(date)}` : "บันทึกย้อนหลัง",
+  };
+}
 
 export default async function EditCheckinPage({ params }: { params: Promise<{ date: string }> }) {
   const { date } = await params;
