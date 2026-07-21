@@ -6,7 +6,7 @@ Glossary ของโปรเจกต์ **AI Personal Health Coach for Studen
 
 | คำ | นิยาม | ข้อห้าม/หมายเหตุ |
 |---|---|---|
-| **Cadence** | ชื่อแบรนด์ของระบบ = "จังหวะ" — ไม่มี cadence ไหนถูกหรือผิด มีแต่ของผู้ใช้เอง | เขียน `Cadence` เสมอ ห้าม `cadence` หรือ `CADENCE` · **URL ยังเป็น `personal-healthcoach.vercel.app`** และ Vercel project ยังชื่อ `healthcoach` — จงใจไม่เปลี่ยนเพื่อไม่ต้องแตะ OAuth (INFRA-28) |
+| **Cadence** | ชื่อแบรนด์ของระบบ = "จังหวะ" — ไม่มี cadence ไหนถูกหรือผิด มีแต่ของผู้ใช้เอง | เขียน `Cadence` เสมอ ห้าม `cadence` หรือ `CADENCE` · **URL ยังเป็น `personal-healthcoach.vercel.app`** และ Vercel project ยังชื่อ `healthcoach` — จงใจไม่เปลี่ยนเพื่อไม่ต้องแตะ OAuth |
 | **Pillar** | 3 ด้านสุขภาพหลักที่ระบบติดตาม: `eating` (การกิน), `sleep` (การนอน), `movement` (การเคลื่อนไหว) | ใช้คำว่า movement ไม่ใช่ exercise — ครอบคลุมการขยับเล็ก ๆ เช่น เดิน ยืดเหยียด ไม่ใช่แค่ออกกำลังกาย |
 | **Check-in** | บันทึกประจำวัน 1 ครั้ง/วัน ครอบคลุมทั้ง 3 pillars + energy + disruptor ต้องกรอกเสร็จใน **ไม่เกิน 3 นาที** | Low-burden เป็นข้อบังคับจากโจทย์ — ห้ามเพิ่มคำถามจนเกิน 3 นาที |
 | **Energy Level** | ระดับพลังงานรายวันที่ผู้ใช้ประเมินเอง: `low` / `medium` / `high` | เป็น self-reported เสมอ ระบบไม่คำนวณให้ |
