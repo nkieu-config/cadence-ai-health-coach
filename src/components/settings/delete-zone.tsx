@@ -76,10 +76,18 @@ export function DeleteZone() {
       <CardContent className="space-y-4">
         {mode === null ? (
           <div className="grid gap-2 lg:grid-cols-2">
-            <Button variant="destructive" onClick={() => open("data")}>
+            <Button
+              variant="outline"
+              className="border-destructive/40 bg-transparent text-destructive hover:bg-destructive/10 hover:text-destructive dark:border-destructive/40 dark:bg-transparent dark:hover:bg-destructive/20"
+              onClick={() => open("data")}
+            >
               {MODES.data.button}
             </Button>
-            <Button variant="destructive" onClick={() => open("account")}>
+            <Button
+              variant="outline"
+              className="border-destructive/40 bg-transparent text-destructive hover:bg-destructive/10 hover:text-destructive dark:border-destructive/40 dark:bg-transparent dark:hover:bg-destructive/20"
+              onClick={() => open("account")}
+            >
               {MODES.account.button}
             </Button>
           </div>
