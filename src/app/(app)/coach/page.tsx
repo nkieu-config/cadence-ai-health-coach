@@ -1,3 +1,4 @@
+import { MessageCircle } from "lucide-react";
 import { CoachChatClient } from "@/components/coach/chat-client";
 import { getChatHistory, messagesLeftToday } from "@/lib/chat/queries";
 import { buildCoachOpener } from "@/lib/chat/opener";
@@ -17,9 +18,11 @@ export default async function CoachPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-[46rem] flex-col gap-4">
-      <h1 className="sr-only">คุยกับโค้ช</h1>
       <div className="shrink-0">
-        <h2 className="text-xl font-semibold lg:text-2xl">คุยกับโค้ชสุขภาพ</h2>
+        <h1 className="flex items-center gap-2 text-xl font-semibold lg:text-2xl">
+          <MessageCircle className="size-6 shrink-0 text-primary" />
+          คุยกับโค้ชสุขภาพ
+        </h1>
         <p className="text-sm text-muted-foreground">
           รับคำแนะนำเพื่อสร้างนิสัยการกิน การนอน และการเคลื่อนไหวที่ดี
         </p>

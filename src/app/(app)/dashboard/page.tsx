@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { CalendarCheck } from "lucide-react";
+import { BarChart3, CalendarCheck } from "lucide-react";
 import { getCheckins } from "@/lib/checkins/queries";
 import { daysAgo, today } from "@/lib/checkins/date";
 import { MAX_PERIOD, parsePeriod, PeriodToggle } from "@/components/dashboard/period-toggle";
@@ -28,7 +28,10 @@ export default async function DashboardPage({
     return (
       <PageContainer width="content" className="space-y-6">
         <div className="space-y-2">
-          <h1 className="text-xl font-semibold lg:text-2xl">ภาพรวมสุขภาพ</h1>
+          <h1 className="flex items-center gap-2 text-xl font-semibold lg:text-2xl">
+            <BarChart3 className="size-6 shrink-0 text-primary" />
+            ภาพรวมสุขภาพ
+          </h1>
           <p className="text-sm text-muted-foreground">
             ดูแนวโน้มสุขภาพและคำแนะนำจากบันทึกสุขภาพรายวันของคุณ
           </p>
@@ -62,7 +65,10 @@ export default async function DashboardPage({
     <PageContainer width="content" className="space-y-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="space-y-2">
-          <h1 className="text-xl font-semibold lg:text-2xl">ภาพรวมสุขภาพ</h1>
+          <h1 className="flex items-center gap-2 text-xl font-semibold lg:text-2xl">
+            <BarChart3 className="size-6 shrink-0 text-primary" />
+            ภาพรวมสุขภาพ
+          </h1>
           <p className="text-sm text-muted-foreground">
             ดูแนวโน้มสุขภาพและคำแนะนำจากบันทึกสุขภาพรายวันของคุณ — บันทึกแล้ว {inPeriod.length} วัน
             จาก {period} วันที่ผ่านมา

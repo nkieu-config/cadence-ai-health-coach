@@ -1,32 +1,36 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
-import { LogOut } from "lucide-react";
-import { getCurrentUser, hasCompletedOnboarding } from "@/lib/auth/user";
-import { signOut } from "@/lib/auth/actions";
+import { getCurrentUser, getProfile, hasCompletedOnboarding } from "@/lib/auth/user";
 import { AppNav } from "@/components/app-nav";
 import { AppSidebar } from "@/components/app-sidebar";
 import { PageContainer } from "@/components/page-container";
 import { SafetyNotice } from "@/components/safety-notice";
-import { Button } from "@/components/ui/button";
+import { SignOutButton } from "@/components/sign-out-button";
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
   if (!(await hasCompletedOnboarding())) redirect("/onboarding");
 
+  const profile = await getProfile();
+  const name = profile?.display_name ?? null;
+
   return (
     <div className="flex min-h-dvh flex-col lg:flex-row">
-      <AppSidebar />
+      <AppSidebar name={name} />
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-10 border-b bg-background lg:hidden">
           <div className="mx-auto flex w-full max-w-md items-center justify-between px-4 py-2">
-            <span className="font-semibold">HealthCoach</span>
-            <form action={signOut}>
-              <Button type="submit" variant="ghost" size="icon" aria-label="ออกจากระบบ">
-                <LogOut className="size-5" />
-              </Button>
-            </form>
+            <div className="min-w-0">
+              <span className="block font-semibold">HealthCoach</span>
+              {name && (
+                <span className="block truncate text-xs text-muted-foreground">
+                  สวัสดี {name} 👋
+                </span>
+              )}
+            </div>
+            <SignOutButton compact />
           </div>
         </header>
 
