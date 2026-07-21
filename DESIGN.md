@@ -33,6 +33,8 @@ export default async function MyPage() {
 
 > **ยกเว้น: หน้าแชท** (`/coach`) ไม่ใช้ `<PageContainer>` — แชทเป็นบทสนทนา ไม่ใช่ฟอร์ม · ใช้ `max-w-[46rem]` + ความสูง `calc(100dvh - chrome)` ให้ข้อความเลื่อนในกล่อง input ปักล่าง (โครง 3 ชั้นแบบ LINE/ChatGPT) · ฟอร์มแคบเพราะกรอกง่าย แต่แชทยิ่งแคบยิ่งอึดอัด
 
+**หลักการหน้าแชท** (message-variants.tsx): ข้อความโค้ช = avatar `MessageCircle` + ชื่อ "โค้ช" ชิดซ้าย ไม่มีพื้นฟอง (ตัวตนโค้ชชัด ตามโจทย์ Feature 4) · ข้อความผู้ใช้ = ฟองเขียวชิดขวา · คำตอบโค้ช render markdown ผ่าน `FormattedMessage` (เขียนเอง ไม่มี library ไม่มี raw HTML) · ช่องพิมพ์เป็น textarea โตตามเนื้อหา Enter ส่ง Shift+Enter ขึ้นบรรทัด · **โควตาหมด = โทน muted อบอุ่น ไม่ใช่ destructive** (โจทย์ข้อ 8 ห้ามกดดัน) · ป้ายโควตาโชว์เฉพาะเมื่อเหลือ ≤ 2
+
 **3. Breakpoint ที่ใช้จริงมีตัวเดียว: `lg` (1024px)**
 
 | | < 1024px | ≥ 1024px |

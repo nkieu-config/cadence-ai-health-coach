@@ -1,14 +1,23 @@
-import { AlertCircle } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { MessageCircle, Moon } from "lucide-react";
 import type { ChatMessage } from "@/lib/chat/types";
-import { cn } from "@/lib/utils";
 import { FormattedMessage } from "./formatted-message";
+
+function CoachAvatar() {
+  return (
+    <div
+      aria-hidden
+      className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"
+    >
+      <MessageCircle className="size-4" />
+    </div>
+  );
+}
 
 export function UserMessage({ message }: { message: ChatMessage }) {
   return (
     <div className="flex justify-end">
       <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 text-sm text-primary-foreground">
-        <p className="whitespace-pre-wrap break-words">{message.content}</p>
+        <p className="break-words whitespace-pre-wrap">{message.content}</p>
       </div>
     </div>
   );
@@ -16,9 +25,13 @@ export function UserMessage({ message }: { message: ChatMessage }) {
 
 export function CoachMessage({ message }: { message: ChatMessage }) {
   return (
-    <div className="flex justify-start">
-      <div className="max-w-[88%] rounded-2xl rounded-bl-sm bg-muted px-4 py-3 text-sm text-foreground">
-        <FormattedMessage content={message.content} />
+    <div className="flex gap-2.5">
+      <CoachAvatar />
+      <div className="min-w-0 flex-1 pt-0.5">
+        <p className="mb-1 text-xs font-medium text-muted-foreground">โค้ช</p>
+        <div className="text-sm text-foreground">
+          <FormattedMessage content={message.content} />
+        </div>
       </div>
     </div>
   );
@@ -26,23 +39,19 @@ export function CoachMessage({ message }: { message: ChatMessage }) {
 
 export function PendingReply() {
   return (
-    <div className="flex justify-start">
-      <div
-        className={cn(
-          "flex items-center gap-1 rounded-2xl rounded-tl-none px-4 py-3.5 bg-muted text-muted-foreground shadow-sm"
-        )}
-        aria-label="โค้ชกำลังพิมพ์"
-      >
+    <div className="flex gap-2.5" aria-label="โค้ชกำลังคิด">
+      <CoachAvatar />
+      <div className="flex items-center gap-1 pt-2.5">
         <span
-          className="size-2 animate-bounce rounded-full bg-muted-foreground/60"
+          className="size-2 animate-bounce rounded-full bg-muted-foreground/50"
           style={{ animationDelay: "0ms" }}
         />
         <span
-          className="size-2 animate-bounce rounded-full bg-muted-foreground/60"
+          className="size-2 animate-bounce rounded-full bg-muted-foreground/50"
           style={{ animationDelay: "150ms" }}
         />
         <span
-          className="size-2 animate-bounce rounded-full bg-muted-foreground/60"
+          className="size-2 animate-bounce rounded-full bg-muted-foreground/50"
           style={{ animationDelay: "300ms" }}
         />
       </div>
@@ -52,16 +61,14 @@ export function PendingReply() {
 
 export function QuotaReachedNotice() {
   return (
-    <Card className="border-destructive/30 bg-destructive/5 text-destructive">
-      <CardContent className="flex items-start gap-3 p-4">
-        <AlertCircle className="size-5 shrink-0 mt-0.5" />
-        <div className="space-y-1 text-sm text-foreground">
-          <p className="font-semibold text-destructive">คุยครบโควตา 5 ข้อความสำหรับวันนี้แล้ว</p>
-          <p className="text-xs leading-relaxed text-muted-foreground">
-            พรุ่งนี้กลับมาคุยต่อได้นะ ระหว่างนี้คุณยังสามารถเช็คอินและดูข้อมูลย้อนหลังได้ตามปกติ
-          </p>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="flex items-start gap-3 rounded-lg border border-border bg-muted/40 p-3.5">
+      <Moon className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
+      <div className="space-y-1">
+        <p className="text-sm font-medium text-foreground">คุยกับโค้ชครบสำหรับวันนี้แล้ว</p>
+        <p className="text-xs leading-relaxed text-muted-foreground">
+          พรุ่งนี้กลับมาคุยต่อได้เลย ระหว่างนี้ยังเช็คอินและดูข้อมูลย้อนหลังได้ตามปกติ
+        </p>
+      </div>
+    </div>
   );
 }
