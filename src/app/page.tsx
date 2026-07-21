@@ -22,6 +22,9 @@ export default async function LandingPage() {
           <BrandMark className="size-10" />
           Cadence
         </h1>
+        <p className="text-sm font-medium tracking-widest text-muted-foreground uppercase">
+          AI Personal Health Coach
+        </p>
         <p className="max-w-md text-muted-foreground">
           ผู้ช่วยดูแลสุขภาพประจำวันสำหรับนักศึกษาและคนเริ่มทำงาน — เห็น pattern การกิน การนอน
           การเคลื่อนไหว แล้วเริ่มจากก้าวเล็ก ๆ ที่ทำได้จริง

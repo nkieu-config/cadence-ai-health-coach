@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     template: "%s · Cadence",
   },
   description: "ผู้ช่วยดูแลสุขภาพประจำวันสำหรับนักศึกษาและคนเริ่มทำงาน",
+  openGraph: { title: "Cadence — AI Personal Health Coach" },
 };
 
 export const viewport: Viewport = {
