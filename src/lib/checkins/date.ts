@@ -44,6 +44,14 @@ export function formatShortThaiDate(isoDate: string): string {
   }).format(new Date(`${isoDate}T00:00:00Z`));
 }
 
+export function formatThaiMonth(isoDate: string): string {
+  return new Intl.DateTimeFormat("th-TH", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${isoDate}T00:00:00Z`));
+}
+
 export function formatThaiDateLong(isoDate: string): string {
   return new Intl.DateTimeFormat("th-TH", {
     day: "numeric",

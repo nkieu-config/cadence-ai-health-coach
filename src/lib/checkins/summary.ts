@@ -1,4 +1,4 @@
-import type { Checkin } from "@/lib/domain";
+import type { Checkin, Pillar } from "@/lib/domain";
 import { wakeTimeRange } from "./derive";
 import {
   BED_TIME_LABELS,
@@ -11,7 +11,13 @@ import {
   MOVEMENT_TYPE_LABELS,
 } from "./labels";
 
+export type SummaryEntry = {
+  pillar: Pillar;
+  text: string;
+};
+
 export type CheckinSummary = {
+  entries: SummaryEntry[];
   lines: string[];
   encouragement: string;
 };
@@ -38,7 +44,7 @@ function sleepLine(checkin: Checkin) {
     `นอน ${checkin.sleepHours} ชม.`,
     `เข้านอน ${BED_TIME_LABELS[checkin.bedTimeBucket]}`,
     `ตื่นราว ${wakeTimeRange(checkin)}`,
-    `คุณภาพการนอนที่ประเมินเอง ${checkin.sleepQuality}/5`,
+    `คุณภาพ ${checkin.sleepQuality}/5`,
   ].join(" · ");
 }
 
@@ -74,8 +80,15 @@ function encouragement(checkin: Checkin) {
 }
 
 export function buildCheckinSummary(checkin: Checkin): CheckinSummary {
+  const entries: SummaryEntry[] = [
+    { pillar: "eating", text: eatingLine(checkin) },
+    { pillar: "sleep", text: sleepLine(checkin) },
+    { pillar: "movement", text: movementLine(checkin) },
+  ];
+
   return {
-    lines: [eatingLine(checkin), sleepLine(checkin), movementLine(checkin)],
+    entries,
+    lines: entries.map((entry) => entry.text),
     encouragement: encouragement(checkin),
   };
 }
