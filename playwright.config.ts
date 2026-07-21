@@ -26,7 +26,7 @@ export default defineConfig({
     {
       name: "มือถือ · light",
       dependencies: ["setup"],
-      testIgnore: /auth\.setup\.ts/,
+      testIgnore: [/auth\.setup\.ts/, /auth\.spec\.ts/],
       use: {
         ...devices["iPhone 14"],
         browserName: "chromium",
@@ -37,7 +37,7 @@ export default defineConfig({
     {
       name: "มือถือ · dark",
       dependencies: ["setup"],
-      testIgnore: [/auth\.setup\.ts/, /checkin\.spec\.ts/],
+      testIgnore: [/auth\.setup\.ts/, /auth\.spec\.ts/, /checkin\.spec\.ts/],
       use: {
         ...devices["iPhone 14"],
         browserName: "chromium",
@@ -48,11 +48,28 @@ export default defineConfig({
     {
       name: "เดสก์ท็อป · dark",
       dependencies: ["setup"],
-      testIgnore: [/auth\.setup\.ts/, /checkin\.spec\.ts/],
+      testIgnore: [/auth\.setup\.ts/, /auth\.spec\.ts/, /checkin\.spec\.ts/],
       use: {
         ...devices["Desktop Chrome"],
         colorScheme: "dark",
         storageState: "e2e/.auth/demo.json",
+      },
+    },
+    {
+      name: "ยังไม่ล็อกอิน · มือถือ",
+      testMatch: /auth\.spec\.ts/,
+      use: {
+        ...devices["iPhone 14"],
+        browserName: "chromium",
+        colorScheme: "light",
+      },
+    },
+    {
+      name: "ยังไม่ล็อกอิน · เดสก์ท็อป dark",
+      testMatch: /auth\.spec\.ts/,
+      use: {
+        ...devices["Desktop Chrome"],
+        colorScheme: "dark",
       },
     },
   ],

@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { hasCompletedOnboarding } from "@/lib/auth/user";
 
-export type AuthState = { error: string } | undefined;
+export type AuthState = { error: string } | { notice: string } | undefined;
 
 function readCredentials(formData: FormData) {
   return {
@@ -56,8 +56,8 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   }
   if (!data.session) {
     return {
-      error:
-        "สมัครสำเร็จ แต่ต้องยืนยันอีเมลก่อนเข้าใช้งาน — ปิด Confirm email ใน Supabase สำหรับ prototype",
+      notice:
+        "สมัครสำเร็จแล้ว — เราส่งลิงก์ยืนยันไปที่อีเมลของคุณ กดลิงก์นั้นแล้วกลับมาเข้าสู่ระบบ",
     };
   }
 
@@ -79,14 +79,17 @@ async function siteOrigin() {
   return `${proto}://${host}`;
 }
 
-export async function signInWithGoogle() {
+export async function signInWithGoogle(formData: FormData) {
+  const from = String(formData.get("from") ?? "/login");
+  const origin = from === "/register" ? "/register" : "/login";
+
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: { redirectTo: `${await siteOrigin()}/auth/callback` },
   });
   if (error || !data.url) {
-    redirect("/login?error=oauth");
+    redirect(`${origin}?error=oauth`);
   }
   redirect(data.url);
 }

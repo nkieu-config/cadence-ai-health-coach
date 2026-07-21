@@ -1,37 +1,39 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { signUp, type AuthState } from "@/lib/auth/actions";
+import { AuthMessage } from "@/components/auth/auth-message";
+import { PasswordField } from "@/components/auth/password-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export function RegisterForm() {
   const [state, action, pending] = useActionState<AuthState, FormData>(signUp, undefined);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const failed = Boolean(state && "error" in state);
+
+  useEffect(() => {
+    if (failed) emailRef.current?.focus();
+  }, [failed, state]);
 
   return (
     <form action={action} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="email">อีเมล</Label>
-        <Input id="email" name="email" type="email" autoComplete="email" required />
+        <Input ref={emailRef} id="email" name="email" type="email" autoComplete="email" required />
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="password">รหัสผ่าน</Label>
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          autoComplete="new-password"
-          minLength={6}
-          required
-        />
-        <p className="text-xs text-muted-foreground">อย่างน้อย 6 ตัวอักษร</p>
-      </div>
-      {state?.error && <p className="text-sm text-destructive">{state.error}</p>}
+
+      <PasswordField autoComplete="new-password" minLength={6} hint="อย่างน้อย 6 ตัวอักษร" />
+
+      {state && "error" in state && <AuthMessage tone="error">{state.error}</AuthMessage>}
+      {state && "notice" in state && <AuthMessage tone="notice">{state.notice}</AuthMessage>}
+
       <Button type="submit" className="w-full" disabled={pending}>
         {pending ? "กำลังสมัคร…" : "สมัครสมาชิก"}
       </Button>
+
       <p className="text-center text-sm text-muted-foreground">
         มีบัญชีอยู่แล้ว?{" "}
         <Link
