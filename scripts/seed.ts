@@ -174,6 +174,41 @@ function bangkokToday(): Date {
   return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
 }
 
+type WeekArc = {
+  sleepDelta: number;
+  movementScale: number;
+  skipsBreakfast: boolean;
+  extraSweetDrink: boolean;
+};
+
+const WEEK_ARC: Record<number, WeekArc> = {
+  0: { sleepDelta: 0, movementScale: 1, skipsBreakfast: false, extraSweetDrink: false },
+  1: { sleepDelta: -0.4, movementScale: 0.75, skipsBreakfast: false, extraSweetDrink: false },
+  2: { sleepDelta: -0.8, movementScale: 0.5, skipsBreakfast: true, extraSweetDrink: true },
+  3: { sleepDelta: -1.2, movementScale: 0.35, skipsBreakfast: true, extraSweetDrink: true },
+};
+
+function loweredQuality(quality: DayPlan["sleepQuality"]): DayPlan["sleepQuality"] {
+  return quality > 1 ? ((quality - 1) as DayPlan["sleepQuality"]) : quality;
+}
+
+function applyWeekArc(plan: DayPlan, weeksAgo: number): DayPlan {
+  const arc = WEEK_ARC[Math.min(weeksAgo, 3)];
+  const skipsMore = arc.skipsBreakfast && !plan.skippedMeals.includes("breakfast");
+
+  return {
+    ...plan,
+    sleepHours: Math.round(Math.max(4, plan.sleepHours + arc.sleepDelta) * 10) / 10,
+    sleepQuality: arc.sleepDelta <= -0.8 ? loweredQuality(plan.sleepQuality) : plan.sleepQuality,
+    movementMinutes: Math.round(plan.movementMinutes * arc.movementScale),
+    sweetDrinks: plan.sweetDrinks + (arc.extraSweetDrink ? 1 : 0),
+    mealsCount: skipsMore ? Math.max(0, plan.mealsCount - 1) : plan.mealsCount,
+    skippedMeals: skipsMore ? [...plan.skippedMeals, "breakfast"] : plan.skippedMeals,
+    energyLevel:
+      arc.sleepDelta <= -0.8 && plan.energyLevel === "high" ? "medium" : plan.energyLevel,
+  };
+}
+
 export function buildCheckins(from: Date = bangkokToday()): Checkin[] {
   const checkins: Checkin[] = [];
 
@@ -185,7 +220,8 @@ export function buildCheckins(from: Date = bangkokToday()): Checkin[] {
     const forgotToLog = ago >= 14 && (weekday === 0 || weekday === 6);
     if (forgotToLog) continue;
 
-    checkins.push({ checkinDate: date.toISOString().slice(0, 10), ...BY_WEEKDAY[weekday] });
+    const plan = applyWeekArc(BY_WEEKDAY[weekday], Math.floor(ago / 7));
+    checkins.push({ checkinDate: date.toISOString().slice(0, 10), ...plan });
   }
 
   return checkins;
