@@ -1,7 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { AlertCircle, Users, Sunrise, Car, GraduationCap, Laptop, X } from "lucide-react";
+import {
+  AlertCircle,
+  Users,
+  Sunrise,
+  Car,
+  GraduationCap,
+  Laptop,
+  ChevronDown,
+  X,
+} from "lucide-react";
 import type { Disruptor } from "@/lib/domain";
 import { DISRUPTOR_LABELS } from "@/lib/checkins/labels";
 import { formatThaiDate } from "@/lib/checkins/date";
@@ -259,17 +268,32 @@ export function DisruptorPopover({
   );
 }
 
+function DisruptorLegendItems() {
+  return knownDisruptors(Object.keys(disruptorConfig) as Disruptor[]).map((d) => (
+    <div key={d} className="flex items-center gap-1.5">
+      <DisruptorBadge disruptor={d} wrapClass="w-4 h-4" iconClass="w-2.5 h-2.5" />
+      <span>{DISRUPTOR_LABELS[d]}</span>
+    </div>
+  ));
+}
+
 export function DisruptorLegend() {
   return (
-    <div className="mt-3.5 flex flex-wrap justify-center gap-x-4 gap-y-2 border-t pt-3.5 text-xs text-muted-foreground">
-      <span className="mr-1 font-medium text-foreground">สัญลักษณ์วันพิเศษ (Disruptors):</span>
-      {knownDisruptors(Object.keys(disruptorConfig) as Disruptor[]).map((d) => (
-        <div key={d} className="flex items-center gap-1.5">
-          <DisruptorBadge disruptor={d} wrapClass="w-4 h-4" iconClass="w-2.5 h-2.5" />
-          <span>{DISRUPTOR_LABELS[d]}</span>
+    <>
+      <details className="group mt-3.5 border-t pt-1 text-xs text-muted-foreground lg:hidden">
+        <summary className="flex min-h-11 cursor-pointer items-center justify-center gap-1.5 rounded-full outline-none select-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
+          <ChevronDown className="size-4 shrink-0 transition-transform group-open:rotate-180" />
+          <span>สัญลักษณ์วันพิเศษ</span>
+        </summary>
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 pb-1">
+          <DisruptorLegendItems />
         </div>
-      ))}
-    </div>
+      </details>
+      <div className="mt-3.5 hidden flex-wrap justify-center gap-x-4 gap-y-2 border-t pt-3.5 text-xs text-muted-foreground lg:flex">
+        <span className="mr-1 font-medium text-foreground">สัญลักษณ์วันพิเศษ (Disruptors):</span>
+        <DisruptorLegendItems />
+      </div>
+    </>
   );
 }
 

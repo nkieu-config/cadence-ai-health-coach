@@ -157,9 +157,7 @@ export function PillarCharts({ checkins, period }: { checkins: Checkin[]; period
       <CardHeader className="space-y-4 pb-4">
         <div className="space-y-1">
           <CardTitle className="text-lg">แนวโน้มรายวัน</CardTitle>
-          <CardDescription>
-            การนอน · การกิน · การเคลื่อนไหว · พลังงาน ย้อนหลัง {period} วัน
-          </CardDescription>
+          <CardDescription>ย้อนหลัง {period} วัน</CardDescription>
         </div>
         <div className="flex w-fit flex-wrap gap-1.5 rounded-full border bg-muted/40 p-1">
           {categories.map((cat) => {

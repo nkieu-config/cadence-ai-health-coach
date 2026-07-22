@@ -9,14 +9,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { GenerateInsightButton } from "./generate-insight-button";
 
 const MAX_PATTERNS_SHOWN = 5;
-const MOBILE_PATTERNS_UPFRONT = 3;
+const MOBILE_PATTERNS_UPFRONT = 2;
 
 function EvidenceRow({ pattern }: { pattern: InsightPattern }) {
   const { metric, groupA, groupB } = pattern.evidence;
   return (
-    <div className="rounded-lg bg-muted/50 p-2 text-xs text-muted-foreground">
-      <p className="mb-1 font-medium text-foreground">{metric}</p>
-      <div className="flex flex-col gap-1 md:flex-row md:gap-3">
+    <div className="border-t pt-2 text-xs text-muted-foreground">
+      <p className="font-medium text-foreground">{metric}</p>
+      <div className="flex flex-wrap gap-x-3 gap-y-0.5">
         <span>
           {groupA.label} · {groupA.days} วัน
         </span>
