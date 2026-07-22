@@ -7,6 +7,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { PageContainer } from "@/components/page-container";
 import { SafetyNotice } from "@/components/safety-notice";
 import { SignOutIconButton } from "@/components/sign-out-button";
+import { ThemeToggleIconButton } from "@/components/theme-toggle";
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
   const user = await getCurrentUser();
@@ -28,7 +29,10 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
         <header className="sticky top-0 z-10 border-b bg-background pt-[env(safe-area-inset-top)] lg:hidden">
           <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-3 py-2 xs:px-4">
             <BrandLockup markClassName="size-5" />
-            <SignOutIconButton />
+            <div className="flex shrink-0 items-center gap-1">
+              <ThemeToggleIconButton />
+              <SignOutIconButton />
+            </div>
           </div>
         </header>
 

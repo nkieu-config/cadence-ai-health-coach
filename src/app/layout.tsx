@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans_Thai } from "next/font/google";
+import { ThemeScript } from "@/components/theme-script";
 import "./globals.css";
 
 const plexSansThai = IBM_Plex_Sans_Thai({
@@ -26,10 +27,6 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0d1526" },
-  ],
 };
 
 export default function RootLayout({
@@ -38,7 +35,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="th" className={`${plexSansThai.variable} ${plexMono.variable} h-full antialiased`}>
+    <html
+      lang="th"
+      className={`${plexSansThai.variable} ${plexMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
+      <head>
+        <ThemeScript />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

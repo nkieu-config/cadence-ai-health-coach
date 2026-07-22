@@ -51,7 +51,9 @@ export default async function MyPage() {
 
 1. **ปุ่ม/ลิงก์/ช่องกรอก ต้องสูง ≥ 44px** — ผู้ใช้เรากรอกตอนตี 1 มือเดียว ง่วง ๆ
    ⚠️ **`<Link>` ที่แต่งให้ดูเหมือนปุ่ม ก็ต้อง 44px ด้วย** (ใช้ `buttonVariants()` หรือ `min-h-11`) — จุดนี้เคยหลุดมาแล้ว
-2. **Dark mode ตามค่าเครื่องอัตโนมัติ** — ทุกสีต้องมาจาก token ถ้า hardcode `bg-white` มันจะขาวโพลนตอนกลางคืน
+2. **Dark mode: ตามค่าเครื่อง จนกว่าผู้ใช้จะกดปุ่มสลับ** — ทุกสีต้องมาจาก token ถ้า hardcode `bg-white` มันจะขาวโพลนตอนกลางคืน
+   ธีมที่ใช้จริงอยู่ที่ `data-theme="light|dark"` บน `<html>` (ตั้งโดย inline script ก่อน paint — ดู `components/theme-script.tsx`) · `dark:` ใน Tailwind ผูกกับ attribute นี้ **ไม่ใช่ `prefers-color-scheme`** แล้ว
+   ⚠️ ถ้าต้องเขียน CSS/`<style>` เองที่แยกโหมด ให้ใช้ `[data-theme="dark"]` ห้ามใช้ `@media (prefers-color-scheme: dark)` — มันจะไม่ตามปุ่ม
 3. **ห้าม hardcode สี** — ใช้ `bg-primary` / `text-muted-foreground` / `border` เสมอ
 4. **กราฟใช้ `--chart-1` ถึง `--chart-5`** (นอน=1, กิน=2, เคลื่อนไหว=3) — ผูกกับ dark mode ให้แล้ว
 5. **ไม่ใช้ emoji เป็นไอคอน** — ใช้ Lucide (emoji ในข้อความปกติได้)

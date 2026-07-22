@@ -7,6 +7,7 @@ import { BrandLockup } from "./brand";
 import { NavIcon } from "./nav-pending";
 import { NAV_ITEMS, isActivePath } from "./nav-items";
 import { SignOutMenuItem } from "./sign-out-button";
+import { ThemeToggleMenuItem } from "./theme-toggle";
 
 export function AppSidebar() {
   const pathname = usePathname();
@@ -41,7 +42,8 @@ export function AppSidebar() {
           </ul>
         </nav>
 
-        <div className="mt-auto">
+        <div className="mt-auto space-y-1">
+          <ThemeToggleMenuItem />
           <SignOutMenuItem />
         </div>
       </div>

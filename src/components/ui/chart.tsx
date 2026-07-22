@@ -6,7 +6,7 @@ import type { TooltipValueType } from "recharts"
 
 import { cn } from "@/lib/utils"
 
-// dark mode ของแอปนี้มาจากค่าเครื่อง (prefers-color-scheme) ไม่ใช่คลาส .dark
+// dark mode ของแอปนี้มาจาก [data-theme] บน <html> ไม่ใช่คลาส .dark (ดู lib/theme.ts)
 type ChartTheme = "light" | "dark"
 
 const INITIAL_DIMENSION = { width: 320, height: 200 } as const
@@ -103,10 +103,8 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
         __html: `[data-chart=${id}] {
 ${variables("light")}
 }
-@media (prefers-color-scheme: dark) {
-  [data-chart=${id}] {
+[data-theme="dark"] [data-chart=${id}] {
 ${variables("dark")}
-  }
 }`,
       }}
     />
