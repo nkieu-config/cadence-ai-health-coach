@@ -1,6 +1,6 @@
 # INFRA-26 — เช้าวัน pitch: refresh:demo-week ยังไม่ใช่ "คำสั่งเดียว" จริง
 
-Status: ready-for-agent
+Status: done
 Owner: A
 Sprint: 3
 Priority: M — จำเป็นต่อ demo สด
@@ -27,10 +27,12 @@ Refs: INFRA-24, INFRA-25, docs/pitch/demo-script.md (QA-03)
 
 ## เสร็จเมื่อ
 
-- [ ] รัน `npm run refresh:demo-week` ครั้งเดียวแล้ว: /checkin ว่าง · dashboard 7 วันมีข้อมูล 6 วัน · goal มี progress · reflection 4 สัปดาห์ · แชทมีบทสนทนา
-- [ ] ท้ายผลรันมีตัวเลขเทียบสัปดาห์ตรงกับจอ /reflection
-- [ ] dry-run เต็มรอบกับบัญชีทิ้ง (`DEMO_EMAIL`) ผ่านก่อนรันกับปาล์ม
+- [x] รัน `npm run refresh:demo-week` ครั้งเดียวแล้ว: /checkin ว่าง · dashboard 7 วันมีข้อมูล 6 วัน · goal มี progress · reflection 4 สัปดาห์ · แชทมีบทสนทนา
+- [x] ท้ายผลรันมีตัวเลขเทียบสัปดาห์ตรงกับจอ /reflection
+- [x] dry-run เต็มรอบกับบัญชีทิ้ง (`DEMO_EMAIL`) ผ่านก่อนรันกับปาล์ม
 
 ## Comments
 
 ---
+
+22 ก.ค. (A) — **เสร็จ** · PR #84 (script) + #85 (บท/ภาพสำรอง) · รันจริงกับปาล์มแล้ว บัญชีอยู่ในสถานะพร้อม demo · ข้อควรรู้: `seed.ts` มี `run()` ที่ top-level — ห้าม import เป็นโมดูล (เคยพลาดแล้ว รันทับปาล์มทั้งชุด กู้ด้วย refresh:demo-week คำสั่งเดียว)
