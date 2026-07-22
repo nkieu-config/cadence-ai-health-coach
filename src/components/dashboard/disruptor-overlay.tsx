@@ -210,8 +210,8 @@ export function DisruptorTooltipRows({ disruptors }: { disruptors: Disruptor[] }
   const known = knownDisruptors(disruptors);
   if (known.length === 0) return null;
   return (
-    <div className="mt-1 space-y-1 border-t pt-1.5 text-[10px] text-muted-foreground">
-      <span className="block text-[9px] font-semibold uppercase">ปัจจัยรบกวน:</span>
+    <div className="mt-1 space-y-1 border-t pt-1.5 text-xs text-muted-foreground">
+      <span className="block font-semibold">ปัจจัยรบกวน:</span>
       {known.map((d) => (
         <div key={d} className="flex items-center gap-1.5">
           <DisruptorBadge disruptor={d} wrapClass="w-4.5 h-4.5" iconClass="w-2.5 h-2.5" />
@@ -257,11 +257,11 @@ export function DisruptorPopover({
           ))}
         </div>
         {active.note ? (
-          <div className="rounded border bg-muted/50 p-2 text-[11px] text-muted-foreground italic">
+          <div className="rounded border bg-muted/50 p-2 text-xs text-muted-foreground italic">
             &quot;{active.note}&quot;
           </div>
         ) : (
-          <div className="text-[10px] text-muted-foreground/60 italic">(ไม่มีบันทึกเพิ่มเติม)</div>
+          <div className="text-xs text-muted-foreground/60 italic">(ไม่มีบันทึกเพิ่มเติม)</div>
         )}
       </div>
     </div>
