@@ -35,7 +35,7 @@
 | Safety | Guardrail 3 ชั้น + escalation 1323 + หลักฐาน 20/20 บนโมเดล production พร้อมลายเซ็นตรวจอิสระ | โชว์ตัวอย่าง AI ปฏิเสธคำถามวินิจฉัยโรคสด ๆ + เปิดไฟล์หลักฐานให้กรรมการดูได้ |
 | Privacy | RLS, data minimization, ลบ/แก้ได้เอง | โชว์หน้า privacy + ปุ่มลบข้อมูล |
 | Prototype Quality | Workflow หลักครบบน production จริง ผ่าน QA + freeze | Demo สดตาม script ที่ซ้อมแล้ว |
-| Reflection and Improvement | Weekly reflection + **เทียบสัปดาห์ก่อน** (F6-03) + ปุ่มตั้งเป้าต่อ | โชว์ reflection 4 สัปดาห์ของ demo account แล้วชี้ส่วนต่าง เช่น ขยับเฉลี่ย 12.6 → 16.4 นาที/วัน |
+| Reflection and Improvement | Weekly reflection + **เทียบสัปดาห์ก่อน** (F6-03) + ปุ่มตั้งเป้าต่อ | โชว์ reflection 4 สัปดาห์ของ demo account แล้วชี้ลูกศรขึ้นในการ์ดเทียบสัปดาห์ (ตัวเลขคำนวณสดรายวัน — อ่านจากจอ) |
 
 ## แพ็กเกจส่งงาน — หยิบอะไรส่งวันจริง (อัปเดต 20 ก.ค.)
 
