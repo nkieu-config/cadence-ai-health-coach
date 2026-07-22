@@ -76,6 +76,26 @@ export async function unreadableText(page: Page) {
   });
 }
 
+export async function expectNoTinyThai(page: Page) {
+  const tinyThai = await page.evaluate(() =>
+    [...document.querySelectorAll("body *")]
+      .filter((element) => {
+        if (element.children.length > 0) return false;
+        const text = element.textContent ?? "";
+        if (!/[฀-๿]/.test(text)) return false;
+        const box = element.getBoundingClientRect();
+        if (box.width === 0 || box.height === 0) return false;
+        return parseFloat(getComputedStyle(element).fontSize) < 11.9;
+      })
+      .map(
+        (element) =>
+          `${Math.round(parseFloat(getComputedStyle(element).fontSize))}px: ${element.textContent?.trim().slice(0, 24)}`
+      )
+      .slice(0, 3)
+  );
+  expect(tinyThai, "ข้อความไทยที่มองเห็นต้อง ≥ 12px (สระ/วรรณยุกต์ซ้อนกัน)").toEqual([]);
+}
+
 export async function expectUsablePage(page: Page, heading: string, errors: string[]) {
   const h1 = page.getByRole("heading", { level: 1 });
   await expect(h1, "ทุกหน้าต้องมี <h1> อันเดียว").toHaveCount(1);
@@ -97,23 +117,7 @@ export async function expectUsablePage(page: Page, heading: string, errors: stri
   );
   expect(tooSmall, "ทุกอย่างที่กดได้ต้องสูง ≥ 44px").toEqual([]);
 
-  const tinyThai = await page.evaluate(() =>
-    [...document.querySelectorAll("body *")]
-      .filter((element) => {
-        if (element.children.length > 0) return false;
-        const text = element.textContent ?? "";
-        if (!/[฀-๿]/.test(text)) return false;
-        const box = element.getBoundingClientRect();
-        if (box.width === 0 || box.height === 0) return false;
-        return parseFloat(getComputedStyle(element).fontSize) < 11.9;
-      })
-      .map(
-        (element) =>
-          `${Math.round(parseFloat(getComputedStyle(element).fontSize))}px: ${element.textContent?.trim().slice(0, 24)}`
-      )
-      .slice(0, 3)
-  );
-  expect(tinyThai, "ข้อความไทยที่มองเห็นต้อง ≥ 12px (สระ/วรรณยุกต์ซ้อนกัน)").toEqual([]);
+  await expectNoTinyThai(page);
 
   expect(await unreadableText(page), "ข้อความต้องอ่านออก (contrast ≥ 4.5:1)").toEqual([]);
   expect(errors, "ห้ามมี console error").toEqual([]);
