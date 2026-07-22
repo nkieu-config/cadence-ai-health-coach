@@ -31,14 +31,6 @@ Refs: DESIGN.md, F7-01, docs/08
 
 ---
 
-16 ก.ค. (A) — เสร็จ · branch `feat/infra-18-privacy-declutter`
+16 ก.ค. (A) — **เสร็จ** · branch `feat/infra-18-privacy-declutter` · เนื้อหาเดิมครบ ไม่ตัด
 
-**ทำอะไร:** เลิก `lg:columns-2` (masonry) → คอลัมน์เดียว `mx-auto max-w-3xl space-y-6` · เลิก override ที่ทำให้แน่น — ปล่อยให้ Card default ทำงาน (title `text-base`, description `text-sm`, padding มาตรฐาน) · icon section `size-5` · table padding `py-2.5 → py-3` · เนื้อหาเดิมครบทุกตัวอักษร ไม่ตัด
-
-**พิสูจน์:**
-
-- e2e เขียว 30/30 — รวม `/settings/privacy` ทั้ง มือถือ light/dark + เดสก์ท็อป (h1/contrast/44px/no-scroll/console ผ่าน)
-- tsc/format ผ่าน · privacy ไม่มี lint warning ใหม่
-- screenshot: เดสก์ท็อปไม่มี masonry เบี้ยวแล้ว เป็นเอกสารคอลัมน์เดียวโปร่ง · มือถือโปร่งขึ้น (title ใหญ่ + เว้นวรรคดีขึ้น)
-
-**ประสาน F7-02:** คอมเมนต์ในไฟล์ issue F7-02 แล้ว — 🟨 เอา delete section มาต่อเป็น `<Card>` ตัวสุดท้ายใน div `max-w-3xl` (ใต้การ์ด "สิทธิ์การจัดการข้อมูล") ใช้ `border-destructive/30` · ไม่ชนกัน
+**ประสาน F7-02:** 🟨 เอา delete section มาต่อเป็น `<Card>` ตัวสุดท้ายใน `max-w-3xl` (ใต้การ์ด "สิทธิ์การจัดการข้อมูล") ไม่ชนกัน
