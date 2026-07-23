@@ -9,7 +9,7 @@
 AI Personal Health Coach สำหรับนักศึกษาและ first jobber — ช่วยให้เห็น pattern การกิน–นอน–เคลื่อนไหว
 ของตัวเอง แล้วตั้ง micro goal ที่ทำได้จริงในชีวิตที่ตารางไม่แน่นอน
 
-[![CI](https://github.com/nkieu-config/ai-personal-health-coach-project/actions/workflows/ci.yml/badge.svg)](https://github.com/nkieu-config/ai-personal-health-coach-project/actions/workflows/ci.yml)
+[![CI](https://github.com/nkieu-config/cadence-ai-health-coach/actions/workflows/ci.yml/badge.svg)](https://github.com/nkieu-config/cadence-ai-health-coach/actions/workflows/ci.yml)
 ![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)
@@ -76,8 +76,8 @@ flowchart LR
 **ต้องมีก่อน:** Node.js 22 ขึ้นไป (ตาม [`.nvmrc`](.nvmrc)) · บัญชี Supabase และ Gemini API key
 
 ```bash
-git clone https://github.com/nkieu-config/ai-personal-health-coach-project.git
-cd ai-personal-health-coach-project
+git clone https://github.com/nkieu-config/cadence-ai-health-coach.git
+cd cadence-ai-health-coach
 cp .env.example .env.local    # เติมค่าตามตารางด้านล่าง
 npm ci
 npm run dev                   # http://localhost:3000

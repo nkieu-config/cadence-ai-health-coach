@@ -8,7 +8,7 @@ Refs: ADR-0002, docs/06 (โครงสร้างโปรเจกต์)
 
 ## งาน
 
-- [x] สร้าง GitHub repo — https://github.com/nkieu-config/ai-personal-health-coach-project + เชิญทีมครบ 4 คน
+- [x] สร้าง GitHub repo — https://github.com/nkieu-config/cadence-ai-health-coach + เชิญทีมครบ 4 คน
 - [x] Next.js (App Router, TypeScript) + Tailwind + shadcn/ui
 - [x] โครงโฟลเดอร์ตาม docs/06: `app/`, `lib/supabase`, `lib/patterns`, `lib/ai`, `components/`, `scripts/`
 - [x] Branch protection บน `main` + PR template สั้น ๆ
