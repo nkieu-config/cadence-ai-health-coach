@@ -106,11 +106,12 @@ src/
 │       ├── goals/
 │       ├── reflection/
 │       └── settings/privacy/
+├── proxy.ts                    ← auth guard ทุก route (Next.js 16 แทน middleware) — redirect ก่อนเข้า (app)
 ├── lib/                        ← "เครื่องยนต์" ทั้งหมด · UI เรียกผ่านที่นี่เท่านั้น
 │   ├── supabase/               ← client (RLS) + admin (service role — ลบบัญชีเท่านั้น)
 │   ├── checkins/               ← queries, actions, validate, labels, summary, date, derive
 │   ├── patterns/               ← คำนวณ pattern candidates จากสถิติจริง (ไม่มี LLM)
-│   ├── ai/                     ← ประตูเดียวสู่ Gemini: system prompt + client (สลับ provider ได้)
+│   ├── ai/                     ← ประตูเดียวสู่ Gemini: system prompt + client (สลับรุ่นได้ด้วย env AI_MODEL)
 │   ├── ai-outputs/             ← ประตูเดียวสู่ตาราง ai_outputs (insight + reflection)
 │   ├── chat/ · goals/ · account/ · onboarding/
 │   └── safety/language.ts      ← รายการคำต้องห้าม (ชุดเดียวทั้งระบบ — CI บังคับ)
