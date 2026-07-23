@@ -39,7 +39,7 @@ repo + Next.js + Tailwind/shadcn + Vercel + Supabase schema + RLS + Gemini spike
 
 **เช็คพอยต์ ศ. 12 ก.ค.: check-in ใช้งานจริงบน production** ✅ → **dogfooding เริ่ม จ. 13 ก.ค.** (ADR-0004)
 
-### Sprint 2: AI + 3 สายเดินขนาน (พฤ. 16 – พ. 22 ก.ค.)
+### ✅ Sprint 2: AI + 3 สายเดินขนาน (พฤ. 16 – พ. 22 ก.ค.) — เสร็จครบ
 
 | งาน | เจ้าของ |
 |---|---|
@@ -52,9 +52,9 @@ repo + Next.js + Tailwind/shadcn + Vercel + Supabase schema + RLS + Gemini spike
 | F7-02 ลบข้อมูล/บัญชี 🔒 → F5-02 หน้า goals | 🟨 |
 | รวบรวม feedback dogfooding รอบแรก ปรับ check-in ให้เบาลง | A |
 
-**เช็คพอยต์ พ. 22 ก.ค.:** workflow หลักครบทุกเส้นบน production (ยังไม่ polish)
+**เช็คพอยต์ พ. 22 ก.ค.: ✅** workflow หลักครบทุกเส้นบน production
 
-### Sprint 3: Reflection + Polish + Pitch (พฤ. 23 – อ. 28 ก.ค.)
+### Sprint 3: Reflection + Polish + Pitch (พฤ. 23 – อ. 28 ก.ค.) — กำลังทำ · F6 / QA-01 / QA-04 ✅ · เหลือ QA-02 (FR checklist) + QA-03 (deck)
 
 | งาน | เจ้าของ |
 |---|---|
@@ -77,7 +77,9 @@ repo + Next.js + Tailwind/shadcn + Vercel + Supabase schema + RLS + Gemini spike
 | ความเสี่ยง | โอกาส | ผลกระทบ | แผนรับมือ |
 |---|---|---|---|
 | **โควตา Gemini ฟรีทั้งแอปรวมกัน** (วัดจริง 14 ก.ค.: 20/วัน → **แก้แล้ว 19 ก.ค.: ย้าย `gemini-3.1-flash-lite` = 500/วัน** INFRA-23) | ~~สูง~~ **ต่ำ** | สูง | **INFRA-07 + INFRA-23** — cache กันการยิงซ้ำ · จำกัดแชทต่อคนต่อวัน · อุ่นของ demo ด้วย `refresh:demo-week` · key สำรองพร้อมสลับใน Vercel · screenshot สำรอง (ADR-0003) |
-| 3 สายทำ UI ไม่ทัน | กลาง | สูง | ทุกสายเริ่มได้ทันทีตั้งแต่ 14 ก.ค. (ฟังก์ชันพร้อมหมดแล้ว) · ถ้าสายไหนช้า A เข้าไปช่วยได้เพราะไม่ติดคอขวด AI แล้ว |
+| **QA-02 (จับเวลา + FR checklist + เครื่องจริง) ไม่ทัน freeze** | ~~กลาง~~ **ต่ำ** | สูง | จับเวลาครบแล้ว 23 ก.ค. ผ่าน AC ทั้ง 2 แบบ · เหลือ FR checklist + ทดสอบมือถือ/โปรเจกเตอร์ — ต้องจบก่อน 29 |
+| **`deck.pdf` ยังไม่มี** + ต้องซ้อม 2 รอบ 29 ก.ค. | กลาง | สูง | outline + demo script + 28 screenshot ครบ · เหลือทำสไลด์ PDF + เติมชื่อคนพูด + ซ้อม |
+| ~~3 สายทำ UI ไม่ทัน~~ **หมดแล้ว 22 ก.ค.** | — | — | 3 สาย UI เสร็จหมดคิวบังคับ · เหลือ Priority C (streak) ที่ตัดได้ |
 | ทีมมีสอบ/ภาระอื่นกลางทาง | สูง | กลาง | งานแต่ละสายเป็น issue เล็ก merge ทีละอัน — คนอื่นรับช่วงต่อได้ · งาน M น้อยกว่า capacity |
 | AI output หลุด guardrail ตอน demo | ต่ำ | สูง | Guardrail อยู่ใน `lib/ai` ประตูเดียว + `lib/safety/language.ts` บังคับด้วย CI + safety checklist 10 ข้อก่อน freeze |
 | Scope creep | สูง | กลาง | ทุกไอเดียใหม่เข้า `.scratch/` เป็น future ก่อน — ตัดสินโดยยึด M/S/C ใน docs/04 · **สิ่งที่โจทย์ข้อ 5–9 ขอ ไม่ใช่ scope creep — ต้องมี** |

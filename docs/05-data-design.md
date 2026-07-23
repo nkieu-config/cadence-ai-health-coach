@@ -45,14 +45,14 @@
 | `skipped_meals` | text[] | `breakfast` `lunch` `dinner` | pattern ข้ามมื้อ × วันเรียนเช้า |
 | `first_meal_time` | text? | `before_9` `9_12` `after_12` | **"กินเป็นเวลา"** × energy (โจทย์ F3 ข้อ ง) · ถามเฉพาะวันที่ได้กิน |
 | `food_types` | text[] | `snack` `veg_fruit` | ประเภทอาหารตามโจทย์ 5.2 (มื้อหลัก = `meals_count` · เครื่องดื่มหวาน = `sweet_drinks`) |
-| `sweet_drinks` | int | 0–4+ แก้ว | pattern เครื่องดื่มหวาน × นอนน้อย |
+| `sweet_drinks` | int | UI 0–4 (label "4+") · DB/validate ถึง 20 | pattern เครื่องดื่มหวาน × นอนน้อย |
 | `meal_feeling` | text? | `just_right` `sleepy` `hungry_fast` `energized` | เสริม ข้ามได้ (FR-1.4) · ถามเฉพาะวันที่ได้กิน |
 
 ### นอน (sleep)
 
 | ฟิลด์ | ชนิด | ค่า | ใช้ทำอะไร |
 |---|---|---|---|
-| `sleep_hours` | numeric | 0–14 (step 0.5) | แกนหลักของ pattern ทุกตัว |
+| `sleep_hours` | numeric | UI เลือก 3–10 จำนวนเต็ม (DB/validate ยอม 0–24) | แกนหลักของ pattern ทุกตัว |
 | `bed_time_bucket` | text | `before_23` `23_00` `00_01` `01_02` `after_02` | ความคงที่ของเวลานอน (บัคเก็ตพอ ไม่ต้องเวลาเป๊ะ) |
 | *(เวลาตื่น)* | **คำนวณ ไม่เก็บ** | `wakeTimeRange()` = `bed_time_bucket` + `sleep_hours` | เหตุผลอยู่ในเจตนาข้อ 3 ด้านบน |
 | `sleep_quality` | int | 1–5 | คุณภาพที่ประเมินเอง |
@@ -63,7 +63,7 @@
 | ฟิลด์ | ชนิด | ค่า | ใช้ทำอะไร |
 |---|---|---|---|
 | `movement_types` | text[] | `walk` `stretch` `stairs` `bike` `sport` `none` | ชนิดกิจกรรม |
-| `movement_minutes` | int | 0–120+ | ปริมาณ × energy วันถัดไป |
+| `movement_minutes` | int | UI เลือกสูงสุด 60 (DB/validate 0–600) | ปริมาณ × energy วันถัดไป |
 | `movement_blocker` | text? | `no_time` `rain` `tired` `long_sitting` | ข้อจำกัด ใช้เลือก micro goal |
 | `movement_feeling` | text? | `refreshed` `relaxed` `tired` `no_change` | เสริม ข้ามได้ (FR-1.4) · ถามเฉพาะวันที่ได้ขยับ |
 
@@ -156,7 +156,7 @@ create table ai_outputs (
 );
 ```
 
-ทุกตารางเปิด RLS: `user_id = auth.uid()` สำหรับ select/insert/update/delete (รายละเอียด policy ใน docs/08)
+ทุกตารางเปิด RLS · policy จริง (migration 0003): `for all to authenticated using (auth.uid() = user_id)` — ปิด role `anon` ด้วย · constraint ระดับ DB (CHECK ช่วงค่า + array subset) อยู่ครบใน `0003_rls_performance_and_constraints.sql` (รายละเอียด policy ใน docs/08)
 
 **ไฟล์ migration จริงอยู่ที่ `supabase/migrations/`** (รันตามลำดับ) — `0001_init.sql` ตารางทั้งหมด + RLS · `0002_mission_input_coverage.sql` ฟิลด์ที่โจทย์ข้อ 5 ขอเพิ่ม · `0003_rls_performance_and_constraints.sql` index ของ RLS + CHECK กันข้อมูลขยะ
 

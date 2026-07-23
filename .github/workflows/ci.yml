@@ -50,8 +50,8 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
 
   # เปิดแอปจริงทุกหน้า × มือถือ/เดสก์ท็อป × light/dark
-  # รันเฉพาะ routes.spec (read-only) — ไม่แตะข้อมูลของปาล์ม
-  # เทสต์ที่เขียนข้อมูล (checkin.spec) รันบนเครื่องตัวเองด้วย `npm run e2e`
+  # รันเฉพาะ read-only: routes.spec (7 หน้า) + theme.spec (สลับธีม เขียนแค่ localStorage) — ไม่แตะข้อมูลของปาล์ม
+  # เทสต์ที่เขียน DB (checkin.spec + dashboard.spec) รันบนเครื่องตัวเองด้วย `npm run e2e`
   e2e:
     name: e2e (เปิดแอปจริง)
     needs: verify
@@ -91,7 +91,7 @@ jobs:
 
       - name: E2E (read-only)
         if: env.NEXT_PUBLIC_SUPABASE_URL != ''
-        run: npx playwright test e2e/routes.spec.ts
+        run: npx playwright test e2e/routes.spec.ts e2e/theme.spec.ts
 
       - uses: actions/upload-artifact@v4
         if: failure() && env.NEXT_PUBLIC_SUPABASE_URL != ''

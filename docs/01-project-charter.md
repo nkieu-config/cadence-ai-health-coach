@@ -37,7 +37,7 @@ Production: https://personal-healthcoach.vercel.app/ · Repo: https://github.com
 |---|---|---|
 | Platform | Responsive web app | 0001 |
 | Stack | Next.js + Supabase + Tailwind/shadcn, deploy Vercel | 0002 |
-| AI | Google Gemini free tier ผ่าน service module สลับได้ | 0003 |
+| AI | Google Gemini free tier ผ่าน service module (ประตูเดียว · สลับรุ่นได้ด้วย env) | 0003 |
 | Demo data | Seed data (demo account) + dogfooding ทีม 4 คน | 0004 |
 | Auth | Google OAuth + email/password (Supabase Auth) | 0005 |
 

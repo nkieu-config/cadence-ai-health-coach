@@ -42,13 +42,13 @@ sequenceDiagram
     participant App
     participant DB as Supabase
     ผู้ใช้->>App: เปิดหน้า check-in (ก่อนนอน)
-    App->>ผู้ใช้: ฟอร์ม 5 กลุ่มคำถาม (ปุ่มเลือก ≤ 3 นาที)
+    App->>ผู้ใช้: ฟอร์ม 4 ขั้น (กิน/นอน/เคลื่อนไหว/บริบทวัน · ปุ่มเลือก ≤ 3 นาที)
     ผู้ใช้->>App: บันทึก
     App->>DB: upsert checkins (unique ต่อวัน)
     App->>ผู้ใช้: สรุปวันนี้สั้น ๆ + คำขอบคุณเชิงบวก
 ```
 
-### 2. Pattern Analysis (เบื้องหลัง dashboard)
+### 2. Pattern Analysis (ผู้ใช้กดปุ่ม "วิเคราะห์รูปแบบ" บน dashboard — ไม่รันอัตโนมัติ เพื่อกันโควตา)
 
 ```mermaid
 sequenceDiagram
@@ -89,7 +89,7 @@ sequenceDiagram
 
 ### 4. Weekly Reflection
 
-ทุกครั้งที่ผู้ใช้เปิดหน้า reflection ของสัปดาห์ที่จบแล้วและยังไม่มีรายงาน → ระบบดึง checkins + goal ของสัปดาห์นั้น → คำนวณสรุปด้วยโค้ด → ให้ Gemini เขียนรายงานตามโครงโจทย์ Feature 6 → cache ลง `ai_outputs`
+เมื่อผู้ใช้กดปุ่ม "สร้างสรุปสัปดาห์" (ไม่รันอัตโนมัติตอนเปิดหน้า) → ระบบดึง checkins 7 วันล่าสุดนับถอยจากวันนี้ (rolling window ไม่ใช่สัปดาห์ปฏิทิน) → คำนวณสรุปด้วยโค้ด → ให้ Gemini เขียนรายงานตามโครงโจทย์ Feature 6 → cache ลง `ai_outputs`
 
 ## โครงสร้างโปรเจกต์ (แนว)
 
@@ -106,11 +106,12 @@ src/
 │       ├── goals/
 │       ├── reflection/
 │       └── settings/privacy/
+├── proxy.ts                    ← auth guard ทุก route (Next.js 16 แทน middleware) — redirect ก่อนเข้า (app)
 ├── lib/                        ← "เครื่องยนต์" ทั้งหมด · UI เรียกผ่านที่นี่เท่านั้น
 │   ├── supabase/               ← client (RLS) + admin (service role — ลบบัญชีเท่านั้น)
 │   ├── checkins/               ← queries, actions, validate, labels, summary, date, derive
 │   ├── patterns/               ← คำนวณ pattern candidates จากสถิติจริง (ไม่มี LLM)
-│   ├── ai/                     ← ประตูเดียวสู่ Gemini: system prompt + client (สลับ provider ได้)
+│   ├── ai/                     ← ประตูเดียวสู่ Gemini: system prompt + client (สลับรุ่นได้ด้วย env AI_MODEL)
 │   ├── ai-outputs/             ← ประตูเดียวสู่ตาราง ai_outputs (insight + reflection)
 │   ├── chat/ · goals/ · account/ · onboarding/
 │   └── safety/language.ts      ← รายการคำต้องห้าม (ชุดเดียวทั้งระบบ — CI บังคับ)

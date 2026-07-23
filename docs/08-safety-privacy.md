@@ -12,9 +12,11 @@
 
 | ชั้น | กลไก | ครอบคลุม |
 |---|---|---|
-| 1. UI | Disclaimer บังคับกดรับทราบตอน onboarding + ข้อความกำกับถาวรใต้หน้า coach/dashboard: "โค้ชนี้ไม่ใช่แพทย์ หากมีอาการผิดปกติควรปรึกษาผู้เชี่ยวชาญ" | ผู้ใช้เข้าใจขอบเขตก่อนใช้ |
-| 2. System prompt | Guardrail กลางใน `lib/ai` (เนื้อหาเต็มใน [07-ai-design.md](07-ai-design.md)) แนบทุก request ไม่มีข้อยกเว้น | AI output ทุกชิ้น |
-| 3. Code validation | คำต้องห้ามใน micro goal (น้ำหนัก/แคลอรี/อด) → reject + regenerate; ข้อมูล < 7 วัน → ไม่เรียก pattern analysis เลย | กันเคสที่ prompt เอาไม่อยู่ |
+| 1. UI | Disclaimer บังคับกดรับทราบตอน onboarding + ข้อความกำกับถาวรแทบทุกหน้า (3 layout รวม landing/login): "Cadence เป็นผู้ช่วยดูแลสุขภาพทั่วไป ไม่ใช่บริการทางการแพทย์ — หากมีอาการผิดปกติควรปรึกษาผู้เชี่ยวชาญ" | ผู้ใช้เข้าใจขอบเขตก่อนใช้ |
+| 2. System prompt | ทุก AI call ผ่าน `lib/ai` (เนื้อหาเต็มใน [07-ai-design.md](07-ai-design.md)) · coach = prompt เต็ม (การแพทย์/escalation/ไม่ตัดสิน) · insight/goal/reflection = prompt เฉพาะทาง (ห้ามน้ำหนัก/รูปร่าง/แต่งเลข/ตัดสิน) | AI output ทุกชิ้น |
+| 3. Code validation | `findForbiddenTerms()` กรอง insight/goal/reflection (goal: reject → retry 2 รอบ → fallback ที่เขียนไว้) · ข้อมูล < 7 วัน → ไม่เรียก pattern analysis เลย | insight/goal/reflection (ดู note แชทใต้ตาราง) |
+
+> **คำตอบแชทของโค้ช** ผ่านชั้น 2 (coach prompt) แต่จงใจไม่ผ่านชั้น 3 (code filter) — เพราะการปฏิเสธที่ถูกต้องมักต้องเอ่ยคำต้องห้ามเอง (เช่น "ไม่แนะนำการอดอาหาร") การกรองด้วยคำจะ false-positive ใส่คำตอบที่ดี · ความปลอดภัยของแชทยืนยันด้วย **QA-01: 20/20 บนโมเดล production** ([หลักฐาน](../.scratch/ai-safety-test/))
 
 ### กติกาเนื้อหา (บังคับทุก AI output)
 
@@ -45,12 +47,12 @@
 
 - **ดู** — เห็นข้อมูลตัวเองทั้งหมดใน dashboard/history
 - **แก้ไข** — แก้ check-in ย้อนหลังได้ทุกรายการ
-- **ลบ** — ลบ check-in รายรายการ, ลบประวัติแชท, หรือลบบัญชี+ข้อมูลทั้งหมด (cascade delete) ได้เองจากหน้า settings/privacy โดยไม่ต้องร้องขอ
+- **ลบ** — ลบ check-in รายรายการ (หน้า history) · ลบประวัติแชท (หน้า coach) · ลบข้อมูลทั้งหมดหรือลบบัญชีถาวร (หน้า settings/privacy) — ได้เองทุกอย่างไม่ต้องร้องขอ · ลบบัญชีเป็น cascade delete ทุกตาราง
 
 ### การป้องกันทางเทคนิค
 
-- **Supabase RLS ทุกตาราง**: policy `user_id = auth.uid()` — ผู้ใช้เข้าถึงได้เฉพาะแถวของตัวเอง แม้ API มีบั๊กก็ข้ามข้อมูลคนอื่นไม่ได้
-- Gemini ได้รับเฉพาะข้อมูลพฤติกรรม **ไม่แนบชื่อ/email** และระบบไม่ใช้ข้อมูลผู้ใช้ train โมเดลใด ๆ
+- **Supabase RLS ทุกตาราง**: policy `for all to authenticated using (auth.uid() = user_id)` (migration 0003 — ปิด role `anon` ด้วย) — ผู้ใช้เข้าถึงได้เฉพาะแถวของตัวเอง แม้ API มีบั๊กก็ข้ามข้อมูลคนอื่นไม่ได้
+- Gemini ได้รับเฉพาะข้อมูลพฤติกรรม **ไม่แนบชื่อ/email** และระบบไม่ใช้ข้อมูลบันทึกในโปรเจกต์นี้เพื่อเทรนโมเดลเพิ่มเติม
 - Secrets ทั้งหมดฝั่ง server (NFR-4), การเชื่อมต่อทั้งหมดผ่าน HTTPS
 
 ### หลักการเผื่ออนาคต (บันทึกใน limitations)

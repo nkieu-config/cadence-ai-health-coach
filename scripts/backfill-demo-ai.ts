@@ -17,7 +17,7 @@ import { createAdminClient } from "../src/lib/supabase/admin";
 
 const EMAIL = process.env.DEMO_EMAIL ?? "palm@example.com";
 const REFLECTION_WEEKS_BACK = [0, 1, 2, 3];
-const PATTERN_RANGES = [14, 30];
+const PATTERN_RANGES = [7, 14, 30];
 const DRY = process.argv.includes("--dry");
 
 type Admin = ReturnType<typeof createAdminClient>;
