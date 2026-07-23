@@ -43,6 +43,10 @@ test("เช็คอินวันนี้ — กรอกครบ 4 ขั
   await ensure("สดชื่นขึ้น");
   await next();
 
+  await expect(
+    page.getByText("วันนี้รู้สึกมีพลังงานแค่ไหน"),
+    "คำถามพลังงานต้องถามเป็นสภาวะที่รู้สึก (สูง=มีแรง) ไม่ใช่ปริมาณที่ใช้ไป"
+  ).toBeVisible();
   await ensure("ต่ำ");
   await ensure("เดดไลน์");
   await page.getByRole("button", { name: "บันทึก" }).click();
