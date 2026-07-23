@@ -570,7 +570,8 @@ export function CheckinForm({
                 <Field
                   id="field-energy"
                   highlight={shownHighlight === "field-energy"}
-                  label="พลังงานวันนี้โดยรวม"
+                  label="วันนี้รู้สึกมีพลังงานแค่ไหน"
+                  hint="มองภาพรวมทั้งวันที่ผ่านมา"
                 >
                   {keysOf(ENERGY_LABELS).map((level) => (
                     <Chip
