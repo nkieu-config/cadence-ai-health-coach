@@ -104,6 +104,7 @@ function DayRow({ date, checkin }: { date: string; checkin: Checkin | undefined 
     <div className="flex items-center gap-3">
       <span className="w-12 shrink-0 text-xs font-medium">{label}</span>
 
+      {/* title อ่านได้แค่ตอนชี้เมาส์ — มือถือเป็นแพลตฟอร์มหลักจึงต้องมีข้อความให้ AT อ่านด้วย */}
       <div
         className={cn(
           "relative h-8 flex-1 overflow-hidden rounded-lg",
@@ -115,6 +116,9 @@ function DayRow({ date, checkin }: { date: string; checkin: Checkin | undefined 
             : `${formatThaiDate(date)} · ไม่มีปัจจัยรบกวน`
         }
       >
+        <span className="sr-only">
+          {formatThaiDate(date)} · {disruptors ? `ปัจจัยรบกวน ${disruptors}` : "ไม่มีปัจจัยรบกวน"}
+        </span>
         <SleepBar checkin={checkin} />
         {checkin.firstMealTime && <FirstMealDot firstMealTime={checkin.firstMealTime} />}
       </div>

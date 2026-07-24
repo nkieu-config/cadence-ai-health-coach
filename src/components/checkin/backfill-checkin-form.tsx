@@ -8,5 +8,12 @@ export function BackfillCheckinForm({
   date: string;
   existing: Checkin | null;
 }) {
-  return <CheckinForm date={date} existing={existing} heading="บันทึกย้อนหลัง" />;
+  return (
+    <CheckinForm
+      date={date}
+      existing={existing}
+      heading="บันทึกย้อนหลัง"
+      submitLabel="บันทึกย้อนหลัง"
+    />
+  );
 }

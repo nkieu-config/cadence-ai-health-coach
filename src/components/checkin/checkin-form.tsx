@@ -148,6 +148,7 @@ export function CheckinForm({
   date,
   existing,
   heading,
+  submitLabel,
   openWith,
   beforeSave,
   nudge,
@@ -156,6 +157,7 @@ export function CheckinForm({
   date: string;
   existing: Checkin | null;
   heading: string;
+  submitLabel: string;
   openWith?: Checkin | null;
   beforeSave?: () => string | null;
   nudge?: ReactNode;
@@ -672,11 +674,7 @@ export function CheckinForm({
                 </Button>
               )}
               <Button className="flex-1" onClick={goForward} disabled={pending}>
-                {step < STEPS.length - 1
-                  ? "ถัดไป"
-                  : pending
-                    ? "กำลังบันทึก…"
-                    : "บันทึกเช็คอินวันนี้"}
+                {step < STEPS.length - 1 ? "ถัดไป" : pending ? "กำลังบันทึก…" : submitLabel}
               </Button>
             </div>
           </CardContent>

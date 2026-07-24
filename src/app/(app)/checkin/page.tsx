@@ -23,7 +23,7 @@ export default async function CheckinPage() {
     hasEarlierCheckin && missedYesterday ? (
       <Link
         href={`/checkin/edit/${yesterday}`}
-        className="flex items-center gap-3 rounded-lg border border-dashed p-3 text-sm transition-colors hover:bg-muted"
+        className="flex min-h-11 items-center gap-3 rounded-lg border border-dashed p-3 text-sm transition-colors outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
       >
         <CalendarPlus className="size-4 shrink-0 text-primary" />
         <span>

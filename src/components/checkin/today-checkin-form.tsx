@@ -32,6 +32,7 @@ export function TodayCheckinForm({
       date={date}
       existing={existing}
       heading="เช็คอิน"
+      submitLabel="บันทึกเช็คอินวันนี้"
       openWith={existing}
       beforeSave={stillToday}
       nudge={nudge}
