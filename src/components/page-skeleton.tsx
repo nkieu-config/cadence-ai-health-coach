@@ -44,6 +44,35 @@ export function TextPageSkeleton({ cards = 3 }: { cards?: number }) {
   );
 }
 
+export function GoalsSkeleton() {
+  return (
+    <PageContainer width="content" className="space-y-6">
+      <LoadingLabel />
+      <div className="space-y-2">
+        <Skeleton className="h-7 w-48" />
+        <Skeleton className="h-4 w-72" />
+      </div>
+      <Skeleton className="h-11 w-full rounded-full" />
+      <Skeleton className="h-4 w-32" />
+      <Card>
+        <CardHeader className="space-y-2">
+          <Skeleton className="h-5 w-64" />
+          <Skeleton className="h-4 w-40" />
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Skeleton className="h-4 w-36" />
+          <div className="grid grid-cols-7 gap-2">
+            {Array.from({ length: 7 }, (_, day) => (
+              <Skeleton key={day} className="h-11 rounded-md" />
+            ))}
+          </div>
+          <Skeleton className="h-4 w-48" />
+        </CardContent>
+      </Card>
+    </PageContainer>
+  );
+}
+
 export function CardSkeleton({ rows = 3 }: { rows?: number }) {
   return (
     <Card>

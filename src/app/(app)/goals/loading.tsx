@@ -1,5 +1,5 @@
-import { TextPageSkeleton } from "@/components/page-skeleton";
+import { GoalsSkeleton } from "@/components/page-skeleton";
 
 export default function Loading() {
-  return <TextPageSkeleton />;
+  return <GoalsSkeleton />;
 }
