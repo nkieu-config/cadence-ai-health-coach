@@ -4,6 +4,7 @@ import { ChevronLeft, History } from "lucide-react";
 import { CheckinHistory } from "@/components/checkin/checkin-history";
 import { PageContainer } from "@/components/page-container";
 import { buttonVariants } from "@/components/ui/button";
+import { daysAgo } from "@/lib/checkins/date";
 import { getCheckins } from "@/lib/checkins/queries";
 import { MAX_BACKFILL_DAYS } from "@/lib/checkins/validate";
 
@@ -12,6 +13,14 @@ export const metadata: Metadata = { title: "บันทึกย้อนหล
 export default async function CheckinHistoryPage() {
   const checkins = await getCheckins(MAX_BACKFILL_DAYS);
   const newestFirst = [...checkins].reverse();
+
+  const recorded = new Set(checkins.map((checkin) => checkin.checkinDate));
+  const oldest = checkins[0]?.checkinDate;
+  const missingDates = oldest
+    ? Array.from({ length: MAX_BACKFILL_DAYS }, (_, index) => daysAgo(index)).filter(
+        (date) => date >= oldest && !recorded.has(date)
+      )
+    : [];
 
   return (
     <PageContainer width="content" className="space-y-4">
@@ -30,7 +39,7 @@ export default async function CheckinHistoryPage() {
         แก้ไขหรือลบบันทึกของตัวเองได้ทุกรายการ (ย้อนหลังได้ {MAX_BACKFILL_DAYS} วัน)
       </p>
 
-      <CheckinHistory checkins={newestFirst} />
+      <CheckinHistory checkins={newestFirst} missingDates={missingDates} />
     </PageContainer>
   );
 }

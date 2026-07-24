@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { Check, Pencil, Trash2 } from "lucide-react";
+import { CalendarPlus, Check, Pencil, Trash2 } from "lucide-react";
 import { PILLAR_COLORS, PILLAR_ICONS } from "@/components/pillar-visual";
 import { deleteCheckin } from "@/lib/checkins/actions";
 import { formatShortThaiDate, formatThaiDate, formatThaiMonth } from "@/lib/checkins/date";
@@ -132,7 +132,35 @@ function HistoryRow({ checkin }: { checkin: Checkin }) {
   );
 }
 
-export function CheckinHistory({ checkins }: { checkins: Checkin[] }) {
+function MissingDayRow({ date }: { date: string }) {
+  return (
+    <Link
+      href={`/checkin/edit/${date}`}
+      className="flex min-h-11 items-center justify-between gap-3 rounded-xl border border-dashed p-4 text-sm transition-colors hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+    >
+      <span>
+        <span className="font-medium">{formatShortThaiDate(date)}</span>
+        <span className="block text-xs text-muted-foreground">ยังไม่ได้บันทึกวันนี้</span>
+      </span>
+      <span className="flex shrink-0 items-center gap-1.5 text-xs font-medium text-primary">
+        <CalendarPlus className="size-4" />
+        บันทึกย้อนหลัง
+      </span>
+    </Link>
+  );
+}
+
+const PAGE_SIZE = 14;
+
+export function CheckinHistory({
+  checkins,
+  missingDates = [],
+}: {
+  checkins: Checkin[];
+  missingDates?: string[];
+}) {
+  const [visible, setVisible] = useState(PAGE_SIZE);
+
   if (checkins.length === 0) {
     return (
       <Card>
@@ -146,12 +174,21 @@ export function CheckinHistory({ checkins }: { checkins: Checkin[] }) {
     );
   }
 
-  const months: { month: string; items: Checkin[] }[] = [];
-  for (const checkin of checkins) {
-    const month = formatThaiMonth(checkin.checkinDate);
+  // แทรกวันที่ขาดไว้ตามลำดับเวลาจริง เพื่อให้มีทางเข้าบันทึกย้อนหลังทุกวัน ไม่ใช่แค่เมื่อวาน
+  const allRows = [
+    ...checkins.map((checkin) => ({ date: checkin.checkinDate, checkin })),
+    ...missingDates.map((date) => ({ date, checkin: null })),
+  ].sort((a, b) => b.date.localeCompare(a.date));
+
+  const rows = allRows.slice(0, visible);
+  const remaining = allRows.length - rows.length;
+
+  const months: { month: string; items: typeof rows }[] = [];
+  for (const row of rows) {
+    const month = formatThaiMonth(row.date);
     const current = months.at(-1);
-    if (current?.month === month) current.items.push(checkin);
-    else months.push({ month, items: [checkin] });
+    if (current?.month === month) current.items.push(row);
+    else months.push({ month, items: [row] });
   }
 
   return (
@@ -159,13 +196,27 @@ export function CheckinHistory({ checkins }: { checkins: Checkin[] }) {
       {months.map(({ month, items }) => (
         <section key={month} className="space-y-3">
           <h2 className="px-1 text-sm font-semibold text-muted-foreground">{month}</h2>
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {items.map((checkin) => (
-              <HistoryRow key={checkin.checkinDate} checkin={checkin} />
-            ))}
+          <div className="grid gap-3 lg:grid-cols-2">
+            {items.map((row) =>
+              row.checkin ? (
+                <HistoryRow key={row.date} checkin={row.checkin} />
+              ) : (
+                <MissingDayRow key={row.date} date={row.date} />
+              )
+            )}
           </div>
         </section>
       ))}
+
+      {remaining > 0 && (
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={() => setVisible((current) => current + PAGE_SIZE)}
+        >
+          ดูอีก {Math.min(remaining, PAGE_SIZE)} วัน (เหลือ {remaining} วัน)
+        </Button>
+      )}
     </div>
   );
 }

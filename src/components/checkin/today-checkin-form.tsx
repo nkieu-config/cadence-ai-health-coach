@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { today } from "@/lib/checkins/date";
+import { formatThaiDate, today } from "@/lib/checkins/date";
 import type { Checkin } from "@/lib/domain";
 import { CheckinForm } from "./checkin-form";
 
@@ -19,10 +19,12 @@ export function TodayCheckinForm({
 }) {
   const router = useRouter();
 
+  // ข้ามเที่ยงคืนระหว่างกรอก คำตอบที่กรอกไว้เป็นของวันที่เปิดหน้ามา ไม่ใช่ของวันใหม่
+  // จึงพาไปบันทึกเป็นวันเดิม แทนการย้ายคำตอบมาทับวันนี้
   function stillToday() {
     if (today() === date) return null;
-    router.refresh();
-    return "ข้ามไปวันใหม่แล้ว — กำลังเปลี่ยนเป็นบันทึกของวันนี้ กดบันทึกอีกครั้ง";
+    router.push(`/checkin/edit/${date}`);
+    return `เลยเที่ยงคืนมาแล้ว — กำลังพาไปบันทึกเป็นของ${formatThaiDate(date)} ตามที่คุณกรอกไว้`;
   }
 
   return (
@@ -30,6 +32,7 @@ export function TodayCheckinForm({
       date={date}
       existing={existing}
       heading="เช็คอิน"
+      openWith={existing}
       beforeSave={stillToday}
       nudge={nudge}
       footer={footer}

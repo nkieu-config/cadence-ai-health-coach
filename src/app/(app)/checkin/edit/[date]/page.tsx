@@ -36,7 +36,7 @@ export default async function EditCheckinPage({ params }: { params: Promise<{ da
         </h1>
         <p className="text-sm text-muted-foreground">
           {formatThaiDate(date)}
-          {existing ? " · กำลังแก้ไขบันทึกเดิม" : " · ยังไม่เคยบันทึกวันนี้"}
+          {existing ? " · กำลังแก้ไขบันทึกเดิม" : " · ยังไม่เคยบันทึกวันนั้น"}
         </p>
       </div>
       <BackfillCheckinForm date={date} existing={existing} />
