@@ -24,7 +24,7 @@ export default function Loading() {
         <Skeleton className="h-4 w-72" />
       </div>
 
-      <div className="flex h-[calc(100dvh-17.5rem)] min-h-96 flex-col gap-3 lg:h-[calc(100dvh-13rem)]">
+      <div className="flex h-[calc(100dvh-17.75rem-env(safe-area-inset-top,0px))] min-h-96 flex-col gap-3 lg:h-[calc(100dvh-13rem)]">
         <div className="flex-1 space-y-6">
           <CoachTurnSkeleton tail="w-4/5" />
           <div className="flex justify-end">
