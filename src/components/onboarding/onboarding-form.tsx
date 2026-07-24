@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition, type ReactNode } from "react";
 import { Check } from "lucide-react";
 import { completeOnboarding } from "@/lib/onboarding/actions";
 import {
@@ -28,6 +28,39 @@ const TOTAL_STEPS = 5;
 
 function keysOf<T extends string>(labels: Record<T, string>) {
   return Object.keys(labels) as T[];
+}
+
+// กลุ่มชิปต้องบอก screen reader ได้ว่ากำลังตอบคำถามไหน — แบบเดียวกับ Field ในหน้าเช็คอิน
+function ChipGroup({
+  label,
+  hint,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  children: ReactNode;
+}) {
+  const labelId = useId();
+  const hintId = useId();
+
+  return (
+    <div className="space-y-2">
+      <Label id={labelId}>{label}</Label>
+      {hint && (
+        <p id={hintId} className="text-xs text-muted-foreground">
+          {hint}
+        </p>
+      )}
+      <div
+        role="group"
+        aria-labelledby={labelId}
+        aria-describedby={hint ? hintId : undefined}
+        className="flex flex-wrap gap-2 pt-1"
+      >
+        {children}
+      </div>
+    </div>
+  );
 }
 
 export function OnboardingForm({ defaultName }: { defaultName: string }) {
@@ -108,73 +141,59 @@ export function OnboardingForm({ defaultName }: { defaultName: string }) {
                     maxLength={DISPLAY_NAME_MAX_LENGTH}
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label>ตอนนี้คุณเป็น</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {keysOf(STATUS_LABELS).map((value) => (
-                      <Chip key={value} active={status === value} onClick={() => setStatus(value)}>
-                        {STATUS_LABELS[value]}
-                      </Chip>
-                    ))}
-                  </div>
-                </div>
+                <ChipGroup label="ตอนนี้คุณเป็น">
+                  {keysOf(STATUS_LABELS).map((value) => (
+                    <Chip key={value} active={status === value} onClick={() => setStatus(value)}>
+                      {STATUS_LABELS[value]}
+                    </Chip>
+                  ))}
+                </ChipGroup>
               </div>
             )}
 
             {step === 1 && (
-              <div className="space-y-2">
-                <Label>วันไหนที่มักมีเรียนหรือทำงานช่วงเช้า</Label>
-                <p className="text-xs text-muted-foreground">
-                  เลือกได้หลายวัน (ข้ามได้ถ้าไม่แน่ใจ)
-                </p>
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {keysOf(EARLY_DAY_LABELS).map((day) => (
-                    <Chip
-                      key={day}
-                      active={earlyDays.includes(day)}
-                      onClick={() => setEarlyDays(toggleValue(earlyDays, day))}
-                    >
-                      {EARLY_DAY_LABELS[day]}
-                    </Chip>
-                  ))}
-                </div>
-              </div>
+              <ChipGroup
+                label="วันไหนที่มักมีเรียนหรือทำงานช่วงเช้า"
+                hint="เลือกได้หลายวัน (ข้ามได้ถ้าไม่แน่ใจ)"
+              >
+                {keysOf(EARLY_DAY_LABELS).map((day) => (
+                  <Chip
+                    key={day}
+                    active={earlyDays.includes(day)}
+                    onClick={() => setEarlyDays(toggleValue(earlyDays, day))}
+                  >
+                    {EARLY_DAY_LABELS[day]}
+                  </Chip>
+                ))}
+              </ChipGroup>
             )}
 
             {step === 2 && (
-              <div className="space-y-2">
-                <Label>ช่วงไหนที่งานมักหนักหรือมีเดดไลน์</Label>
-                <p className="text-xs text-muted-foreground">เลือกได้หลายข้อ (ข้ามได้)</p>
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {keysOf(BUSY_PERIOD_LABELS).map((period) => (
-                    <Chip
-                      key={period}
-                      active={busyPeriods.includes(period)}
-                      onClick={() => setBusyPeriods(toggleValue(busyPeriods, period))}
-                    >
-                      {BUSY_PERIOD_LABELS[period]}
-                    </Chip>
-                  ))}
-                </div>
-              </div>
+              <ChipGroup label="ช่วงไหนที่งานมักหนักหรือมีเดดไลน์" hint="เลือกได้หลายข้อ (ข้ามได้)">
+                {keysOf(BUSY_PERIOD_LABELS).map((period) => (
+                  <Chip
+                    key={period}
+                    active={busyPeriods.includes(period)}
+                    onClick={() => setBusyPeriods(toggleValue(busyPeriods, period))}
+                  >
+                    {BUSY_PERIOD_LABELS[period]}
+                  </Chip>
+                ))}
+              </ChipGroup>
             )}
 
             {step === 3 && (
-              <div className="space-y-2">
-                <Label>มีข้อจำกัดอะไรในการดูแลสุขภาพบ้าง</Label>
-                <p className="text-xs text-muted-foreground">เลือกได้หลายข้อ (ข้ามได้)</p>
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {keysOf(CONSTRAINT_LABELS).map((constraint) => (
-                    <Chip
-                      key={constraint}
-                      active={constraints.includes(constraint)}
-                      onClick={() => setConstraints(toggleValue(constraints, constraint))}
-                    >
-                      {CONSTRAINT_LABELS[constraint]}
-                    </Chip>
-                  ))}
-                </div>
-              </div>
+              <ChipGroup label="มีข้อจำกัดอะไรในการดูแลสุขภาพบ้าง" hint="เลือกได้หลายข้อ (ข้ามได้)">
+                {keysOf(CONSTRAINT_LABELS).map((constraint) => (
+                  <Chip
+                    key={constraint}
+                    active={constraints.includes(constraint)}
+                    onClick={() => setConstraints(toggleValue(constraints, constraint))}
+                  >
+                    {CONSTRAINT_LABELS[constraint]}
+                  </Chip>
+                ))}
+              </ChipGroup>
             )}
 
             {step === 4 && (
@@ -183,7 +202,7 @@ export function OnboardingForm({ defaultName }: { defaultName: string }) {
                   {DISCLAIMER}
                 </div>
                 <label className="flex cursor-pointer items-start gap-3 text-sm">
-                  <span className="relative mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-[6px] border border-border bg-background transition-colors has-checked:border-primary has-checked:bg-primary">
+                  <span className="relative mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-[6px] border border-border bg-background transition-colors has-checked:border-primary has-checked:bg-primary has-focus-visible:border-ring has-focus-visible:ring-3 has-focus-visible:ring-ring/50">
                     <input
                       type="checkbox"
                       checked={accepted}
