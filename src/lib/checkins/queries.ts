@@ -12,6 +12,9 @@ export async function getCheckins(days: number): Promise<Checkin[]> {
     .gte("checkin_date", daysAgo(days - 1))
     .order("checkin_date", { ascending: true });
 
+  // คืน [] ต่อไปโดยตั้งใจ — ผู้ใช้เห็น empty state ดีกว่าเห็นหน้าพัง
+  // แต่ต้อง log ไว้ ไม่งั้น DB ล่มกับผู้ใช้ใหม่จริง ๆ จะแยกกันไม่ออกเลย
+  if (error) console.error("getCheckins failed:", error);
   if (error || !data) return [];
   return (data as unknown as CheckinRow[]).map(toCheckin);
 }

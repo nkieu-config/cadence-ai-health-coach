@@ -1,11 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 import { AlertTriangle } from "lucide-react";
 import { StatusScreen } from "@/components/status-screen";
 import { Button, buttonVariants } from "@/components/ui/button";
 
-export default function RootError({ reset }: { error: Error; reset: () => void }) {
+export default function RootError({ error, reset }: { error: Error; reset: () => void }) {
+  // ไม่ log = พังบน production แล้วไม่เหลือร่องรอยให้ตามเลย
+  useEffect(() => {
+    console.error("Root error boundary:", error);
+  }, [error]);
+
   return (
     <main className="min-h-dvh">
       <StatusScreen
