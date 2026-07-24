@@ -9,7 +9,7 @@ export default function ResetPasswordPage() {
     <Card>
       <CardHeader>
         <CardTitle>
-          <h1>ตั้งรหัสผ่านใหม่</h1>
+          <h1 className="text-xl font-semibold lg:text-2xl">ตั้งรหัสผ่านใหม่</h1>
         </CardTitle>
         <CardDescription>ตั้งรหัสผ่านใหม่อย่างน้อย 6 ตัวอักษร แล้วเข้าใช้งานได้เลย</CardDescription>
       </CardHeader>

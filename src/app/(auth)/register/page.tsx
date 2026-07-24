@@ -17,7 +17,7 @@ export default async function RegisterPage({
     <Card>
       <CardHeader>
         <CardTitle>
-          <h1>สมัครสมาชิก</h1>
+          <h1 className="text-xl font-semibold lg:text-2xl">สมัครสมาชิก</h1>
         </CardTitle>
         <CardDescription>เริ่มดูแลสุขภาพประจำวันกับ Cadence</CardDescription>
       </CardHeader>

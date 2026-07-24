@@ -17,7 +17,7 @@ export default async function LoginPage({
     <Card>
       <CardHeader>
         <CardTitle>
-          <h1>เข้าสู่ระบบ</h1>
+          <h1 className="text-xl font-semibold lg:text-2xl">เข้าสู่ระบบ</h1>
         </CardTitle>
         <CardDescription>Cadence — ผู้ช่วยดูแลสุขภาพประจำวัน</CardDescription>
       </CardHeader>

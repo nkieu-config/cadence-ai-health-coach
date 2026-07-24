@@ -9,7 +9,7 @@ export default function ForgotPasswordPage() {
     <Card>
       <CardHeader>
         <CardTitle>
-          <h1>ลืมรหัสผ่าน</h1>
+          <h1 className="text-xl font-semibold lg:text-2xl">ลืมรหัสผ่าน</h1>
         </CardTitle>
         <CardDescription>
           กรอกอีเมลที่ใช้สมัคร แล้วเราจะส่งลิงก์ตั้งรหัสผ่านใหม่ไปให้
