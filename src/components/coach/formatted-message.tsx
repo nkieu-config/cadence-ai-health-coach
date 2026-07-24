@@ -15,15 +15,25 @@ function renderInline(text: string, keyPrefix: string) {
   });
 }
 
-type Block =
-  { kind: "para"; lines: string[] } | { kind: "list"; items: { marker: string; text: string }[] };
+export type Block =
+  | { kind: "para"; lines: string[] }
+  | { kind: "heading"; text: string }
+  | { kind: "list"; items: { marker: string; text: string }[] };
 
-function toBlocks(content: string): Block[] {
+export function toBlocks(content: string): Block[] {
   const blocks: Block[] = [];
   for (const rawLine of content.split("\n")) {
     const line = rawLine.trimEnd();
+    const heading = line.match(/^\s*#{1,6}\s+(.*)$/);
     const bullet = line.match(/^\s*[*-]\s+(.*)$/);
     const numbered = line.match(/^\s*(\d+)\.\s+(.*)$/);
+
+    // หัวข้อ markdown ต้องไม่โผล่เป็น ## ดิบในฟองแชท — แปลงเป็นบรรทัดหนาแทน
+    // (ไม่ใช้ <h*> จริง เพราะจะไปแทรกลำดับหัวข้อของหน้าที่ฟองแชทอยู่ข้างใน)
+    if (heading) {
+      blocks.push({ kind: "heading", text: heading[1].trim() });
+      continue;
+    }
 
     if (bullet || numbered) {
       const marker = bullet ? "•" : `${numbered![1]}.`;
@@ -53,6 +63,14 @@ export function FormattedMessage({ content }: { content: string }) {
   return (
     <div className="space-y-2.5">
       {blocks.map((block, blockIndex) => {
+        if (block.kind === "heading") {
+          return (
+            <p key={blockIndex} className="font-semibold text-foreground">
+              {renderInline(block.text, `${blockIndex}`)}
+            </p>
+          );
+        }
+
         if (block.kind === "list") {
           return (
             <ul key={blockIndex} className="space-y-1.5">
