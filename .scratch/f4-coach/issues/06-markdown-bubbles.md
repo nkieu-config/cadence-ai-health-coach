@@ -1,6 +1,6 @@
 # F4-06: markdown ดิบโผล่ในฟองข้อความโค้ช
 
-Status: ready-for-agent
+Status: done
 Owner: A (โซน 🟩 — ตกลงกับคีตะแล้วว่า A ทำเอง)
 Sprint: 3
 Priority: S — กระทบเกณฑ์ Prototype Quality ตอน demo
@@ -26,9 +26,9 @@ Gemini ตอบเป็น markdown (`**ตัวหนา**`, `1.` `2.` ล�
 
 ## งาน
 
-- [ ] เลือกทางแล้วแก้ `src/components/coach/message-variants.tsx` (`CoachMessage` เท่านั้น — `UserMessage` เป็นข้อความผู้ใช้ ไม่ต้องแปลง)
-- [ ] ห้ามแตะ `COACH_SYSTEM_PROMPT`
-- [ ] unit test กับข้อความจริงที่ Gemini เคยตอบ (มีตัวอย่างใน `.scratch/ai-safety-test/run-2026-07-16-after-prompt-fix.md`)
+- [x] เลือกทางที่ 3 — แก้ที่ `formatted-message.tsx` ซึ่งเป็นตัวเรนเดอร์จริงของ `CoachMessage` (`CoachMessage` เท่านั้น — `UserMessage` เป็นข้อความผู้ใช้ ไม่ต้องแปลง)
+- [x] ไม่แตะ `COACH_SYSTEM_PROMPT`
+- [x] unit test กับข้อความจริงที่ Gemini เคยตอบ (มีตัวอย่างใน `.scratch/ai-safety-test/run-2026-07-16-after-prompt-fix.md`)
 
 ## Acceptance criteria
 
