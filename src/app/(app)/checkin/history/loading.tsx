@@ -1,5 +1,5 @@
-import { TextPageSkeleton } from "@/components/page-skeleton";
+import { HistorySkeleton } from "@/components/page-skeleton";
 
 export default function Loading() {
-  return <TextPageSkeleton />;
+  return <HistorySkeleton />;
 }

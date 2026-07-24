@@ -31,7 +31,7 @@ export function WeekPicker({ weeks, selected }: { weeks: WeekOption[]; selected:
               href={`/reflection?week=${week.periodStart}`}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "relative inline-flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-medium whitespace-nowrap transition-colors active:opacity-70",
+                "relative inline-flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-medium whitespace-nowrap transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none active:opacity-70",
                 active
                   ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:bg-background hover:text-foreground"

@@ -29,7 +29,7 @@ function StatTile({
       </div>
       <div className="text-center">
         <p className="text-xs font-semibold text-muted-foreground">{label}</p>
-        <p className="text-sm font-bold">{valueText}</p>
+        <p className="font-mono text-sm font-bold">{valueText}</p>
       </div>
     </div>
   );

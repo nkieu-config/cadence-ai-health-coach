@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { NotebookPen, RefreshCw, Sparkles, Target } from "lucide-react";
+import { CalendarCheck, NotebookPen, RefreshCw, Sparkles, Target } from "lucide-react";
 import { PILLAR_COLORS, PILLAR_ICONS } from "@/components/pillar-visual";
 import { GenerateReflectionButton } from "@/components/reflection/generate-reflection-button";
 import { WeekComparisonCard } from "@/components/reflection/week-comparison-card";
@@ -30,7 +30,7 @@ function PillarSection({ entry }: { entry: ReflectionPillar }) {
         <Icon className="size-4" />
       </div>
       <div className="space-y-1 pt-0.5">
-        <h3 className="text-sm font-semibold text-foreground">ด้าน{PILLAR_LABELS[entry.pillar]}</h3>
+        <h2 className="text-sm font-semibold text-foreground">ด้าน{PILLAR_LABELS[entry.pillar]}</h2>
         <p className="text-base text-foreground/90">{entry.summary}</p>
       </div>
     </div>
@@ -80,8 +80,12 @@ function EmptyState() {
           สรุปสร้างจากบันทึก 7 วันล่าสุดของคุณ ยิ่งบันทึกหลายวัน ภาพก็ยิ่งชัด
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-2">
         <GenerateReflectionButton />
+        <Link href="/checkin" className={buttonVariants({ variant: "ghost", className: "w-full" })}>
+          <CalendarCheck className="size-4" />
+          ไปเช็คอินวันนี้
+        </Link>
       </CardContent>
     </Card>
   );

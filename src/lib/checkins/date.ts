@@ -11,6 +11,11 @@ export function today(): string {
   return formatter.format(new Date());
 }
 
+// timestamptz จาก DB เป็น UTC — ตัด 10 ตัวแรกตรง ๆ จะเพี้ยนไปหนึ่งวันสำหรับเวลาหลังเที่ยงคืนไทย
+export function toBangkokDate(timestamp: string): string {
+  return formatter.format(new Date(timestamp));
+}
+
 export function shiftDate(isoDate: string, days: number): string {
   const date = new Date(`${isoDate}T00:00:00Z`);
   date.setUTCDate(date.getUTCDate() + days);

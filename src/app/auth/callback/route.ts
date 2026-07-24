@@ -8,10 +8,15 @@ export async function GET(request: NextRequest) {
   const isDev = process.env.NODE_ENV === "development";
   const baseUrl = isDev || !forwardedHost ? request.nextUrl.origin : `https://${forwardedHost}`;
 
+  const next = request.nextUrl.searchParams.get("next");
+
   if (code) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
+      if (next === "/reset-password") {
+        return NextResponse.redirect(`${baseUrl}/reset-password`);
+      }
       const onboarded = await hasCompletedOnboarding();
       return NextResponse.redirect(`${baseUrl}${onboarded ? "/" : "/onboarding"}`);
     }

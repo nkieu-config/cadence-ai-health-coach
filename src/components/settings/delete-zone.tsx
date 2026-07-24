@@ -1,11 +1,12 @@
 "use client";
 
-import { useId, useState, useTransition } from "react";
+import { useId, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, Loader2, Trash2 } from "lucide-react";
+import { CheckCircle2, Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { ErrorNotice } from "@/components/ui/notice";
 import { deleteAccount, deleteAllData } from "@/lib/account/actions";
 
 type DeleteMode = "data" | "account";
@@ -28,14 +29,17 @@ export function DeleteZone() {
   const [mode, setMode] = useState<DeleteMode | null>(null);
   const [confirmText, setConfirmText] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [wiped, setWiped] = useState(false);
   const [isPending, startTransition] = useTransition();
   const confirmId = useId();
+  const confirmRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
   const open = (next: DeleteMode) => {
     setMode(next);
     setConfirmText("");
     setError(null);
+    requestAnimationFrame(() => confirmRef.current?.focus());
   };
 
   const cancel = () => {
@@ -59,9 +63,30 @@ export function DeleteZone() {
         setError(result.error);
         return;
       }
-      router.push("/onboarding");
+      setWiped(true);
     });
   };
+
+  // ลบสำเร็จแล้วต้องบอกให้รู้ก่อนพาไปหน้าอื่น — เด้งเงียบ ๆ ดูเหมือนระบบพัง
+  if (wiped) {
+    return (
+      <Card className="border-primary/30">
+        <CardContent className="space-y-3 py-8 text-center">
+          <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <CheckCircle2 className="size-6" />
+          </div>
+          <p className="font-medium text-foreground">ลบข้อมูลทั้งหมดเรียบร้อยแล้ว</p>
+          <p className="mx-auto max-w-md text-sm text-muted-foreground">
+            บันทึก เป้าหมาย ประวัติแชท และผลวิเคราะห์ถูกลบหมดแล้ว — บัญชีของคุณยังอยู่
+            เริ่มตั้งค่าใหม่ได้เลย
+          </p>
+          <Button className="min-h-11" onClick={() => router.push("/onboarding")}>
+            เริ่มตั้งค่าใหม่
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="border-destructive/30">
@@ -75,32 +100,35 @@ export function DeleteZone() {
 
       <CardContent className="space-y-4">
         {mode === null ? (
-          <div className="grid gap-2 lg:grid-cols-2">
+          // ลบบัญชีย้อนกลับไม่ได้เลย จึงไม่ควรเป็นปุ่มแฝดน้ำหนักเท่ากับลบข้อมูล
+          <div className="space-y-3">
             <Button
               variant="outline"
-              className="border-destructive/40 bg-transparent text-destructive hover:bg-destructive/10 hover:text-destructive dark:border-destructive/40 dark:bg-transparent dark:hover:bg-destructive/20"
+              className="w-full border-destructive/40 bg-transparent text-destructive hover:bg-destructive/10 hover:text-destructive dark:border-destructive/40 dark:bg-transparent dark:hover:bg-destructive/20"
               onClick={() => open("data")}
             >
               {MODES.data.button}
             </Button>
-            <Button
-              variant="outline"
-              className="border-destructive/40 bg-transparent text-destructive hover:bg-destructive/10 hover:text-destructive dark:border-destructive/40 dark:bg-transparent dark:hover:bg-destructive/20"
-              onClick={() => open("account")}
-            >
-              {MODES.account.button}
-            </Button>
+            <div className="border-t pt-3 text-center">
+              <button
+                type="button"
+                onClick={() => open("account")}
+                className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm text-muted-foreground underline underline-offset-4 transition-colors outline-none hover:text-destructive focus-visible:ring-3 focus-visible:ring-ring/50"
+              >
+                {MODES.account.button}
+              </button>
+            </div>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div
+            className="space-y-4"
+            onKeyDown={(event) => {
+              if (event.key === "Escape" && !isPending) cancel();
+            }}
+          >
             <p className="text-sm text-muted-foreground">{MODES[mode].description}</p>
 
-            {error && (
-              <div className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
-                <AlertTriangle className="mt-0.5 size-4 shrink-0" />
-                <span>{error}</span>
-              </div>
-            )}
+            {error && <ErrorNotice>{error}</ErrorNotice>}
 
             <div className="space-y-2">
               <label htmlFor={confirmId} className="block text-sm font-medium">
@@ -108,9 +136,9 @@ export function DeleteZone() {
               </label>
               <Input
                 id={confirmId}
+                ref={confirmRef}
                 value={confirmText}
                 onChange={(event) => setConfirmText(event.target.value)}
-                placeholder={MODES[mode].phrase}
                 disabled={isPending}
                 autoComplete="off"
               />

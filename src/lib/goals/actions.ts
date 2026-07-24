@@ -9,6 +9,7 @@ import { getActiveGoals, getGoals } from "./queries";
 import { chooseSituations, validateGoalTitle } from "./suggest";
 import { BUSY_PERIOD_LABELS, CONSTRAINT_LABELS, EARLY_DAY_LABELS } from "@/lib/onboarding/types";
 import {
+  GOAL_LIMIT_NOTICE,
   MAX_ACTIVE_GOALS,
   PILLARS,
   SITUATIONS,
@@ -18,7 +19,8 @@ import {
   type GoalSuggestion,
   type Situation,
 } from "./types";
-import { weekStart } from "./week";
+import { weekDates, weekStart } from "./week";
+import { today } from "@/lib/checkins/date";
 
 const SUGGESTION_WINDOW_DAYS = 14;
 
@@ -44,8 +46,9 @@ function mergeContext(profileRow: ProfileRow, context: GoalContext | undefined):
   };
 }
 
-export type GoalResult = { ok: true } | { error: string };
-export type SuggestResult = { ok: true; suggestions: GoalSuggestion[] } | { error: string };
+export type GoalResult = { ok: true } | { notice: string } | { error: string };
+export type SuggestResult =
+  { ok: true; suggestions: GoalSuggestion[] } | { notice: string } | { error: string };
 
 async function currentUser() {
   const supabase = await createClient();
@@ -67,7 +70,7 @@ export async function recommendGoals(context?: GoalContext): Promise<SuggestResu
   ]);
 
   if (checkins.length === 0) {
-    return { error: "ยังไม่มีบันทึกให้ดู — ลองเช็คอินสัก 2–3 วันก่อน แล้วค่อยกลับมาขอคำแนะนำ" };
+    return { notice: "ยังไม่มีบันทึกให้ดู — ลองเช็คอินสัก 2–3 วันก่อน แล้วค่อยกลับมาขอคำแนะนำ" };
   }
 
   const profile = profileRow || context ? mergeContext(profileRow, context) : null;
@@ -97,9 +100,7 @@ export async function acceptGoal(title: string, situation: Situation): Promise<G
 
   const active = await getActiveGoals();
   if (active.length >= MAX_ACTIVE_GOALS) {
-    return {
-      error: `สัปดาห์นี้มีเป้าหมายอยู่ ${MAX_ACTIVE_GOALS} ข้อแล้ว — จบข้อเดิมก่อนค่อยเพิ่มใหม่ จะได้ไม่หนักเกินไป`,
-    };
+    return { notice: GOAL_LIMIT_NOTICE };
   }
 
   const { error } = await supabase.from("goals").insert({
@@ -128,6 +129,13 @@ export async function toggleGoalDay(goalId: string, date: string): Promise<GoalR
   const goal = (await getGoals()).find((candidate) => candidate.id === goalId);
   if (!goal) {
     return { error: "ไม่พบเป้าหมายนี้" };
+  }
+
+  if (!weekDates(goal.weekStart).includes(date)) {
+    return { error: "วันที่ติ๊กไม่อยู่ในสัปดาห์ของเป้าหมายนี้" };
+  }
+  if (date > today()) {
+    return { error: "ติ๊กความคืบหน้าล่วงหน้าไม่ได้" };
   }
 
   const progressDates = goal.progressDates.includes(date)

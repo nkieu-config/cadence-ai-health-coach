@@ -1,10 +1,18 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { COACH_SYSTEM_PROMPT, aiErrorMessage, generate, type ChatTurn } from "@/lib/ai";
+import {
+  COACH_SYSTEM_PROMPT,
+  aiErrorMessage,
+  generate,
+  isQuotaExhausted,
+  type ChatTurn,
+} from "@/lib/ai";
+import { getCheckins } from "@/lib/checkins/queries";
 import { createClient } from "@/lib/supabase/server";
 import { buildCoachContext } from "./context";
-import { countMessagesToday, getChatHistory } from "./queries";
+import { buildCoachOpener } from "./opener";
+import { countMessagesToday, getChatHistory, recordMessageSent } from "./queries";
 import {
   CHAT_COLUMNS,
   CONTEXT_TURN_LIMIT,
@@ -17,10 +25,13 @@ import {
 
 export type ChatResult =
   | { ok: true; message: ChatMessage }
-  | { error: string; userMessage?: ChatMessage; quotaLeft?: number };
+  | { error: string; userMessage?: ChatMessage; quotaLeft?: number }
+  | { notice: string; userMessage?: ChatMessage; quotaLeft?: number };
 export type ClearResult = { ok: true } | { error: string };
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
+
+const OPENER_WINDOW_DAYS = 7;
 
 async function insertMessage(
   supabase: Supabase,
@@ -38,14 +49,28 @@ async function insertMessage(
   return toChatMessage(data as unknown as ChatMessageRow);
 }
 
+// คำถามเปิดสร้างฝั่ง server แล้วโชว์เป็นข้อความโค้ช แต่ไม่เคยถูกบันทึกลง DB
+// ถ้าไม่ยัดกลับเข้า turns โมเดลจะไม่เห็นคำถามที่ผู้ใช้กำลังตอบอยู่
+async function openingTurn(): Promise<ChatTurn | null> {
+  const opener = buildCoachOpener(await getCheckins(OPENER_WINDOW_DAYS));
+  return opener ? { role: "coach", content: `${opener.fact}\n\n${opener.question}` } : null;
+}
+
 async function replyToHistory(
   supabase: Supabase,
   userId: string,
   history: ChatMessage[]
 ): Promise<ChatResult> {
-  const turns: ChatTurn[] = history
-    .slice(-CONTEXT_TURN_LIMIT)
-    .map((message) => ({ role: message.role, content: message.content }));
+  const recent = history.slice(-CONTEXT_TURN_LIMIT);
+  const turns: ChatTurn[] = recent.map((message) => ({
+    role: message.role,
+    content: message.content,
+  }));
+
+  if (recent[0]?.role === "user") {
+    const opening = await openingTurn();
+    if (opening) turns.unshift(opening);
+  }
 
   const context = await buildCoachContext();
   const system = context ? `${COACH_SYSTEM_PROMPT}\n\n${context}` : COACH_SYSTEM_PROMPT;
@@ -54,7 +79,10 @@ async function replyToHistory(
   try {
     reply = await generate(turns, { system });
   } catch (error) {
-    return { error: aiErrorMessage(error) };
+    // โควตา AI หมดไม่ใช่ความผิดผู้ใช้ — ต้องไม่ขึ้นโทน error
+    return isQuotaExhausted(error)
+      ? { notice: aiErrorMessage(error) }
+      : { error: aiErrorMessage(error) };
   }
 
   const message = await insertMessage(supabase, userId, "coach", reply);
@@ -85,7 +113,7 @@ export async function sendCoachMessage(text: string): Promise<ChatResult> {
 
   if ((await countMessagesToday()) >= DAILY_MESSAGE_LIMIT) {
     return {
-      error: `วันนี้คุยกับโค้ชครบ ${DAILY_MESSAGE_LIMIT} ข้อความแล้ว — พรุ่งนี้กลับมาคุยต่อได้ ระหว่างนี้ยังเช็คอินและดูข้อมูลย้อนหลังได้ตามปกติ`,
+      notice: `วันนี้คุยกับโค้ชครบ ${DAILY_MESSAGE_LIMIT} ข้อความแล้ว — พรุ่งนี้กลับมาคุยต่อได้ ระหว่างนี้ยังเช็คอินและดูข้อมูลย้อนหลังได้ตามปกติ`,
       quotaLeft: 0,
     };
   }
@@ -94,11 +122,12 @@ export async function sendCoachMessage(text: string): Promise<ChatResult> {
   if (!saved) {
     return { error: "ส่งข้อความไม่สำเร็จ ลองใหม่อีกครั้ง" };
   }
+  await recordMessageSent();
   revalidatePath("/coach");
 
   const history = await getChatHistory();
   const result = await replyToHistory(supabase, user.id, history);
-  return "error" in result ? { ...result, userMessage: saved } : result;
+  return "ok" in result ? result : { ...result, userMessage: saved };
 }
 
 export async function retryCoachReply(): Promise<ChatResult> {

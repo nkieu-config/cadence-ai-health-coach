@@ -121,40 +121,50 @@ export async function generateInsight(days: number): Promise<GenerateResult> {
 }
 
 export async function generateReflection(): Promise<GenerateResult> {
-  const period = { periodStart: daysAgo(REFLECTION_DAYS - 1), periodEnd: today() };
+  try {
+    const period = { periodStart: daysAgo(REFLECTION_DAYS - 1), periodEnd: today() };
 
-  if (await isCacheUsable("weekly_reflection", period)) {
-    return { ok: true, cached: true };
+    if (await isCacheUsable("weekly_reflection", period)) {
+      return { ok: true, cached: true };
+    }
+
+    const checkins = await getCheckins(REFLECTION_DAYS);
+
+    if (checkins.length === 0) {
+      return {
+        notEnoughData: true,
+        daysRecorded: 0,
+        daysNeeded: 1,
+        message: "ยังไม่มีบันทึกใน 7 วันล่าสุด — เช็คอินสักวันแล้วกลับมาสร้างสรุปได้เลย",
+      };
+    }
+
+    let content: Omit<Reflection, "periodStart" | "periodEnd" | "createdAt">;
+
+    if (checkins.length < MIN_DAYS_FOR_REFLECTION) {
+      content = shortReflection(checkins.length, REFLECTION_DAYS);
+    } else {
+      const goals = await getGoals();
+      const facts = buildWeekFacts(checkins, goals, REFLECTION_DAYS);
+      const aiText = await generateReflectionText(facts);
+      const { pillars, strengths, nextWeek } = mergeReflectionText(facts, aiText);
+      content = {
+        daysRecorded: checkins.length,
+        totalDays: REFLECTION_DAYS,
+        pillars,
+        strengths,
+        nextWeek,
+      };
+    }
+
+    const result = await replaceOutput("weekly_reflection", period, content);
+    if ("error" in result) return result;
+
+    revalidatePath("/reflection");
+    revalidatePath("/dashboard");
+    return { ok: true };
+  } catch (error) {
+    console.error("Failed to generate reflection:", error);
+    return { error: "สร้างสรุปสัปดาห์ไม่สำเร็จตอนนี้ ลองใหม่อีกครั้งได้เลย" };
   }
-
-  const checkins = await getCheckins(REFLECTION_DAYS);
-
-  if (checkins.length === 0) {
-    return { error: "ยังไม่มีบันทึกในสัปดาห์นี้ ลองเช็คอินก่อน" };
-  }
-
-  let content: Omit<Reflection, "periodStart" | "periodEnd" | "createdAt">;
-
-  if (checkins.length < MIN_DAYS_FOR_REFLECTION) {
-    content = shortReflection(checkins.length, REFLECTION_DAYS);
-  } else {
-    const goals = await getGoals();
-    const facts = buildWeekFacts(checkins, goals, REFLECTION_DAYS);
-    const aiText = await generateReflectionText(facts);
-    const { pillars, strengths, nextWeek } = mergeReflectionText(facts, aiText);
-    content = {
-      daysRecorded: checkins.length,
-      totalDays: REFLECTION_DAYS,
-      pillars,
-      strengths,
-      nextWeek,
-    };
-  }
-
-  const result = await replaceOutput("weekly_reflection", period, content);
-  if ("error" in result) return result;
-
-  revalidatePath("/reflection");
-  revalidatePath("/dashboard");
-  return { ok: true };
 }

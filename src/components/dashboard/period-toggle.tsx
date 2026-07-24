@@ -30,7 +30,7 @@ export function PeriodToggle({ period }: { period: DashboardPeriod }) {
             href={`/dashboard?days=${days}`}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "relative inline-flex min-h-11 flex-1 items-center justify-center rounded-full px-6 text-sm font-medium transition-colors active:opacity-70 lg:flex-none lg:min-w-24",
+              "relative inline-flex min-h-11 flex-1 items-center justify-center rounded-full px-6 text-sm font-medium transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none active:opacity-70 lg:min-w-24 lg:flex-none",
               active
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-background hover:text-foreground"

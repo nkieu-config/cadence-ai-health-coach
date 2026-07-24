@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useTransition, type ReactNode } from "react";
-import { Check } from "lucide-react";
+import { useId, useState, useTransition, type ReactNode } from "react";
+import { Check, Clock } from "lucide-react";
 import { saveCheckin } from "@/lib/checkins/actions";
 import { formatThaiDate } from "@/lib/checkins/date";
 import { CheckinSummary } from "./checkin-summary";
@@ -38,6 +38,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Chip, toggleValue } from "@/components/ui/chip";
 import { Label } from "@/components/ui/label";
+import { ErrorNotice, GentleNotice } from "@/components/ui/notice";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
@@ -71,15 +72,32 @@ function Field({
   highlight?: boolean;
   children: React.ReactNode;
 }) {
+  const labelId = useId();
+  const hintId = useId();
+  const describedBy = highlight || hint ? hintId : undefined;
+
   return (
     <div id={id} className="scroll-mt-24 space-y-2">
-      <Label>{label}</Label>
+      <Label id={labelId}>{label}</Label>
       {highlight ? (
-        <p className="text-xs font-medium text-primary">เลือกสักอันก่อนไปต่อนะ</p>
+        <p id={hintId} role="alert" className="text-xs font-medium text-primary">
+          เลือกสักอันก่อนไปต่อนะ
+        </p>
       ) : (
-        hint && <p className="text-xs text-muted-foreground">{hint}</p>
+        hint && (
+          <p id={hintId} className="text-xs text-muted-foreground">
+            {hint}
+          </p>
+        )
       )}
-      <div className="flex flex-wrap gap-2 pt-1">{children}</div>
+      <div
+        role="group"
+        aria-labelledby={labelId}
+        aria-describedby={describedBy}
+        className="flex flex-wrap gap-2 pt-1"
+      >
+        {children}
+      </div>
     </div>
   );
 }
@@ -120,7 +138,7 @@ function StepRail({ step }: { step: number }) {
         })}
       </ol>
       <p className="mt-6 rounded-lg bg-muted/40 px-3 py-3 text-xs text-muted-foreground">
-        กรอกไม่จบก็ไม่เป็นไร ที่บันทึกไว้แล้วยังอยู่ กลับมาต่อทีหลังได้
+        ค่อย ๆ ตอบได้ ไม่มีคำตอบไหนผิด · คำตอบจะถูกเก็บเมื่อกดบันทึกในขั้นสุดท้าย
       </p>
     </nav>
   );
@@ -130,6 +148,7 @@ export function CheckinForm({
   date,
   existing,
   heading,
+  openWith,
   beforeSave,
   nudge,
   footer,
@@ -137,14 +156,16 @@ export function CheckinForm({
   date: string;
   existing: Checkin | null;
   heading: string;
+  openWith?: Checkin | null;
   beforeSave?: () => string | null;
   nudge?: ReactNode;
   footer?: ReactNode;
 }) {
   const [step, setStep] = useState(0);
   const [highlightField, setHighlightField] = useState<string | null>(null);
-  const [saved, setSaved] = useState<Checkin | null>(null);
+  const [saved, setSaved] = useState<Checkin | null>(openWith ?? null);
   const [error, setError] = useState<string | null>(null);
+  const [guidance, setGuidance] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
   const [mealsCount, setMealsCount] = useState<number | null>(existing?.mealsCount ?? null);
@@ -186,6 +207,8 @@ export function CheckinForm({
   const ate = mealsCount !== null && mealsCount > 0;
   const moved = !didNotMove && movementTypes.length > 0 && (minutes ?? 0) > 0;
 
+  const maxSkippedMeals = TOTAL_MEALS - (mealsCount ?? 0);
+
   const asks = {
     skippedMeals: mealsCount !== null && mealsCount < TOTAL_MEALS,
     firstMealTime: ate,
@@ -220,12 +243,21 @@ export function CheckinForm({
     const missing = firstMissingField();
     if (missing) {
       setHighlightField(missing);
-      document.getElementById(missing)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      const field = document.getElementById(missing);
+      field?.scrollIntoView({ behavior: "smooth", block: "center" });
+      field?.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
       return;
     }
     setHighlightField(null);
     if (step < STEPS.length - 1) setStep(step + 1);
     else submit();
+  }
+
+  // จำนวนมื้อที่ข้ามต้องไม่ขัดกับจำนวนมื้อที่กิน — ตัดตั้งแต่ขั้นนี้
+  // ไม่ปล่อยให้ไปแตกเป็น error ตอนกดบันทึกที่ขั้น 4 ซึ่งห่างจากสาเหตุ 3 ขั้น
+  function pickMeals(count: number) {
+    setMealsCount(count);
+    setSkippedMeals((current) => current.slice(0, TOTAL_MEALS - count));
   }
 
   function pickMovementType(type: MovementType) {
@@ -256,10 +288,11 @@ export function CheckinForm({
 
   function submit() {
     setError(null);
+    setGuidance(null);
 
     const blocked = beforeSave?.();
     if (blocked) {
-      setError(blocked);
+      setGuidance(blocked);
       return;
     }
 
@@ -338,7 +371,7 @@ export function CheckinForm({
                     <Chip
                       key={count}
                       active={mealsCount === count}
-                      onClick={() => setMealsCount(count)}
+                      onClick={() => pickMeals(count)}
                     >
                       {count} มื้อ
                     </Chip>
@@ -352,16 +385,23 @@ export function CheckinForm({
                 )}
 
                 {asks.skippedMeals && (
-                  <Field label="มื้อไหนที่ข้ามไป" hint="เลือกได้หลายมื้อ">
-                    {keysOf(MEAL_LABELS).map((meal) => (
-                      <Chip
-                        key={meal}
-                        active={skippedMeals.includes(meal)}
-                        onClick={() => setSkippedMeals(toggleValue(skippedMeals, meal))}
-                      >
-                        {MEAL_LABELS[meal]}
-                      </Chip>
-                    ))}
+                  <Field
+                    label="มื้อไหนที่ข้ามไป"
+                    hint={`เลือกได้ไม่เกิน ${maxSkippedMeals} มื้อ · ข้ามได้`}
+                  >
+                    {keysOf(MEAL_LABELS).map((meal) => {
+                      const active = skippedMeals.includes(meal);
+                      return (
+                        <Chip
+                          key={meal}
+                          active={active}
+                          disabled={!active && skippedMeals.length >= maxSkippedMeals}
+                          onClick={() => setSkippedMeals(toggleValue(skippedMeals, meal))}
+                        >
+                          {MEAL_LABELS[meal]}
+                        </Chip>
+                      );
+                    })}
                   </Field>
                 )}
 
@@ -584,7 +624,7 @@ export function CheckinForm({
                   ))}
                 </Field>
 
-                <Field label="วันนี้มีอะไรพิเศษไหม" hint="เลือกได้หลายอย่าง">
+                <Field label="วันนี้มีอะไรพิเศษไหม" hint="เลือกได้หลายอย่าง · ข้ามได้">
                   {keysOf(DISRUPTOR_LABELS).map((disruptor) => (
                     <Chip
                       key={disruptor}
@@ -615,7 +655,8 @@ export function CheckinForm({
               </>
             )}
 
-            {error && <p className="text-sm text-destructive">{error}</p>}
+            {guidance && <GentleNotice icon={Clock}>{guidance}</GentleNotice>}
+            {error && <ErrorNotice>{error}</ErrorNotice>}
 
             <div className="flex gap-2">
               {step > 0 && (

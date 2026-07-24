@@ -12,7 +12,7 @@ export function AppNav() {
   return (
     <nav
       aria-label="เมนูหลัก"
-      className="sticky bottom-0 border-t bg-background pb-[env(safe-area-inset-bottom)] lg:hidden"
+      className="sticky bottom-0 z-10 border-t bg-background pb-[env(safe-area-inset-bottom)] lg:hidden"
     >
       <ul className="mx-auto flex w-full max-w-md">
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {

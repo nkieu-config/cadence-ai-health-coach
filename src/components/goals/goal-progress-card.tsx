@@ -2,13 +2,14 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { CheckCircle2, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ErrorNotice } from "@/components/ui/notice";
 import { toggleGoalDay, updateGoalStatus } from "@/lib/goals/actions";
 import { SITUATION_LABELS, type Goal, type GoalStatus } from "@/lib/goals/types";
 import { weekDates } from "@/lib/goals/week";
-import { today } from "@/lib/checkins/date";
+import { formatThaiDate, today } from "@/lib/checkins/date";
 import { toggleValue } from "@/components/ui/chip";
 import { cn } from "@/lib/utils";
 
@@ -27,6 +28,7 @@ interface GoalProgressCardProps {
 export function GoalProgressCard({ goal }: GoalProgressCardProps) {
   const [progress, setProgress] = useState<string[]>(goal.progressDates ?? []);
   const [error, setError] = useState<string | null>(null);
+  const [outcome, setOutcome] = useState<GoalStatus | null>(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -54,9 +56,34 @@ export function GoalProgressCard({ goal }: GoalProgressCardProps) {
         setError(result.error);
         return;
       }
-      router.refresh();
+      setOutcome(newStatus);
     });
   };
+
+  // ปิดสัปดาห์แล้วต้องมีจังหวะรับรู้ก่อนการ์ดหาย — ไม่งั้นกดเสร็จแล้วของหายเงียบ
+  if (outcome) {
+    const done = outcome === "done";
+    return (
+      <Card className={done ? "border-primary/40 bg-accent/10" : undefined}>
+        <CardContent className="space-y-3 py-8 text-center">
+          <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+            {done ? <CheckCircle2 className="size-6" /> : <RotateCcw className="size-6" />}
+          </div>
+          <p className="font-medium text-foreground">
+            {done ? "ทำเป้านี้สำเร็จแล้ว" : "เก็บเป้านี้ไว้ลองใหม่"}
+          </p>
+          <p className="mx-auto max-w-sm text-sm text-muted-foreground">
+            {done
+              ? `${goal.title} · ${progressLine(progress.length)}`
+              : "สัปดาห์ที่ยากเป็นพิเศษก็มี — กลับมาลองใหม่ตอนพร้อมได้เสมอ"}
+          </p>
+          <Button variant="outline" className="min-h-11" onClick={() => router.refresh()}>
+            เรียบร้อย
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
@@ -68,15 +95,7 @@ export function GoalProgressCard({ goal }: GoalProgressCardProps) {
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {error && (
-          <div
-            role="alert"
-            className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive"
-          >
-            <AlertCircle className="mt-0.5 size-4 shrink-0" />
-            <span>{error}</span>
-          </div>
-        )}
+        {error && <ErrorNotice>{error}</ErrorNotice>}
 
         <div className="space-y-2">
           <p className="text-sm font-medium">ความคืบหน้าสัปดาห์นี้</p>
@@ -92,7 +111,7 @@ export function GoalProgressCard({ goal }: GoalProgressCardProps) {
                   type="button"
                   onClick={() => handleToggleDay(dateStr)}
                   disabled={isPending || isFuture}
-                  aria-label={dateStr}
+                  aria-label={`วัน${DAY_LABELS[index].replace(".", "")} ${formatThaiDate(dateStr)}`}
                   aria-pressed={isChecked}
                   className={cn(
                     "flex min-h-11 flex-col items-center justify-center rounded-md border text-xs font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-95",
@@ -104,7 +123,7 @@ export function GoalProgressCard({ goal }: GoalProgressCardProps) {
                   )}
                 >
                   <span>{DAY_LABELS[index]}</span>
-                  <span className="font-mono text-xs opacity-70">{displayNum}</span>
+                  <span className="font-mono text-xs">{displayNum}</span>
                 </button>
               );
             })}

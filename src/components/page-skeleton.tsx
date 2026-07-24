@@ -67,11 +67,48 @@ export function CardSkeleton({ rows = 3 }: { rows?: number }) {
   );
 }
 
+// หน้าเช็คอินใช้ width="content" + คอลัมน์ฟอร์ม max-w-md (step rail อยู่ซ้ายที่ lg)
+// โครงนี้ต้องตรงกับหน้าจริง ไม่งั้นเนื้อหากระโดดตอน stream เข้า
 export function FormSkeleton() {
   return (
-    <PageContainer className="space-y-6">
+    <PageContainer width="content" className="space-y-6">
       <LoadingLabel />
-      <CardSkeleton rows={3} />
+      <div className="space-y-2">
+        <Skeleton className="h-7 w-56" />
+        <Skeleton className="h-4 w-72" />
+      </div>
+      <div className="lg:grid lg:grid-cols-[13rem_minmax(0,28rem)] lg:items-start lg:gap-8">
+        <div className="hidden space-y-2 lg:block">
+          {Array.from({ length: 4 }, (_, row) => (
+            <Skeleton key={row} className="h-10 w-full rounded-lg" />
+          ))}
+        </div>
+        <div className="mx-auto w-full max-w-md lg:mx-0 lg:max-w-none">
+          <CardSkeleton rows={3} />
+        </div>
+      </div>
+    </PageContainer>
+  );
+}
+
+export function HistorySkeleton() {
+  return (
+    <PageContainer width="content" className="space-y-4">
+      <LoadingLabel />
+      <Skeleton className="h-7 w-48" />
+      <Skeleton className="h-4 w-72" />
+      <div className="space-y-6">
+        {Array.from({ length: 2 }, (_, section) => (
+          <div key={section} className="space-y-3">
+            <Skeleton className="h-4 w-32" />
+            <div className="grid gap-3 lg:grid-cols-2">
+              {Array.from({ length: 4 }, (_, card) => (
+                <Skeleton key={card} className="h-44 w-full rounded-xl" />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
     </PageContainer>
   );
 }

@@ -21,6 +21,10 @@ test("เช็คอินวันนี้ — กรอกครบ 4 ขั
   };
   const next = () => page.getByRole("button", { name: "ถัดไป" }).click();
 
+  // บันทึกแล้วของวันนี้ → หน้าเปิดมาเป็นสรุปก่อน ต้องกดเข้าโหมดแก้ไขให้เจอฟอร์ม
+  const editSaved = page.getByRole("button", { name: "แก้ไขบันทึกนี้" });
+  if (await editSaved.isVisible().catch(() => false)) await editSaved.click();
+
   await ensure("2 มื้อ");
 
   // คำถามเสริมต้องโผล่เฉพาะเมื่อเกี่ยว — ข้ามมื้อ + เวลามื้อแรก

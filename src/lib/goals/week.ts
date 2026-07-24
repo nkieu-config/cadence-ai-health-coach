@@ -9,6 +9,10 @@ export function weekStart(isoDate = today()): string {
   return new Date(date.getTime() - daysSinceMonday * DAY_MS).toISOString().slice(0, 10);
 }
 
+export function previousWeekStart(start = weekStart()): string {
+  return new Date(Date.parse(`${start}T00:00:00Z`) - 7 * DAY_MS).toISOString().slice(0, 10);
+}
+
 export function weekDates(start = weekStart()): string[] {
   const base = Date.parse(`${start}T00:00:00Z`);
   return Array.from({ length: 7 }, (_, index) =>

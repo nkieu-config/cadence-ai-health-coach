@@ -1,20 +1,28 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import Link from "next/link";
 import { PageContainer } from "@/components/page-container";
 import { NotebookPen, Target } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import { getActiveGoals } from "@/lib/goals/queries";
+import { getActiveGoals, getGoals } from "@/lib/goals/queries";
+import { previousWeekStart, weekDates, weekStart } from "@/lib/goals/week";
+import { formatShortThaiDate } from "@/lib/checkins/date";
 import { GoalSuggestionCard } from "@/components/goals/goal-suggestion-card";
 import { GoalProgressCard } from "@/components/goals/goal-progress-card";
-import { CardSkeleton } from "@/components/page-skeleton";
+import { LastWeekGoals } from "@/components/goals/last-week-goals";
 
 export const metadata: Metadata = { title: "เป้าหมายสัปดาห์นี้" };
 
 export const dynamic = "force-dynamic";
 
+function weekRange(start: string): string {
+  const days = weekDates(start);
+  return `${formatShortThaiDate(days[0])} – ${formatShortThaiDate(days[6])}`;
+}
+
 export default async function GoalsPage() {
-  const goals = await getActiveGoals();
+  const thisWeek = weekStart();
+  const lastWeek = previousWeekStart(thisWeek);
+  const [goals, lastWeekGoals] = await Promise.all([getActiveGoals(thisWeek), getGoals(lastWeek)]);
 
   return (
     <PageContainer width="content">
@@ -25,18 +33,16 @@ export default async function GoalsPage() {
             เป้าหมายสัปดาห์นี้
           </h1>
           <p className="text-sm text-muted-foreground">
-            ตั้งเป้าหมายย่อยเพื่อความต่อเนื่องและคอยติ๊กบันทึกทุก ๆ วัน
+            {weekRange(thisWeek)} · ตั้งเป้าหมายย่อยเพื่อความต่อเนื่องและคอยติ๊กบันทึกทุก ๆ วัน
           </p>
         </div>
 
-        <Suspense fallback={<CardSkeleton rows={2} />}>
-          <GoalSuggestionCard initialGoals={goals} />
-        </Suspense>
+        <GoalSuggestionCard initialGoals={goals} />
 
         <div className="space-y-4">
           {goals.length > 0 && (
             <>
-              <h3 className="px-1 text-sm font-semibold text-foreground">เป้าหมายที่กำลังทำ</h3>
+              <h2 className="px-1 text-sm font-semibold text-foreground">เป้าหมายที่กำลังทำ</h2>
               <div className="space-y-4">
                 {goals.map((goal) => (
                   <GoalProgressCard key={goal.id} goal={goal} />
@@ -45,6 +51,8 @@ export default async function GoalsPage() {
             </>
           )}
         </div>
+
+        <LastWeekGoals goals={lastWeekGoals} range={weekRange(lastWeek)} />
 
         <Link
           href="/reflection"

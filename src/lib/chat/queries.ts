@@ -9,7 +9,7 @@ import {
   toChatMessage,
 } from "./types";
 
-export async function countMessagesToday(): Promise<number> {
+async function countFromMessages(): Promise<number> {
   const supabase = await createClient();
   const { count, error } = await supabase
     .from("chat_messages")
@@ -19,6 +19,27 @@ export async function countMessagesToday(): Promise<number> {
 
   if (error) return 0;
   return count ?? 0;
+}
+
+// ตัวนับแยกอยู่รอดการล้างประวัติ จึงเป็นแหล่งความจริงของโควตา
+// ถ้า migration 0004 ยังไม่ถูก apply จะตกกลับไปนับจากแถวแบบเดิม แอปจึงไม่พังระหว่างรอ deploy
+export async function countMessagesToday(): Promise<number> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("chat_daily_usage")
+    .select("message_count")
+    .eq("usage_date", today())
+    .maybeSingle();
+
+  if (error) return countFromMessages();
+
+  const tracked = (data as { message_count: number } | null)?.message_count ?? 0;
+  return Math.max(tracked, await countFromMessages());
+}
+
+export async function recordMessageSent(): Promise<void> {
+  const supabase = await createClient();
+  await supabase.rpc("bump_chat_usage", { day: today() });
 }
 
 export async function messagesLeftToday(): Promise<number> {

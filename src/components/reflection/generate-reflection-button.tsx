@@ -4,17 +4,24 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { NotebookPen } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ErrorNotice, GentleNotice } from "@/components/ui/notice";
 import { generateReflection } from "@/lib/ai-outputs/actions";
 
 export function GenerateReflectionButton({ label = "สร้างสรุปสัปดาห์" }: { label?: string }) {
   const [isPending, startTransition] = useTransition();
+  const [invitation, setInvitation] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleClick = () => {
+    setInvitation(null);
     setError(null);
     startTransition(async () => {
       const result = await generateReflection();
+      if ("notEnoughData" in result) {
+        setInvitation(result.message);
+        return;
+      }
       if ("error" in result) {
         setError(result.error);
         return;
@@ -32,11 +39,8 @@ export function GenerateReflectionButton({ label = "สร้างสรุป�
       {isPending && (
         <p className="text-center text-xs text-muted-foreground">ใช้เวลาราว 10 วินาที</p>
       )}
-      {error && (
-        <p className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive">
-          {error}
-        </p>
-      )}
+      {invitation && <GentleNotice>{invitation}</GentleNotice>}
+      {error && <ErrorNotice>{error}</ErrorNotice>}
     </div>
   );
 }

@@ -96,16 +96,7 @@ export async function expectNoTinyThai(page: Page) {
   expect(tinyThai, "ข้อความไทยที่มองเห็นต้อง ≥ 12px (สระ/วรรณยุกต์ซ้อนกัน)").toEqual([]);
 }
 
-export async function expectUsablePage(page: Page, heading: string, errors: string[]) {
-  const h1 = page.getByRole("heading", { level: 1 });
-  await expect(h1, "ทุกหน้าต้องมี <h1> อันเดียว").toHaveCount(1);
-  await expect(h1).toContainText(heading);
-
-  const overflow = await page.evaluate(
-    () => document.documentElement.scrollWidth - document.documentElement.clientWidth
-  );
-  expect(overflow, "ห้ามมี horizontal scroll").toBeLessThanOrEqual(1);
-
+export async function expectTouchTargets(page: Page) {
   const tooSmall = await page.evaluate(() =>
     [...document.querySelectorAll("button, a[href], input, [role=button]")]
       .filter((element) => {
@@ -116,7 +107,19 @@ export async function expectUsablePage(page: Page, heading: string, errors: stri
       .slice(0, 3)
   );
   expect(tooSmall, "ทุกอย่างที่กดได้ต้องสูง ≥ 44px").toEqual([]);
+}
 
+export async function expectUsablePage(page: Page, heading: string, errors: string[]) {
+  const h1 = page.getByRole("heading", { level: 1 });
+  await expect(h1, "ทุกหน้าต้องมี <h1> อันเดียว").toHaveCount(1);
+  await expect(h1).toContainText(heading);
+
+  const overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+  );
+  expect(overflow, "ห้ามมี horizontal scroll").toBeLessThanOrEqual(1);
+
+  await expectTouchTargets(page);
   await expectNoTinyThai(page);
 
   expect(await unreadableText(page), "ข้อความต้องอ่านออก (contrast ≥ 4.5:1)").toEqual([]);

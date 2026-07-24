@@ -20,7 +20,10 @@ export async function deleteAllData(): Promise<AccountActionResult> {
   for (const table of USER_DATA_TABLES) {
     const { error } = await supabase.from(table).delete().eq("user_id", user.id);
     if (error) {
-      return { error: `ลบข้อมูลไม่สำเร็จ (${table}) — ลองใหม่อีกครั้ง` };
+      console.error(`Failed to delete user data from ${table}:`, error);
+      return {
+        error: "ลบข้อมูลได้ไม่ครบ — ข้อมูลบางส่วนยังอยู่ กดยืนยันอีกครั้งเพื่อลบส่วนที่เหลือ",
+      };
     }
   }
 

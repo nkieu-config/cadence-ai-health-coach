@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useTransition } from "react";
+import { Fragment, useState, useEffect, useRef, useTransition } from "react";
 import {
   Trash2,
   Send,
@@ -8,11 +8,20 @@ import {
   MessageSquare,
   MessageCircle,
   Loader2,
+  Moon,
   Target,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { UserMessage, CoachMessage, PendingReply, QuotaReachedNotice } from "./message-variants";
+import { ErrorNotice, GentleNotice } from "@/components/ui/notice";
+import {
+  UserMessage,
+  CoachMessage,
+  DaySeparator,
+  PendingReply,
+  QuotaReachedNotice,
+} from "./message-variants";
+import { toBangkokDate } from "@/lib/checkins/date";
 import { sendCoachMessage, retryCoachReply, clearChatHistory } from "@/lib/chat/actions";
 import type { CoachOpener } from "@/lib/chat/opener";
 import {
@@ -55,6 +64,12 @@ export function CoachChatClient({
   const [quotaLeft, setQuotaLeft] = useState<number>(initialQuotaLeft);
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+
+  const clearFeedback = () => {
+    setError(null);
+    setNotice(null);
+  };
 
   // Transition state for server actions
   const [isPending, startTransition] = useTransition();
@@ -119,14 +134,14 @@ export function CoachChatClient({
       id: "guided-coach-1",
       role: "coach",
       content:
-        "ยินดีครับ! มาวางแผนตั้งเป้าสุขภาพเล็กๆ สำหรับสัปดาห์หน้ากันดีกว่า\n\nถ้าเริ่มเปลี่ยนแค่ 1 อย่างในสัปดาห์หน้า คุณอยากเริ่มจากด้านไหนดีครับ?",
+        "ยินดีครับ! มาวางแผนตั้งเป้าสุขภาพเล็ก ๆ สำหรับสัปดาห์หน้ากันดีกว่า\n\nถ้าเริ่มเปลี่ยนแค่ 1 อย่างในสัปดาห์หน้า คุณอยากเริ่มจากด้านไหนดีครับ?",
       createdAt: new Date().toISOString(),
     });
 
     if (guidedStep === "pillar") return list;
 
     // User select pillar response
-    const pillarText = `อยากเริ่มจากด้าน${PILLAR_LABELS[guidedData.pillar ?? "eating"]}ครับ`;
+    const pillarText = `อยากเริ่มจากด้าน${PILLAR_LABELS[guidedData.pillar ?? "eating"]}`;
 
     list.push({
       id: "guided-user-1",
@@ -147,9 +162,9 @@ export function CoachChatClient({
 
     // User select busy days response
     const formatDays = (days: string[]) => {
-      if (days.length === 0) return "ไม่มีวันไหนเป็นพิเศษครับ";
+      if (days.length === 0) return "ไม่มีวันไหนเป็นพิเศษ";
       const dayNames = days.map((d) => EARLY_DAY_LABELS[d as keyof typeof EARLY_DAY_LABELS]);
-      return `วันที่มีตารางแน่น: ${dayNames.join(" ")} ครับ`;
+      return `วันที่มีตารางแน่น: ${dayNames.join(" ")}`;
     };
 
     list.push({
@@ -172,9 +187,9 @@ export function CoachChatClient({
 
     // User select constraints response
     const formatConstraints = (cons: string[]) => {
-      if (cons.length === 0) return "ไม่มีข้อจำกัดเป็นพิเศษครับ";
+      if (cons.length === 0) return "ไม่มีข้อจำกัดเป็นพิเศษ";
       const conNames = cons.map((c) => CONSTRAINT_LABELS[c as keyof typeof CONSTRAINT_LABELS]);
-      return `ข้อจำกัด: ${conNames.join(", ")} ครับ`;
+      return `ข้อจำกัด: ${conNames.join(", ")}`;
     };
 
     list.push({
@@ -210,7 +225,7 @@ export function CoachChatClient({
         busyDays: [],
         constraints: [],
       });
-      setError(null);
+      clearFeedback();
       return;
     }
 
@@ -219,11 +234,11 @@ export function CoachChatClient({
       return;
     }
     if (quotaLeft <= 0) {
-      setError("คุณใช้โควตาแชทของวันนี้หมดแล้ว");
+      setNotice("คุยกับโค้ชครบสำหรับวันนี้แล้ว — พรุ่งนี้กลับมาคุยต่อได้เลย");
       return;
     }
 
-    setError(null);
+    clearFeedback();
     setConfirmClear(false);
 
     // Optimistically add user message
@@ -241,20 +256,23 @@ export function CoachChatClient({
 
     startTransition(async () => {
       const result = await sendCoachMessage(text);
-      if ("error" in result) {
-        setError(result.error);
-        if (result.userMessage) {
-          const savedUserMessage = result.userMessage;
-          setMessages((prev) =>
-            prev.map((m) => (m.id === tempUserMessage.id ? savedUserMessage : m))
-          );
-        } else {
-          setMessages((prev) => prev.filter((m) => m.id !== tempUserMessage.id));
-          setQuotaLeft((prev) => result.quotaLeft ?? Math.min(DAILY_MESSAGE_LIMIT, prev + 1));
-          setInputValue(text);
-        }
-      } else {
+      if ("ok" in result) {
         setMessages((prev) => [...prev, result.message]);
+        return;
+      }
+
+      if ("notice" in result) setNotice(result.notice);
+      else setError(result.error);
+
+      if (result.userMessage) {
+        const savedUserMessage = result.userMessage;
+        setMessages((prev) =>
+          prev.map((m) => (m.id === tempUserMessage.id ? savedUserMessage : m))
+        );
+      } else {
+        setMessages((prev) => prev.filter((m) => m.id !== tempUserMessage.id));
+        setQuotaLeft((prev) => result.quotaLeft ?? Math.min(DAILY_MESSAGE_LIMIT, prev + 1));
+        setInputValue(text);
       }
     });
   };
@@ -263,7 +281,7 @@ export function CoachChatClient({
   const handlePillarSelect = (pillar: Pillar) => {
     setGuidedData((prev) => ({ ...prev, pillar }));
     setGuidedStep("busy_days");
-    setError(null);
+    clearFeedback();
   };
 
   const toggleBusyDay = (day: string) => {
@@ -278,7 +296,7 @@ export function CoachChatClient({
   const handleBusyDaysSubmit = (busyDays: string[]) => {
     setGuidedData((prev) => ({ ...prev, busyDays }));
     setGuidedStep("constraints");
-    setError(null);
+    clearFeedback();
   };
 
   const toggleConstraint = (constraint: string) => {
@@ -293,7 +311,7 @@ export function CoachChatClient({
   const handleConstraintsSubmit = (constraints: string[]) => {
     setGuidedData((prev) => ({ ...prev, constraints }));
     setGuidedStep("select_goal");
-    setError(null);
+    clearFeedback();
     setGoalOptions(null);
     setEditedGoalTitle("");
 
@@ -304,6 +322,10 @@ export function CoachChatClient({
         constraints,
       });
 
+      if ("notice" in result) {
+        setNotice(result.notice);
+        return;
+      }
       if ("error" in result) {
         setError(result.error);
         return;
@@ -316,7 +338,7 @@ export function CoachChatClient({
   };
 
   const handleBackStep = () => {
-    setError(null);
+    clearFeedback();
     if (guidedStep === "busy_days") {
       setGuidedStep("pillar");
     } else if (guidedStep === "constraints") {
@@ -329,7 +351,7 @@ export function CoachChatClient({
   const handleCancelGuidedFlow = () => {
     setGuidedFlow(false);
     setGuidedStep("pillar");
-    setError(null);
+    clearFeedback();
   };
 
   const handleSelectOption = (index: number) => {
@@ -343,10 +365,14 @@ export function CoachChatClient({
     const situation = goalOptions?.[selectedGoalIndex]?.situation;
     if (!title || !situation) return;
 
-    setError(null);
+    clearFeedback();
 
     startTransition(async () => {
       const result = await acceptGoal(title, situation);
+      if ("notice" in result) {
+        setNotice(result.notice);
+        return;
+      }
       if ("error" in result) {
         setError(result.error);
         return;
@@ -355,7 +381,7 @@ export function CoachChatClient({
       const successMessage: ChatMessage = {
         id: `guided-success-${(tempIdRef.current += 1)}`,
         role: "coach",
-        content: `บันทึกเป้าหมาย "${title}" เรียบร้อยแล้วครับ\n\nเป้าหมายนี้จะเริ่มมีผลในสัปดาห์หน้าทันที เปิดดูและติ๊กความคืบหน้าได้ในหน้า "เป้าหมาย" ครับ`,
+        content: `บันทึกเป้าหมาย "${title}" เรียบร้อยแล้วครับ\n\nเปิดดูได้ในหน้า "เป้าหมาย" — ติ๊กความคืบหน้าได้ตั้งแต่วันนี้เลย ไม่ต้องรอถึงสัปดาห์หน้าครับ`,
         createdAt: new Date().toISOString(),
       };
       setMessages((prev) => [...prev, successMessage]);
@@ -369,14 +395,12 @@ export function CoachChatClient({
   const handleRetry = () => {
     if (messages.length === 0 || !needsReply(messages)) return;
 
-    setError(null);
+    clearFeedback();
     startTransition(async () => {
       const result = await retryCoachReply();
-      if ("error" in result) {
-        setError(result.error);
-      } else {
-        setMessages((prev) => [...prev, result.message]);
-      }
+      if ("ok" in result) setMessages((prev) => [...prev, result.message]);
+      else if ("notice" in result) setNotice(result.notice);
+      else setError(result.error);
     });
   };
 
@@ -387,7 +411,7 @@ export function CoachChatClient({
       return;
     }
 
-    setError(null);
+    clearFeedback();
     setConfirmClear(false);
 
     startTransition(async () => {
@@ -396,7 +420,6 @@ export function CoachChatClient({
         setError(result.error);
       } else {
         setMessages([]);
-        setQuotaLeft(DAILY_MESSAGE_LIMIT); // ลบแถวออก = countMessagesToday() กลับไปนับได้ใหม่
       }
     });
   };
@@ -413,7 +436,7 @@ export function CoachChatClient({
   const displayMessages = guidedFlow ? [...messages, ...getGuidedMessages()] : messages;
 
   return (
-    <div className="flex h-[calc(100dvh-17.75rem-env(safe-area-inset-top,0px))] min-h-[24rem] flex-col gap-3 lg:h-[calc(100dvh-13rem)]">
+    <div className="flex h-[calc(100dvh-17.75rem-env(safe-area-inset-top,0px))] min-h-96 flex-col gap-3 lg:h-[calc(100dvh-13rem)]">
       {/* Top bar controls */}
       <div className="flex min-h-9 shrink-0 items-center justify-between">
         {quotaLeft > 0 && quotaLeft <= 2 ? (
@@ -443,7 +466,7 @@ export function CoachChatClient({
           role="log"
           aria-live="polite"
           aria-label="บทสนทนากับโค้ช"
-          className="flex min-h-0 flex-1 flex-col space-y-4 overflow-y-auto p-4 scrollbar-thin"
+          className="flex min-h-0 flex-1 flex-col space-y-4 overflow-y-auto p-4"
         >
           {displayMessages.length === 0 ? (
             opener ? (
@@ -490,13 +513,17 @@ export function CoachChatClient({
               </div>
             )
           ) : (
-            displayMessages.map((m) =>
-              m.role === "user" ? (
-                <UserMessage key={m.id} message={m} />
-              ) : (
-                <CoachMessage key={m.id} message={m} />
-              )
-            )
+            displayMessages.map((m, index) => {
+              const previous = displayMessages[index - 1];
+              const newDay =
+                !previous || toBangkokDate(previous.createdAt) !== toBangkokDate(m.createdAt);
+              return (
+                <Fragment key={m.id}>
+                  {newDay && <DaySeparator date={m.createdAt} />}
+                  {m.role === "user" ? <UserMessage message={m} /> : <CoachMessage message={m} />}
+                </Fragment>
+              );
+            })
           )}
 
           {isPending && displayMessages.length > 0 && displayMessages.at(-1)?.role === "user" && (
@@ -512,7 +539,7 @@ export function CoachChatClient({
             <div className="space-y-4">
               {guidedStep === "pillar" && (
                 <div className="space-y-3">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <p className="text-xs font-semibold text-muted-foreground">
                     กรุณาเลือกด้านที่ต้องการตั้งเป้าหมาย:
                   </p>
                   <div className="grid grid-cols-1 gap-2">
@@ -543,7 +570,7 @@ export function CoachChatClient({
 
               {guidedStep === "busy_days" && (
                 <div className="space-y-3">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <p className="text-xs font-semibold text-muted-foreground">
                     เลือกวันในสัปดาห์หน้าที่ตารางแน่น / งานยุ่งเป็นพิเศษ:
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -595,7 +622,7 @@ export function CoachChatClient({
 
               {guidedStep === "constraints" && (
                 <div className="space-y-3">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <p className="text-xs font-semibold text-muted-foreground">
                     เลือกข้อจำกัดของคุณ (เลือกได้มากกว่า 1 ข้อ):
                   </p>
                   <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
@@ -647,7 +674,7 @@ export function CoachChatClient({
 
               {guidedStep === "select_goal" && (
                 <div className="space-y-3">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <p className="text-xs font-semibold text-muted-foreground">
                     เลือกเป้าหมายเล็ก ๆ (Micro Goal) ที่แนะนำสำหรับคุณ:
                   </p>
                   {!goalOptions ? (
@@ -725,20 +752,15 @@ export function CoachChatClient({
                 </div>
               )}
 
-              {error && (
-                <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive mt-2">
-                  <span className="">{error}</span>
-                </div>
-              )}
+              {notice && <GentleNotice className="mt-2">{notice}</GentleNotice>}
+              {error && <ErrorNotice className="mt-2">{error}</ErrorNotice>}
             </div>
           ) : (
             <>
               {/* Conversation starters */}
               {showChips && (
                 <div className="space-y-2">
-                  <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">
-                    คำถามแนะนำ:
-                  </p>
+                  <p className="text-xs font-medium text-muted-foreground">คำถามแนะนำ:</p>
                   <div className="flex flex-wrap gap-2">
                     {STARTERS.map((starter) => (
                       <Button
@@ -770,14 +792,8 @@ export function CoachChatClient({
                 </div>
               )}
 
-              {error && (
-                <div
-                  role="alert"
-                  className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive"
-                >
-                  <span className="">{error}</span>
-                </div>
-              )}
+              {notice && <GentleNotice icon={Moon}>{notice}</GentleNotice>}
+              {error && <ErrorNotice>{error}</ErrorNotice>}
 
               {showRetry && (
                 <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-muted/40 p-3 text-sm">
@@ -824,7 +840,7 @@ export function CoachChatClient({
                     disabled={quotaLeft <= 0 || isPending}
                     maxLength={MESSAGE_MAX_LENGTH}
                     className={cn(
-                      "block max-h-32 min-h-11 w-full resize-none rounded-lg border border-input bg-background px-3 py-2 text-base break-words shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:opacity-50 scrollbar-thin md:text-sm",
+                      "block max-h-32 min-h-11 w-full resize-none rounded-lg border border-input bg-background px-3 py-2 text-base break-words shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:opacity-50",
                       showCounter && "pr-16"
                     )}
                   />

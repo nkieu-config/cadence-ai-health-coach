@@ -31,6 +31,8 @@ export const GOAL_STATUS_LABELS: Record<GoalStatus, string> = {
 export const MAX_ACTIVE_GOALS = 2;
 export const GOAL_TITLE_MAX_LENGTH = 80;
 
+export const GOAL_LIMIT_NOTICE = `สัปดาห์นี้มีเป้าหมายอยู่ ${MAX_ACTIVE_GOALS} ข้อแล้ว — จบข้อเดิมก่อนค่อยเพิ่มใหม่ จะได้ไม่หนักเกินไป`;
+
 export type GoalSuggestion = {
   title: string;
   situation: Situation;

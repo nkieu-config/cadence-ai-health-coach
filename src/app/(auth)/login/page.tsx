@@ -9,9 +9,9 @@ export const metadata: Metadata = { title: "เข้าสู่ระบบ" }
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; deleted?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, deleted } = await searchParams;
 
   return (
     <Card>
@@ -22,6 +22,12 @@ export default async function LoginPage({
         <CardDescription>Cadence — ผู้ช่วยดูแลสุขภาพประจำวัน</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        {deleted === "1" && (
+          <AuthMessage tone="notice">
+            ลบบัญชีและข้อมูลทั้งหมดเรียบร้อยแล้ว — ขอบคุณที่เคยใช้ Cadence
+            หากอยากเริ่มใหม่สมัครได้ทุกเมื่อ
+          </AuthMessage>
+        )}
         {error === "oauth" && (
           <AuthMessage tone="error">เข้าสู่ระบบด้วย Google ไม่สำเร็จ ลองใหม่อีกครั้ง</AuthMessage>
         )}

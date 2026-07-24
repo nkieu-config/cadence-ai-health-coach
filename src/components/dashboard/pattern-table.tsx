@@ -3,7 +3,7 @@ import type { InsightPattern } from "@/lib/ai-outputs/types";
 import { getLatestInsight } from "@/lib/ai-outputs/queries";
 import { checkDataSufficiency } from "@/lib/ai-outputs/sufficiency";
 import { PILLAR_LABELS } from "@/lib/checkins/labels";
-import { formatThaiDateLong } from "@/lib/checkins/date";
+import { formatThaiDateLong, toBangkokDate } from "@/lib/checkins/date";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { GenerateInsightButton } from "./generate-insight-button";
@@ -59,11 +59,11 @@ function PatternTableDesktop({ patterns }: { patterns: InsightPattern[] }) {
     <div className="hidden lg:block overflow-hidden rounded-xl border bg-card">
       <table className="w-full border-collapse text-left text-sm">
         <thead>
-          <tr className="border-b bg-muted/50 text-xs font-semibold text-muted-foreground uppercase">
+          <tr className="border-b bg-muted/50 text-xs font-semibold text-muted-foreground">
             <th className="px-4 py-3 w-[15%]">ด้าน</th>
-            <th className="px-4 py-3 w-[35%]">Pattern ที่พบ</th>
+            <th className="px-4 py-3 w-[35%]">รูปแบบที่พบ</th>
             <th className="px-4 py-3 w-[25%]">ความหมาย</th>
-            <th className="px-4 py-3 w-[25%]">Next Step</th>
+            <th className="px-4 py-3 w-[25%]">ขั้นต่อไป</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border">
@@ -85,9 +85,7 @@ function PatternTableDesktop({ patterns }: { patterns: InsightPattern[] }) {
               <td className="px-4 py-4 text-muted-foreground ">{pattern.meaning}</td>
               <td className="px-4 py-4">
                 <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
-                  <p className="mb-1 text-xs font-bold text-primary uppercase tracking-wider">
-                    ลองทำสัปดาห์นี้
-                  </p>
+                  <p className="mb-1 text-xs font-bold text-primary">ลองทำสัปดาห์นี้</p>
                   <p className="text-sm text-foreground font-medium">{pattern.nextStep}</p>
                 </div>
               </td>
@@ -110,7 +108,7 @@ function Shell({
 }) {
   return (
     <Card className="w-full">
-      <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+      <CardHeader className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
         <div className="space-y-1">
           <CardTitle className="flex items-center gap-2 text-base">
             <Sparkles className="size-4 shrink-0 text-primary" />
@@ -146,7 +144,7 @@ export async function PatternTable({ days, recordedDays }: { days: number; recor
             วิเคราะห์ความเชื่อมโยงระหว่างการกิน การนอน และการเคลื่อนไหว
             เพื่อค้นหาพฤติกรรมที่น่าจับตามองในชีวิตของคุณ
           </p>
-          <GenerateInsightButton days={days} className="w-full sm:w-auto" />
+          <GenerateInsightButton days={days} className="w-full lg:w-auto" />
         </div>
       </Shell>
     );
@@ -161,7 +159,7 @@ export async function PatternTable({ days, recordedDays }: { days: number; recor
             days={days}
             label="วิเคราะห์ใหม่"
             variant="outline"
-            className="w-full sm:w-auto text-xs"
+            className="w-full lg:w-auto text-xs"
           />
         }
       >
@@ -176,7 +174,7 @@ export async function PatternTable({ days, recordedDays }: { days: number; recor
 
   return (
     <Card className="w-full">
-      <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+      <CardHeader className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
         <div className="space-y-1">
           <CardTitle className="flex items-center gap-2 text-base">
             <Sparkles className="size-4 shrink-0 text-primary" />
@@ -195,7 +193,7 @@ export async function PatternTable({ days, recordedDays }: { days: number; recor
             days={days}
             label="วิเคราะห์ใหม่"
             variant="outline"
-            className="w-full sm:w-auto text-xs"
+            className="w-full lg:w-auto text-xs"
           />
         </div>
       </CardHeader>
@@ -227,6 +225,7 @@ export async function PatternTable({ days, recordedDays }: { days: number; recor
         <PatternTableDesktop patterns={shown} />
 
         <p className="text-xs text-muted-foreground">
+          วิเคราะห์เมื่อ {formatThaiDateLong(toBangkokDate(insight.createdAt))} ·
           ตัวเลขทั้งหมดคำนวณจากบันทึกจริงของคุณ · AI ช่วยเรียบเรียงเป็นภาษา ไม่ได้เดาเอง
         </p>
       </CardContent>

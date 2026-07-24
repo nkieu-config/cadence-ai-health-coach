@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ErrorNotice, GentleNotice } from "@/components/ui/notice";
 import { generateInsight } from "@/lib/ai-outputs/actions";
 
 export function GenerateInsightButton({
@@ -18,19 +19,21 @@ export function GenerateInsightButton({
   className?: string;
 }) {
   const [isPending, startTransition] = useTransition();
-  const [message, setMessage] = useState<string | null>(null);
+  const [invitation, setInvitation] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleClick = () => {
-    setMessage(null);
+    setInvitation(null);
+    setError(null);
     startTransition(async () => {
       const result = await generateInsight(days);
       if ("notEnoughData" in result) {
-        setMessage(result.message);
+        setInvitation(result.message);
         return;
       }
       if ("error" in result) {
-        setMessage(result.error);
+        setError(result.error);
         return;
       }
       router.refresh();
@@ -51,11 +54,8 @@ export function GenerateInsightButton({
       {isPending && (
         <p className="text-center text-xs text-muted-foreground">ใช้เวลาราว 10 วินาที</p>
       )}
-      {message && (
-        <p className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive">
-          {message}
-        </p>
-      )}
+      {invitation && <GentleNotice>{invitation}</GentleNotice>}
+      {error && <ErrorNotice>{error}</ErrorNotice>}
     </div>
   );
 }

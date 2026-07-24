@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Chip, toggleValue } from "@/components/ui/chip";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ErrorNotice } from "@/components/ui/notice";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const DISCLAIMER =
@@ -78,6 +79,7 @@ export function OnboardingForm({ defaultName }: { defaultName: string }) {
           <div
             className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-muted"
             role="progressbar"
+            aria-label="ความคืบหน้าการตั้งค่า"
             aria-valuenow={step + 1}
             aria-valuemin={1}
             aria-valuemax={TOTAL_STEPS}
@@ -92,6 +94,10 @@ export function OnboardingForm({ defaultName }: { defaultName: string }) {
           <div className="min-h-54">
             {step === 0 && (
               <div className="space-y-4">
+                <p className="rounded-lg bg-muted/40 p-3 text-sm text-muted-foreground">
+                  ยินดีต้อนรับสู่ Cadence — ตั้งค่าครั้งเดียวจบ จากนั้นเช็คอินวันละไม่ถึง 3 นาที
+                  เพื่อดูรูปแบบการกิน การนอน และการเคลื่อนไหวของคุณเอง
+                </p>
                 <div className="space-y-2">
                   <Label htmlFor="displayName">เรียกคุณว่าอะไรดี</Label>
                   <Input
@@ -195,9 +201,11 @@ export function OnboardingForm({ defaultName }: { defaultName: string }) {
           </div>
 
           {showHint && !canProceed && (
-            <p className="text-sm text-primary">กรอกชื่อเล่นและเลือกสถานะก่อนไปต่อนะ</p>
+            <p role="alert" className="text-sm text-primary">
+              กรอกชื่อเล่นและเลือกสถานะก่อนไปต่อนะ
+            </p>
           )}
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          {error && <ErrorNotice>{error}</ErrorNotice>}
 
           <div className="flex gap-2">
             {step > 0 && (
@@ -206,9 +214,16 @@ export function OnboardingForm({ defaultName }: { defaultName: string }) {
               </Button>
             )}
             {step < TOTAL_STEPS - 1 ? (
-              <Button className="flex-1" onClick={goNext}>
-                ถัดไป
-              </Button>
+              <>
+                {step > 0 && (
+                  <Button variant="ghost" onClick={() => setStep(step + 1)} disabled={pending}>
+                    ข้ามขั้นนี้
+                  </Button>
+                )}
+                <Button className="flex-1" onClick={goNext}>
+                  ถัดไป
+                </Button>
+              </>
             ) : (
               <Button className="flex-1" onClick={submit} disabled={!accepted || pending}>
                 {pending ? "กำลังบันทึก…" : "รับทราบและเริ่มใช้งาน"}

@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { MessageCircle, Moon } from "lucide-react";
+import { formatThaiDate, toBangkokDate } from "@/lib/checkins/date";
 import type { ChatMessage } from "@/lib/chat/types";
 import { FormattedMessage } from "./formatted-message";
 
@@ -30,7 +31,7 @@ export const CoachMessage = memo(function CoachMessage({ message }: { message: C
       <CoachAvatar />
       <div className="min-w-0 flex-1 pt-0.5">
         <p className="mb-1 text-xs font-medium text-muted-foreground">โค้ช</p>
-        <div className="text-sm text-foreground">
+        <div className="text-base text-foreground">
           <FormattedMessage content={message.content} />
         </div>
       </div>
@@ -38,9 +39,20 @@ export const CoachMessage = memo(function CoachMessage({ message }: { message: C
   );
 });
 
+export function DaySeparator({ date }: { date: string }) {
+  return (
+    <div className="flex items-center gap-3 py-1">
+      <span className="h-px flex-1 bg-border" />
+      <span className="text-xs text-muted-foreground">{formatThaiDate(toBangkokDate(date))}</span>
+      <span className="h-px flex-1 bg-border" />
+    </div>
+  );
+}
+
 export function PendingReply() {
   return (
-    <div className="flex gap-2.5" aria-label="โค้ชกำลังคิด">
+    <div role="status" className="flex gap-2.5">
+      <span className="sr-only">โค้ชกำลังคิด</span>
       <CoachAvatar />
       <div className="flex items-center gap-1 pt-2.5">
         <span
@@ -67,7 +79,7 @@ export function QuotaReachedNotice() {
       <div className="space-y-1">
         <p className="text-sm font-medium text-foreground">คุยกับโค้ชครบสำหรับวันนี้แล้ว</p>
         <p className="text-xs text-muted-foreground">
-          พรุ่งนี้กลับมาคุยต่อได้เลย ระหว่างนี้ยังเช็คอินและดูข้อมูลย้อนหลังได้ตามปกติ
+          พรุ่งนี้กลับมาคุยต่อได้เลย ระหว่างนี้ยังเช็คอิน ตั้งเป้าหมาย และดูข้อมูลย้อนหลังได้ตามปกติ
         </p>
       </div>
     </div>

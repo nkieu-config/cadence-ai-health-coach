@@ -115,6 +115,14 @@ async function run() {
 
   await admin.from("chat_messages").delete().eq("user_id", userId);
 
+  // ตัวนับโควตาอยู่คนละตารางและไม่หายไปพร้อมการล้างประวัติ (โดยตั้งใจ ดู migration 0004)
+  // แต่บัญชี demo ต้องเริ่มวัน pitch ด้วยโควตาเต็ม จึงต้องล้างตรงนี้ด้วย
+  // ข้ามได้เงียบ ๆ ถ้ายังไม่ได้ apply migration
+  const usage = await admin.from("chat_daily_usage").delete().eq("user_id", userId);
+  if (usage.error) {
+    console.log("ข้ามการล้างตัวนับโควตา (ยังไม่มีตาราง chat_daily_usage)");
+  }
+
   const base = Date.now() - turns.length * 60_000;
   const rows = turns.map((turn, index) => ({
     user_id: userId,

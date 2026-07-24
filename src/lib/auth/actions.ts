@@ -65,6 +65,49 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   redirect("/onboarding");
 }
 
+export async function requestPasswordReset(
+  _prev: AuthState,
+  formData: FormData
+): Promise<AuthState> {
+  const email = String(formData.get("email") ?? "").trim();
+  if (!email) {
+    return { error: "กรอกอีเมลที่ใช้สมัครไว้" };
+  }
+
+  const supabase = await createClient();
+  await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${await siteOrigin()}/auth/callback?next=/reset-password`,
+  });
+
+  // ตอบเหมือนกันเสมอ ไม่ว่าอีเมลนี้จะมีบัญชีอยู่จริงหรือไม่ — ไม่เปิดเผยว่าใครสมัครไว้บ้าง
+  return {
+    notice: `ถ้ามีบัญชีที่ใช้ ${email} อยู่ เราส่งลิงก์ตั้งรหัสผ่านใหม่ไปให้แล้ว — เปิดลิงก์จากอีเมลได้เลย`,
+  };
+}
+
+export async function updatePassword(_prev: AuthState, formData: FormData): Promise<AuthState> {
+  const password = String(formData.get("password") ?? "");
+  if (password.length < 6) {
+    return { error: "รหัสผ่านต้องยาวอย่างน้อย 6 ตัวอักษร" };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { error: "ลิงก์ตั้งรหัสผ่านหมดอายุแล้ว — ขอลิงก์ใหม่อีกครั้งได้เลย" };
+  }
+
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) {
+    return { error: "ตั้งรหัสผ่านใหม่ไม่สำเร็จ ลองใหม่อีกครั้ง" };
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/");
+}
+
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();

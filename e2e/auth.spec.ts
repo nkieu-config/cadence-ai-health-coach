@@ -6,6 +6,33 @@ const AUTH_ROUTES = [
   { path: "/register", heading: "สมัครสมาชิก" },
 ];
 
+// หน้ากู้รหัสผ่านสร้างไว้แล้วแต่ยังไม่เปิดใช้ — ไม่มีลิงก์จากหน้า login จนกว่าจะพิสูจน์ว่าอีเมลส่งออกจริง
+// เทสต์นี้คุมไว้ว่าหน้ายังเปิดได้และยังอยู่ใน PUBLIC_PATHS (เคยหลุดแล้วโดน middleware เด้งกลับ)
+const RECOVERY_ROUTES = [
+  { path: "/forgot-password", heading: "ลืมรหัสผ่าน" },
+  { path: "/reset-password", heading: "ตั้งรหัสผ่านใหม่" },
+];
+
+for (const route of RECOVERY_ROUTES) {
+  test(`${route.path} — เปิดได้เองโดยยังไม่ล็อกอิน`, async ({ page }) => {
+    const errors = watchConsole(page);
+    await page.goto(route.path);
+    await page.waitForLoadState("networkidle");
+    await expect(page).toHaveURL(new RegExp(`${route.path}$`));
+    await expectUsablePage(page, route.heading, errors);
+  });
+}
+
+test("/login — ยังไม่เปิดทางไปหน้ากู้รหัสผ่าน (รอพิสูจน์ว่าอีเมลส่งออกจริง)", async ({ page }) => {
+  await page.goto("/login");
+  await page.waitForLoadState("networkidle");
+
+  await expect(
+    page.getByRole("link", { name: "ลืมรหัสผ่าน?" }),
+    "ห้ามโชว์ลิงก์จนกว่าจะทดสอบว่าอีเมลถึงผู้ใช้จริง — ไม่งั้นหน้าจอบอกว่าส่งแล้วทั้งที่ไม่มีอะไรมา"
+  ).toHaveCount(0);
+});
+
 for (const route of AUTH_ROUTES) {
   test(`${route.path} — เปิดได้ อ่านออก กดได้ (ยังไม่ล็อกอิน)`, async ({ page }) => {
     const errors = watchConsole(page);
