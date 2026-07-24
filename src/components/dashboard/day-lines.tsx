@@ -119,7 +119,7 @@ function DayRow({ date, checkin }: { date: string; checkin: Checkin | undefined 
         {checkin.firstMealTime && <FirstMealDot firstMealTime={checkin.firstMealTime} />}
       </div>
 
-      <div className="hidden w-14 shrink-0 items-center gap-1.5 sm:flex">
+      <div className="hidden w-14 shrink-0 items-center gap-1.5 lg:flex">
         <div className="h-1.5 flex-1 rounded-full bg-muted">
           <div className="h-full rounded-full bg-chart-3" style={{ width: `${movementWidth}%` }} />
         </div>
@@ -127,7 +127,7 @@ function DayRow({ date, checkin }: { date: string; checkin: Checkin | undefined 
           {checkin.movementMinutes}
         </span>
       </div>
-      <span className="w-14 shrink-0 text-right font-mono text-xs text-muted-foreground sm:hidden">
+      <span className="w-14 shrink-0 text-right font-mono text-xs text-muted-foreground lg:hidden">
         {checkin.movementMinutes} น.
       </span>
     </div>

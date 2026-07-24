@@ -159,7 +159,7 @@ export function PillarCharts({ checkins, period }: { checkins: Checkin[]; period
           <CardTitle className="text-lg">แนวโน้มรายวัน</CardTitle>
           <CardDescription>ย้อนหลัง {period} วัน</CardDescription>
         </div>
-        <div className="flex w-fit flex-wrap gap-1.5 rounded-full border bg-muted/40 p-1">
+        <div className="flex w-full gap-1 rounded-full border bg-muted/40 p-1 lg:w-fit">
           {categories.map((cat) => {
             const active = activeTab === cat.id;
             return (
@@ -168,7 +168,7 @@ export function PillarCharts({ checkins, period }: { checkins: Checkin[]; period
                 onClick={() => changeTab(cat.id)}
                 aria-pressed={active}
                 className={cn(
-                  "inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full px-3 text-sm font-medium transition-all select-none active:scale-95 sm:px-4",
+                  "inline-flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-full px-2 text-sm font-medium transition-all select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none active:scale-95 lg:flex-none lg:px-4",
                   active
                     ? "bg-primary text-primary-foreground shadow-sm"
                     : "text-muted-foreground hover:bg-background hover:text-foreground"
@@ -187,6 +187,7 @@ export function PillarCharts({ checkins, period }: { checkins: Checkin[]; period
             <div key={cat.id} className="relative space-y-2">
               <ChartContainer config={chartConfig} className="h-60 w-full overflow-x-clip">
                 <BarChart
+                  accessibilityLayer
                   data={processedData}
                   margin={{ top: 10, right: 10, left: -25, bottom: 48 }}
                 >
@@ -195,7 +196,9 @@ export function PillarCharts({ checkins, period }: { checkins: Checkin[]; period
                     dataKey="day"
                     tickLine={false}
                     axisLine={false}
-                    interval={period <= 14 ? 0 : undefined}
+                    // ต้องวาดทุก tick เสมอ — marker ปัจจัยรบกวนอยู่ใน tick
+                    // ถ้าปล่อยให้ Recharts ข้าม tick วันที่มี disruptor จะหายเงียบในช่วง 30 วัน
+                    interval={0}
                     tick={
                       <DisruptorTick
                         processedData={processedData}
@@ -216,7 +219,11 @@ export function PillarCharts({ checkins, period }: { checkins: Checkin[]; period
                     />
                   ) : (
                     <YAxis
-                      domain={cat.id === "sleep" ? [0, 12] : [0, "auto"]}
+                      domain={
+                        cat.id === "sleep"
+                          ? [0, (dataMax: number) => Math.max(12, Math.ceil(dataMax))]
+                          : [0, "auto"]
+                      }
                       axisLine={false}
                       tickLine={false}
                     />

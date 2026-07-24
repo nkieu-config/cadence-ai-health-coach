@@ -29,54 +29,19 @@ export interface ActiveDisruptor extends DisruptorPoint {
   isLocked?: boolean;
 }
 
-type DisruptorStyle = {
-  icon: React.ComponentType<{ className?: string }>;
-  color: string;
-  bg: string;
-  border: string;
-};
-
-const disruptorConfig: Partial<Record<Disruptor, DisruptorStyle>> = {
-  deadline: {
-    icon: AlertCircle,
-    color: "text-primary dark:text-primary",
-    bg: "bg-primary/10 dark:bg-primary/15",
-    border: "border-primary/20 dark:border-primary/30",
-  },
-  long_meeting: {
-    icon: Users,
-    color: "text-[var(--chart-2)] dark:text-[var(--chart-2)]",
-    bg: "bg-[var(--chart-2)]/10 dark:bg-[var(--chart-2)]/15",
-    border: "border-[var(--chart-2)]/20 dark:border-[var(--chart-2)]/30",
-  },
-  early_class: {
-    icon: Sunrise,
-    color: "text-[var(--chart-3)] dark:text-[var(--chart-3)]",
-    bg: "bg-[var(--chart-3)]/10 dark:bg-[var(--chart-3)]/15",
-    border: "border-[var(--chart-3)]/20 dark:border-[var(--chart-3)]/30",
-  },
-  commute: {
-    icon: Car,
-    color: "text-[var(--chart-4)] dark:text-[var(--chart-4)]",
-    bg: "bg-[var(--chart-4)]/10 dark:bg-[var(--chart-4)]/15",
-    border: "border-[var(--chart-4)]/20 dark:border-[var(--chart-4)]/30",
-  },
-  exam: {
-    icon: GraduationCap,
-    color: "text-[var(--chart-5)] dark:text-[var(--chart-5)]",
-    bg: "bg-[var(--chart-5)]/10 dark:bg-[var(--chart-5)]/15",
-    border: "border-[var(--chart-5)]/20 dark:border-[var(--chart-5)]/30",
-  },
-  online_class: {
-    icon: Laptop,
-    color: "text-[var(--chart-1)] dark:text-[var(--chart-1)]",
-    bg: "bg-[var(--chart-1)]/10 dark:bg-[var(--chart-1)]/15",
-    border: "border-[var(--chart-1)]/20 dark:border-[var(--chart-1)]/30",
-  },
+// ปัจจัยรบกวนใช้ปะการัง --chart-5 สีเดียวทั้งหมด (DESIGN.md) — แยกชนิดด้วยไอคอน
+// ไม่ใช่ด้วยสี เพราะสีในแอปนี้สงวนความหมายไว้ให้ pillar (นอน/กิน/ขยับ)
+const disruptorIcons: Partial<Record<Disruptor, React.ComponentType<{ className?: string }>>> = {
+  deadline: AlertCircle,
+  long_meeting: Users,
+  early_class: Sunrise,
+  commute: Car,
+  exam: GraduationCap,
+  online_class: Laptop,
 };
 
 export function knownDisruptors(list: Disruptor[]): Disruptor[] {
-  return (list ?? []).filter((d) => d && d !== "none" && disruptorConfig[d]);
+  return (list ?? []).filter((d) => d && d !== "none" && disruptorIcons[d]);
 }
 
 function DisruptorBadge({
@@ -88,19 +53,16 @@ function DisruptorBadge({
   wrapClass: string;
   iconClass: string;
 }) {
-  const style = disruptorConfig[disruptor];
-  if (!style) return null;
-  const Icon = style.icon;
+  const Icon = disruptorIcons[disruptor];
+  if (!Icon) return null;
   return (
     <div
       className={cn(
-        "flex shrink-0 items-center justify-center rounded-full border bg-background",
-        style.bg,
-        style.border,
+        "flex shrink-0 items-center justify-center rounded-full border border-chart-5/40 bg-chart-5/15",
         wrapClass
       )}
     >
-      <Icon className={cn(style.color, iconClass)} />
+      <Icon className={cn("text-chart-5", iconClass)} />
     </div>
   );
 }
@@ -131,17 +93,20 @@ export function DisruptorTick({
   if (!point) return null;
 
   const primary = knownDisruptors(point.disruptors)[0];
-  const style = primary ? disruptorConfig[primary] : null;
   const dense = period >= 14;
-  const size = dense ? "w-4.5 h-4.5" : "w-6 h-6";
-  const interactive = Boolean(primary && style);
+  // 30 วันบนจอ 320px วันห่างกันแค่ ~9px — badge มีไอคอนจะทับกันเป็นก้อนอ่านไม่ออก
+  const crowded = period > 14;
+  const size = crowded ? "size-2" : dense ? "w-4.5 h-4.5" : "w-6 h-6";
+  const interactive = Boolean(primary);
   const label = interactive
     ? `ปัจจัยรบกวน ${formatThaiDate(point.date)}: ${knownDisruptors(point.disruptors)
         .map((d) => DISRUPTOR_LABELS[d])
         .join(", ")}`
     : undefined;
 
-  const tickWidth = dense ? 28 : 44;
+  // ช่วงยาววันชิดกันจนป้ายวันซ้อนกัน — เว้นป้ายไว้ แต่ marker ต้องครบทุกวันเสมอ
+  const showDay = !crowded || payload.index % 3 === 0;
+  const tickWidth = crowded ? 12 : dense ? 28 : 44;
 
   return (
     <foreignObject
@@ -154,7 +119,10 @@ export function DisruptorTick({
       <div
         className={cn(
           "flex h-full w-full flex-col items-center justify-start select-none",
-          interactive && "cursor-pointer"
+          // วันที่ไม่มีปัจจัยรบกวนต้องไม่ดูดคลิกที่เล็งไปยัง marker ข้างเคียง
+          interactive
+            ? "cursor-pointer rounded-lg focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+            : "pointer-events-none"
         )}
         role={interactive ? "button" : undefined}
         tabIndex={interactive ? 0 : undefined}
@@ -178,29 +146,39 @@ export function DisruptorTick({
             : undefined
         }
       >
-        {primary && style ? (
+        {!primary ? (
+          <div className={size} />
+        ) : crowded ? (
+          <span
+            className={cn(
+              "shrink-0 rounded-full bg-chart-5 transition-all duration-200",
+              size,
+              activeDate === point.date && "scale-125 ring-2 ring-primary"
+            )}
+          />
+        ) : (
           <DisruptorBadge
             disruptor={primary}
             wrapClass={cn(
-              "border transition-all duration-200",
+              "transition-all duration-200",
               size,
               activeDate === point.date
-                ? "scale-110 ring-2 ring-primary border-primary"
+                ? "scale-110 border-primary ring-2 ring-primary"
                 : "hover:scale-105"
             )}
             iconClass={dense ? "w-2.5 h-2.5" : "w-3.5 h-3.5"}
           />
-        ) : (
-          <div className={size} />
         )}
-        <span
-          className={cn(
-            "mt-1 text-xs font-medium",
-            primary ? "font-semibold text-foreground" : "text-muted-foreground"
-          )}
-        >
-          {point.day}
-        </span>
+        {showDay && (
+          <span
+            className={cn(
+              "mt-1 text-xs font-medium",
+              primary ? "font-semibold text-foreground" : "text-muted-foreground"
+            )}
+          >
+            {point.day}
+          </span>
+        )}
       </div>
     </foreignObject>
   );
@@ -231,8 +209,13 @@ export function DisruptorPopover({
 }) {
   return (
     <div
-      className="animate-in fade-in zoom-in-95 pointer-events-auto absolute z-50 w-60 rounded-xl border border-border bg-popover/95 p-3.5 text-xs text-popover-foreground shadow-xl backdrop-blur-xs duration-150"
-      style={{ left: active.x, top: active.y - 12, transform: "translate(-50%, -100%)" }}
+      className="animate-in fade-in zoom-in-95 pointer-events-auto absolute z-50 w-60 max-w-full rounded-xl border border-border bg-popover/95 p-3.5 text-xs text-popover-foreground shadow-xl backdrop-blur-xs duration-150"
+      // การ์ดกราฟเป็น overflow-hidden — marker ริมขอบต้องหนีเข้ามาเอง ไม่งั้นโดนตัด
+      style={{
+        left: `clamp(7.5rem, ${active.x}px, calc(100% - 7.5rem))`,
+        top: active.y - 12,
+        transform: "translate(-50%, -100%)",
+      }}
       onClick={(e) => e.stopPropagation()}
     >
       <div className="mb-2 flex items-center justify-between border-b pb-1 font-semibold text-muted-foreground">
@@ -269,7 +252,7 @@ export function DisruptorPopover({
 }
 
 function DisruptorLegendItems() {
-  return knownDisruptors(Object.keys(disruptorConfig) as Disruptor[]).map((d) => (
+  return knownDisruptors(Object.keys(disruptorIcons) as Disruptor[]).map((d) => (
     <div key={d} className="flex items-center gap-1.5">
       <DisruptorBadge disruptor={d} wrapClass="w-4 h-4" iconClass="w-2.5 h-2.5" />
       <span>{DISRUPTOR_LABELS[d]}</span>
