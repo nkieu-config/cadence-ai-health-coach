@@ -1,6 +1,6 @@
 # INFRA-27: ปุ่มสลับ dark/light ข้างปุ่มออกจากระบบ
 
-Status: ready-for-human
+Status: done
 Owner: A
 Sprint: 3
 Priority: C — ตัดได้ ถ้าชน QA/pitch
@@ -14,14 +14,14 @@ Dark mode ทำครบแล้วทั้งชุด (token, chart 1-6, si
 
 ## งาน
 
-- [ ] `globals.css:5` — เปลี่ยน `@custom-variant dark` จาก media query เป็น attribute: `@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *))`
-- [ ] `globals.css:97-132` — บล็อกสี dark ให้ทำงานทั้ง 2 ทาง: `[data-theme="dark"]` (ผู้ใช้เลือก) และ `@media (prefers-color-scheme: dark)` ที่ **ไม่มี** `[data-theme="light"]` ครอบ (ค่าเริ่มต้นตามระบบ)
-- [ ] `globals.css:143-153` — `color-scheme` ต้องตาม `data-theme` ด้วย ไม่งั้น scrollbar / native control สีเพี้ยน
-- [ ] `layout.tsx` — inline script ใน `<head>` อ่าน `localStorage` แล้วเซ็ต `data-theme` บน `<html>` **ก่อน paint** (กันจอขาววาบตอนโหลด) · ต้องเป็น script ธรรมดา ไม่ใช่ effect
-- [ ] `src/components/theme-toggle.tsx` — client component 2 variant คู่กับ sign-out: `ThemeToggleIconButton` (header มือถือ) + `ThemeToggleMenuItem` (sidebar เดสก์ท็อป) · ไอคอน Lucide `Sun`/`Moon` · เขียน localStorage + สลับ `data-theme`
-- [ ] วางปุ่ม: `app/(app)/layout.tsx:31` ซ้าย `SignOutIconButton` · `app-sidebar.tsx:45` เหนือ `SignOutMenuItem`
-- [ ] `layout.tsx:29-32` — `themeColor` เป็น media-query-based แถบ browser มือถือจะไม่ตามปุ่ม → อัปเดต `<meta name="theme-color">` ตอน toggle ด้วย
-- [ ] แก้ DESIGN.md กฎข้อ 2 — ไม่ใช่ "ตามค่าเครื่องอัตโนมัติ" อย่างเดียวแล้ว
+- [x] `globals.css:5` — เปลี่ยน `@custom-variant dark` จาก media query เป็น attribute: `@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *))`
+- [x] `globals.css:97-132` — บล็อกสี dark ให้ทำงานทั้ง 2 ทาง: `[data-theme="dark"]` (ผู้ใช้เลือก) และ `@media (prefers-color-scheme: dark)` ที่ **ไม่มี** `[data-theme="light"]` ครอบ (ค่าเริ่มต้นตามระบบ)
+- [x] `globals.css:143-153` — `color-scheme` ต้องตาม `data-theme` ด้วย ไม่งั้น scrollbar / native control สีเพี้ยน
+- [x] `layout.tsx` — inline script ใน `<head>` อ่าน `localStorage` แล้วเซ็ต `data-theme` บน `<html>` **ก่อน paint** (กันจอขาววาบตอนโหลด) · ต้องเป็น script ธรรมดา ไม่ใช่ effect
+- [x] `src/components/theme-toggle.tsx` — client component 2 variant คู่กับ sign-out: `ThemeToggleIconButton` (header มือถือ) + `ThemeToggleMenuItem` (sidebar เดสก์ท็อป) · ไอคอน Lucide `Sun`/`Moon` · เขียน localStorage + สลับ `data-theme`
+- [x] วางปุ่ม: `app/(app)/layout.tsx:31` ซ้าย `SignOutIconButton` · `app-sidebar.tsx:45` เหนือ `SignOutMenuItem`
+- [x] `layout.tsx:29-32` — `themeColor` เป็น media-query-based แถบ browser มือถือจะไม่ตามปุ่ม → อัปเดต `<meta name="theme-color">` ตอน toggle ด้วย
+- [x] แก้ DESIGN.md กฎข้อ 2 — ไม่ใช่ "ตามค่าเครื่องอัตโนมัติ" อย่างเดียวแล้ว
 
 ## กฎที่ต้องไม่พัง
 
@@ -76,3 +76,11 @@ Dark mode ทำครบแล้วทั้งชุด (token, chart 1-6, si
 **หมายเหตุ:** ตัดสินใจไม่ทำ fallback ตอนปิด JS (ต้องก๊อป token 33 บรรทัด) — แอปนี้ใช้ไม่ได้อยู่แล้วถ้าไม่มี JS และ script เป็น synchronous ใน `<head>` · ถ้าใครไม่เห็นด้วยให้เถียงในรีวิว
 
 ⚠️ รัน e2e เต็มชุดไป 3 รอบ → `checkin.spec.ts` upsert เช็คอิน "วันนี้" ของปาล์มตามปกติของมัน · ก่อน pitch รัน `npm run refresh:demo-week` (หรือ `npm run seed` ถ้าอยากคืนค่าเดิม) ตามที่ BOARD บอกอยู่แล้ว
+
+---
+
+## Comments
+
+25 ก.ค. (A) — **ปิดเป็น done** · งาน merge ไปตั้งแต่ PR #88 (22 ก.ค.) แต่ไม่มีใครกลับมาปิดใบ
+
+ตรวจแล้วว่าลงครบจริง ไม่ใช่แค่เชื่อว่า merge แล้ว: `theme-script.tsx` (inline script กันจอขาววาบ) · `theme-toggle.tsx` (2 variant) · `e2e/theme.spec.ts` ที่รันทุก PR บน 2 โปรเจกต์ (320px light + มือถือ dark) · และ DESIGN.md ข้อ 2 แก้เป็น "ตามค่าเครื่อง **จนกว่าผู้ใช้จะกดปุ่มสลับ**" แล้ว
