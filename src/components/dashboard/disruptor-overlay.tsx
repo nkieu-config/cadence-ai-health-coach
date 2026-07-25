@@ -266,14 +266,14 @@ export function DisruptorLegend() {
       <details className="group mt-3.5 border-t pt-1 text-xs text-muted-foreground lg:hidden">
         <summary className="flex min-h-11 cursor-pointer items-center justify-center gap-1.5 rounded-full outline-none select-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
           <ChevronDown className="size-4 shrink-0 transition-transform group-open:rotate-180" />
-          <span>สัญลักษณ์วันพิเศษ</span>
+          <span>สัญลักษณ์ปัจจัยรบกวน</span>
         </summary>
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 pb-1">
           <DisruptorLegendItems />
         </div>
       </details>
       <div className="mt-3.5 hidden flex-wrap justify-center gap-x-4 gap-y-2 border-t pt-3.5 text-xs text-muted-foreground lg:flex">
-        <span className="mr-1 font-medium text-foreground">สัญลักษณ์วันพิเศษ (Disruptors):</span>
+        <span className="mr-1 font-medium text-foreground">สัญลักษณ์ปัจจัยรบกวน (Disruptors):</span>
         <DisruptorLegendItems />
       </div>
     </>

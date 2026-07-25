@@ -29,19 +29,19 @@ export function buildReflectionPrompt(facts: WeekFacts): string {
     การกิน: {
       จำนวนวันที่กินครบทุกมื้อ: `${facts.eating.completeDays} วัน`,
       จำนวนวันที่ข้ามมื้อเช้า: `${facts.eating.skipBreakfastDays} วัน`,
-      "สัดส่วนวันที่ข้ามมื้อใดก็ได้ (ไม่เจาะจงว่ามื้อเช้า) — เฉพาะวันมีสิ่งรบกวนตาราง": `${Math.round(facts.eating.skipRateDisruptor * 100)}% ของ ${facts.eating.disruptorDays} วัน`,
+      "สัดส่วนวันที่ข้ามมื้อใดก็ได้ (ไม่เจาะจงว่ามื้อเช้า) — เฉพาะวันมีปัจจัยรบกวนตาราง": `${Math.round(facts.eating.skipRateDisruptor * 100)}% ของ ${facts.eating.disruptorDays} วัน`,
       "สัดส่วนวันที่ข้ามมื้อใดก็ได้ (ไม่เจาะจงว่ามื้อเช้า) — เฉพาะวันปกติ": `${Math.round(facts.eating.skipRateCalm * 100)}% ของ ${facts.eating.calmDays} วัน`,
     },
     การนอน: {
       "ชั่วโมงนอนเฉลี่ยต่อคืน (ไม่ใช่เวลาเข้านอน)": `${facts.sleep.avgHours} ชม.`,
       จำนวนคืนที่เข้านอนหลังเที่ยงคืน: `${facts.sleep.lateNights} คืน`,
-      "ชั่วโมงนอนเฉลี่ยต่อคืน — เฉพาะวันมีสิ่งรบกวนตาราง": `${facts.sleep.avgHoursDisruptor} ชม.`,
+      "ชั่วโมงนอนเฉลี่ยต่อคืน — เฉพาะวันมีปัจจัยรบกวนตาราง": `${facts.sleep.avgHoursDisruptor} ชม.`,
       "ชั่วโมงนอนเฉลี่ยต่อคืน — เฉพาะวันปกติ": `${facts.sleep.avgHoursCalm} ชม.`,
     },
     การเคลื่อนไหว: {
       นาทีที่ขยับเฉลี่ยต่อวัน: `${facts.movement.avgMinutes} นาที`,
       จำนวนวันที่ไม่ได้ขยับเลย: `${facts.movement.stillDays} วัน`,
-      "นาทีที่ขยับเฉลี่ยต่อวัน — เฉพาะวันมีสิ่งรบกวนตาราง": `${facts.movement.avgMinutesDisruptor} นาที`,
+      "นาทีที่ขยับเฉลี่ยต่อวัน — เฉพาะวันมีปัจจัยรบกวนตาราง": `${facts.movement.avgMinutesDisruptor} นาที`,
       "นาทีที่ขยับเฉลี่ยต่อวัน — เฉพาะวันปกติ": `${facts.movement.avgMinutesCalm} นาที`,
     },
     เป้าหมายสัปดาห์นี้: facts.goals.map((goal) => ({

@@ -194,17 +194,17 @@ export function pillarEvidence(facts: WeekFacts): Record<Pillar, string[]> {
     eating: [
       `กินครบทุกมื้อ ${facts.eating.completeDays} จาก ${facts.daysRecorded} วันที่บันทึก`,
       `ข้ามมื้อเช้า ${facts.eating.skipBreakfastDays} วัน`,
-      `ข้ามมื้อใดก็ได้ · วันมีสิ่งรบกวนตาราง ${percent(facts.eating.skipRateDisruptor)} ของ ${facts.eating.disruptorDays} วัน · วันปกติ ${percent(facts.eating.skipRateCalm)} ของ ${facts.eating.calmDays} วัน`,
+      `ข้ามมื้อใดก็ได้ · วันมีปัจจัยรบกวนตาราง ${percent(facts.eating.skipRateDisruptor)} ของ ${facts.eating.disruptorDays} วัน · วันปกติ ${percent(facts.eating.skipRateCalm)} ของ ${facts.eating.calmDays} วัน`,
     ],
     sleep: [
       `ชั่วโมงนอนเฉลี่ย ${facts.sleep.avgHours} ชม. ต่อคืน`,
       `เข้านอนหลังเที่ยงคืน ${facts.sleep.lateNights} คืน`,
-      `ชั่วโมงนอนเฉลี่ย · วันมีสิ่งรบกวนตาราง ${facts.sleep.avgHoursDisruptor} ชม. · วันปกติ ${facts.sleep.avgHoursCalm} ชม.`,
+      `ชั่วโมงนอนเฉลี่ย · วันมีปัจจัยรบกวนตาราง ${facts.sleep.avgHoursDisruptor} ชม. · วันปกติ ${facts.sleep.avgHoursCalm} ชม.`,
     ],
     movement: [
       `ขยับเฉลี่ย ${facts.movement.avgMinutes} นาทีต่อวัน`,
       `ไม่ได้ขยับเลย ${facts.movement.stillDays} วัน`,
-      `ขยับเฉลี่ย · วันมีสิ่งรบกวนตาราง ${facts.movement.avgMinutesDisruptor} นาที · วันปกติ ${facts.movement.avgMinutesCalm} นาที`,
+      `ขยับเฉลี่ย · วันมีปัจจัยรบกวนตาราง ${facts.movement.avgMinutesDisruptor} นาที · วันปกติ ${facts.movement.avgMinutesCalm} นาที`,
     ],
   };
 }

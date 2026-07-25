@@ -139,7 +139,7 @@ export function validateCheckin(checkin: Checkin, today: string): string | null 
     return "เลือกระดับพลังงานก่อน";
   }
   if (!isKnownList(checkin.disruptors, DISRUPTORS)) {
-    return "สิ่งรบกวนไม่ถูกต้อง";
+    return "ปัจจัยรบกวนไม่ถูกต้อง";
   }
   if (checkin.disruptors.includes("none") && checkin.disruptors.length > 1) {
     return "เลือก “ไม่มีอะไรพิเศษ” พร้อมกับข้ออื่นไม่ได้";

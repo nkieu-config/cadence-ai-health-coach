@@ -32,7 +32,7 @@ const goals: Goal[] = [
 ];
 
 describe("buildWeekFacts", () => {
-  it("แยกสถิติวันมี/ไม่มีสิ่งรบกวนตารางถูกต้อง", () => {
+  it("แยกสถิติวันมี/ไม่มีปัจจัยรบกวนตารางถูกต้อง", () => {
     const checkins = makeCheckins(4, (index) =>
       index < 2
         ? { disruptors: ["deadline" as const], sleepHours: 4, movementMinutes: 0 }
@@ -171,7 +171,7 @@ describe("pillarEvidence", () => {
 
     expect(line).toContain("ข้ามมื้อใดก็ได้");
     expect(line).not.toContain("ข้ามมื้อเช้า");
-    expect(line).toContain("วันมีสิ่งรบกวนตาราง 100% ของ 2 วัน");
+    expect(line).toContain("วันมีปัจจัยรบกวนตาราง 100% ของ 2 วัน");
     expect(line).toContain("วันปกติ 0% ของ 2 วัน");
   });
 
@@ -185,7 +185,7 @@ describe("pillarEvidence", () => {
   it("แยกค่าเฉลี่ยการขยับตามกลุ่มวันให้ตรงกับสถิติ", () => {
     const line = pillarEvidence(facts).movement[2];
 
-    expect(line).toContain("วันมีสิ่งรบกวนตาราง 0 นาที");
+    expect(line).toContain("วันมีปัจจัยรบกวนตาราง 0 นาที");
     expect(line).toContain("วันปกติ 30 นาที");
   });
 });
