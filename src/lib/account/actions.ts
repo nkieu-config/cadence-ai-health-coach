@@ -8,6 +8,15 @@ import { USER_DATA_TABLES } from "./tables";
 
 export type AccountActionResult = { ok: true } | { error: string };
 
+const USER_DATA_PAGES = [
+  "/checkin",
+  "/checkin/history",
+  "/dashboard",
+  "/goals",
+  "/coach",
+  "/reflection",
+];
+
 export async function deleteAllData(): Promise<AccountActionResult> {
   const supabase = await createClient();
   const {
@@ -35,7 +44,9 @@ export async function deleteAllData(): Promise<AccountActionResult> {
     };
   }
 
-  revalidatePath("/", "layout");
+  for (const path of USER_DATA_PAGES) {
+    revalidatePath(path);
+  }
   return { ok: true };
 }
 

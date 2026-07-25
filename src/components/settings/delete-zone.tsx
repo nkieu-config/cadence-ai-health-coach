@@ -80,7 +80,13 @@ export function DeleteZone() {
             บันทึก เป้าหมาย ประวัติแชท และผลวิเคราะห์ถูกลบหมดแล้ว — บัญชีของคุณยังอยู่
             เริ่มตั้งค่าใหม่ได้เลย
           </p>
-          <Button className="min-h-11" onClick={() => router.push("/onboarding")}>
+          <Button
+            className="min-h-11"
+            onClick={() => {
+              router.refresh();
+              router.push("/onboarding");
+            }}
+          >
             เริ่มตั้งค่าใหม่
           </Button>
         </CardContent>
