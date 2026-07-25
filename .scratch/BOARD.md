@@ -10,7 +10,7 @@
 **ของที่ต้องรู้ตอนนี้:**
 
 - โมเดล production = `gemini-3.1-flash-lite` โควตา **500 ครั้ง/วันทั้งแอปรวมกัน** (INFRA-23) — ถ้า `.env.local` ของใครยังมี `AI_MODEL` ให้ลบทิ้ง
-- บัญชี demo **`palm@example.com / PalmDemo2026!`** — มีข้อมูล 24 วัน + reflection 4 สัปดาห์ + pattern cache ไว้แล้ว เปิดมาเห็นเลย
+- บัญชี demo **`palm@example.com / palmcadence123`** — มีข้อมูล 24 วัน + reflection 4 สัปดาห์ + pattern cache ไว้แล้ว เปิดมาเห็นเลย
 - CI บังคับ 2 ด่านทุก PR: `verify` (format/lint/tsc/test/build) + `e2e (เปิดแอปจริง)`
 
 ## งานที่เหลือ

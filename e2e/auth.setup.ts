@@ -1,7 +1,7 @@
 import { expect, test as setup } from "@playwright/test";
 
 const DEMO_EMAIL = process.env.DEMO_EMAIL ?? "palm@example.com";
-const DEMO_PASSWORD = process.env.DEMO_PASSWORD ?? "PalmDemo2026!";
+const DEMO_PASSWORD = process.env.DEMO_PASSWORD ?? "palmcadence123";
 const STATE = "e2e/.auth/demo.json";
 
 setup("ล็อกอินบัญชี demo แล้วเก็บ session ไว้ให้เทสต์อื่นใช้", async ({ page }) => {

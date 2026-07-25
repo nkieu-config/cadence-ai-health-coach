@@ -3,7 +3,7 @@ import { mkdirSync } from "node:fs";
 
 const BASE = process.env.SHOTS_BASE_URL ?? "http://localhost:3000";
 const EMAIL = process.env.DEMO_EMAIL ?? "palm@example.com";
-const PASSWORD = process.env.DEMO_PASSWORD ?? "PalmDemo2026!";
+const PASSWORD = process.env.DEMO_PASSWORD ?? "palmcadence123";
 const OUT = process.env.SHOTS_OUT ?? "docs/pitch/screenshots";
 
 const SCREENS: [string, string][] = [

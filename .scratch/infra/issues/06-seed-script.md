@@ -24,6 +24,6 @@ Blocked by: 02
 2026-07-14 (A): **เสร็จแล้ว** — แต่ต้องแก้ `lib/patterns` ก่อน เพราะ ADR-0004 สัญญา pattern 3 เรื่อง แต่คำนวณได้แค่ 1 → เพิ่ม `online_class` เข้า enum disruptors + candidate `early-class-skip-breakfast` / `online-class-movement` (ไม่ต้อง migration)
 บั๊กที่เจอ: candidate ที่ไม่มี template ถูกกรองทิ้งเงียบ ๆ (`eating-on-time-energy` จาก F1-05 ไม่เคยขึ้นหน้าจอ) → เขียนเทสต์คุมถาวรแล้วว่า candidate ทุกตัวต้องแปลงเป็น InsightPattern ได้
 
-บัญชี demo `palm@example.com` / `PalmDemo2026!` · `npm run seed` รันซ้ำได้ (ล้างของเก่าก่อนเสมอ) · demo beat: กด 7 วันเห็นน้อย → 14/30 วันเห็นครบ = พิสูจน์สดว่าระบบไม่สรุปมั่วเมื่อข้อมูลน้อย
+บัญชี demo `palm@example.com` / `palmcadence123` · `npm run seed` รันซ้ำได้ (ล้างของเก่าก่อนเสมอ) · demo beat: กด 7 วันเห็นน้อย → 14/30 วันเห็นครบ = พิสูจน์สดว่าระบบไม่สรุปมั่วเมื่อข้อมูลน้อย
 
 ⚠️ **ก่อน pitch:** ต้อง generate insight + reflection ของบัญชีนี้เข้า cache ล่วงหน้า (INFRA-07 + QA-03) — โควตา Gemini มีแค่ 20 ครั้ง/วัน

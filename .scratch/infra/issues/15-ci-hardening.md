@@ -42,7 +42,7 @@ secrets 4 ตัวใส่ครบ (ไม่มี service role key) · requ
 | `SUPABASE_URL` | ค่าจาก `.env.local` (`NEXT_PUBLIC_SUPABASE_URL`) |
 | `SUPABASE_ANON_KEY` | ค่าจาก `.env.local` (`NEXT_PUBLIC_SUPABASE_ANON_KEY`) |
 | `DEMO_EMAIL` | `palm@example.com` |
-| `DEMO_PASSWORD` | `PalmDemo2026!` |
+| `DEMO_PASSWORD` | `palmcadence123` |
 
 🚫 **ห้ามใส่ `SUPABASE_SERVICE_ROLE_KEY` เด็ดขาด** — repo เป็น **public** และ e2e ไม่ต้องใช้
 

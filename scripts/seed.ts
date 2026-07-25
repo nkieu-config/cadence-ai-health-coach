@@ -4,7 +4,7 @@ import type { Checkin } from "../src/lib/domain";
 import { createAdminClient } from "../src/lib/supabase/admin";
 
 const EMAIL = process.env.DEMO_EMAIL ?? "palm@example.com";
-const PASSWORD = process.env.DEMO_PASSWORD ?? "PalmDemo2026!";
+const PASSWORD = process.env.DEMO_PASSWORD ?? "palmcadence123";
 const DAYS = 28;
 
 const PROFILE = {

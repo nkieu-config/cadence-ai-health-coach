@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { createAdminClient } from "../src/lib/supabase/admin";
 
 const EMAIL = process.env.DEMO_EMAIL ?? "palm@example.com";
-const PASSWORD = process.env.DEMO_PASSWORD ?? "PalmDemo2026!";
+const PASSWORD = process.env.DEMO_PASSWORD ?? "palmcadence123";
 
 type Attack = {
   label: string;
