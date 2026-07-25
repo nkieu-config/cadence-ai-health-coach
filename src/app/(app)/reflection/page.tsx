@@ -32,6 +32,13 @@ function PillarSection({ entry }: { entry: ReflectionPillar }) {
       <div className="space-y-1 pt-0.5">
         <h2 className="text-sm font-semibold text-foreground">ด้าน{PILLAR_LABELS[entry.pillar]}</h2>
         <p className="text-base text-foreground/90">{entry.summary}</p>
+        {entry.evidence && entry.evidence.length > 0 && (
+          <ul className="space-y-0.5 border-t pt-2 text-xs text-muted-foreground">
+            {entry.evidence.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

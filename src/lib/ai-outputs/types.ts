@@ -24,6 +24,7 @@ export type Insight = {
 export type ReflectionPillar = {
   pillar: Pillar;
   summary: string;
+  evidence?: string[];
 };
 
 export type Reflection = {

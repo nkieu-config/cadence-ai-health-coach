@@ -2,7 +2,12 @@ import { generateJson, isQuotaExhausted } from "@/lib/ai";
 import { REFLECTION_SYSTEM_PROMPT } from "@/lib/ai/system-prompt";
 import { GOAL_STATUS_LABELS } from "@/lib/goals/types";
 import { findForbiddenTerms } from "@/lib/safety/language";
-import { templateReflection, type ReflectionText, type WeekFacts } from "./reflection-facts";
+import {
+  pillarEvidence,
+  templateReflection,
+  type ReflectionText,
+  type WeekFacts,
+} from "./reflection-facts";
 import type { ReflectionPillar } from "./types";
 
 export const REFLECTION_RESPONSE_SCHEMA = {
@@ -22,22 +27,22 @@ export function buildReflectionPrompt(facts: WeekFacts): string {
   const body = {
     ความถี่บันทึก: `${facts.daysRecorded}/${facts.totalDays} วัน`,
     การกิน: {
-      กินครบทุกมื้อ: `${facts.eating.completeDays} วัน`,
-      ข้ามมื้อเช้า: `${facts.eating.skipBreakfastDays} วัน`,
-      อัตราข้ามมื้อวันมีสิ่งรบกวนตาราง: `${Math.round(facts.eating.skipRateDisruptor * 100)}% (${facts.eating.disruptorDays} วัน)`,
-      อัตราข้ามมื้อวันปกติ: `${Math.round(facts.eating.skipRateCalm * 100)}% (${facts.eating.calmDays} วัน)`,
+      จำนวนวันที่กินครบทุกมื้อ: `${facts.eating.completeDays} วัน`,
+      จำนวนวันที่ข้ามมื้อเช้า: `${facts.eating.skipBreakfastDays} วัน`,
+      "สัดส่วนวันที่ข้ามมื้อใดก็ได้ (ไม่เจาะจงว่ามื้อเช้า) — เฉพาะวันมีสิ่งรบกวนตาราง": `${Math.round(facts.eating.skipRateDisruptor * 100)}% ของ ${facts.eating.disruptorDays} วัน`,
+      "สัดส่วนวันที่ข้ามมื้อใดก็ได้ (ไม่เจาะจงว่ามื้อเช้า) — เฉพาะวันปกติ": `${Math.round(facts.eating.skipRateCalm * 100)}% ของ ${facts.eating.calmDays} วัน`,
     },
     การนอน: {
-      นอนเฉลี่ย: `${facts.sleep.avgHours} ชม.`,
-      เข้านอนหลังเที่ยงคืน: `${facts.sleep.lateNights} วัน`,
-      นอนเฉลี่ยวันมีสิ่งรบกวนตาราง: `${facts.sleep.avgHoursDisruptor} ชม.`,
-      นอนเฉลี่ยวันปกติ: `${facts.sleep.avgHoursCalm} ชม.`,
+      "ชั่วโมงนอนเฉลี่ยต่อคืน (ไม่ใช่เวลาเข้านอน)": `${facts.sleep.avgHours} ชม.`,
+      จำนวนคืนที่เข้านอนหลังเที่ยงคืน: `${facts.sleep.lateNights} คืน`,
+      "ชั่วโมงนอนเฉลี่ยต่อคืน — เฉพาะวันมีสิ่งรบกวนตาราง": `${facts.sleep.avgHoursDisruptor} ชม.`,
+      "ชั่วโมงนอนเฉลี่ยต่อคืน — เฉพาะวันปกติ": `${facts.sleep.avgHoursCalm} ชม.`,
     },
     การเคลื่อนไหว: {
-      ขยับเฉลี่ย: `${facts.movement.avgMinutes} นาที/วัน`,
-      ไม่ได้ขยับเลย: `${facts.movement.stillDays} วัน`,
-      ขยับเฉลี่ยวันมีสิ่งรบกวนตาราง: `${facts.movement.avgMinutesDisruptor} นาที/วัน`,
-      ขยับเฉลี่ยวันปกติ: `${facts.movement.avgMinutesCalm} นาที/วัน`,
+      นาทีที่ขยับเฉลี่ยต่อวัน: `${facts.movement.avgMinutes} นาที`,
+      จำนวนวันที่ไม่ได้ขยับเลย: `${facts.movement.stillDays} วัน`,
+      "นาทีที่ขยับเฉลี่ยต่อวัน — เฉพาะวันมีสิ่งรบกวนตาราง": `${facts.movement.avgMinutesDisruptor} นาที`,
+      "นาทีที่ขยับเฉลี่ยต่อวัน — เฉพาะวันปกติ": `${facts.movement.avgMinutesCalm} นาที`,
     },
     เป้าหมายสัปดาห์นี้: facts.goals.map((goal) => ({
       ชื่อ: goal.title,
@@ -97,12 +102,13 @@ export function mergeReflectionText(
   ai: ReflectionText | null
 ): { pillars: ReflectionPillar[]; strengths: string; nextWeek: string } {
   const text = ai ?? templateReflection(facts);
+  const evidence = pillarEvidence(facts);
 
   return {
     pillars: [
-      { pillar: "eating", summary: text.eating },
-      { pillar: "sleep", summary: text.sleep },
-      { pillar: "movement", summary: text.movement },
+      { pillar: "eating", summary: text.eating, evidence: evidence.eating },
+      { pillar: "sleep", summary: text.sleep, evidence: evidence.sleep },
+      { pillar: "movement", summary: text.movement, evidence: evidence.movement },
     ],
     strengths: text.strengths,
     nextWeek: text.nextWeek,

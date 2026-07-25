@@ -6,6 +6,7 @@ import {
   buildWeekComparison,
   buildWeekFacts,
   MIN_DAYS_FOR_REFLECTION,
+  pillarEvidence,
   REFLECTION_DAYS,
   shortReflection,
   templateReflection,
@@ -146,5 +147,45 @@ describe("buildWeekComparison", () => {
     );
 
     expect(sleep).toMatchObject({ current: 7.3, previous: 6.3, delta: 1 });
+  });
+});
+
+describe("pillarEvidence", () => {
+  const facts = buildWeekFacts(
+    makeCheckins(4, (index) =>
+      index < 2
+        ? {
+            disruptors: ["deadline" as const],
+            skippedMeals: ["lunch" as const],
+            sleepHours: 4,
+            movementMinutes: 0,
+          }
+        : { disruptors: ["none" as const], skippedMeals: [], sleepHours: 8, movementMinutes: 30 }
+    ),
+    [],
+    7
+  );
+
+  it("เรียกสัดส่วนข้ามมื้อว่า 'ข้ามมื้อใดก็ได้' ไม่ใช่ 'ข้ามมื้อเช้า'", () => {
+    const line = pillarEvidence(facts).eating.find((entry) => entry.includes("%"));
+
+    expect(line).toContain("ข้ามมื้อใดก็ได้");
+    expect(line).not.toContain("ข้ามมื้อเช้า");
+    expect(line).toContain("วันมีสิ่งรบกวนตาราง 100% ของ 2 วัน");
+    expect(line).toContain("วันปกติ 0% ของ 2 วัน");
+  });
+
+  it("เรียกชั่วโมงนอนว่าชั่วโมง ไม่ใช่เวลาเข้านอน", () => {
+    const lines = pillarEvidence(facts).sleep;
+
+    expect(lines[0]).toBe("ชั่วโมงนอนเฉลี่ย 6 ชม. ต่อคืน");
+    expect(lines.join(" ")).not.toContain("เวลาเข้านอน");
+  });
+
+  it("แยกค่าเฉลี่ยการขยับตามกลุ่มวันให้ตรงกับสถิติ", () => {
+    const line = pillarEvidence(facts).movement[2];
+
+    expect(line).toContain("วันมีสิ่งรบกวนตาราง 0 นาที");
+    expect(line).toContain("วันปกติ 30 นาที");
   });
 });
