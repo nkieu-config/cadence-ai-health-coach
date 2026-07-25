@@ -72,7 +72,9 @@ export function TodaySummary({ checkin, date }: { checkin: Checkin | null; date:
       <CardHeader className="pb-4 flex flex-row items-start justify-between space-y-0">
         <div className="space-y-1">
           <CardDescription>{formatThaiDate(date)}</CardDescription>
-          <CardTitle className="text-lg">สรุปวันนี้</CardTitle>
+          <CardTitle className="text-lg">
+            <h2>สรุปวันนี้</h2>
+          </CardTitle>
         </div>
         <Badge variant={energyBadge.variant}>{energyBadge.label}</Badge>
       </CardHeader>

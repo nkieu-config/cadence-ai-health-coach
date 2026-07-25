@@ -154,7 +154,9 @@ export function DayLines({ checkins }: { checkins: Checkin[] }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">คืนสู่เช้า — 7 วันล่าสุด</CardTitle>
+        <CardTitle className="text-lg">
+          <h2>คืนสู่เช้า — 7 วันล่าสุด</h2>
+        </CardTitle>
         <CardDescription>
           แต่ละแถวคือหนึ่งวัน เรียงตามเวลาจริงตั้งแต่เข้านอนจนถึงมื้อแรก ·
           วันที่มีปัจจัยรบกวนจะมีแถบสีคลุมทั้งแถว

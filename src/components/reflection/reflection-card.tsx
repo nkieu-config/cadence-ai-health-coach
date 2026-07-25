@@ -12,7 +12,7 @@ export async function ReflectionCard() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
           <NotebookPen className="size-4 shrink-0 text-primary" />
-          สรุปสัปดาห์
+          <h2>สรุปสัปดาห์</h2>
         </CardTitle>
         <CardDescription>
           {reflection

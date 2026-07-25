@@ -112,7 +112,7 @@ function Shell({
         <div className="space-y-1">
           <CardTitle className="flex items-center gap-2 text-base">
             <Sparkles className="size-4 shrink-0 text-primary" />
-            วิเคราะห์รูปแบบพฤติกรรม
+            <h2>วิเคราะห์รูปแบบพฤติกรรม</h2>
           </CardTitle>
           <CardDescription>{description}</CardDescription>
         </div>
@@ -178,7 +178,7 @@ export async function PatternTable({ days, recordedDays }: { days: number; recor
         <div className="space-y-1">
           <CardTitle className="flex items-center gap-2 text-base">
             <Sparkles className="size-4 shrink-0 text-primary" />
-            วิเคราะห์รูปแบบพฤติกรรม
+            <h2>วิเคราะห์รูปแบบพฤติกรรม</h2>
           </CardTitle>
           <CardDescription className="space-y-1">
             <span className="block">

@@ -12,7 +12,7 @@ export async function CurrentGoalCard() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
           <Target className="size-4 shrink-0 text-primary" />
-          เป้าหมายสัปดาห์นี้
+          <h2>เป้าหมายสัปดาห์นี้</h2>
         </CardTitle>
         {active.length > 0 && (
           <CardDescription>
