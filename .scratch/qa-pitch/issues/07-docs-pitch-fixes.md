@@ -1,6 +1,6 @@
 # QA-07: แก้เอกสารให้ตรงโค้ดก่อน pitch (รอบ audit ทุกบรรทัด)
 
-Status: ready-for-agent
+Status: done
 Owner: A
 Sprint: 3
 Priority: M — เอกสารที่กรรมการอ่าน ห้ามมีข้อมูลผิด/อ้างเกินจริง
@@ -14,12 +14,12 @@ QA-06 กวาดเอกสารรอบแรก (20 ก.ค.) เน้�
 
 - [x] docs/03 — pattern "พลังงานบ่ายต่ำ" (ไม่มีจริง) → "เครื่องดื่มหวาน" · "~2 นาที" → ตัวเลข QA-02 จริง
 - [x] docs/04 — FR-1.2 ตัวเลขจริง + FR-1.3 "1 วัน"→"30 วัน" + FR-3.1 pattern ที่มีจริง
-- [ ] docs/08 — training data (ก๊อปถ้อยคำจากแอป) · "guardrail ทุก request" → ตามจริง · disclaimer ยกผิดคำ
-- [ ] docs/10 — QA-03 ไม่เป็นศูนย์ · ตัด countdown · ตัวนับงาน · F4-06 · เพิ่ม docs/12 ในตารางส่งงาน
-- [ ] demo-script — 7 จุด (ลำดับ check-in, screenshot, cache, F2-04, แบนเนอร์ reflection, ปุ่มล้างประวัติ)
-- [ ] deck-outline — เวลา 9→8 นาที · "ข้อมูลจริง"→"seed จำลอง+dogfood" · F2-04/cache
-- [ ] BOARD.md — countdown · ตัวนับงาน · สถานะ INFRA-27/F0-04
-- [ ] (P1) docs/07 prompt · docs/06 proxy/auto→ปุ่ม · docs/09 สถานะ+risk · docs/11 markdown/e2e · docs/05 SQL
+- [x] docs/08 — training data (ก๊อปถ้อยคำจากแอป) · "guardrail ทุก request" → ตามจริง · disclaimer ยกผิดคำ
+- [x] docs/10 — QA-03 ไม่เป็นศูนย์ · ตัด countdown · ตัวนับงาน · F4-06 · เพิ่ม docs/12 ในตารางส่งงาน
+- [x] demo-script — 7 จุด (ลำดับ check-in, screenshot, cache, F2-04, แบนเนอร์ reflection, ปุ่มล้างประวัติ)
+- [x] deck-outline — เวลา 9→8 นาที · "ข้อมูลจริง"→"seed จำลอง+dogfood" · F2-04/cache
+- [x] BOARD.md — countdown · ตัวนับงาน · สถานะ INFRA-27/F0-04
+- [x] (P1) docs/07 prompt · docs/06 proxy/auto→ปุ่ม · docs/09 สถานะ+risk · docs/11 markdown/e2e · docs/05 SQL
 
 ## กติกาที่ยึด
 
@@ -32,3 +32,21 @@ QA-06 กวาดเอกสารรอบแรก (20 ก.ค.) เน้�
 ---
 
 23 ก.ค. (A) — เปิดจากรายงาน audit รอบ 2 · ตัวเลข QA-02 เก็บครบแล้ว (วันปกติ 1:26 · หนักสุด 1:30 · ผ่าน AC ทั้งคู่)
+
+---
+
+25 ก.ค. (A) — **ปิด issue** · ตรวจซ้ำทุกข้อโดยเทียบกับโค้ดจริง ไม่ใช่เชื่อช่องติ๊ก พบว่า **งานส่วนใหญ่ทำไปแล้วแต่ไม่มีใครติ๊ก**
+
+ที่ยืนยันว่าตรงโค้ดแล้ว (ไม่ต้องแก้เพิ่ม):
+
+- **docs/08** — ตาราง 3 ชั้นระบุขอบเขตตามจริงแล้ว + มี note ว่าคำตอบแชทจงใจไม่ผ่านชั้น 3 · ยืนยันด้วย `rg findForbiddenTerms src/lib/` ว่าไม่ถูกเรียกใน `chat/` จริง · disclaimer ยกตรงตัวอักษรกับ `safety-notice.tsx` และระบุ 3 layout · ถ้อยคำ training data ระวังแบบเดียวกับในแอป
+- **demo-script** — ลำดับ 4 ขั้นตรงกับ `checkin-form.tsx` · "ตื่นราว…" ย้ายไปข้อ 6 แล้ว · มีคำเตือนว่าช่วง 7 วันไม่มี insight อุ่นไว้ · Plan B ของสไลด์ 7 มีแล้ว · แบนเนอร์ reflection อธิบายถูก (เทียบเวลา check-in ไม่ใช่ปฏิทิน) · ระบุว่า `npm run shots` ไม่ถ่ายหน้าแชทให้ ต้องถ่ายมือ
+- **deck-outline** — มีแผนรีดเวลา 9→8 นาทีพร้อมระบุว่าจะตัดองก์ไหน · speaker note เขียนว่า "seed จำลอง + ทีม dogfood" ตาม ADR-0004
+- **docs/10** — ไม่มี countdown แล้ว · QA-03 ไม่ถูกเรียกว่า "ศูนย์" · docs/12 อยู่ในตารางแพ็กเกจส่งงานและแถว Prototype Quality
+- **P1 ทั้งชุด** — docs/06 มี `proxy.ts` ในโครงสร้างและระบุว่า insight/reflection ต้องกดปุ่ม + rolling 7 วัน · docs/07 มีบล็อก gate 7 วัน · docs/09 Sprint 2 ติ๊ก ✅ และ risk register มี QA-02 กับ deck.pdf · docs/11 อ้าง e2e ตามจริง (7 route + auth 2)
+
+ที่แก้เพิ่มรอบนี้:
+
+- **docs/05** — `chat_daily_usage` (migration 0004) **ไม่เคยถูกบันทึกใน Data design เลย** ทั้งที่เป็น deliverable ข้อ 3 · เพิ่มทั้ง DDL, คำอธิบายว่าเป็นตัวนับไม่ใช่ข้อมูลพฤติกรรม และเพิ่ม 0004 ในรายการ migration
+- **docs/10 / docs/11 / docs/12** — 3 จุดที่ยังบอกว่า `##` ในฟองแชทพัง (แก้ไปแล้ว 25 ก.ค.) + เพิ่มข้อจำกัดว่า `profiles.status` ไปถึงแค่แชทโค้ช ไม่ถึง goal/insight/reflection
+- **BOARD.md** — f4/06 ปิดแล้ว · ตัวนับ 61→62 · INFRA-20 ระบุว่ายังเหลือ AC 2 ข้อ

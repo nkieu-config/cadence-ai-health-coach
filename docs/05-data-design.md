@@ -154,11 +154,20 @@ create table ai_outputs (
   content jsonb not null,
   created_at timestamptz default now()
 );
+
+create table chat_daily_usage (
+  user_id uuid not null references auth.users on delete cascade,
+  usage_date date not null,
+  message_count integer not null default 0,
+  primary key (user_id, usage_date)
+);
 ```
+
+**`chat_daily_usage` เป็นตัวนับ ไม่ใช่ข้อมูลพฤติกรรม** — เก็บแค่ "วันนี้ส่งไปกี่ข้อความ" เพื่อบังคับเพดาน 5 ข้อความ/คน/วัน (ADR-0003) · เดิมนับจากจำนวนแถวใน `chat_messages` ซึ่งผู้ใช้ลบได้ จึงกดล้างประวัติเพื่อรีเซ็ตโควตาได้ไม่จำกัด (INFRA-20) · **ไม่มีเนื้อหาข้อความอยู่ในตารางนี้** คำสัญญาเรื่องการลบประวัติในหน้า privacy จึงยังจริงครบ
 
 ทุกตารางเปิด RLS · policy จริง (migration 0003): `for all to authenticated using (auth.uid() = user_id)` — ปิด role `anon` ด้วย · constraint ระดับ DB (CHECK ช่วงค่า + array subset) อยู่ครบใน `0003_rls_performance_and_constraints.sql` (รายละเอียด policy ใน docs/08)
 
-**ไฟล์ migration จริงอยู่ที่ `supabase/migrations/`** (รันตามลำดับ) — `0001_init.sql` ตารางทั้งหมด + RLS · `0002_mission_input_coverage.sql` ฟิลด์ที่โจทย์ข้อ 5 ขอเพิ่ม · `0003_rls_performance_and_constraints.sql` index ของ RLS + CHECK กันข้อมูลขยะ
+**ไฟล์ migration จริงอยู่ที่ `supabase/migrations/`** (รันตามลำดับ) — `0001_init.sql` ตารางทั้งหมด + RLS · `0002_mission_input_coverage.sql` ฟิลด์ที่โจทย์ข้อ 5 ขอเพิ่ม · `0003_rls_performance_and_constraints.sql` index ของ RLS + CHECK กันข้อมูลขยะ · `0004_chat_daily_usage.sql` ตัวนับโควตาแชท + ฟังก์ชัน `bump_chat_usage()`
 
 ## การจำแนกชั้นข้อมูล
 
