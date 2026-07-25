@@ -542,7 +542,7 @@ export function CoachChatClient({
             <div className="space-y-4">
               {guidedStep === "pillar" && (
                 <div className="space-y-3">
-                  <p className="text-xs font-semibold text-muted-foreground">
+                  <p className="text-sm font-semibold text-muted-foreground">
                     กรุณาเลือกด้านที่ต้องการตั้งเป้าหมาย:
                   </p>
                   <div className="grid grid-cols-1 gap-2">
@@ -563,7 +563,7 @@ export function CoachChatClient({
                       type="button"
                       variant="ghost"
                       onClick={handleCancelGuidedFlow}
-                      className="min-h-11 text-xs text-muted-foreground"
+                      className="min-h-11 text-muted-foreground"
                     >
                       ยกเลิกการตั้งเป้าหมาย
                     </Button>
@@ -573,7 +573,7 @@ export function CoachChatClient({
 
               {guidedStep === "busy_days" && (
                 <div className="space-y-3">
-                  <p className="text-xs font-semibold text-muted-foreground">
+                  <p className="text-sm font-semibold text-muted-foreground">
                     เลือกวันในสัปดาห์หน้าที่ตารางแน่น / งานยุ่งเป็นพิเศษ:
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -593,39 +593,39 @@ export function CoachChatClient({
                       );
                     })}
                   </div>
-                  <div className="border-t border-border/40 pt-3 flex gap-2 justify-between">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      onClick={handleBackStep}
-                      className="min-h-11 text-xs"
-                    >
-                      ย้อนกลับ
-                    </Button>
+                  <div className="border-t border-border/40 pt-3 space-y-2">
                     <div className="flex gap-2">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={handleBackStep}
+                        className="min-h-11"
+                      >
+                        ย้อนกลับ
+                      </Button>
                       <Button
                         type="button"
                         variant="secondary"
                         onClick={() => handleBusyDaysSubmit([])}
-                        className="min-h-11 text-xs"
+                        className="min-h-11 flex-1"
                       >
                         ไม่มีวันยุ่งเป็นพิเศษ
                       </Button>
-                      <Button
-                        type="button"
-                        onClick={() => handleBusyDaysSubmit(guidedData.busyDays)}
-                        className="min-h-11 text-xs bg-primary text-primary-foreground hover:bg-primary/95"
-                      >
-                        ถัดไป
-                      </Button>
                     </div>
+                    <Button
+                      type="button"
+                      onClick={() => handleBusyDaysSubmit(guidedData.busyDays)}
+                      className="min-h-11 w-full bg-primary text-primary-foreground hover:bg-primary/95"
+                    >
+                      ถัดไป
+                    </Button>
                   </div>
                 </div>
               )}
 
               {guidedStep === "constraints" && (
                 <div className="space-y-3">
-                  <p className="text-xs font-semibold text-muted-foreground">
+                  <p className="text-sm font-semibold text-muted-foreground">
                     เลือกข้อจำกัดของคุณ (เลือกได้มากกว่า 1 ข้อ):
                   </p>
                   <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
@@ -645,39 +645,39 @@ export function CoachChatClient({
                       );
                     })}
                   </div>
-                  <div className="border-t border-border/40 pt-3 flex gap-2 justify-between">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      onClick={handleBackStep}
-                      className="min-h-11 text-xs"
-                    >
-                      ย้อนกลับ
-                    </Button>
+                  <div className="border-t border-border/40 pt-3 space-y-2">
                     <div className="flex gap-2">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={handleBackStep}
+                        className="min-h-11"
+                      >
+                        ย้อนกลับ
+                      </Button>
                       <Button
                         type="button"
                         variant="secondary"
                         onClick={() => handleConstraintsSubmit([])}
-                        className="min-h-11 text-xs"
+                        className="min-h-11 flex-1"
                       >
                         ไม่มีข้อจำกัด
                       </Button>
-                      <Button
-                        type="button"
-                        onClick={() => handleConstraintsSubmit(guidedData.constraints)}
-                        className="min-h-11 text-xs bg-primary text-primary-foreground hover:bg-primary/95"
-                      >
-                        ถัดไป
-                      </Button>
                     </div>
+                    <Button
+                      type="button"
+                      onClick={() => handleConstraintsSubmit(guidedData.constraints)}
+                      className="min-h-11 w-full bg-primary text-primary-foreground hover:bg-primary/95"
+                    >
+                      ถัดไป
+                    </Button>
                   </div>
                 </div>
               )}
 
               {guidedStep === "select_goal" && (
                 <div className="space-y-3">
-                  <p className="text-xs font-semibold text-muted-foreground">
+                  <p className="text-sm font-semibold text-muted-foreground">
                     เลือกเป้าหมายเล็ก ๆ (Micro Goal) ที่แนะนำสำหรับคุณ:
                   </p>
                   {!goalOptions ? (
@@ -717,7 +717,7 @@ export function CoachChatClient({
                   <div className="space-y-2 pt-1">
                     <label
                       htmlFor="goal-adjust-input"
-                      className="text-xs font-medium text-muted-foreground"
+                      className="text-sm font-medium text-muted-foreground"
                     >
                       ปรับแต่งเป้าหมายให้เข้ากับตัวเองยิ่งขึ้นได้:
                     </label>
@@ -739,7 +739,7 @@ export function CoachChatClient({
                       variant="ghost"
                       onClick={handleBackStep}
                       disabled={isPending}
-                      className="min-h-11 text-xs"
+                      className="min-h-11"
                     >
                       ย้อนกลับ
                     </Button>
@@ -747,7 +747,7 @@ export function CoachChatClient({
                       type="button"
                       onClick={handleSaveGoal}
                       disabled={isPending || !goalOptions || !editedGoalTitle.trim()}
-                      className="min-h-11 text-xs bg-primary text-primary-foreground hover:bg-primary/95"
+                      className="min-h-11 flex-1 bg-primary text-primary-foreground hover:bg-primary/95"
                     >
                       {isPending ? "กำลังบันทึก…" : "บันทึกเป้าหมาย"}
                     </Button>

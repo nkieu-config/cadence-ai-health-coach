@@ -18,7 +18,7 @@ function CoachAvatar() {
 export const UserMessage = memo(function UserMessage({ message }: { message: ChatMessage }) {
   return (
     <div className="flex justify-end">
-      <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 text-sm text-primary-foreground">
+      <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 text-base text-primary-foreground">
         <p className="break-words whitespace-pre-wrap">{message.content}</p>
       </div>
     </div>
