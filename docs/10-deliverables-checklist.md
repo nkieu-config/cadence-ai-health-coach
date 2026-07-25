@@ -54,4 +54,4 @@
 
 1. QA-02 จับเวลา check-in — **ต้องเริ่ม 21 ก.ค.** (ต้องได้ 3 วันติด × ≥4 คน) · โครงพร้อมกรอกที่ [.scratch/qa-pitch/qa-results.md](../.scratch/qa-pitch/qa-results.md)
 2. QA-03 deck + script + screenshot ลง [docs/pitch/](pitch/) — ซ้อม 2 รอบวันที่ 29
-3. เก็บเล็ก (ถ้าทัน): INFRA-20 · F2-05 streak (ตัดได้) · F4-06 เหลือแค่ `##` (`**`/ลิสต์ ทำแล้ว 21 ก.ค.)
+3. เก็บเล็ก (ถ้าทัน): INFRA-20 · F2-05 streak (ตัดได้) — **F4-06 ปิดแล้ว 25 ก.ค.**

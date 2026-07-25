@@ -644,9 +644,11 @@
 | เลขลำดับ `1. ` | `<ul>` เก็บเลขเดิมไว้เป็น marker (ไม่ใช่ `<ol>`) |
 | ย่อหน้า | `<p className="whitespace-pre-wrap break-words">` เว้น `space-y-2.5` |
 
-**ไม่รองรับ** (จะโผล่เป็นตัวอักษรดิบ): หัวข้อ `##`, ตัวเอียง, ลิงก์ `[]()`, code fence, ลิสต์ซ้อนชั้น · **ไม่มี `dangerouslySetInnerHTML` ที่ไหนเลย → raw HTML จาก LLM หลุดไม่ได้**
+| หัวข้อ `#` ถึง `######` | `<p className="font-semibold text-foreground">` — **บรรทัดหนา ไม่ใช่ `<h*>` จริง** เพราะฟองแชทอยู่ในหน้าที่มีลำดับหัวข้อของตัวเองแล้ว · ต้องมีเว้นวรรคหลัง `#` เสมอ `#hashtag` จึงไม่ถูกแปลง |
 
-> ⚠️ AC ของ [F4-06](../.scratch/f4-coach/issues/06-markdown-bubbles.md) เขียนว่า "ฟองข้อความโค้ชไม่มี `**` `##` ดิบโผล่" — โค้ดปัจจุบันแก้ `**` แล้ว แต่ **`##` ยังไม่ถูกจัดการ**
+**ไม่รองรับ** (จะโผล่เป็นตัวอักษรดิบ): ตัวเอียง, ลิงก์ `[]()`, code fence, ลิสต์ซ้อนชั้น · **ไม่มี `dangerouslySetInnerHTML` ที่ไหนเลย → raw HTML จาก LLM หลุดไม่ได้**
+
+> ✅ AC ของ [F4-06](../.scratch/f4-coach/issues/06-markdown-bubbles.md) — "ฟองข้อความโค้ชไม่มี `**` `##` ดิบโผล่" · **ปิดแล้ว 25 ก.ค.** พร้อม [unit test 6 ข้อ](../src/components/coach/formatted-message.test.ts) ที่ใช้คำตอบ Gemini จริงจาก `.scratch/ai-safety-test/` ตามที่ AC บังคับว่าห้ามยิงโมเดลใหม่
 
 **ช่องพิมพ์**
 
