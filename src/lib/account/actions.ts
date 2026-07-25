@@ -27,6 +27,14 @@ export async function deleteAllData(): Promise<AccountActionResult> {
     }
   }
 
+  const { error: usageError } = await supabase.rpc("clear_chat_usage");
+  if (usageError) {
+    console.error("Failed to clear chat usage counter:", usageError);
+    return {
+      error: "ลบข้อมูลได้ไม่ครบ — ข้อมูลบางส่วนยังอยู่ กดยืนยันอีกครั้งเพื่อลบส่วนที่เหลือ",
+    };
+  }
+
   revalidatePath("/", "layout");
   return { ok: true };
 }

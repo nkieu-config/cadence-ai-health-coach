@@ -108,6 +108,16 @@ export default function PrivacyPage() {
                     </td>
                     <td className="py-3 text-muted-foreground">ความต่อเนื่องของบทสนทนา</td>
                   </tr>
+                  <tr className="align-top">
+                    <td className="py-3 pr-3 font-medium text-foreground">
+                      จำนวนข้อความที่คุยกับ coach ในแต่ละวัน
+                    </td>
+                    <td className="py-3 pr-3 text-muted-foreground">ตัวเลขล้วน ไม่มีเนื้อหา</td>
+                    <td className="py-3 text-muted-foreground">
+                      จำกัดโควตาต่อวัน · ล้างประวัติแชทไม่ลบตัวเลขนี้ แต่
+                      &ldquo;ลบข้อมูลทั้งหมด&rdquo; ลบให้ครบ
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
