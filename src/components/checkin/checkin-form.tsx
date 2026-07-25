@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, useTransition, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, useTransition, type ReactNode } from "react";
 import { Check, Clock } from "lucide-react";
 import { saveCheckin } from "@/lib/checkins/actions";
 import { formatThaiDate } from "@/lib/checkins/date";
@@ -40,7 +40,7 @@ import { Chip, toggleValue } from "@/components/ui/chip";
 import { Label } from "@/components/ui/label";
 import { ErrorNotice, GentleNotice } from "@/components/ui/notice";
 import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
+import { cn, preferredScrollBehavior } from "@/lib/utils";
 
 const STEPS = ["กิน", "นอน", "เคลื่อนไหว", "บริบทวัน"];
 
@@ -170,6 +170,15 @@ export function CheckinForm({
   const [guidance, setGuidance] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
+  const stepHeaderRef = useRef<HTMLDivElement>(null);
+  const shownStepRef = useRef(step);
+
+  useEffect(() => {
+    if (shownStepRef.current === step) return;
+    shownStepRef.current = step;
+    stepHeaderRef.current?.focus();
+  }, [step]);
+
   const [mealsCount, setMealsCount] = useState<number | null>(existing?.mealsCount ?? null);
   const [skippedMeals, setSkippedMeals] = useState<Meal[]>(existing?.skippedMeals ?? []);
   const [firstMealTime, setFirstMealTime] = useState<FirstMealTime | null>(
@@ -246,7 +255,7 @@ export function CheckinForm({
     if (missing) {
       setHighlightField(missing);
       const field = document.getElementById(missing);
-      field?.scrollIntoView({ behavior: "smooth", block: "center" });
+      field?.scrollIntoView({ behavior: preferredScrollBehavior(), block: "center" });
       field?.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
       return;
     }
@@ -343,7 +352,7 @@ export function CheckinForm({
       <div className="mx-auto w-full max-w-md space-y-4 lg:mx-0 lg:max-w-none">
         {nudge}
         <Card>
-          <CardHeader>
+          <CardHeader ref={stepHeaderRef} tabIndex={-1} className="outline-none">
             <CardTitle>
               {heading} · {STEPS[step]}
             </CardTitle>

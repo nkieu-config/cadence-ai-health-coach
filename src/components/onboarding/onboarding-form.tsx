@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, useTransition, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, useTransition, type ReactNode } from "react";
 import { Check } from "lucide-react";
 import { completeOnboarding } from "@/lib/onboarding/actions";
 import {
@@ -75,6 +75,15 @@ export function OnboardingForm({ defaultName }: { defaultName: string }) {
   const [showHint, setShowHint] = useState(false);
   const [pending, startTransition] = useTransition();
 
+  const stepHeaderRef = useRef<HTMLDivElement>(null);
+  const shownStepRef = useRef(step);
+
+  useEffect(() => {
+    if (shownStepRef.current === step) return;
+    shownStepRef.current = step;
+    stepHeaderRef.current?.focus();
+  }, [step]);
+
   const canProceed = step === 0 ? displayName.trim().length > 0 && status !== null : true;
 
   function goNext() {
@@ -104,7 +113,7 @@ export function OnboardingForm({ defaultName }: { defaultName: string }) {
     <main className="flex min-h-dvh items-center justify-center p-3 xs:p-4">
       <h1 className="sr-only">ตั้งค่าเริ่มต้น Cadence</h1>
       <Card className="w-full max-w-md">
-        <CardHeader>
+        <CardHeader ref={stepHeaderRef} tabIndex={-1} className="outline-none">
           <CardTitle>ตั้งค่าเริ่มต้น</CardTitle>
           <CardDescription>
             ขั้นที่ {step + 1} จาก {TOTAL_STEPS} · ใช้เวลาไม่ถึง 1 นาที

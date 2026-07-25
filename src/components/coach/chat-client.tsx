@@ -30,7 +30,7 @@ import {
   needsReply,
   type ChatMessage,
 } from "@/lib/chat/types";
-import { cn } from "@/lib/utils";
+import { cn, preferredScrollBehavior } from "@/lib/utils";
 import { acceptGoal, recommendGoals } from "@/lib/goals/actions";
 import { GOAL_TITLE_MAX_LENGTH, SITUATION_LABELS, type GoalSuggestion } from "@/lib/goals/types";
 import { CONSTRAINT_LABELS, EARLY_DAY_LABELS } from "@/lib/onboarding/types";
@@ -112,8 +112,11 @@ export function CoachChatClient({
   const [selectedGoalIndex, setSelectedGoalIndex] = useState<number>(0);
   const [editedGoalTitle, setEditedGoalTitle] = useState<string>("");
 
-  const scrollToBottom = (behavior: ScrollBehavior = "smooth") => {
-    messagesEndRef.current?.scrollIntoView({ behavior, block: "nearest" });
+  const scrollToBottom = (behavior?: ScrollBehavior) => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: behavior ?? preferredScrollBehavior(),
+      block: "nearest",
+    });
   };
 
   useEffect(() => {
@@ -121,7 +124,7 @@ export function CoachChatClient({
   }, []);
 
   useEffect(() => {
-    if (messages.length > 0 || guidedFlow) scrollToBottom("smooth");
+    if (messages.length > 0 || guidedFlow) scrollToBottom();
   }, [messages, isPending, guidedStep, guidedFlow]);
 
   // Generate guided flow message list for rendering
@@ -695,7 +698,7 @@ export function CoachChatClient({
                             aria-pressed={isSelected}
                             onClick={() => handleSelectOption(index)}
                             className={cn(
-                              "w-full min-h-11 rounded-lg border p-3 text-left text-sm transition-all focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
+                              "w-full min-h-11 rounded-lg border p-3 text-left text-sm transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
                               isSelected
                                 ? "border-primary bg-primary/5 font-medium"
                                 : "border-border hover:bg-muted/40"

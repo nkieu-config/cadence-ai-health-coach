@@ -169,7 +169,7 @@ export function GoalSuggestionCard({ initialGoals }: GoalSuggestionCardProps) {
                   setEditMode(false);
                 }}
                 className={cn(
-                  "min-h-11 rounded-lg border p-3 text-left text-sm transition-all focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
+                  "min-h-11 rounded-lg border p-3 text-left text-sm transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
                   isSelected
                     ? "border-primary bg-primary/5 font-medium"
                     : "border-border hover:bg-muted/40"

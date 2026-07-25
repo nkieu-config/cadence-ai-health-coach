@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,7 @@ export function GoalProgressCard({ goal }: GoalProgressCardProps) {
   const [error, setError] = useState<string | null>(null);
   const [outcome, setOutcome] = useState<GoalStatus | null>(null);
   const [isPending, startTransition] = useTransition();
+  const queueRef = useRef<Promise<unknown>>(Promise.resolve());
   const router = useRouter();
 
   const weekDaysList = weekDates(goal.weekStart);
@@ -37,13 +38,24 @@ export function GoalProgressCard({ goal }: GoalProgressCardProps) {
 
   const handleToggleDay = (dateStr: string) => {
     setError(null);
-    const previous = progress;
     setProgress((current) => toggleValue(current, dateStr));
+
+    const request = queueRef.current.then(() => toggleGoalDay(goal.id, dateStr));
+    queueRef.current = request.then(
+      () => undefined,
+      () => undefined
+    );
+
     startTransition(async () => {
-      const result = await toggleGoalDay(goal.id, dateStr);
-      if ("error" in result) {
-        setProgress(previous);
-        setError(result.error);
+      try {
+        const result = await request;
+        if ("error" in result) {
+          setProgress((current) => toggleValue(current, dateStr));
+          setError(result.error);
+        }
+      } catch {
+        setProgress((current) => toggleValue(current, dateStr));
+        setError("บันทึกความคืบหน้าไม่สำเร็จ ลองใหม่อีกครั้ง");
       }
     });
   };
@@ -110,11 +122,11 @@ export function GoalProgressCard({ goal }: GoalProgressCardProps) {
                   key={dateStr}
                   type="button"
                   onClick={() => handleToggleDay(dateStr)}
-                  disabled={isPending || isFuture}
+                  disabled={isFuture}
                   aria-label={`วัน${DAY_LABELS[index].replace(".", "")} ${formatThaiDate(dateStr)}`}
                   aria-pressed={isChecked}
                   className={cn(
-                    "flex min-h-11 flex-col items-center justify-center rounded-md border text-xs font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-95",
+                    "flex min-h-11 flex-col items-center justify-center rounded-md border text-xs font-medium transition-[color,background-color,border-color,transform] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-95",
                     isChecked
                       ? "border-primary bg-primary font-semibold text-primary-foreground"
                       : isFuture
