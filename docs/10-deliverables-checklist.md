@@ -14,14 +14,14 @@
 | 6 | ตัวอย่าง daily check-in | ในแอป (`/checkin`) + screenshot | A | ✅ ใช้งานจริง + dogfooding ตั้งแต่ 13 ก.ค. |
 | 7 | ตัวอย่าง dashboard | ในแอป (demo account) + screenshot | 🟦 | ✅ layout + 7/14/30 + กราฟ 3 ด้าน + disruptor overlay (F2-02/03/06 + INFRA-22 a11y) |
 | 8 | ตัวอย่าง pattern analysis | ในแอป (dashboard) + ตัวอย่าง output ใน pitch deck | A + 🟦 | ✅ **เสร็จ 20 ก.ค.** — ตาราง 4 คอลัมน์บนเดสก์ท็อป + การ์ดบนมือถือ (F2-04, PR #63/#64/#66 — A วางฐาน แพรรี่ต่อยอดตารางเดสก์ท็อป) |
-| 9 | ตัวอย่าง AI coaching conversation | ในแอป (guided flow) + transcript | A + 🟩 | ✅ แชท + guided flow + escalation ใช้งานจริง (F4-01→05) |
+| 9 | ตัวอย่าง AI coaching conversation | ในแอป (`/coach` + guided flow) · เปิดอ่านแบบไม่ต้องมีเน็ต: [บทสนทนาดิบ 20 นัด](../.scratch/ai-safety-test/run-2026-07-26-with-context-raw.md) + `screenshots/backup-c-coach-dark.png` | A + 🟩 | ✅ แชท + guided flow + escalation ใช้งานจริง (F4-01→05) |
 | 10 | ตัวอย่าง micro goal recommendation | ในแอป (`/goals`) + ตัวอย่างใน pitch deck | A + 🟨 | ✅ **หน้า goals เสร็จแล้ว (F5-02, PR #54)** · engine ครบ (F5-01/03/04) |
 | 11 | ตัวอย่าง weekly reflection | ในแอป + ตัวอย่างเต็ม 1 ฉบับ | A | ✅ หน้า `/reflection` — ปาล์มมี 4 สัปดาห์ + เทียบสัปดาห์ก่อน (F6-01/02/03) |
-| 12 | Safety guardrail | [08](08-safety-privacy.md) Part 1 + `lib/ai` + `lib/safety/language.ts` + [หลักฐานทดสอบ](../.scratch/ai-safety-test/) | A | ✅ **ครบสมบูรณ์ (QA-01)** — 10 เคส × 2 ประโยค = 20/20 บนโมเดล production `gemini-3.1-flash-lite` + **ลายเซ็นตรวจอิสระโดยคีตะ** (PR #58) |
+| 12 | Safety guardrail | [08](08-safety-privacy.md) Part 1 + `lib/ai` + `lib/safety/language.ts` + [หลักฐานทดสอบ](../.scratch/ai-safety-test/) | A | ✅ **ครบสมบูรณ์ (QA-01)** — 10 เคส × 2 ประโยค = 20/20 บนโมเดล production `gemini-3.1-flash-lite` + **ลายเซ็นตรวจอิสระโดยคีตะ** (PR #58) · **หลักฐานเสริม 26 ก.ค.** — รันชุดเดิมซ้ำใน[โหมดแนบบริบทผู้ใช้](../.scratch/ai-safety-test/verdicts-2026-07-26-with-context.md) ซึ่งชุดแรกไม่เคยครอบ ได้ 20/20 เช่นกัน (ผู้ตัดสินไม่เป็นอิสระ — ระบุข้อจำกัดไว้ในไฟล์) |
 | 13 | Privacy design | [08](08-safety-privacy.md) Part 2 + `/settings/privacy` | A + 🟨 | ✅ design + หน้าในแอป (ตอบโจทย์ข้อ 9 ครบ 6/6) + **ปุ่มลบข้อมูล/บัญชีใช้งานจริง (F7-02)** |
 | 14 | Limitations & future improvement plan | [11](11-limitations-future.md) | A | ✅ เขียนแล้ว — ทุกข้อจำกัดมีสิ่งที่ทำแล้ว + แผนถ้าไปต่อ · รวมบทเรียนจาก dogfooding |
 
-**สรุป: ✅ 14 / 14 ครบทุกข้อ** — ที่เหลือคือทำให้การนำเสนอคู่ควรกับของ: QA-02 (✅ ตัวเลขจับเวลาครบแล้ว · เหลือ FR checklist + เครื่องจริง) + QA-03 (deck + ซ้อม)
+**สรุป: ✅ 14 / 14 ครบทุกข้อ** — ที่เหลือคือทำให้การนำเสนอคู่ควรกับของ: QA-02 (✅ จับเวลา + FR ระดับ M ครบ · บั๊ก 5 ตัวปิดหมด · **เหลือเครื่องจริง 3 แบบอย่างเดียว**) + QA-03 (deck + ซ้อม)
 
 ## Mapping กับ Evaluation Criteria 9 ข้อ (Mission ข้อ 11)
 
@@ -35,7 +35,7 @@
 | Safety | Guardrail 3 ชั้น + escalation 1323 + หลักฐาน 20/20 บนโมเดล production พร้อมลายเซ็นตรวจอิสระ | โชว์ตัวอย่าง AI ปฏิเสธคำถามวินิจฉัยโรคสด ๆ + เปิดไฟล์หลักฐานให้กรรมการดูได้ |
 | Privacy | RLS, data minimization, ลบ/แก้ได้เอง | โชว์หน้า privacy + ปุ่มลบข้อมูล |
 | Prototype Quality | Workflow หลักครบบน production จริง ผ่าน QA + freeze · [docs/12](12-ui-inventory.md) บันทึกทุกหน้า/ทุก state พร้อมลิงก์โค้ด | Demo สดตาม script ที่ซ้อมแล้ว |
-| Reflection and Improvement | Weekly reflection + **เทียบสัปดาห์ก่อน** (F6-03) + ปุ่มตั้งเป้าต่อ | โชว์ reflection 4 สัปดาห์ของ demo account แล้วชี้ลูกศรขึ้นในการ์ดเทียบสัปดาห์ (ตัวเลขคำนวณสดรายวัน — อ่านจากจอ) |
+| Reflection and Improvement | Weekly reflection + **เทียบสัปดาห์ก่อน** (F6-03) + ปุ่มตั้งเป้าต่อ | โชว์ reflection 4 สัปดาห์ของ demo account แล้วชี้การ์ดเทียบสัปดาห์ **อ่านตัวเลขจากจอ** (คำนวณสดรายวัน) — 🔴 ห้ามเตรียมบทว่า "ลูกศรขึ้น" ลูกศรขึ้นหรือลงขึ้นกับข้อมูลสัปดาห์นั้น |
 
 ## แพ็กเกจส่งงาน — หยิบอะไรส่งวันจริง
 
@@ -47,7 +47,7 @@
 | UI inventory (ทุกหน้า ทุก state) | Markdown ใน repo | [docs/12-ui-inventory.md](12-ui-inventory.md) — หลักฐาน Prototype Quality |
 | ตัวอย่างระบบทำงานจริง (5–11) | Demo สดบน production | Vercel + บัญชี demo ปาล์ม (seed 24 วัน + reflection 4 สัปดาห์ cache แล้ว) |
 | หลักฐาน safety | ไฟล์ดิบ + คำตัดสิน + ลายเซ็น | [.scratch/ai-safety-test/](../.scratch/ai-safety-test/) |
-| Pitch deck + demo script + screenshot สำรอง | [docs/pitch/](pitch/) | QA-03 — deck outline + demo script + 28 screenshot ✅ · เหลือ `deck.pdf` + เติมชื่อคนพูด + ซ้อม |
+| Pitch deck + demo script + screenshot สำรอง | [docs/pitch/](pitch/) | QA-03 — เนื้อสไลด์ 8 หน้า + สำรอง 3 หน้า + demo script + **36 screenshot** ✅ · เหลือ `deck.pdf` + เติมชื่อคนพูด + ซ้อม |
 | ลิงก์ที่ยื่นอาจารย์/กรรมการ | URL แอป + URL repo (README นำทางต่อเอง) | หน้า README แรกของ repo |
 
 **ลำดับงานที่เหลือก่อน freeze 29 ก.ค.:**

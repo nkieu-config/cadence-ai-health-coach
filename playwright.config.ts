@@ -8,7 +8,7 @@ const loggedIn = {
 };
 
 const SMOKE = [/routes\.spec\.ts/];
-const SMOKE_WITH_THEME = [/routes\.spec\.ts/, /theme\.spec\.ts/];
+const SMOKE_MOBILE = [/routes\.spec\.ts/, /theme\.spec\.ts/, /coach\.spec\.ts/];
 
 export default defineConfig({
   testDir: "./e2e",
@@ -35,16 +35,17 @@ export default defineConfig({
     // smoke: 7 route "เปิดได้ อ่านออก กดได้" — จอ + ธีมต่างกันจริง (overflow/contrast/touch)
     // 4 จอครอบเงื่อนไขครบ: ความกว้าง {320, มือถือ, เดสก์ท็อป} × contrast {light, dark}
     // theme.spec ผูกกับ light (320px) และ dark (มือถือ) จอเดียวละพอ — ธีมไม่ขึ้นกับความกว้าง
+    // coach.spec ผูกกับมือถือเท่านั้น — เป็นหน้าเดียวที่ความสูงคงที่ อาการล้นจึงโผล่เฉพาะจอเตี้ย
     {
       name: "smoke · 320px light",
       dependencies: ["setup"],
-      testMatch: SMOKE_WITH_THEME,
+      testMatch: SMOKE_MOBILE,
       use: { ...devices["iPhone SE"], ...loggedIn, colorScheme: "light" },
     },
     {
       name: "smoke · มือถือ dark",
       dependencies: ["setup"],
-      testMatch: SMOKE_WITH_THEME,
+      testMatch: SMOKE_MOBILE,
       use: { ...devices["iPhone 14"], ...loggedIn, colorScheme: "dark" },
     },
     {

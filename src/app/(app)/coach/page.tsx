@@ -26,7 +26,7 @@ export default async function CoachPage() {
           <MessageCircle className="size-6 shrink-0 text-primary" />
           คุยกับโค้ชสุขภาพ
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="hidden text-sm text-muted-foreground lg:block">
           รับคำแนะนำเพื่อสร้างนิสัยการกิน การนอน และการเคลื่อนไหวที่ดี
         </p>
       </div>
