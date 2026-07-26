@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="th" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cadence — Pitch Deck</title>
+    <style>
+      /* ฟอนต์เดียวกับแอป (IBM Plex Sans Thai) ฝังไว้ในโฟลเดอร์นี้ — เด็คจึงเปิดได้โดยไม่ต้องมีเน็ต */
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 400;
+        src: url("fonts/plex-thai-400.woff2") format("woff2");
+        unicode-range: U+2D7, U+303, U+331, U+E01-E5B, U+200C-200D, U+25CC;
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 500;
+        src: url("fonts/plex-thai-500.woff2") format("woff2");
+        unicode-range: U+2D7, U+303, U+331, U+E01-E5B, U+200C-200D, U+25CC;
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 600;
+        src: url("fonts/plex-thai-600.woff2") format("woff2");
+        unicode-range: U+2D7, U+303, U+331, U+E01-E5B, U+200C-200D, U+25CC;
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 400;
+        src: url("fonts/plex-latin-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 500;
+        src: url("fonts/plex-latin-500.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 600;
+        src: url("fonts/plex-latin-600.woff2") format("woff2");
+      }
+
+      :root {
+        --bg: #0d1526;
+        --fg: #e6edf9;
+        --card: #16203a;
+        --primary: #2ed89b;
+        --on-primary: #06231a;
+        --muted-fg: #96a3be;
+        --border: rgba(255, 255, 255, 0.14);
+        --shot-bg: #0a1120;
+      }
+      html[data-theme="light"] {
+        --bg: #ffffff;
+        --fg: #10231c;
+        --card: #f2fbf7;
+        --primary: #06805a;
+        --on-primary: #ffffff;
+        --muted-fg: #4d635a;
+        --border: #cfe8dc;
+        --shot-bg: #0d1526;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        background: var(--bg);
+      }
+      body {
+        font-family: "Plex Thai", sans-serif;
+        color: var(--fg);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      @page {
+        size: 1280px 720px;
+        margin: 0;
+      }
+
+      .slide {
+        position: relative;
+        width: 1280px;
+        height: 720px;
+        overflow: hidden;
+        background: var(--bg);
+        padding: 62px 76px;
+        display: flex;
+        flex-direction: column;
+        break-after: page;
+      }
+      .slide:last-child {
+        break-after: auto;
+      }
+
+      /* แถบเขียวบางซ้ายมือ — ตัวเชื่อมสายตาให้ทุกหน้าเป็นชุดเดียวกัน */
+      .slide::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 10px;
+        background: var(--primary);
+      }
+      .slide.cover::before {
+        width: 100%;
+        height: 10px;
+        inset: 0 0 auto 0;
+      }
+
+      .no {
+        position: absolute;
+        right: 34px;
+        bottom: 26px;
+        font-size: 18px;
+        color: var(--muted-fg);
+      }
+
+      h1 {
+        font-size: 92px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+      }
+      h2 {
+        font-size: 52px;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+      .section-title {
+        font-size: 74px;
+        font-weight: 600;
+        line-height: 1.25;
+      }
+      .sub {
+        font-size: 30px;
+        font-weight: 400;
+        color: var(--muted-fg);
+        line-height: 1.55;
+      }
+      .eyebrow {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        color: var(--primary);
+        text-transform: uppercase;
+      }
+
+      ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      li {
+        position: relative;
+        padding-left: 32px;
+        font-size: 26px;
+        line-height: 1.7;
+      }
+      li::before {
+        content: "";
+        position: absolute;
+        left: 4px;
+        top: 17px;
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--primary);
+      }
+      b,
+      strong {
+        font-weight: 600;
+      }
+      .hl {
+        color: var(--primary);
+        font-weight: 600;
+      }
+
+      .quote {
+        font-size: 40px;
+        font-style: italic;
+        line-height: 1.6;
+        border-left: 6px solid var(--primary);
+        padding-left: 30px;
+      }
+      .pull {
+        font-size: 30px;
+        font-weight: 600;
+        line-height: 1.6;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 24px 30px;
+      }
+
+      .grow {
+        flex: 1;
+        min-height: 0;
+      }
+      .row {
+        display: flex;
+        gap: 34px;
+        min-height: 0;
+      }
+      .col {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        min-width: 0;
+      }
+      .mt {
+        margin-top: 26px;
+      }
+
+      .shot {
+        background: var(--shot-bg);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+        display: flex;
+      }
+      .shot img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      /* คำบรรยายใต้ภาพคือ "เนื้อหาที่อ่านออกจากหลังห้อง" ตัวภาพเป็นหลักฐานว่าเป็นจอจริง
+         จึงต้องใหญ่กว่าคำบรรยายทั่วไป */
+      .cap {
+        font-size: 24px;
+        line-height: 1.6;
+        color: var(--fg);
+      }
+      .cap::before {
+        content: "→ ";
+        color: var(--primary);
+        font-weight: 600;
+      }
+
+      .block {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 24px 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .block h3 {
+        font-size: 30px;
+        font-weight: 600;
+      }
+      .block li {
+        font-size: 24px;
+      }
+      .block li::before {
+        top: 16px;
+      }
+
+      .tag {
+        position: absolute;
+        top: 30px;
+        right: 34px;
+        font-size: 19px;
+        font-weight: 600;
+        color: var(--on-primary);
+        background: var(--primary);
+        border-radius: 999px;
+        padding: 7px 18px;
+      }
+
+      .kv {
+        font-size: 26px;
+        line-height: 1.9;
+      }
+      .kv span {
+        color: var(--muted-fg);
+      }
+      code {
+        font-family: "Plex Thai", monospace;
+      }
+
+      .closing {
+        font-size: 38px;
+        font-weight: 600;
+        line-height: 1.55;
+        text-align: center;
+        color: var(--primary);
+        border-top: 1px solid var(--border);
+        padding-top: 28px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ═══ 1 · ปก + hook ═══ -->
+    <section class="slide cover">
+      <div
+        class="grow"
+        style="display: flex; flex-direction: column; justify-content: center; gap: 34px"
+      >
+        <div>
+          <h1>Cadence</h1>
+          <p class="sub mt" style="font-size: 32px">
+            AI Personal Health Coach สำหรับนักศึกษาและ first jobber
+          </p>
+        </div>
+        <p class="quote">
+          “โค้ดถึงตี 3 กว่าจะ push ทัน แล้วต้องตื่นไปเรียน 9 โมง — ชานม 3 แก้วยังไม่พอ”
+        </p>
+      </div>
+      <p class="sub" style="font-size: 24px">ทีม ⟨ ชื่อสมาชิก 4 คน ⟩ · 30 กรกฎาคม 2026</p>
+    </section>
+
+    <!-- ═══ 2 · รู้จักปาล์ม ═══ -->
+    <section class="slide">
+      <p class="eyebrow">Persona</p>
+      <h2 class="mt" style="margin-top: 12px">ปาล์ม · นักศึกษาปี 3 วิศวะซอฟต์แวร์</h2>
+      <div
+        class="grow"
+        style="display: flex; flex-direction: column; justify-content: center; gap: 30px"
+      >
+        <ul>
+          <li>กลางเทอม · group project 2 วิชา + สอบใน 3 สัปดาห์</li>
+          <li>คืนก่อน deadline นอนตี 2–3 → <b>พลังงานต่ำทั้งวันถัดไป</b></li>
+          <li>วันเรียนเช้า (จันทร์/พุธ) <b>ข้ามมื้อเช้าเกือบทุกครั้ง</b></li>
+          <li>วัน online นั่งหน้าจอ 8+ ชั่วโมง แทบไม่ได้ลุก</li>
+        </ul>
+        <p class="pull">
+          “เคยโหลดแอปสุขภาพ เลิกใน 4 วันเพราะกรอกเยอะ · ไม่ชอบแอปที่ทำให้รู้สึกผิด”
+        </p>
+      </div>
+      <p class="no">2</p>
+    </section>
+
+    <!-- ═══ 3 · ป้ายบท ═══ -->
+    <section class="slide">
+      <div
+        class="grow"
+        style="display: flex; flex-direction: column; justify-content: center; gap: 26px"
+      >
+        <p class="section-title">หนึ่งสัปดาห์ของปาล์ม</p>
+        <p class="sub" style="font-size: 34px">
+          จากนี้เป็น<span class="hl">ระบบจริงบน production</span> — ไม่ใช่ภาพ mockup
+        </p>
+      </div>
+      <p class="no">3</p>
+    </section>
+
+    <!-- ═══ 4 · คู่เทียบ goal ═══ -->
+    <section class="slide">
+      <h2>คำแนะนำเดียวกัน? ไม่ใช่</h2>
+      <p class="sub" style="font-size: 27px; margin-top: 10px">
+        เดิน guided flow ชุดเดียวกัน — เปลี่ยนสิ่งที่เลือก คำตอบเปลี่ยน
+      </p>
+      <div class="row grow" style="margin-top: 30px">
+        <div class="col" style="flex: 1">
+          <p style="font-size: 25px">เลือกด้าน <b>“การกิน”</b> · วันยุ่ง จ/พ</p>
+          <div class="shot"><img src="../screenshots/goal-branch-eating-dark.png" alt="" /></div>
+          <p class="cap">เตรียมโยเกิร์ตหรือผลไม้ไว้ในตู้เย็นสำหรับ<b>คืน</b>วันอาทิตย์และอังคาร</p>
+        </div>
+        <div class="col" style="flex: 1">
+          <p style="font-size: 25px">เลือกด้าน <b>“การเคลื่อนไหว”</b> · นั่งหน้าจอนาน</p>
+          <div class="shot"><img src="../screenshots/goal-branch-movement-dark.png" alt="" /></div>
+          <p class="cap">ยืดเหยียดคอและไหล่ 2 นาที ทุกครั้งที่จบการเรียนหรือประชุมออนไลน์</p>
+        </div>
+      </div>
+      <p class="pull" style="font-size: 26px; font-weight: 400; margin-top: 22px">
+        ฝั่งซ้ายระบบไม่ได้บอกให้เตรียมมื้อเช้า<b>วัน</b>จันทร์ แต่บอกให้เตรียม<b>คืน</b>วันอาทิตย์ —
+        เพราะเช้าวันจันทร์คือเวลาที่ปาล์มไม่มี
+      </p>
+      <p class="no">4</p>
+    </section>
+
+    <!-- ═══ 5 · เส้นที่เราไม่ข้าม ═══ -->
+    <section class="slide">
+      <h2>เส้นที่เราไม่ข้าม</h2>
+      <div class="row grow" style="margin-top: 32px">
+        <div class="block" style="flex: 1">
+          <h3>Safety — <span class="hl">20 นัด ผ่าน 20</span></h3>
+          <ul>
+            <li>ถามวินิจฉัยโรค → ปฏิเสธ + ส่งต่อแพทย์/สายด่วน <b>1323</b></li>
+            <li>
+              ทดสอบ 10 เคส × 2 ประโยค บนโมเดล production · ผลดิบไม่ตัดต่อ +
+              <b>ลายเซ็นผู้ตรวจอิสระ</b>
+            </li>
+          </ul>
+        </div>
+        <div class="block" style="flex: 1">
+          <h3>Privacy — <span class="hl">ความเสี่ยงที่ไม่มีตั้งแต่แรก</span></h3>
+          <ul>
+            <li>ไม่เคยเก็บน้ำหนัก ส่วนสูง หรือรูป — <b>จึงวิจารณ์รูปร่างไม่ได้แม้อยากทำ</b></li>
+            <li>เห็นเฉพาะข้อมูลตัวเอง (RLS) · ลบข้อมูล/ลบบัญชีได้เอง · ไม่มี dashboard องค์กร</li>
+          </ul>
+        </div>
+      </div>
+      <p class="no">5</p>
+    </section>
+
+    <!-- ═══ 6 · dogfooding ═══ -->
+    <section class="slide">
+      <h2>เราใช้เอง เจอของจริง แก้จริง</h2>
+      <p class="sub" style="font-size: 27px; margin-top: 10px">
+        dogfood ตั้งแต่ 13 ก.ค. — เจอสิ่งที่ mockup ไม่มีทางเจอ
+      </p>
+      <div class="grow" style="display: flex; flex-direction: column; gap: 30px; margin-top: 44px">
+        <div class="block">
+          <p class="eyebrow">เจอ</p>
+          <p style="font-size: 27px; line-height: 1.65">
+            โควตา Gemini ฟรีชนเพดานตอนทดสอบ safety →
+            <b>วินิจฉัยจาก API error</b> → ย้ายโมเดลได้โควตา <span class="hl">25 เท่า</span>
+            โดยไม่เปลี่ยน provider
+          </p>
+        </div>
+        <div class="block">
+          <p class="eyebrow">เจอ</p>
+          <p style="font-size: 27px; line-height: 1.65">
+            guardrail รั่ว <span class="hl">4 จุด</span> ตอนรัน checklist จริง → แก้หมด →
+            <b>รันซ้ำยืนยัน</b>
+          </p>
+        </div>
+      </div>
+      <p class="no">6</p>
+    </section>
+
+    <!-- ═══ 7 · ข้อจำกัด + ปิด ═══ -->
+    <section class="slide">
+      <h2>เรารู้ข้อจำกัดของเรา</h2>
+      <div class="grow" style="display: flex; flex-direction: column; gap: 26px; margin-top: 40px">
+        <ul>
+          <li>ข้อมูล self-reported · ทดสอบ n=4 (ทีมเอง) · บทสนทนา AI ยังกึ่ง scripted</li>
+          <li>นับแคลอรี/แตะน้ำหนัก = <b>ตั้งใจไม่ทำ</b> เพราะ guardrail ไม่ใช่เพราะไม่มีเวลา</li>
+        </ul>
+        <p class="pull" style="font-size: 27px; font-weight: 400">
+          <b>ถ้าไปต่อ:</b> ผู้ใช้จริง 10–15 คนนอกทีม → โควตารายคน → LINE reminder → wearable
+        </p>
+      </div>
+      <p class="closing">“ดูแลสุขภาพจากก้าวเล็ก ๆ ที่ทำได้จริง โดยไม่รู้สึกผิด ไม่ถูกตัดสิน”</p>
+      <p class="no">7</p>
+    </section>
+
+    <!-- ═══ 8 · ภาคผนวก ═══ -->
+    <section class="slide">
+      <h2>ของส่งครบ 14 ข้อ + ลองเองได้</h2>
+      <div
+        class="grow"
+        style="display: flex; flex-direction: column; justify-content: center; gap: 22px"
+      >
+        <p class="kv"><span>ระบบจริง</span><br />personal-healthcoach.vercel.app</p>
+        <p class="kv">
+          <span>บัญชีทดลอง</span><br /><code>palm@example.com</code> /
+          <code>palmcadence123</code>
+        </p>
+        <p class="kv">
+          <span>โค้ด + เอกสารทั้งหมด</span><br />github.com/nkieu-config/cadence-ai-health-coach
+        </p>
+        <p class="kv"><span>หลักฐาน safety ดิบ</span><br /><code>.scratch/ai-safety-test/</code></p>
+      </div>
+      <p class="sub" style="font-size: 23px">
+        เอกสารออกแบบ 1–14 · mapping เกณฑ์ 9 ข้อ · issue tracker 65 งาน — README นำทางครบ
+      </p>
+      <p class="no">8</p>
+    </section>
+
+    <!-- ═══ สำรอง A ═══ -->
+    <section class="slide">
+      <p class="tag">สำรอง A</p>
+      <h2>ระบบทำงานจริง — นี่คือจอจริง ไม่ใช่ mockup</h2>
+      <div class="grow col" style="margin-top: 22px; gap: 18px">
+        <div class="row" style="flex: 1">
+          <div class="shot" style="width: 372px; flex: none">
+            <img src="../screenshots/backup-a-trend-dark.png" alt="" />
+          </div>
+          <ul style="flex: 1; justify-content: center; gap: 12px">
+            <li style="font-size: 24px">กราฟ 3 ด้าน + พลังงาน · สลับดู 7 / 14 / 30 วัน</li>
+            <li style="font-size: 24px">
+              <b>จุดใต้แกนวัน = วันที่ตารางชีวิตถูกรบกวน</b> (เดดไลน์ · เรียนเช้า · เรียน online)
+            </li>
+            <li style="font-size: 24px">
+              ตารางล่าง: <b>รูปแบบที่พบ → ความหมาย → ขั้นต่อไป</b> พร้อมจำนวนวันที่ใช้คำนวณกำกับ
+            </li>
+          </ul>
+        </div>
+        <div class="shot" style="flex: none">
+          <img src="../screenshots/backup-a-pattern-dark.png" alt="" />
+        </div>
+      </div>
+      <p class="no">9</p>
+    </section>
+
+    <!-- ═══ สำรอง B ═══ -->
+    <section class="slide">
+      <p class="tag">สำรอง B</p>
+      <h2>สรุปสัปดาห์ที่ไม่ให้คะแนน</h2>
+      <div class="row grow" style="margin-top: 26px">
+        <div class="col" style="width: 462px; flex: none">
+          <div class="shot"><img src="../screenshots/backup-b-reflection-dark.png" alt="" /></div>
+          <div class="shot"><img src="../screenshots/backup-b-comparison-dark.png" alt="" /></div>
+        </div>
+        <ul style="flex: 1; justify-content: center; gap: 26px">
+          <li>
+            <b>check-in มัธยฐาน 1 นาที 26 วินาที</b> — วัดจริง 24 ครั้งจากคน 4 คน (ช้าสุด 2:14
+            ยังต่ำกว่าเพดาน 3 นาที)
+          </li>
+          <li>ทุกย่อหน้ามี<b>บรรทัดตัวเลขดิบกำกับ</b> — ชื่อของตัวเลขเขียนโดยโค้ด AI แก้ไม่ได้</li>
+          <li>เทียบสัปดาห์ก่อน: บอกว่าเปลี่ยนไปเท่าไร <b>ไม่มีคะแนนสุขภาพ ไม่มีคำตำหนิ</b></li>
+        </ul>
+      </div>
+      <p class="no">10</p>
+    </section>
+
+    <!-- ═══ สำรอง C ═══ -->
+    <section class="slide">
+      <p class="tag">สำรอง C</p>
+      <h2>โค้ชที่รู้ว่าตัวเองรู้แค่ไหน</h2>
+      <div class="row grow" style="margin-top: 26px">
+        <div class="col" style="width: 520px; flex: none">
+          <div class="shot"><img src="../screenshots/backup-c-coach-dark.png" alt="" /></div>
+        </div>
+        <ul style="flex: 1; justify-content: center; gap: 28px">
+          <li>
+            <b>“บันทึกมา 6 วัน ยังไม่ถึง 7 วันที่จะสรุปเป็นรูปแบบได้เต็มตัว”</b> —
+            โค้ชประกาศขอบเขตข้อมูลของตัวเองก่อนพูด
+          </li>
+          <li>
+            เชื่อม <b>เรียนเช้า → ข้ามมื้อเช้า → พลังงานบ่าย</b> จากฟิลด์ที่ระบบเก็บจริงทั้งสามตัว
+            แล้วปิดท้ายว่า <b>“เป็นสัญญาณที่น่าติดตาม”</b> ไม่ใช่ข้อสรุป
+          </li>
+          <li>
+            อ้างเป้าหมายที่ผู้ใช้ตั้งไว้แล้ว · ข้อเสนอเป็นก้าวเล็กที่ทำได้จริง
+            <b>ไม่มีน้ำหนัก ไม่มีแคลอรี</b> · จบด้วยคำถามกลับ ไม่ใช่คำสั่ง
+          </li>
+        </ul>
+      </div>
+      <p class="no">11</p>
+    </section>
+  </body>
+</html>
