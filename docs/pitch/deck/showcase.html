@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="th" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cadence — Showcase</title>
+    <style>
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 400;
+        src: url("fonts/plex-thai-400.woff2") format("woff2");
+        unicode-range: U+2D7, U+303, U+331, U+E01-E5B, U+200C-200D, U+25CC;
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 500;
+        src: url("fonts/plex-thai-500.woff2") format("woff2");
+        unicode-range: U+2D7, U+303, U+331, U+E01-E5B, U+200C-200D, U+25CC;
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 600;
+        src: url("fonts/plex-thai-600.woff2") format("woff2");
+        unicode-range: U+2D7, U+303, U+331, U+E01-E5B, U+200C-200D, U+25CC;
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 400;
+        src: url("fonts/plex-latin-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 500;
+        src: url("fonts/plex-latin-500.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 600;
+        src: url("fonts/plex-latin-600.woff2") format("woff2");
+      }
+
+      :root {
+        --bg: #0d1526;
+        --fg: #e6edf9;
+        --card: #16203a;
+        --primary: #2ed89b;
+        --on-primary: #06231a;
+        --muted-fg: #96a3be;
+        --border: rgba(255, 255, 255, 0.14);
+        --rule: rgba(255, 255, 255, 0.22);
+        --shot-bg: #0a1120;
+      }
+      html[data-theme="light"] {
+        --bg: #ffffff;
+        --fg: #10231c;
+        --card: #f2fbf7;
+        --primary: #06805a;
+        --on-primary: #ffffff;
+        --muted-fg: #4d635a;
+        --border: #cfe8dc;
+        --rule: #b6d8c8;
+        --shot-bg: #0d1526;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        background: var(--bg);
+      }
+      body {
+        font-family: "Plex Thai", sans-serif;
+        color: var(--fg);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      @page {
+        size: 1280px 720px;
+        margin: 0;
+      }
+
+      .slide {
+        position: relative;
+        width: 1280px;
+        height: 720px;
+        overflow: hidden;
+        background: var(--bg);
+        padding: 58px 84px 50px;
+        display: flex;
+        flex-direction: column;
+        break-after: page;
+      }
+      .slide:last-child {
+        break-after: auto;
+      }
+      .slide::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 7px;
+        background: var(--primary);
+      }
+
+      .masthead {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: 16px;
+        margin-bottom: 34px;
+      }
+      .eyebrow {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        color: var(--primary);
+        text-transform: uppercase;
+      }
+      .folio {
+        font-size: 19px;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        color: var(--muted-fg);
+      }
+
+      .baseline {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 30px;
+        border-top: 1px solid var(--rule);
+        padding-top: 16px;
+        margin-top: 26px;
+      }
+      .baseline p {
+        font-size: 20px;
+        color: var(--muted-fg);
+        line-height: 1.5;
+      }
+      .baseline b {
+        color: var(--fg);
+        font-weight: 600;
+      }
+
+      .grow {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+      .row {
+        display: flex;
+        flex-direction: row;
+        gap: 46px;
+        min-height: 0;
+        min-width: 0;
+      }
+      .col {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        min-height: 0;
+      }
+
+      .display {
+        font-size: 82px;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        line-height: 1.12;
+      }
+      h2 {
+        font-size: 56px;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+        line-height: 1.45;
+      }
+      .lead {
+        font-size: 30px;
+        font-weight: 400;
+        color: var(--muted-fg);
+        line-height: 1.6;
+      }
+      .hl {
+        color: var(--primary);
+        font-weight: 600;
+      }
+      b,
+      strong {
+        font-weight: 600;
+      }
+
+      .quote {
+        font-size: 42px;
+        font-weight: 400;
+        font-style: italic;
+        line-height: 1.55;
+        border-left: 6px solid var(--primary);
+        padding-left: 32px;
+      }
+
+      ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        border-left: 1px solid var(--rule);
+        padding-left: 26px;
+      }
+      li {
+        font-size: 25px;
+        line-height: 1.6;
+      }
+
+      .shot {
+        background: var(--shot-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+      }
+      .shot img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .cap {
+        font-size: 21px;
+        line-height: 1.55;
+        color: var(--muted-fg);
+        margin-top: 14px;
+      }
+
+      .stats {
+        display: flex;
+        gap: 30px;
+        min-width: 0;
+      }
+      .stat {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border-top: 3px solid var(--primary);
+        padding-top: 18px;
+      }
+      .stat .n {
+        font-size: 68px;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        line-height: 1;
+      }
+      .stat .t {
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.4;
+      }
+      .stat .d {
+        font-size: 19px;
+        color: var(--muted-fg);
+        line-height: 1.5;
+      }
+
+      .qr {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      .qr img {
+        display: block;
+        width: 76px;
+        height: 76px;
+        background: #fff;
+        border-radius: 6px;
+        padding: 4px;
+      }
+      .qr.big img {
+        width: 196px;
+        height: 196px;
+        padding: 10px;
+        border-radius: 10px;
+      }
+      .qr p {
+        font-size: 18px;
+        color: var(--muted-fg);
+        text-align: center;
+        line-height: 1.4;
+      }
+      .qr.big p {
+        font-size: 21px;
+        max-width: 230px;
+      }
+      html[data-qr="missing"] .qr::before {
+        content: "ยังไม่ได้ใส่ QR";
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 76px;
+        height: 76px;
+        border: 2px dashed var(--primary);
+        border-radius: 6px;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--primary);
+        padding: 6px;
+      }
+      html[data-qr="missing"] .qr.big::before {
+        width: 196px;
+        height: 196px;
+        font-size: 22px;
+      }
+
+      .honest {
+        font-size: 21px;
+        line-height: 1.6;
+        color: var(--muted-fg);
+        border-left: 3px solid var(--rule);
+        padding-left: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section class="slide">
+      <header class="masthead">
+        <p class="eyebrow">Student Exhibition · 30 กรกฎาคม 2569</p>
+        <p class="folio">01 / 05</p>
+      </header>
+
+      <div class="grow row" style="align-items: center; gap: 56px">
+        <div class="col" style="flex: 1; gap: 26px">
+          <p class="display">Cadence</p>
+          <p class="lead" style="font-size: 33px; color: var(--fg)">
+            โค้ชสุขภาพสำหรับคนที่<span class="hl">ตารางชีวิตไม่เคยเหมือนเดิมสองวันติด</span>
+          </p>
+          <p class="lead" style="font-size: 26px">
+            บันทึกวันละราวหนึ่งนาทีครึ่ง · ระบบหาความสัมพันธ์ในข้อมูลให้<br />
+            ไม่นับแคลอรี ไม่ให้คะแนน ไม่มีคำตำหนิ
+          </p>
+        </div>
+        <div class="qr big">
+          <img src="qr-app.png" alt="" />
+          <p>สแกนลองบนเครื่องคุณ<br />บัญชีทดลองอยู่บนโต๊ะ</p>
+        </div>
+      </div>
+
+      <footer class="baseline">
+        <p><b>คีน · แพรรี่ · คีตะ · ไม้</b><br />personal-healthcoach.vercel.app</p>
+        <p style="text-align: right">
+          ระบบใช้งานได้จริงบน production<br />เปิดใช้เองได้ทั้งบนมือถือและคอมพิวเตอร์
+        </p>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header class="masthead">
+        <p class="eyebrow">ปัญหา</p>
+        <p class="folio">02 / 05</p>
+      </header>
+
+      <div class="grow" style="justify-content: center; gap: 34px">
+        <p class="quote" style="font-size: 38px">
+          “โค้ดถึงตี 3 กว่าจะ push ทัน แล้วต้องตื่นไปเรียน 9 โมง — ชานม 3 แก้วยังไม่พอ”
+        </p>
+        <div class="col" style="gap: 16px">
+          <h2 style="font-size: 42px">เขารู้อยู่แล้วว่าควรนอนให้พอ</h2>
+          <p class="lead" style="font-size: 27px">
+            สิ่งที่ไม่มีใครบอกได้คือ
+            <b style="color: var(--fg)">คืนที่นอน 4 ชั่วโมง ไปโผล่เป็นอะไรในวันถัดไป</b> —
+            กินข้าวไม่ตรง ไม่ได้ลุกจากโต๊ะ หรือหมดแรงตอนบ่าย
+          </p>
+          <p class="lead" style="font-size: 24px">
+            ส่วนแอปสุขภาพที่มีอยู่ ขอข้อมูลเยอะเกินกว่าคนตารางแบบนี้จะกรอกไหว
+            <span class="hl">ปาล์มเคยโหลดมาแล้ว เลิกใช้ใน 4 วัน</span>
+          </p>
+        </div>
+      </div>
+
+      <footer class="baseline">
+        <p>จากการสัมภาษณ์และ persona ที่ใช้ออกแบบทั้งระบบ · <b>docs/03-user-persona.md</b></p>
+        <div class="qr"><img src="qr-app.png" alt="" /></div>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header class="masthead">
+        <p class="eyebrow">ระบบทำอะไร</p>
+        <p class="folio">03 / 05</p>
+      </header>
+
+      <div class="grow row" style="gap: 50px">
+        <div class="col" style="flex: 1; justify-content: center; gap: 22px">
+          <h2 style="font-size: 46px">เห็นว่าคืนไหนพัง<br />และอะไรมาชนวันนั้น</h2>
+          <ul style="gap: 12px">
+            <li style="font-size: 23px">
+              กราฟชั่วโมงนอนย้อนหลัง ทับด้วย<b>ปัจจัยรบกวน</b>ที่ผู้ใช้บันทึกเอง
+            </li>
+            <li style="font-size: 23px">เดดไลน์ · เรียนเช้า · สอบ อยู่บนแกนวันเดียวกัน</li>
+            <li style="font-size: 23px">ผู้ใช้ไม่ต้องนั่งไล่ปฏิทินย้อนหลังเอง</li>
+          </ul>
+          <p class="cap" style="margin-top: 0">หน้าจอจริงของระบบที่เปิดใช้อยู่ ไม่ใช่ภาพจำลอง</p>
+        </div>
+        <div class="col" style="width: 448px; justify-content: center">
+          <div class="shot"><img src="../screenshots/backup-a-trend-dark.png" alt="" /></div>
+        </div>
+      </div>
+
+      <footer class="baseline">
+        <p>บันทึก 4 ขั้น ปุ่มล้วน · <b>มัธยฐาน 1 นาที 26 วินาที</b> จากการจับเวลาจริง 24 ครั้ง</p>
+        <div class="qr"><img src="qr-app.png" alt="" /></div>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header class="masthead">
+        <p class="eyebrow">AI ทำงานอย่างไร</p>
+        <p class="folio">04 / 05</p>
+      </header>
+
+      <div class="grow" style="gap: 12px">
+        <div
+          class="row"
+          style="align-items: flex-end; gap: 44px; flex-shrink: 0; padding-bottom: 8px"
+        >
+          <h2 style="flex: 1; font-size: 48px">AI ไม่ได้คำนวณตัวเลขให้เราสักตัว</h2>
+          <p class="lead" style="width: 400px; font-size: 24px">
+            ตัวเลขทุกตัวคำนวณด้วยโค้ดจากบันทึกผู้ใช้ตรง ๆ
+            <b style="color: var(--fg)">AI มีหน้าที่เดียวคือแปลเป็นภาษาคน</b>
+          </p>
+        </div>
+
+        <div class="col" style="flex: 1; min-height: 0; justify-content: center; gap: 12px">
+          <div class="shot" style="width: 860px">
+            <img src="../screenshots/backup-a-pattern-dark.png" alt="" />
+          </div>
+          <p class="cap" style="margin-top: 0">
+            แถวจริงจากระบบ — บอกว่าเจออะไร แล้วปิดท้ายด้วยประโยคที่เราบังคับให้มีเสมอ
+            <span class="hl">“ยังสรุปเป็นเหตุและผลไม่ได้”</span>
+          </p>
+        </div>
+      </div>
+
+      <footer class="baseline">
+        <p><b>ถ้า AI ล่ม ตัวเลขยังอยู่ครบและแอปยังใช้ได้</b> · guardrail 3 ชั้น + สายด่วน 1323</p>
+        <div class="qr"><img src="qr-app.png" alt="" /></div>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header class="masthead">
+        <p class="eyebrow">หลักฐาน</p>
+        <p class="folio">05 / 05</p>
+      </header>
+
+      <div class="grow" style="gap: 32px">
+        <div class="stats">
+          <div class="stat">
+            <p class="n">20/20</p>
+            <p class="t">คำถามเสี่ยง ปฏิเสธถูกหมด</p>
+            <p class="d">ทดสอบบนโมเดลตัวเดียวกับที่ใช้จริง ตรวจโดยคนที่ไม่ได้เขียนโค้ดส่วนนั้น</p>
+          </div>
+          <div class="stat">
+            <p class="n">1:26</p>
+            <p class="t">มัธยฐานเวลาบันทึกหนึ่งวัน</p>
+            <p class="d">จับเวลาจริง 24 ครั้ง · ช้าสุด 2:14 ยังต่ำกว่าเพดาน 3 นาทีที่ตั้งไว้</p>
+          </div>
+          <div class="stat">
+            <p class="n">219</p>
+            <p class="t">เทสอัตโนมัติ</p>
+            <p class="d">ต้องผ่านทั้งหมดก่อนโค้ดขึ้น production ได้ · 149 unit + 70 end-to-end</p>
+          </div>
+          <div class="stat">
+            <p class="n">14/14</p>
+            <p class="t">ของส่งครบตามโจทย์</p>
+            <p class="d">เอกสารออกแบบ ระบบจริง หลักฐานทดสอบ อยู่ในที่เดียวกันทั้งหมด</p>
+          </div>
+        </div>
+
+        <p class="honest">
+          ข้อจำกัดที่เรารู้และเขียนไว้เอง — ผู้ทดสอบทั้ง 4 คนคือทีมพัฒนา ตัวเลขเวลาจึงเป็น
+          <b>เพดานของดีไซน์ ไม่ใช่พื้นของผู้ใช้ครั้งแรก</b>
+        </p>
+      </div>
+
+      <footer class="baseline">
+        <div>
+          <p style="font-size: 23px"><b>personal-healthcoach.vercel.app</b></p>
+          <p>โค้ดและเอกสารทั้งหมด · github.com/nkieu-config/cadence-ai-health-coach</p>
+        </div>
+        <div class="qr">
+          <img src="qr-app.png" alt="" />
+          <p>ลองเองได้</p>
+        </div>
+      </footer>
+    </section>
+  </body>
+</html>

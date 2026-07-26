@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cadence — เอกสารแผ่นเดียว</title>
+    <style>
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 400;
+        src: url("fonts/plex-thai-400.woff2") format("woff2");
+        unicode-range: U+2D7, U+303, U+331, U+E01-E5B, U+200C-200D, U+25CC;
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 500;
+        src: url("fonts/plex-thai-500.woff2") format("woff2");
+        unicode-range: U+2D7, U+303, U+331, U+E01-E5B, U+200C-200D, U+25CC;
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 600;
+        src: url("fonts/plex-thai-600.woff2") format("woff2");
+        unicode-range: U+2D7, U+303, U+331, U+E01-E5B, U+200C-200D, U+25CC;
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 400;
+        src: url("fonts/plex-latin-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 500;
+        src: url("fonts/plex-latin-500.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 600;
+        src: url("fonts/plex-latin-600.woff2") format("woff2");
+      }
+
+      :root {
+        --ink: #101c17;
+        --muted: #55685f;
+        --green: #06805a;
+        --rule: #c9ded4;
+        --tint: #f4faf7;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        background: #fff;
+      }
+      body {
+        font-family: "Plex Thai", sans-serif;
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      @page {
+        size: 794px 1123px;
+        margin: 0;
+      }
+
+      .slide {
+        position: relative;
+        width: 794px;
+        height: 1123px;
+        overflow: hidden;
+        background: #fff;
+        padding: 44px 52px 34px;
+        display: flex;
+        flex-direction: column;
+        gap: 17px;
+      }
+      .slide::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 6px;
+        background: var(--green);
+      }
+
+      .eyebrow {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--green);
+      }
+      h1 {
+        font-size: 40px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+      }
+      h2 {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.4;
+      }
+      p,
+      li {
+        font-size: 13px;
+        line-height: 1.7;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .hl {
+        color: var(--green);
+        font-weight: 600;
+      }
+      b,
+      strong {
+        font-weight: 600;
+      }
+
+      .head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 26px;
+      }
+      .head .lead {
+        font-size: 15px;
+        line-height: 1.6;
+        margin-top: 10px;
+      }
+      .head .who {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+
+      .qr {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        width: 116px;
+      }
+      .qr img {
+        display: block;
+        width: 116px;
+        height: 116px;
+      }
+      .qr p {
+        font-size: 11px;
+        color: var(--muted);
+        text-align: center;
+        line-height: 1.35;
+      }
+      html[data-qr="missing"] .qr::before {
+        content: "ยังไม่ได้ใส่ QR";
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 116px;
+        height: 116px;
+        border: 2px dashed var(--green);
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--green);
+        padding: 8px;
+      }
+
+      section.band {
+        border-top: 1px solid var(--rule);
+        padding-top: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+
+      .quote {
+        font-size: 15px;
+        font-style: italic;
+        line-height: 1.6;
+        border-left: 3px solid var(--green);
+        padding-left: 14px;
+      }
+
+      .row {
+        display: flex;
+        gap: 30px;
+        min-width: 0;
+      }
+      .col {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        min-width: 0;
+        flex: 1;
+      }
+
+      ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+      li {
+        position: relative;
+        padding-left: 17px;
+      }
+      li::before {
+        content: "";
+        position: absolute;
+        left: 1px;
+        top: 9px;
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--green);
+      }
+
+      .stats {
+        display: flex;
+        gap: 16px;
+      }
+      .stat {
+        flex: 1;
+        min-width: 0;
+        border-top: 2px solid var(--green);
+        padding-top: 9px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .stat .n {
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        line-height: 1;
+      }
+      .stat .t {
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.4;
+      }
+      .stat .d {
+        font-size: 11.5px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .try {
+        background: var(--tint);
+        border: 1px solid var(--rule);
+        padding: 15px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+      .kv {
+        font-size: 12.5px;
+        line-height: 1.65;
+      }
+      .kv span {
+        display: inline-block;
+        width: 128px;
+        color: var(--muted);
+      }
+      code {
+        font-family: "Plex Thai", monospace;
+      }
+
+      footer {
+        margin-top: auto;
+        border-top: 1px solid var(--rule);
+        padding-top: 12px;
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+      }
+      footer p {
+        font-size: 11.5px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="slide">
+      <div class="head">
+        <div style="min-width: 0">
+          <p class="eyebrow">Student Exhibition &amp; Demo Showcase · 30 กรกฎาคม 2569</p>
+          <h1 style="margin-top: 10px">Cadence</h1>
+          <p class="lead">
+            โค้ชสุขภาพสำหรับคนที่<span class="hl">ตารางชีวิตไม่เคยเหมือนเดิมสองวันติด</span><br />
+            บันทึกวันละราวหนึ่งนาทีครึ่ง ระบบหาความสัมพันธ์ในข้อมูลให้ ไม่นับแคลอรี ไม่ให้คะแนน
+          </p>
+          <p class="who">ทีม คีน · แพรรี่ · คีตะ · ไม้</p>
+        </div>
+        <div class="qr">
+          <img src="qr-app.png" alt="" />
+          <p>สแกนลองบนเครื่องคุณ</p>
+        </div>
+      </div>
+
+      <section class="band">
+        <p class="eyebrow">ปัญหาที่เราจับ</p>
+        <p class="quote">
+          “โค้ดถึงตี 3 กว่าจะ push ทัน แล้วต้องตื่นไปเรียน 9 โมง — ชานม 3 แก้วยังไม่พอ”
+        </p>
+        <p>
+          นักศึกษาและ first jobber รู้อยู่แล้วว่าควรนอนให้พอ สิ่งที่ไม่มีใครบอกได้คือ<b
+            >คืนที่นอน 4 ชั่วโมง ไปโผล่เป็นอะไรในวันถัดไป</b
+          >
+          ส่วนแอปสุขภาพที่มีอยู่ขอข้อมูลเยอะเกินกว่าคนตารางแบบนี้จะกรอกไหว — persona
+          ของเราเคยโหลดมาแล้วเลิกใช้ใน 4 วัน
+        </p>
+      </section>
+
+      <section class="band">
+        <div class="row">
+          <div class="col">
+            <p class="eyebrow">ระบบทำอะไร</p>
+            <ul>
+              <li>บันทึกวันละครั้ง 4 ขั้น <b>กดปุ่มล้วน</b> คำถามเสริมโผล่เฉพาะเมื่อเกี่ยวข้อง</li>
+              <li>กราฟย้อนหลัง 7/14/30 วัน ทับด้วย<b>ปัจจัยรบกวน</b>ที่ผู้ใช้บันทึกเอง</li>
+              <li>ตารางรูปแบบที่พบ พร้อมขั้นต่อไปที่ทำได้จริงในสัปดาห์นั้น</li>
+              <li>สรุปสัปดาห์ที่เทียบกับสัปดาห์ก่อน <b>โดยไม่ให้คะแนนใคร</b></li>
+            </ul>
+          </div>
+          <div class="col">
+            <p class="eyebrow">AI ทำงานอย่างไร</p>
+            <ul>
+              <li>
+                <b>AI ไม่ได้คำนวณตัวเลขให้เราสักตัว</b> ทุกตัวเลขคำนวณด้วยโค้ดจากบันทึกผู้ใช้ตรง ๆ
+              </li>
+              <li>หน้าที่เดียวของ AI คือแปลตัวเลขเป็นภาษาที่คนอ่านรู้เรื่อง</li>
+              <li>
+                ทุกข้อสรุปต้องมีประโยคกำกับว่า <span class="hl">ยังสรุปเป็นเหตุและผลไม่ได้</span>
+              </li>
+              <li>
+                guardrail 3 ชั้น ไม่วินิจฉัยโรค ไม่สั่งยา ส่งต่อสายด่วน
+                <b>1323</b> เมื่อเจอสัญญาณเสี่ยง
+              </li>
+            </ul>
+            <p class="muted"><b>ถ้า AI ล่ม ตัวเลขยังอยู่ครบและแอปยังใช้งานได้ตามปกติ</b></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="band">
+        <p class="eyebrow">หลักฐานที่ตรวจสอบได้</p>
+        <div class="stats">
+          <div class="stat">
+            <p class="n">20/20</p>
+            <p class="t">คำถามเสี่ยง ปฏิเสธถูกทุกข้อ</p>
+            <p class="d">ทดสอบบนโมเดลตัวเดียวกับที่ใช้จริง ตรวจโดยคนที่ไม่ได้เขียนโค้ดส่วนนั้น</p>
+          </div>
+          <div class="stat">
+            <p class="n">1:26</p>
+            <p class="t">มัธยฐานเวลาบันทึกหนึ่งวัน</p>
+            <p class="d">จับเวลาจริง 24 ครั้ง ช้าสุด 2:14 ต่ำกว่าเพดาน 3 นาทีที่ตั้งไว้</p>
+          </div>
+          <div class="stat">
+            <p class="n">219</p>
+            <p class="t">เทสอัตโนมัติ</p>
+            <p class="d">149 unit + 70 end-to-end ต้องผ่านทั้งหมดก่อนขึ้น production</p>
+          </div>
+          <div class="stat">
+            <p class="n">14/14</p>
+            <p class="t">ของส่งครบตามโจทย์</p>
+            <p class="d">เอกสารออกแบบ ระบบจริง หลักฐานทดสอบ อยู่ที่เดียวกันทั้งหมด</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="band">
+        <p class="eyebrow">ลองเองได้ ไม่ต้องรอเรา</p>
+        <div class="try">
+          <p class="kv"><span>ระบบจริง</span><b>personal-healthcoach.vercel.app</b></p>
+          <p class="kv">
+            <span>บัญชีทดลอง</span><code>palm@example.com</code> / <code>palmcadence123</code>
+          </p>
+          <p class="kv">
+            <span>โค้ด + เอกสาร</span>github.com/nkieu-config/cadence-ai-health-coach
+          </p>
+          <p class="kv">
+            <span>หลักฐานความปลอดภัย</span>ผลดิบทั้ง 20 นัด อยู่ในเรโปที่
+            <code>.scratch/ai-safety-test/</code>
+          </p>
+        </div>
+      </section>
+
+      <footer>
+        <p>
+          <b>ข้อจำกัดที่เรารู้และเขียนไว้เอง</b><br />
+          ผู้ทดสอบทั้ง 4 คนคือทีมพัฒนา ตัวเลขเวลาจึงเป็นเพดานของดีไซน์
+          ไม่ใช่พื้นของผู้ใช้ครั้งแรก<br />
+          ข้อมูลเป็น self-reported ทั้งหมด · รายละเอียดทั้งหมดอยู่ในเอกสารข้อ 11
+        </p>
+        <p style="text-align: right; flex-shrink: 0">
+          ถามเราได้ทุกคน<br />แต่ละคนดูแลคนละส่วนของระบบ
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
