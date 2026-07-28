@@ -4,13 +4,16 @@ import { formatThaiDate, toBangkokDate } from "@/lib/checkins/date";
 import type { ChatMessage } from "@/lib/chat/types";
 import { FormattedMessage } from "./formatted-message";
 
-function CoachAvatar() {
+function CoachByline() {
   return (
-    <div
-      aria-hidden
-      className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"
-    >
-      <MessageCircle className="size-4" />
+    <div className="mb-1.5 flex items-center gap-2">
+      <div
+        aria-hidden
+        className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"
+      >
+        <MessageCircle className="size-4" />
+      </div>
+      <p className="text-xs font-medium text-muted-foreground">โค้ช</p>
     </div>
   );
 }
@@ -27,13 +30,10 @@ export const UserMessage = memo(function UserMessage({ message }: { message: Cha
 
 export const CoachMessage = memo(function CoachMessage({ message }: { message: ChatMessage }) {
   return (
-    <div className="flex gap-2.5">
-      <CoachAvatar />
-      <div className="min-w-0 flex-1 pt-0.5">
-        <p className="mb-1 text-xs font-medium text-muted-foreground">โค้ช</p>
-        <div className="text-base text-foreground">
-          <FormattedMessage content={message.content} />
-        </div>
+    <div>
+      <CoachByline />
+      <div className="text-base text-foreground">
+        <FormattedMessage content={message.content} />
       </div>
     </div>
   );
@@ -51,10 +51,10 @@ export function DaySeparator({ date }: { date: string }) {
 
 export function PendingReply() {
   return (
-    <div role="status" className="flex gap-2.5">
+    <div role="status">
       <span className="sr-only">โค้ชกำลังคิด</span>
-      <CoachAvatar />
-      <div className="flex items-center gap-1 pt-2.5">
+      <CoachByline />
+      <div className="flex items-center gap-1">
         <span
           className="size-2 animate-bounce rounded-full bg-muted-foreground/50"
           style={{ animationDelay: "0ms" }}

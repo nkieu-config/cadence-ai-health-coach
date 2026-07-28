@@ -472,12 +472,14 @@ export function CoachChatClient({
         >
           {displayMessages.length === 0 ? (
             opener ? (
-              <div className="flex gap-2.5">
-                <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <MessageCircle className="size-4" />
-                </div>
-                <div className="min-w-0 flex-1 space-y-3 pt-0.5">
+              <div>
+                <div className="mb-1.5 flex items-center gap-2">
+                  <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <MessageCircle className="size-4" />
+                  </div>
                   <p className="text-xs font-medium text-muted-foreground">โค้ช</p>
+                </div>
+                <div className="min-w-0 space-y-3">
                   <div className="space-y-2">
                     <p className="text-sm text-muted-foreground">{opener.fact}</p>
                     <p className="text-lg font-medium">{opener.question}</p>
