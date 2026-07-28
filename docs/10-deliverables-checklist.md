@@ -47,7 +47,7 @@
 | UI inventory (ทุกหน้า ทุก state) | Markdown ใน repo | [docs/12-ui-inventory.md](12-ui-inventory.md) — หลักฐาน Prototype Quality |
 | ตัวอย่างระบบทำงานจริง (5–11) | Demo สดบน production | Vercel + บัญชี demo ปาล์ม (seed 24 วัน + reflection 4 สัปดาห์ cache แล้ว) |
 | หลักฐาน safety | ไฟล์ดิบ + คำตัดสิน + ลายเซ็น | [.scratch/ai-safety-test/](../.scratch/ai-safety-test/) |
-| Pitch deck + demo script + screenshot สำรอง | [docs/pitch/](pitch/) | QA-03 — **`deck.pdf` 12 หน้าเสร็จแล้ว** (8 + สำรอง 4 · สร้างด้วย `npm run deck`) + demo script + 36 screenshot ✅ · เหลือเติมชื่อ 4 คน + แบ่งคนพูด + ซ้อม |
+| Pitch deck + demo script + screenshot สำรอง | [docs/pitch/](pitch/) | QA-03 — **`deck.pdf` 14 หน้าเสร็จแล้ว** (10 + สำรอง 4 · สร้างด้วย `npm run deck`) + demo script + 36 screenshot ✅ · เหลือเติมชื่อ 4 คน + แบ่งคนพูด + ซ้อม |
 | ลิงก์ที่ยื่นอาจารย์/กรรมการ | URL แอป + URL repo (README นำทางต่อเอง) | หน้า README แรกของ repo |
 
 **ลำดับงานที่เหลือก่อน freeze 29 ก.ค.:**

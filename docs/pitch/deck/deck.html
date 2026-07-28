@@ -282,6 +282,76 @@
         font-family: "Plex Thai", monospace;
       }
 
+      .step {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border-top: 3px solid var(--primary);
+        padding-top: 18px;
+      }
+      .step .n {
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--primary);
+        letter-spacing: 0.08em;
+      }
+      .step h3 {
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
+      .step p {
+        font-size: 22px;
+        line-height: 1.55;
+        color: var(--muted-fg);
+      }
+
+      .pipe {
+        display: flex;
+        align-items: stretch;
+        gap: 14px;
+        min-width: 0;
+      }
+      .pipe > div {
+        flex: 1;
+        min-width: 0;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 13px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .pipe .who {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .pipe .code .who {
+        color: var(--primary);
+      }
+      .pipe .llm .who {
+        color: var(--muted-fg);
+      }
+      .pipe .what {
+        font-size: 21px;
+        line-height: 1.45;
+        font-weight: 600;
+      }
+      .pipe .arrow {
+        flex: 0 0 auto;
+        align-self: center;
+        background: none;
+        border: none;
+        padding: 0;
+        font-size: 26px;
+        color: var(--muted-fg);
+      }
+
       .closing {
         font-size: 38px;
         font-weight: 600;
@@ -334,6 +404,43 @@
       <p class="no">2</p>
     </section>
 
+    <section class="slide">
+      <p class="eyebrow">วิธีแก้</p>
+      <h2 class="mt" style="margin-top: 12px">ระบบทั้งหมดคือวงจรเดียว</h2>
+      <p class="sub" style="font-size: 26px; margin-top: 10px">
+        ทำซ้ำได้ทุกสัปดาห์โดยไม่ต้องตั้งใจมาก — นั่นคือเงื่อนไขเดียวที่ทำให้คนกลุ่มนี้อยู่ต่อ
+      </p>
+
+      <div class="row grow" style="margin-top: 30px; gap: 26px">
+        <div class="step">
+          <p class="n">01</p>
+          <h3>บันทึก</h3>
+          <p>วันละครั้ง 4 ขั้น กดปุ่มล้วน คำถามเสริมโผล่เฉพาะเมื่อเกี่ยว</p>
+        </div>
+        <div class="step">
+          <p class="n">02</p>
+          <h3>เห็นรูปแบบ</h3>
+          <p>กราฟย้อนหลังทับด้วยปัจจัยรบกวนที่ผู้ใช้บันทึกเอง + ตารางรูปแบบที่พบ</p>
+        </div>
+        <div class="step">
+          <p class="n">03</p>
+          <h3>ได้ก้าวเล็ก ๆ</h3>
+          <p>เป้าหมายสัปดาห์ที่ผูกกับตารางจริงของคนคนนั้น ไม่ใช่คำแนะนำสำเร็จรูป</p>
+        </div>
+        <div class="step">
+          <p class="n">04</p>
+          <h3>ทบทวน</h3>
+          <p>สรุปสัปดาห์เทียบสัปดาห์ก่อน แล้วตั้งต้นรอบใหม่</p>
+        </div>
+      </div>
+
+      <p class="pull" style="font-size: 25px; font-weight: 400; margin-top: 26px">
+        <b>สิ่งที่เราตั้งใจไม่ทำ</b> — ไม่นับแคลอรี ไม่ชั่งน้ำหนัก ไม่ให้คะแนนสุขภาพ ไม่วินิจฉัยโรค
+        · ทั้งสี่ข้อคือเหตุผลที่ผู้ใช้กลุ่มนี้เลิกใช้แอปที่เคยโหลดมา
+      </p>
+      <p class="no">3</p>
+    </section>
+
     <!-- ═══ 3 · ป้ายบท ═══ -->
     <section class="slide">
       <div
@@ -345,7 +452,7 @@
           จากนี้เป็น<span class="hl">ระบบจริงบน production</span> — ไม่ใช่ภาพ mockup
         </p>
       </div>
-      <p class="no">3</p>
+      <p class="no">4</p>
     </section>
 
     <!-- ═══ 4 · คู่เทียบ goal ═══ -->
@@ -370,7 +477,60 @@
         ฝั่งซ้ายระบบไม่ได้บอกให้เตรียมมื้อเช้า<b>วัน</b>จันทร์ แต่บอกให้เตรียม<b>คืน</b>วันอาทิตย์ —
         เพราะเช้าวันจันทร์คือเวลาที่ปาล์มไม่มี
       </p>
-      <p class="no">4</p>
+      <p class="no">5</p>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">AI / Technical Approach</p>
+      <h2 class="mt" style="margin-top: 12px">AI ไม่ได้คำนวณตัวเลขให้เราสักตัว</h2>
+      <p class="sub" style="font-size: 25px; margin-top: 10px">
+        ทุกตัวเลขที่ผู้ใช้เห็นคำนวณด้วยโค้ด —
+        <span class="hl">LLM มีหน้าที่เดียวคือแปลเป็นภาษาคน</span>
+      </p>
+
+      <div class="pipe" style="margin-top: 26px">
+        <div class="code">
+          <p class="who">โค้ด</p>
+          <p class="what">บันทึกผู้ใช้</p>
+        </div>
+        <p class="arrow">→</p>
+        <div class="code">
+          <p class="who">โค้ด</p>
+          <p class="what"><code>lib/patterns</code> หาสถิติ</p>
+        </div>
+        <p class="arrow">→</p>
+        <div class="llm">
+          <p class="who">Gemini</p>
+          <p class="what">เรียบเรียงเป็นภาษา</p>
+        </div>
+        <p class="arrow">→</p>
+        <div class="code">
+          <p class="who">โค้ด</p>
+          <p class="what">กรองคำต้องห้าม</p>
+        </div>
+      </div>
+
+      <div class="grow" style="display: flex; flex-direction: column; gap: 14px; margin-top: 18px">
+        <ul style="gap: 10px">
+          <li style="font-size: 23px; line-height: 1.55">
+            เกณฑ์ตัดสินเป็นค่าคงที่ในโค้ด — ต้องมีข้อมูล <b>7 วัน</b> · แต่ละกลุ่ม <b>≥ 3 วัน</b> ·
+            ต่างกัน <b>≥ 20%</b> ถึงเรียกว่ารูปแบบ · ไม่ถึงเกณฑ์ระบบไม่เดาให้
+          </li>
+          <li style="font-size: 23px; line-height: 1.55">
+            guardrail <b>3 ชั้น</b> — disclaimer ที่ UI → system prompt ทุก call →
+            โค้ดกรองคำต้องห้าม
+          </li>
+          <li style="font-size: 23px; line-height: 1.55">
+            <b>แชทจงใจข้ามชั้นที่ 3</b> — คำปฏิเสธที่ถูกต้องต้องเอ่ยคำต้องห้ามเอง
+            ตัวกรองจะฆ่าคำตอบที่ดี จึงยืนยันด้วยการทดสอบ 20/20 แทน
+          </li>
+        </ul>
+      </div>
+
+      <p class="pull" style="font-size: 22px; font-weight: 400; padding: 18px 26px">
+        <b>ถ้า Gemini ล่มทั้งวัน</b> — บันทึก กราฟ ตาราง และตัวเลขยังทำงานครบ หายไปแค่ประโยคบรรยาย
+      </p>
+      <p class="no">6</p>
     </section>
 
     <!-- ═══ 5 · เส้นที่เราไม่ข้าม ═══ -->
@@ -395,7 +555,7 @@
           </ul>
         </div>
       </div>
-      <p class="no">5</p>
+      <p class="no">7</p>
     </section>
 
     <!-- ═══ 6 · dogfooding ═══ -->
@@ -421,7 +581,7 @@
           </p>
         </div>
       </div>
-      <p class="no">6</p>
+      <p class="no">8</p>
     </section>
 
     <!-- ═══ 7 · ข้อจำกัด + ปิด ═══ -->
@@ -437,7 +597,7 @@
         </p>
       </div>
       <p class="closing">“ดูแลสุขภาพจากก้าวเล็ก ๆ ที่ทำได้จริง โดยไม่รู้สึกผิด ไม่ถูกตัดสิน”</p>
-      <p class="no">7</p>
+      <p class="no">9</p>
     </section>
 
     <!-- ═══ 8 · ภาคผนวก ═══ -->
@@ -460,7 +620,7 @@
       <p class="sub" style="font-size: 23px">
         เอกสารออกแบบ 1–14 · mapping เกณฑ์ 9 ข้อ · issue tracker 65 งาน — README นำทางครบ
       </p>
-      <p class="no">8</p>
+      <p class="no">10</p>
     </section>
 
     <!-- ═══ สำรอง A ═══ -->
@@ -486,7 +646,7 @@
           <img src="../screenshots/backup-a-pattern-dark.png" alt="" />
         </div>
       </div>
-      <p class="no">9</p>
+      <p class="no">11</p>
     </section>
 
     <!-- ═══ สำรอง B ═══ -->
@@ -507,7 +667,7 @@
           <li>เทียบสัปดาห์ก่อน: บอกว่าเปลี่ยนไปเท่าไร <b>ไม่มีคะแนนสุขภาพ ไม่มีคำตำหนิ</b></li>
         </ul>
       </div>
-      <p class="no">10</p>
+      <p class="no">12</p>
     </section>
 
     <!-- ═══ สำรอง C ═══ -->
@@ -533,7 +693,7 @@
           </li>
         </ul>
       </div>
-      <p class="no">11</p>
+      <p class="no">13</p>
     </section>
 
     <!-- ═══ สำรอง D ═══ -->
@@ -556,7 +716,7 @@
           </li>
         </ul>
       </div>
-      <p class="no">12</p>
+      <p class="no">14</p>
     </section>
   </body>
 </html>
