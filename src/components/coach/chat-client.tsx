@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ErrorNotice, GentleNotice } from "@/components/ui/notice";
+import { SafetyNotice } from "@/components/safety-notice";
 import {
   UserMessage,
   CoachMessage,
@@ -439,7 +440,7 @@ export function CoachChatClient({
   const displayMessages = guidedFlow ? [...messages, ...getGuidedMessages()] : messages;
 
   return (
-    <div className="flex h-[calc(100dvh-16.75rem-env(safe-area-inset-top,0px)-env(safe-area-inset-bottom,0px))] min-h-64 flex-col gap-3 lg:h-[calc(100dvh-13rem)]">
+    <div className="flex h-[calc(100dvh-13.75rem-env(safe-area-inset-top,0px)-env(safe-area-inset-bottom,0px))] min-h-64 flex-col gap-3 lg:h-[calc(100dvh-9.75rem)]">
       {/* Top bar controls */}
       <div className="flex min-h-9 shrink-0 items-center justify-between">
         {quotaLeft > 0 && quotaLeft <= 2 ? (
@@ -474,6 +475,7 @@ export function CoachChatClient({
           aria-label="บทสนทนากับโค้ช"
           className="flex min-h-0 flex-1 flex-col space-y-4 overflow-y-auto p-4"
         >
+          <SafetyNotice className="shrink-0 border-b border-border/40 pb-3" />
           {displayMessages.length === 0 ? (
             opener ? (
               <div className="flex gap-2.5">
@@ -542,7 +544,7 @@ export function CoachChatClient({
         {/* Input & Options panel */}
         <div
           data-slot="chat-panel"
-          className="max-h-[calc(100%-4rem)] shrink-0 overflow-y-auto border-t border-border/40 p-4 space-y-4 bg-muted/10"
+          className="max-h-[calc(100%-6rem)] shrink-0 overflow-y-auto border-t border-border/40 p-4 space-y-4 bg-muted/10"
         >
           {guidedFlow ? (
             <div className="space-y-4">

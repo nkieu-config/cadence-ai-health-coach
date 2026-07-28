@@ -4,8 +4,7 @@ import { getCurrentUser, hasCompletedOnboarding } from "@/lib/auth/user";
 import { AppNav } from "@/components/app-nav";
 import { BrandLockup } from "@/components/brand";
 import { AppSidebar } from "@/components/app-sidebar";
-import { PageContainer } from "@/components/page-container";
-import { SafetyNotice } from "@/components/safety-notice";
+import { LayoutSafetyNotice } from "@/components/layout-safety-notice";
 import { SignOutIconButton } from "@/components/sign-out-button";
 import { ThemeToggleIconButton } from "@/components/theme-toggle";
 
@@ -44,11 +43,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
           {children}
         </main>
 
-        <div className="px-3 pb-3 xs:px-4 lg:px-10 lg:pb-8">
-          <PageContainer width="content">
-            <SafetyNotice />
-          </PageContainer>
-        </div>
+        <LayoutSafetyNotice />
 
         <AppNav />
       </div>
