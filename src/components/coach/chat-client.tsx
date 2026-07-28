@@ -442,7 +442,7 @@ export function CoachChatClient({
   const displayMessages = guidedFlow ? [...messages, ...getGuidedMessages()] : messages;
 
   return (
-    <div className="flex h-[calc(100dvh-11rem-env(safe-area-inset-top,0px)-env(safe-area-inset-bottom,0px))] min-h-64 flex-col gap-3 lg:h-[calc(100dvh-5.5rem)]">
+    <div className="flex h-[calc(100dvh-11rem-env(safe-area-inset-top,0px)-env(safe-area-inset-bottom,0px))] min-h-48 flex-col gap-3 lg:h-[calc(100dvh-5.5rem)]">
       {/* Top bar controls */}
       <div className="flex min-h-11 shrink-0 items-center justify-between gap-3">
         <div className="min-w-0">{heading}</div>
@@ -469,7 +469,7 @@ export function CoachChatClient({
           role="log"
           aria-live="polite"
           aria-label="บทสนทนากับโค้ช"
-          className="flex min-h-0 flex-1 flex-col space-y-4 overflow-y-auto p-4"
+          className="flex min-h-0 flex-1 flex-col space-y-4 overflow-y-auto overscroll-contain p-4"
         >
           <SafetyNotice className="shrink-0 border-b border-border/40 pb-3" />
           {displayMessages.length === 0 ? (
@@ -540,7 +540,7 @@ export function CoachChatClient({
         {/* Input & Options panel */}
         <div
           data-slot="chat-panel"
-          className="max-h-[calc(100%-6rem)] shrink-0 overflow-y-auto border-t border-border/40 p-4 space-y-4 bg-muted/10"
+          className="max-h-[calc(100%-6rem)] shrink-0 overflow-y-auto overscroll-contain border-t border-border/40 p-4 space-y-4 bg-muted/10"
         >
           {guidedFlow ? (
             <div className="space-y-4">
