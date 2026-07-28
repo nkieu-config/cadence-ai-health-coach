@@ -14,7 +14,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ErrorNotice, GentleNotice } from "@/components/ui/notice";
-import { SafetyNotice } from "@/components/safety-notice";
 import {
   UserMessage,
   CoachMessage,
@@ -442,7 +441,7 @@ export function CoachChatClient({
   const displayMessages = guidedFlow ? [...messages, ...getGuidedMessages()] : messages;
 
   return (
-    <div className="flex h-[calc(100dvh-11rem-env(safe-area-inset-top,0px)-env(safe-area-inset-bottom,0px))] min-h-48 flex-col gap-3 lg:h-[calc(100dvh-5.5rem)]">
+    <div className="flex h-[calc(100dvh-14rem-env(safe-area-inset-top,0px)-env(safe-area-inset-bottom,0px))] min-h-48 flex-col gap-3 lg:h-[calc(100dvh-8.5rem)]">
       {/* Top bar controls */}
       <div className="flex min-h-11 shrink-0 items-center justify-between gap-3">
         <div className="min-w-0">{heading}</div>
@@ -471,7 +470,6 @@ export function CoachChatClient({
           aria-label="บทสนทนากับโค้ช"
           className="flex min-h-0 flex-1 flex-col space-y-4 overflow-y-auto overscroll-contain p-4"
         >
-          <SafetyNotice className="shrink-0 border-b border-border/40 pb-3" />
           {displayMessages.length === 0 ? (
             opener ? (
               <div className="flex gap-2.5">
