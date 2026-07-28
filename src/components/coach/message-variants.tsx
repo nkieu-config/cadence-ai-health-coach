@@ -21,7 +21,7 @@ function CoachByline() {
 export const UserMessage = memo(function UserMessage({ message }: { message: ChatMessage }) {
   return (
     <div className="flex justify-end">
-      <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 text-base text-primary-foreground">
+      <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 text-sm text-primary-foreground">
         <p className="break-words whitespace-pre-wrap">{message.content}</p>
       </div>
     </div>
@@ -32,7 +32,7 @@ export const CoachMessage = memo(function CoachMessage({ message }: { message: C
   return (
     <div>
       <CoachByline />
-      <div className="text-base text-foreground">
+      <div className="text-sm text-foreground">
         <FormattedMessage content={message.content} />
       </div>
     </div>
