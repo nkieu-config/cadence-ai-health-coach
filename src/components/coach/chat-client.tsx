@@ -79,6 +79,13 @@ export function CoachChatClient({
   // Scroll ref
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [panelHasMore, setPanelHasMore] = useState(false);
+
+  const measurePanel = () => {
+    const el = panelRef.current;
+    if (el) setPanelHasMore(el.scrollHeight - el.scrollTop - el.clientHeight > 8);
+  };
 
   const tempIdRef = useRef(0);
 
@@ -128,6 +135,12 @@ export function CoachChatClient({
   useEffect(() => {
     if (messages.length > 0 || guidedFlow) scrollToBottom();
   }, [messages, isPending, guidedStep, guidedFlow]);
+
+  // แผงล่างใช้ DOM node เดิมข้ามขั้น ตำแหน่งเลื่อนจึงติดมาด้วยถ้าไม่รีเซ็ต
+  useEffect(() => {
+    if (panelRef.current) panelRef.current.scrollTop = 0;
+    measurePanel();
+  }, [guidedStep, guidedFlow, goalOptions, quotaLeft]);
 
   // Generate guided flow message list for rendering
   const getGuidedMessages = (): ChatMessage[] => {
@@ -468,7 +481,7 @@ export function CoachChatClient({
           role="log"
           aria-live="polite"
           aria-label="บทสนทนากับโค้ช"
-          className="flex min-h-0 flex-1 flex-col space-y-4 overflow-y-auto overscroll-contain p-4"
+          className="flex min-h-0 flex-1 flex-col space-y-4 overflow-y-auto overscroll-contain p-5"
         >
           {displayMessages.length === 0 ? (
             opener ? (
@@ -538,344 +551,345 @@ export function CoachChatClient({
         </div>
 
         {/* Input & Options panel */}
-        <div
-          data-slot="chat-panel"
-          className="max-h-[calc(100%-6rem)] shrink-0 overflow-y-auto overscroll-contain border-t border-border/40 p-4 space-y-4 bg-muted/10"
-        >
-          {guidedFlow ? (
-            <div className="space-y-4">
-              {guidedStep === "pillar" && (
-                <div className="space-y-3">
-                  <p className="text-sm font-semibold text-muted-foreground">
-                    กรุณาเลือกด้านที่ต้องการตั้งเป้าหมาย:
-                  </p>
-                  <div className="grid grid-cols-1 gap-2">
-                    {PILLAR_OPTIONS.map((option) => (
-                      <Button
-                        key={option.value}
-                        type="button"
-                        variant="outline"
-                        onClick={() => handlePillarSelect(option.value)}
-                        className="min-h-11 justify-start px-4 py-2 text-sm font-normal"
-                      >
-                        {PILLAR_LABELS[option.value]} ({option.hint})
-                      </Button>
-                    ))}
-                  </div>
-                  <div className="border-t border-border/40 pt-3 flex justify-end">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      onClick={handleCancelGuidedFlow}
-                      className="min-h-11 text-muted-foreground"
-                    >
-                      ยกเลิกการตั้งเป้าหมาย
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              {guidedStep === "busy_days" && (
-                <div className="space-y-3">
-                  <p className="text-sm font-semibold text-muted-foreground">
-                    เลือกวันในสัปดาห์หน้าที่ตารางแน่น / งานยุ่งเป็นพิเศษ:
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {DAY_OPTIONS.map(([value, label]) => {
-                      const isSelected = guidedData.busyDays.includes(value);
-                      return (
-                        <Button
-                          key={value}
-                          type="button"
-                          variant={isSelected ? "default" : "outline"}
-                          aria-pressed={isSelected}
-                          onClick={() => toggleBusyDay(value)}
-                          className="min-h-11 rounded-full px-4 text-sm font-normal"
-                        >
-                          {label}
-                        </Button>
-                      );
-                    })}
-                  </div>
-                  <div className="border-t border-border/40 pt-3 space-y-2">
-                    <div className="flex gap-2">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={handleBackStep}
-                        className="min-h-11"
-                      >
-                        ย้อนกลับ
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={() => handleBusyDaysSubmit([])}
-                        className="min-h-11 flex-1"
-                      >
-                        ไม่มีวันยุ่งเป็นพิเศษ
-                      </Button>
-                    </div>
-                    <Button
-                      type="button"
-                      onClick={() => handleBusyDaysSubmit(guidedData.busyDays)}
-                      className="min-h-11 w-full bg-primary text-primary-foreground hover:bg-primary/95"
-                    >
-                      ถัดไป
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              {guidedStep === "constraints" && (
-                <div className="space-y-3">
-                  <p className="text-sm font-semibold text-muted-foreground">
-                    เลือกข้อจำกัดของคุณ (เลือกได้มากกว่า 1 ข้อ):
-                  </p>
-                  <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
-                    {CONSTRAINT_OPTIONS.map(([value, label]) => {
-                      const isSelected = guidedData.constraints.includes(value);
-                      return (
-                        <Button
-                          key={value}
-                          type="button"
-                          variant={isSelected ? "default" : "outline"}
-                          aria-pressed={isSelected}
-                          onClick={() => toggleConstraint(value)}
-                          className="min-h-11 justify-start text-sm font-normal"
-                        >
-                          {label}
-                        </Button>
-                      );
-                    })}
-                  </div>
-                  <div className="border-t border-border/40 pt-3 space-y-2">
-                    <div className="flex gap-2">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={handleBackStep}
-                        className="min-h-11"
-                      >
-                        ย้อนกลับ
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={() => handleConstraintsSubmit([])}
-                        className="min-h-11 flex-1"
-                      >
-                        ไม่มีข้อจำกัด
-                      </Button>
-                    </div>
-                    <Button
-                      type="button"
-                      onClick={() => handleConstraintsSubmit(guidedData.constraints)}
-                      className="min-h-11 w-full bg-primary text-primary-foreground hover:bg-primary/95"
-                    >
-                      ถัดไป
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              {guidedStep === "select_goal" && (
-                <div className="space-y-3">
-                  <p className="text-sm font-semibold text-muted-foreground">
-                    เลือกเป้าหมายเล็ก ๆ (Micro Goal) ที่แนะนำสำหรับคุณ:
-                  </p>
-                  {!goalOptions ? (
-                    error ? null : (
-                      <div className="flex items-center gap-2 rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
-                        <Loader2 className="size-4 shrink-0 animate-spin" />
-                        กำลังดูบันทึกของคุณเพื่อเลือกเป้าหมายที่ทำได้จริง...
-                      </div>
-                    )
-                  ) : (
+        <div className="relative flex max-h-[calc(100%-6rem)] shrink-0 flex-col">
+          {panelHasMore && (
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-linear-to-t from-card to-transparent"
+            />
+          )}
+          <div
+            ref={panelRef}
+            onScroll={measurePanel}
+            data-slot="chat-panel"
+            className="min-h-0 overflow-y-auto overscroll-contain border-t border-border/40 p-5 space-y-4 bg-muted/10"
+          >
+            {guidedFlow ? (
+              <div className="space-y-4">
+                {guidedStep === "pillar" && (
+                  <div className="space-y-3">
                     <div className="grid grid-cols-1 gap-2">
-                      {goalOptions.map((option, index) => {
-                        const isSelected = selectedGoalIndex === index;
+                      {PILLAR_OPTIONS.map((option) => (
+                        <Button
+                          key={option.value}
+                          type="button"
+                          variant="outline"
+                          onClick={() => handlePillarSelect(option.value)}
+                          className="min-h-11 justify-start px-4 py-2 text-sm font-normal"
+                        >
+                          {PILLAR_LABELS[option.value]} ({option.hint})
+                        </Button>
+                      ))}
+                    </div>
+                    <div className="border-t border-border/40 pt-3 flex justify-end">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={handleCancelGuidedFlow}
+                        className="min-h-11 text-muted-foreground"
+                      >
+                        ยกเลิกการตั้งเป้าหมาย
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {guidedStep === "busy_days" && (
+                  <div className="space-y-3">
+                    <div className="flex flex-wrap gap-2">
+                      {DAY_OPTIONS.map(([value, label]) => {
+                        const isSelected = guidedData.busyDays.includes(value);
                         return (
-                          <button
-                            key={option.situation}
+                          <Button
+                            key={value}
                             type="button"
+                            variant={isSelected ? "default" : "outline"}
                             aria-pressed={isSelected}
-                            onClick={() => handleSelectOption(index)}
-                            className={cn(
-                              "w-full min-h-11 rounded-lg border p-3 text-left text-sm transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
-                              isSelected
-                                ? "border-primary bg-primary/5 font-medium"
-                                : "border-border hover:bg-muted/40"
-                            )}
+                            onClick={() => toggleBusyDay(value)}
+                            className="min-h-11 rounded-full px-4 text-sm font-normal"
                           >
-                            <span>{option.title}</span>
-                            <span className="mt-1 block text-xs font-normal text-muted-foreground">
-                              {SITUATION_LABELS[option.situation]}
-                            </span>
-                          </button>
+                            {label}
+                          </Button>
                         );
                       })}
                     </div>
-                  )}
-
-                  <div className="space-y-2 pt-1">
-                    <label
-                      htmlFor="goal-adjust-input"
-                      className="text-sm font-medium text-muted-foreground"
-                    >
-                      ปรับแต่งเป้าหมายให้เข้ากับตัวเองยิ่งขึ้นได้:
-                    </label>
-                    <Input
-                      id="goal-adjust-input"
-                      type="text"
-                      value={editedGoalTitle}
-                      onChange={(e) => setEditedGoalTitle(e.target.value)}
-                      disabled={isPending}
-                      maxLength={GOAL_TITLE_MAX_LENGTH}
-                      className="w-full min-h-11 bg-background focus-visible:border-ring focus-visible:ring-3"
-                      placeholder="ปรับเปลี่ยนเป้าหมายของคุณที่นี่…"
-                    />
-                  </div>
-
-                  <div className="border-t border-border/40 pt-3 flex gap-2 justify-between">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      onClick={handleBackStep}
-                      disabled={isPending}
-                      className="min-h-11"
-                    >
-                      ย้อนกลับ
-                    </Button>
-                    <Button
-                      type="button"
-                      onClick={handleSaveGoal}
-                      disabled={isPending || !goalOptions || !editedGoalTitle.trim()}
-                      className="min-h-11 flex-1 bg-primary text-primary-foreground hover:bg-primary/95"
-                    >
-                      {isPending ? "กำลังบันทึก…" : "บันทึกเป้าหมาย"}
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              {notice && <GentleNotice className="mt-2">{notice}</GentleNotice>}
-              {error && <ErrorNotice className="mt-2">{error}</ErrorNotice>}
-            </div>
-          ) : (
-            <>
-              {/* Conversation starters */}
-              {showChips && (
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-muted-foreground">คำถามแนะนำ:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {STARTERS.map((starter) => (
+                    <div className="border-t border-border/40 pt-3 space-y-2">
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          onClick={handleBackStep}
+                          className="min-h-11"
+                        >
+                          ย้อนกลับ
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          onClick={() => handleBusyDaysSubmit([])}
+                          className="min-h-11 flex-1"
+                        >
+                          ไม่มีวันยุ่งเป็นพิเศษ
+                        </Button>
+                      </div>
                       <Button
-                        key={starter}
                         type="button"
-                        variant="outline"
-                        onClick={() => handleSend(starter)}
-                        className="min-h-11 rounded-full px-4 text-sm font-normal"
+                        onClick={() => handleBusyDaysSubmit(guidedData.busyDays)}
+                        className="min-h-11 w-full bg-primary text-primary-foreground hover:bg-primary/95"
                       >
-                        {starter}
+                        ถัดไป
                       </Button>
-                    ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {messages.length > 0 && inputValue === "" && (
-                <div className="flex flex-wrap gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => handleSend(GOAL_STARTER)}
-                    disabled={isPending}
-                    className="min-h-11 gap-1.5 rounded-full px-4 text-sm font-normal"
-                  >
-                    <Target className="size-4 shrink-0 text-primary" />
-                    ตั้งเป้าสัปดาห์หน้า
-                  </Button>
-                </div>
-              )}
+                {guidedStep === "constraints" && (
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+                      {CONSTRAINT_OPTIONS.map(([value, label]) => {
+                        const isSelected = guidedData.constraints.includes(value);
+                        return (
+                          <Button
+                            key={value}
+                            type="button"
+                            variant={isSelected ? "default" : "outline"}
+                            aria-pressed={isSelected}
+                            onClick={() => toggleConstraint(value)}
+                            className="min-h-11 justify-start text-sm font-normal"
+                          >
+                            {label}
+                          </Button>
+                        );
+                      })}
+                    </div>
+                    <div className="border-t border-border/40 pt-3 space-y-2">
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          onClick={handleBackStep}
+                          className="min-h-11"
+                        >
+                          ย้อนกลับ
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          onClick={() => handleConstraintsSubmit([])}
+                          className="min-h-11 flex-1"
+                        >
+                          ไม่มีข้อจำกัด
+                        </Button>
+                      </div>
+                      <Button
+                        type="button"
+                        onClick={() => handleConstraintsSubmit(guidedData.constraints)}
+                        className="min-h-11 w-full bg-primary text-primary-foreground hover:bg-primary/95"
+                      >
+                        ถัดไป
+                      </Button>
+                    </div>
+                  </div>
+                )}
 
-              {notice && <GentleNotice icon={Moon}>{notice}</GentleNotice>}
-              {error && <ErrorNotice>{error}</ErrorNotice>}
-
-              {showRetry && (
-                <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-muted/40 p-3 text-sm">
-                  <span className="text-muted-foreground">
-                    ข้อความล่าสุดยังไม่ได้รับคำตอบจากโค้ช
-                  </span>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={handleRetry}
-                    className="min-h-11 shrink-0 gap-1.5 px-3 text-xs"
-                  >
-                    <RefreshCw className="size-3" />
-                    ลองใหม่
-                  </Button>
-                </div>
-              )}
-
-              {/* Quota reached notice */}
-              {quotaLeft === 0 && <QuotaReachedNotice />}
-
-              {quotaLeft > 0 && quotaLeft <= 2 && (
-                <p className="text-xs text-muted-foreground">
-                  เหลือคุยกับโค้ชได้อีก {quotaLeft} ข้อความวันนี้
-                </p>
-              )}
-
-              {/* TextInput form */}
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSend(inputValue);
-                }}
-                className="flex items-end gap-2"
-              >
-                <div className="relative flex-1">
-                  <textarea
-                    ref={textareaRef}
-                    rows={1}
-                    aria-label="พิมพ์ข้อความถึงโค้ช"
-                    placeholder={quotaLeft > 0 ? "คุยกับโค้ชได้เลย…" : "วันนี้โควตาแชทหมดแล้ว"}
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
-                        e.preventDefault();
-                        handleSend(inputValue);
-                      }
-                    }}
-                    disabled={quotaLeft <= 0 || isPending}
-                    maxLength={MESSAGE_MAX_LENGTH}
-                    className={cn(
-                      "block max-h-32 min-h-11 w-full resize-none rounded-lg border border-input bg-background px-3 py-2 text-base break-words shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:opacity-50",
-                      showCounter && "pr-16"
+                {guidedStep === "select_goal" && (
+                  <div className="space-y-3">
+                    <p className="text-sm font-semibold text-muted-foreground">
+                      เลือกเป้าหมายเล็ก ๆ (Micro Goal) ที่แนะนำสำหรับคุณ:
+                    </p>
+                    {!goalOptions ? (
+                      error ? null : (
+                        <div className="flex items-center gap-2 rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
+                          <Loader2 className="size-4 shrink-0 animate-spin" />
+                          กำลังดูบันทึกของคุณเพื่อเลือกเป้าหมายที่ทำได้จริง...
+                        </div>
+                      )
+                    ) : (
+                      <div className="grid grid-cols-1 gap-2">
+                        {goalOptions.map((option, index) => {
+                          const isSelected = selectedGoalIndex === index;
+                          return (
+                            <button
+                              key={option.situation}
+                              type="button"
+                              aria-pressed={isSelected}
+                              onClick={() => handleSelectOption(index)}
+                              className={cn(
+                                "w-full min-h-11 rounded-lg border p-3 text-left text-sm transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
+                                isSelected
+                                  ? "border-primary bg-primary/5 font-medium"
+                                  : "border-border hover:bg-muted/40"
+                              )}
+                            >
+                              <span>{option.title}</span>
+                              <span className="mt-1 block text-xs font-normal text-muted-foreground">
+                                {SITUATION_LABELS[option.situation]}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
                     )}
-                  />
-                  {showCounter && (
-                    <span className="absolute right-3 bottom-2 font-mono text-[11px] text-muted-foreground">
-                      {inputValue.length}/{MESSAGE_MAX_LENGTH}
-                    </span>
-                  )}
-                </div>
 
-                <Button
-                  type="submit"
-                  size="icon"
-                  disabled={quotaLeft <= 0 || isPending || !inputValue.trim()}
-                  className="size-11 shrink-0 rounded-lg bg-primary text-primary-foreground hover:bg-primary/95"
-                  aria-label="ส่งข้อความ"
+                    <div className="space-y-2 pt-1">
+                      <label
+                        htmlFor="goal-adjust-input"
+                        className="text-sm font-medium text-muted-foreground"
+                      >
+                        ปรับแต่งเป้าหมายให้เข้ากับตัวเองยิ่งขึ้นได้:
+                      </label>
+                      <Input
+                        id="goal-adjust-input"
+                        type="text"
+                        value={editedGoalTitle}
+                        onChange={(e) => setEditedGoalTitle(e.target.value)}
+                        disabled={isPending}
+                        maxLength={GOAL_TITLE_MAX_LENGTH}
+                        className="w-full min-h-11 bg-background focus-visible:border-ring focus-visible:ring-3"
+                        placeholder="ปรับเปลี่ยนเป้าหมายของคุณที่นี่…"
+                      />
+                    </div>
+
+                    <div className="border-t border-border/40 pt-3 flex gap-2 justify-between">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={handleBackStep}
+                        disabled={isPending}
+                        className="min-h-11"
+                      >
+                        ย้อนกลับ
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={handleSaveGoal}
+                        disabled={isPending || !goalOptions || !editedGoalTitle.trim()}
+                        className="min-h-11 flex-1 bg-primary text-primary-foreground hover:bg-primary/95"
+                      >
+                        {isPending ? "กำลังบันทึก…" : "บันทึกเป้าหมาย"}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {notice && <GentleNotice className="mt-2">{notice}</GentleNotice>}
+                {error && <ErrorNotice className="mt-2">{error}</ErrorNotice>}
+              </div>
+            ) : (
+              <>
+                {/* Conversation starters */}
+                {showChips && (
+                  <div className="space-y-2">
+                    <p className="text-xs font-medium text-muted-foreground">คำถามแนะนำ:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {STARTERS.map((starter) => (
+                        <Button
+                          key={starter}
+                          type="button"
+                          variant="outline"
+                          onClick={() => handleSend(starter)}
+                          className="min-h-11 rounded-full px-4 text-sm font-normal"
+                        >
+                          {starter}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {messages.length > 0 && inputValue === "" && (
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => handleSend(GOAL_STARTER)}
+                      disabled={isPending}
+                      className="min-h-11 gap-1.5 rounded-full px-4 text-sm font-normal"
+                    >
+                      <Target className="size-4 shrink-0 text-primary" />
+                      ตั้งเป้าสัปดาห์หน้า
+                    </Button>
+                  </div>
+                )}
+
+                {notice && <GentleNotice icon={Moon}>{notice}</GentleNotice>}
+                {error && <ErrorNotice>{error}</ErrorNotice>}
+
+                {showRetry && (
+                  <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-muted/40 p-3 text-sm">
+                    <span className="text-muted-foreground">
+                      ข้อความล่าสุดยังไม่ได้รับคำตอบจากโค้ช
+                    </span>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={handleRetry}
+                      className="min-h-11 shrink-0 gap-1.5 px-3 text-xs"
+                    >
+                      <RefreshCw className="size-3" />
+                      ลองใหม่
+                    </Button>
+                  </div>
+                )}
+
+                {/* Quota reached notice */}
+                {quotaLeft === 0 && <QuotaReachedNotice />}
+
+                {quotaLeft > 0 && quotaLeft <= 2 && (
+                  <p className="text-xs text-muted-foreground">
+                    เหลือคุยกับโค้ชได้อีก {quotaLeft} ข้อความวันนี้
+                  </p>
+                )}
+
+                {/* TextInput form */}
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSend(inputValue);
+                  }}
+                  className="flex items-end gap-2"
                 >
-                  <Send className="size-4" />
-                </Button>
-              </form>
-            </>
-          )}
+                  <div className="relative flex-1">
+                    <textarea
+                      ref={textareaRef}
+                      rows={1}
+                      aria-label="พิมพ์ข้อความถึงโค้ช"
+                      placeholder={quotaLeft > 0 ? "คุยกับโค้ชได้เลย…" : "วันนี้โควตาแชทหมดแล้ว"}
+                      value={inputValue}
+                      onChange={handleInputChange}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+                          e.preventDefault();
+                          handleSend(inputValue);
+                        }
+                      }}
+                      disabled={quotaLeft <= 0 || isPending}
+                      maxLength={MESSAGE_MAX_LENGTH}
+                      className={cn(
+                        "block max-h-32 min-h-11 w-full resize-none rounded-lg border border-input bg-background px-3 py-2 text-base break-words shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:opacity-50",
+                        showCounter && "pr-16"
+                      )}
+                    />
+                    {showCounter && (
+                      <span className="absolute right-3 bottom-2 font-mono text-[11px] text-muted-foreground">
+                        {inputValue.length}/{MESSAGE_MAX_LENGTH}
+                      </span>
+                    )}
+                  </div>
+
+                  <Button
+                    type="submit"
+                    size="icon"
+                    disabled={quotaLeft <= 0 || isPending || !inputValue.trim()}
+                    className="size-11 shrink-0 rounded-lg bg-primary text-primary-foreground hover:bg-primary/95"
+                    aria-label="ส่งข้อความ"
+                  >
+                    <Send className="size-4" />
+                  </Button>
+                </form>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -105,7 +105,7 @@ test("coach — สถานะที่ต้องกดก่อนเห็�
   await expectTouchTargets(page);
 
   await page.getByRole("button", { name: /^การกิน/ }).click();
-  await expect(page.getByText(/เลือกวันในสัปดาห์หน้า/)).toBeVisible();
+  await expect(page.getByRole("button", { name: /ไม่มีวันยุ่ง/ })).toBeVisible();
   await expectNoTinyThai(page);
   await expectTouchTargets(page);
 });

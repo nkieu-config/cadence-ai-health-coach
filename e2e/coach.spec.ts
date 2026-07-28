@@ -37,7 +37,7 @@ test.describe("หน้าโค้ชต้องพอดีจอ", () => {
       .click();
     await page.getByRole("button", { name: /^การกิน/ }).click();
     await page.getByRole("button", { name: "ถัดไป", exact: true }).click();
-    await expect(page.getByText("เลือกข้อจำกัดของคุณ")).toBeVisible();
+    await expect(page.getByRole("button", { name: "ไม่มีข้อจำกัด" })).toBeVisible();
 
     // ขั้น "ข้อจำกัด" คือแผงที่ยาวที่สุดของ guided flow — 5 ตัวเลือก + ปุ่มท้าย 2 แถว
     const reach = await page
