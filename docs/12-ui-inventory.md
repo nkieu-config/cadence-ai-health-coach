@@ -701,7 +701,7 @@
 | ส่งแล้วยังไม่มีคำตอบ | `needsReply(messages)` | แถบ muted "ข้อความล่าสุดยังไม่ได้รับคำตอบจากโค้ช" + ปุ่ม "ลองใหม่" ที่เรียก `retryCoachReply()` (ไม่ใช่ส่งซ้ำ) | [chat-client.tsx:369](../src/components/coach/chat-client.tsx#L369) |
 | โควตาหมด | `quotaLeft === 0` | การ์ด muted + ไอคอน `Moon` "คุยกับโค้ชครบสำหรับวันนี้แล้ว" · textarea `disabled` placeholder เปลี่ยนเป็น "วันนี้โควตาแชทหมดแล้ว" | [chat-client.tsx:800](../src/components/coach/chat-client.tsx#L800) |
 | error | action คืน `{error}` | กล่อง `role="alert"` โทน destructive · **ถ้าข้อความผู้ใช้ถูกบันทึกแล้วจะสลับ optimistic เป็นแถวจริง ถ้ายังไม่บันทึกจะถอนฟองออก คืนโควตา และเอาข้อความกลับใส่ช่องพิมพ์ให้** | [chat-client.tsx:244](../src/components/coach/chat-client.tsx#L244) |
-| ยืนยันล้างประวัติ | กด "ล้างประวัติ" | ปุ่มเปลี่ยนเป็น `destructive` "ยืนยันล้างแชท" · **กลับสภาพเดิมอัตโนมัติใน 5 วินาที** | [chat-client.tsx:404](../src/components/coach/chat-client.tsx#L404) |
+| ยืนยันล้างประวัติ | กด "ล้างประวัติ" | ปุ่มเปลี่ยนเป็น `destructive` "ยืนยันล้าง" · **กลับสภาพเดิมอัตโนมัติใน 5 วินาที** · คำสั้นเพื่อให้ความกว้างปุ่มไม่กระโดดจนหัวข้อตกบรรทัดที่ 320px | [chat-client.tsx:404](../src/components/coach/chat-client.tsx#L404) |
 
 **Copy ที่ผู้ใช้เห็น**
 

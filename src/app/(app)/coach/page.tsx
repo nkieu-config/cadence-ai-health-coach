@@ -20,17 +20,23 @@ export default async function CoachPage() {
   const opener = buildCoachOpener(recent);
 
   return (
-    <div className="mx-auto flex w-full max-w-[46rem] flex-col gap-4">
-      <div className="shrink-0">
-        <h1 className="flex items-center gap-2 text-xl font-semibold lg:text-2xl">
-          <MessageCircle className="size-6 shrink-0 text-primary" />
-          คุยกับโค้ชสุขภาพ
-        </h1>
-        <p className="hidden text-sm text-muted-foreground lg:block">
-          รับคำแนะนำเพื่อสร้างนิสัยการกิน การนอน และการเคลื่อนไหวที่ดี
-        </p>
-      </div>
-      <CoachChatClient initialMessages={history} initialQuotaLeft={quotaLeft} opener={opener} />
+    <div className="mx-auto flex w-full max-w-[46rem] flex-col">
+      <CoachChatClient
+        initialMessages={history}
+        initialQuotaLeft={quotaLeft}
+        opener={opener}
+        heading={
+          <>
+            <h1 className="flex items-center gap-2 text-xl font-semibold lg:text-2xl">
+              <MessageCircle className="size-6 shrink-0 text-primary" />
+              คุยกับโค้ชสุขภาพ
+            </h1>
+            <p className="hidden text-sm text-muted-foreground lg:block">
+              รับคำแนะนำเพื่อสร้างนิสัยการกิน การนอน และการเคลื่อนไหวที่ดี
+            </p>
+          </>
+        }
+      />
     </div>
   );
 }

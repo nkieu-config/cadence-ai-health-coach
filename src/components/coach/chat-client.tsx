@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState, useEffect, useRef, useTransition } from "react";
+import { Fragment, useState, useEffect, useRef, useTransition, type ReactNode } from "react";
 import {
   Trash2,
   Send,
@@ -54,12 +54,14 @@ interface CoachChatClientProps {
   initialMessages: ChatMessage[];
   initialQuotaLeft: number;
   opener?: CoachOpener | null;
+  heading: ReactNode;
 }
 
 export function CoachChatClient({
   initialMessages,
   initialQuotaLeft,
   opener,
+  heading,
 }: CoachChatClientProps) {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [quotaLeft, setQuotaLeft] = useState<number>(initialQuotaLeft);
@@ -440,16 +442,10 @@ export function CoachChatClient({
   const displayMessages = guidedFlow ? [...messages, ...getGuidedMessages()] : messages;
 
   return (
-    <div className="flex h-[calc(100dvh-13.75rem-env(safe-area-inset-top,0px)-env(safe-area-inset-bottom,0px))] min-h-64 flex-col gap-3 lg:h-[calc(100dvh-9.75rem)]">
+    <div className="flex h-[calc(100dvh-11rem-env(safe-area-inset-top,0px)-env(safe-area-inset-bottom,0px))] min-h-64 flex-col gap-3 lg:h-[calc(100dvh-5.5rem)]">
       {/* Top bar controls */}
-      <div className="flex min-h-9 shrink-0 items-center justify-between">
-        {quotaLeft > 0 && quotaLeft <= 2 ? (
-          <span className="text-xs text-muted-foreground">
-            เหลือคุยกับโค้ชได้อีก {quotaLeft} ข้อความวันนี้
-          </span>
-        ) : (
-          <span />
-        )}
+      <div className="flex min-h-11 shrink-0 items-center justify-between gap-3">
+        <div className="min-w-0">{heading}</div>
 
         {messages.length > 0 && (
           <Button
@@ -457,10 +453,10 @@ export function CoachChatClient({
             size="sm"
             onClick={handleClearHistory}
             disabled={isPending}
-            className="min-h-11 gap-1.5 px-3 text-xs transition-all duration-200"
+            className="min-h-11 shrink-0 gap-1.5 px-3 text-xs transition-all duration-200"
           >
             <Trash2 className="size-4" />
-            {confirmClear ? "ยืนยันล้างแชท" : "ล้างประวัติ"}
+            {confirmClear ? "ยืนยันล้าง" : "ล้างประวัติ"}
           </Button>
         )}
       </div>
@@ -825,6 +821,12 @@ export function CoachChatClient({
 
               {/* Quota reached notice */}
               {quotaLeft === 0 && <QuotaReachedNotice />}
+
+              {quotaLeft > 0 && quotaLeft <= 2 && (
+                <p className="text-xs text-muted-foreground">
+                  เหลือคุยกับโค้ชได้อีก {quotaLeft} ข้อความวันนี้
+                </p>
+              )}
 
               {/* TextInput form */}
               <form
