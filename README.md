@@ -11,6 +11,9 @@ AI Personal Health Coach สำหรับนักศึกษาและ fir
 
 [![CI](https://github.com/nkieu-config/cadence-ai-health-coach/actions/workflows/ci.yml/badge.svg)](https://github.com/nkieu-config/cadence-ai-health-coach/actions/workflows/ci.yml)
 ![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%2B%20RLS-3FCF8E?logo=supabase&logoColor=white)
 ![Gemini](https://img.shields.io/badge/Gemini-3.1%20Flash%20Lite-4285F4?logo=googlegemini&logoColor=white)
 
 [**เปิดแอปจริง**](https://personal-healthcoach.vercel.app/) •
@@ -41,7 +44,7 @@ AI Personal Health Coach สำหรับนักศึกษาและ fir
 
 ## ภาพรวม
 
-Cadence เป็น **wellness coach ไม่ใช่บริการทางการแพทย์** ผู้ใช้เช็คอินวันละครั้ง — **จับเวลาจริง 24 ครั้ง ได้มัธยฐาน 1 นาที 26 วินาที**
+Cadence เป็น **wellness coach ไม่ใช่บริการทางการแพทย์** ผู้ใช้เช็คอินวันละครั้ง ใช้เวลา**มัธยฐาน 1 นาที 26 วินาที** (จับเวลาจริง 24 ครั้ง)
 ระบบเชื่อมโยงการกิน–นอน–เคลื่อนไหวเข้ากับบริบทชีวิต (เดดไลน์ เรียนเช้า เดินทาง) แล้วเสนอก้าวเล็ก ๆ
 ที่ทำได้จริง โดยไม่ให้คะแนน ไม่จัดเกรด และไม่กดดันเรื่องรูปร่าง
 
@@ -82,7 +85,7 @@ flowchart LR
 | 1 | **ระบบจริง** — บัญชีทดลองมีข้อมูลจริง 4 สัปดาห์ ครบทั้ง dashboard, pattern, coach, goal, reflection | [แอปบน production](https://personal-healthcoach.vercel.app/)<br/>`judge@example.com` / `judgecadence123` |
 | 2 | **Deliverables ครบ 14 ข้อ อยู่ไหนบ้าง** — สารบัญ map ข้อต่อข้อ + เกณฑ์ให้คะแนน 9 ข้อ | [docs/10-deliverables-checklist.md](docs/10-deliverables-checklist.md) |
 | 3 | **หลักฐาน Safety** — 10 เคส × 2 ประโยค = 20/20 บนโมเดล production ผลดิบไม่ตัดต่อ + ลายเซ็นผู้ตรวจอิสระ | [.scratch/ai-safety-test/](.scratch/ai-safety-test/) |
-| 4 | **เอกสารออกแบบ** — ปัญหา → persona → data → architecture → AI → safety/privacy → limitations | [docs/](docs/README.md) อ่านเรียงเลข 01→11 |
+| 4 | **เอกสารออกแบบ** — ปัญหา → persona → data → architecture → AI → safety/privacy → limitations | [docs/](docs/README.md) อ่านเรียงเลข 01→12 |
 | 5 | **UI ทุกหน้า ทุกสถานะ** — บันทึกว่าแอปเป็นอย่างไรจริง พร้อมลิงก์โค้ดทุกจุด | [docs/12-ui-inventory.md](docs/12-ui-inventory.md) |
 | 6 | **Process ของทีม** — issue tracker 69 งาน (ปิดแล้ว 65), PR history, CI 2 ด่านบังคับ | [.scratch/BOARD.md](.scratch/BOARD.md) + แท็บ Pull requests |
 
