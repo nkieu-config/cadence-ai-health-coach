@@ -2,7 +2,7 @@
 
 **30 กรกฎาคม 2569 · 09.00–16.30 · ห้อง บร.2-310 คณะวิทยาศาสตร์และเทคโนโลยี มธ. ศูนย์รังสิต**
 
-**ทีม:** คีน · แพรรี่ · คีตะ · ไม้ · **ผลงาน:** Cadence · **โจทย์:** Mission #5
+**ทีม:** พี่ไม่ไหวแล้ว ฝากน้องด้วย (คีน · แพรรี่ · คีตะ · ไม้) · **ผลงาน:** Cadence · **โจทย์:** Mission #5
 
 > โฟลเดอร์นี้คือบ้านของทุกอย่างที่ใช้วันงาน · ปรับตามประกาศฉบับเต็มเมื่อ **29 ก.ค.**
 
@@ -42,7 +42,7 @@
 | --- | --- | --- |
 | ⭐ [booth-script.md](booth-script.md) | **บทหลัก 4:00 (ครบ 6 ข้อที่ประกาศสั่ง) + บทบีบ 90 วิ + บทบาท 4 คน + คำถามที่จะโดนถาม** | เช้า |
 | ⭐ [booth-checklist.md](booth-checklist.md) | **ของที่ต้องพก · การแต่งกาย · ทดสอบเครือข่าย · ลำดับเช้าวันจริง · แผนสำรอง** | เช้า |
-| **[`showcase.pdf`](showcase.pdf)** | **สไลด์บูธ 5 หน้า** — อ่านรู้เรื่องเองแม้ไม่มีคนบรรยาย | เช้า |
+| **[`showcase.pdf`](showcase.pdf)** | **สไลด์บูธ 9 หน้า** — อ่านรู้เรื่องเองแม้ไม่มีคนบรรยาย · ปิดครบ 9 ข้อที่ประกาศสั่ง | เช้า |
 | [`showcase-light.pdf`](showcase-light.pdf) | ชุดเดียวกันโทนสว่าง | เช้า |
 | ⭐ [demo-script.md](demo-script.md) | **run sheet 8 นาที + บทเดินรายคลิก + จุดตรวจเวลา + Q&A 5 นาที + ตารางเกณฑ์ + กฎเหล็ก** | บ่าย |
 | **[`deck.pdf`](deck.pdf)** | **สไลด์เวที 14 หน้า 16:9 โทนมืด** — 10 หน้าหลัก + สำรอง A/B/C/D | บ่าย |
@@ -66,10 +66,11 @@ npm run deck        # → deck.pdf · deck-light.pdf · showcase.pdf · showcase
 
 ตัวสร้างตรวจให้ทุกครั้ง: **เนื้อหาล้นหน้า** (ทั้งระดับสไลด์และกล่องข้างใน) · ภาพเสีย · ฟอนต์ไทยไม่ติด · ตัวไทยเล็กเกินไป (ต่ำกว่า 18px) — เจอแล้วขึ้น ✗ และคืน exit code ไม่เป็นศูนย์
 
-QR บน showcase คือ `deck/qr-app.png` ชี้ไป production · URL เปลี่ยนให้สร้างใหม่:
+QR บน showcase มี **2 อัน** — `deck/qr-app.png` ชี้ไป production และ `deck/qr-repo.png` ชี้ไป GitHub (ประกาศสั่งให้มีทั้ง demo และ repository) · URL เปลี่ยนให้สร้างใหม่:
 
 ```bash
 swift scripts/make-qr.swift "https://personal-healthcoach.vercel.app" docs/pitch/deck/qr-app.png
+swift scripts/make-qr.swift "https://github.com/nkieu-config/cadence-ai-health-coach" docs/pitch/deck/qr-repo.png
 ```
 
 ใช้ตัวสร้าง QR ที่มากับ macOS · **สคริปต์ถอดรหัสภาพที่เพิ่งสร้างกลับมาเทียบให้เองทุกครั้ง** ไม่ตรงจะ exit 1
@@ -98,4 +99,4 @@ swift scripts/make-qr.swift "https://personal-healthcoach.vercel.app" docs/pitch
 
 ถ่ายทุกหน้า × มือถือ/เดสก์ท็อป × light/dark (28 รูป) พร้อมเช็คว่าไม่มี console error · ไม่มีการเลื่อนแนวนอน · h1 หน้าละอัน
 
-เก็บเข้าเรโปเฉพาะชุด `light-desktop` · ชุดมือถือกับ dark เป็น gitignore เพราะสร้างใหม่ได้ตลอด · **ภาพที่ขึ้นสไลด์ (`goal-branch-*` · `backup-*` · `safety-refusal-*`) ถ่ายมือแล้ว track ไว้ ไม่ได้มาจาก `shots`**
+เก็บเข้าเรโปเฉพาะชุด `light-desktop` · ชุดมือถือกับ dark เป็น gitignore เพราะสร้างใหม่ได้ตลอด · **ภาพที่ขึ้นสไลด์ (`goal-branch-*` · `backup-*` · `safety-refusal-*`) ถ่ายมือแล้ว track ไว้ ไม่ได้มาจาก `shots`** — รวม `backup-d-goals-dark.png` ที่ก๊อปมาจากชุด dark (ชุดนั้นถูก gitignore)
