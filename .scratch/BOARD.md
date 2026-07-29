@@ -12,6 +12,7 @@
 - โมเดล production = `gemini-3.1-flash-lite` โควตา **500 ครั้ง/วันทั้งแอปรวมกัน** (INFRA-23) — ถ้า `.env.local` ของใครยังมี `AI_MODEL` ให้ลบทิ้ง
 - บัญชี demo **`palm@example.com / palmcadence123`** — มีข้อมูล 24 วัน + reflection 4 สัปดาห์ + pattern cache ไว้แล้ว เปิดมาเห็นเลย
 - **บัญชีเทส `qa-bot@example.com / qabotcadence123`** — ข้อมูล 24 วันเหมือนปาล์ม สร้างไว้ให้เทสได้โดยไม่ต้องแตะปาล์ม · เละแล้วรัน `DEMO_EMAIL=qa-bot@example.com DEMO_PASSWORD=qabotcadence123 npm run seed` คืนสภาพ
+- **บัญชีให้กรรมการลองเอง `judge@example.com / judgecadence123`** (สร้าง 29 ก.ค.) — ข้อมูลชุดเดียวกัน แยกออกมาเพราะวัน pitch กรรมการจะกดเองบนเครื่องเขา **ห้ามใช้บัญชีนี้เทส** จะไปกินโควตาแชท 5 ข้อความ/วันของเขา · รายละเอียดใน [docs/pitch/booth-checklist.md](../docs/pitch/booth-checklist.md)
 - migration ล่าสุดบน production = **0005** (ตัวนับโควตาแก้เองไม่ได้แล้ว)
 - CI บังคับ 2 ด่านทุก PR: `verify` (format/lint/tsc/test/build) + `e2e (เปิดแอปจริง)`
 
