@@ -24,12 +24,6 @@ const DOCS = [
       { theme: "light", out: "docs/pitch/showcase-light.pdf" },
     ],
   },
-  {
-    file: resolve("docs/pitch/deck/onepager.html"),
-    size: { width: 794, height: 1123 },
-    minThai: 11,
-    targets: [{ theme: "light", out: "docs/pitch/onepager.pdf" }],
-  },
 ];
 
 async function render(
@@ -126,7 +120,7 @@ async function main() {
   if (!existsSync(QR)) {
     console.log(
       `\n⚠️ ยังไม่มี ${QR}\n` +
-        `   showcase กับ onepager วางกรอบ QR ไว้แล้วแต่ยังเป็นช่องว่าง — กรรมการสแกนลองเองไม่ได้\n` +
+        `   showcase วางกรอบ QR ไว้แล้วแต่ยังเป็นช่องว่าง — กรรมการสแกนลองเองไม่ได้\n` +
         `   สร้าง QR ของ https://personal-healthcoach.vercel.app เป็น PNG สี่เหลี่ยมจัตุรัส ≥ 600px\n` +
         `   บันทึกทับที่ path ข้างบน แล้วรัน npm run deck ใหม่`
     );

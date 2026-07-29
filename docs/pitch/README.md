@@ -14,7 +14,7 @@
 | --- | --- | --- |
 | 09.00 | ลงทะเบียน · **จัด Exhibition Booth · ทดสอบอุปกรณ์** | [booth-checklist.md](booth-checklist.md) |
 | ~10.00 | พิธีลงนาม MoU | ช่วงนี้ว่าง — **ใช้เช็คระบบหน้างาน** |
-| **รอบเช้า · 60–75 นาที** | **Exhibition Pitching — รอบคัดเหลือ 6 ทีม**<br>กรรมการเดินเยี่ยมแต่ละจุด · ฟัง · **ทดลองผลงาน** · ซักถาม | [`showcase.pdf`](showcase.pdf) + [booth-script.md](booth-script.md) + [`onepager.pdf`](onepager.pdf) |
+| **รอบเช้า · 60–75 นาที** | **Exhibition Pitching — รอบคัดเหลือ 6 ทีม**<br>กรรมการเดินเยี่ยมแต่ละจุด · ฟัง · **ทดลองผลงาน** · ซักถาม | [`showcase.pdf`](showcase.pdf) + [booth-script.md](booth-script.md) + [booth-checklist.md](booth-checklist.md) |
 | **รอบบ่าย** | **Final Pitching** — นำเสนอ **8 นาที** + ตอบคำถาม **5 นาที** | [`deck.pdf`](deck.pdf) + [demo-script.md](demo-script.md) |
 
 > **ไม่ผ่านรอบเช้า = ไม่ได้ขึ้นบ่าย** · คนละสไลด์กัน อย่าหยิบสลับ
@@ -44,11 +44,10 @@
 | ⭐ [booth-checklist.md](booth-checklist.md) | **ของที่ต้องพก · การแต่งกาย · ทดสอบเครือข่าย · ลำดับเช้าวันจริง · แผนสำรอง** | เช้า |
 | **[`showcase.pdf`](showcase.pdf)** | **สไลด์บูธ 5 หน้า** — อ่านรู้เรื่องเองแม้ไม่มีคนบรรยาย | เช้า |
 | [`showcase-light.pdf`](showcase-light.pdf) | ชุดเดียวกันโทนสว่าง | เช้า |
-| [`onepager.pdf`](onepager.pdf) | **A4 แผ่นเดียว พิมพ์วางโต๊ะ** ให้กรรมการหยิบอ่านเองตอนเรายังไม่ว่าง | เช้า |
 | ⭐ [demo-script.md](demo-script.md) | **run sheet 8 นาที + บทเดินรายคลิก + จุดตรวจเวลา + Q&A 5 นาที + ตารางเกณฑ์ + กฎเหล็ก** | บ่าย |
 | **[`deck.pdf`](deck.pdf)** | **สไลด์เวที 14 หน้า 16:9 โทนมืด** — 10 หน้าหลัก + สำรอง A/B/C/D | บ่าย |
 | [`deck-light.pdf`](deck-light.pdf) | ชุดเดียวกันโทนสว่าง — เผื่อโปรเจกเตอร์สู้แสงไม่ไหว | บ่าย |
-| [`deck/`](deck/) | ต้นฉบับ `deck.html` · `showcase.html` · `onepager.html` — **แก้ข้อความบนจอที่นี่** | คนแก้ |
+| [`deck/`](deck/) | ต้นฉบับ `deck.html` · `showcase.html` — **แก้ข้อความบนจอที่นี่** | คนแก้ |
 | [`screenshots/`](screenshots/) | ภาพสำรอง — ประกาศสั่งให้มี *"Screenshots ของผลลัพธ์สำคัญ"* | ทั้งวัน |
 
 > **มี 3 ไฟล์เท่านั้นที่ต้องอ่านวันงาน** — เช้าอ่าน `booth-script` + `booth-checklist` · บ่ายอ่าน `demo-script`
@@ -62,12 +61,12 @@
 
 ```bash
 # แก้ไฟล์ใน docs/pitch/deck/ แล้ว
-npm run deck        # → deck.pdf · deck-light.pdf · showcase.pdf · showcase-light.pdf · onepager.pdf
+npm run deck        # → deck.pdf · deck-light.pdf · showcase.pdf · showcase-light.pdf
 ```
 
-ตัวสร้างตรวจให้ทุกครั้ง: **เนื้อหาล้นหน้า** (ทั้งระดับสไลด์และกล่องข้างใน) · ภาพเสีย · ฟอนต์ไทยไม่ติด · ตัวไทยเล็กเกินไป (สไลด์ 18px · A4 11px) — เจอแล้วขึ้น ✗ และคืน exit code ไม่เป็นศูนย์
+ตัวสร้างตรวจให้ทุกครั้ง: **เนื้อหาล้นหน้า** (ทั้งระดับสไลด์และกล่องข้างใน) · ภาพเสีย · ฟอนต์ไทยไม่ติด · ตัวไทยเล็กเกินไป (ต่ำกว่า 18px) — เจอแล้วขึ้น ✗ และคืน exit code ไม่เป็นศูนย์
 
-QR บน showcase และ onepager คือ `deck/qr-app.png` ชี้ไป production · URL เปลี่ยนให้สร้างใหม่:
+QR บน showcase คือ `deck/qr-app.png` ชี้ไป production · URL เปลี่ยนให้สร้างใหม่:
 
 ```bash
 swift scripts/make-qr.swift "https://personal-healthcoach.vercel.app" docs/pitch/deck/qr-app.png
