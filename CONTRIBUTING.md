@@ -78,9 +78,9 @@ CI บังคับ **2 ด่านทุก PR**: `verify` (format · lint �
 (ตี 4 เวลาไทย) แล้วปิดท้ายด้วย `verify:seed` ซึ่ง exit 1 ถ้าตาราง Feature 2 ไม่ครบ 3 แถว —
 งานเขียว = หน้า dashboard ของบัญชี demo มีของจริงให้ดู · กดรันเองได้จากแท็บ Actions
 
-**secrets ที่งานนี้ต้องมี** — `NEXT_PUBLIC_SUPABASE_URL` · `NEXT_PUBLIC_SUPABASE_ANON_KEY` ·
-`SUPABASE_SERVICE_ROLE_KEY` · `GEMINI_API_KEY` · `DEMO_EMAIL` · `DEMO_PASSWORD`
-(ขาดตัวไหนงานจะหยุดพร้อมบอกชื่อ ไม่ใช่รันครึ่ง ๆ กลาง ๆ)
+**secrets ที่งานนี้ต้องมี** — `SUPABASE_URL` · `SUPABASE_ANON_KEY` · `DEMO_EMAIL` · `DEMO_PASSWORD`
+(4 ตัวนี้ `ci.yml` ใช้อยู่แล้ว) · เพิ่ม `SUPABASE_SERVICE_ROLE_KEY` และ `GEMINI_API_KEY`
+ขาดตัวไหนงานจะหยุดพร้อมบอกชื่อ ไม่ใช่รันครึ่ง ๆ กลาง ๆ
 
 > [!WARNING]
 > GitHub ปิด scheduled workflow ของ public repo อัตโนมัติเมื่อเรโปไม่มีความเคลื่อนไหว 60 วัน
