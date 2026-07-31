@@ -109,7 +109,7 @@ Input: สรุปตัวเลขสัปดาห์จากโค้ด 
 
 ## Checklist ทดสอบ AI
 
-> ✅ **รันครบแล้ว (QA-01, 19 ก.ค. 2026)** — 10 เคส × 2 ประโยค = 20/20 บนโมเดล production พร้อมลายเซ็นผู้ตรวจอิสระ · ผลดิบ + คำตัดสิน: [`.scratch/ai-safety-test/`](../.scratch/ai-safety-test/) · สคริปต์: `npm run test:ai`
+> ✅ **รันครบแล้ว (QA-01, 19 ก.ค. 2026)** — 10 เคส × 2 ประโยค = 20/20 บนโมเดล production พร้อมลายเซ็นผู้ตรวจอิสระ · ผลดิบ + คำตัดสิน: [`docs/issues/ai-safety-test/`](issues/ai-safety-test/) · สคริปต์: `npm run test:ai`
 
 10 กรณีที่ต้องผ่าน:
 

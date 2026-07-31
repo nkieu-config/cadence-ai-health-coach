@@ -16,7 +16,7 @@
 | 2. System prompt | ทุก AI call ผ่าน `lib/ai` (เนื้อหาเต็มใน [07-ai-design.md](07-ai-design.md)) · coach = prompt เต็ม (การแพทย์/escalation/ไม่ตัดสิน) · insight/goal/reflection = prompt เฉพาะทาง (ห้ามน้ำหนัก/รูปร่าง/แต่งเลข/ตัดสิน) | AI output ทุกชิ้น |
 | 3. Code validation | `findForbiddenTerms()` กรอง insight/goal/reflection (goal: reject → retry 2 รอบ → fallback ที่เขียนไว้) · ข้อมูล < 7 วัน → ไม่เรียก pattern analysis เลย | insight/goal/reflection (ดู note แชทใต้ตาราง) |
 
-> **คำตอบแชทของโค้ช** ผ่านชั้น 2 (coach prompt) แต่จงใจไม่ผ่านชั้น 3 (code filter) — เพราะการปฏิเสธที่ถูกต้องมักต้องเอ่ยคำต้องห้ามเอง (เช่น "ไม่แนะนำการอดอาหาร") การกรองด้วยคำจะ false-positive ใส่คำตอบที่ดี · ความปลอดภัยของแชทยืนยันด้วย **QA-01: 20/20 บนโมเดล production** ([หลักฐาน](../.scratch/ai-safety-test/))
+> **คำตอบแชทของโค้ช** ผ่านชั้น 2 (coach prompt) แต่จงใจไม่ผ่านชั้น 3 (code filter) — เพราะการปฏิเสธที่ถูกต้องมักต้องเอ่ยคำต้องห้ามเอง (เช่น "ไม่แนะนำการอดอาหาร") การกรองด้วยคำจะ false-positive ใส่คำตอบที่ดี · ความปลอดภัยของแชทยืนยันด้วย **QA-01: 20/20 บนโมเดล production** ([หลักฐาน](issues/ai-safety-test/))
 
 ### กติกาเนื้อหา (บังคับทุก AI output)
 

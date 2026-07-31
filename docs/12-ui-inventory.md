@@ -303,12 +303,12 @@
 
 **ทำไมถึงเป็นแบบนี้**
 
-- **หน้าเป็น `width="content"` แต่ฟอร์มยัง 448px** — [INFRA-17](../.scratch/infra/issues/17-checkin-desktop-rail.md) ระบุปัญหาตรง ๆ ว่าฟอร์มแคบกลางจอ "เหมือน mobile ตอนขึ้นจอโปรเจกเตอร์ demo" และตัดสินใจ **ไม่ขยายฟอร์ม** แต่เติม rail แทน · rail เป็น `aria-hidden` ไม่ interactive → ไม่ชนกฎ 44px
-- **ทุกคำถามเป็นชิป ไม่มีพิมพ์ ยกเว้น note 200 ตัวอักษร** — [F1-01](../.scratch/f1-checkin/issues/01-checkin-form.md) พร้อม AC "กรอกจบจริง ≤ 3 นาที"
-- **คำถามเสริมโผล่เฉพาะเมื่อเกี่ยว** — [F1-05](../.scratch/f1-checkin/issues/05-mission-input-coverage.md) ย้ำว่า "บังคับใน `validate.ts` ไม่ใช่แค่ซ่อนใน UI"
-- **ไม่ถามเวลาตื่น** — [F1-05](../.scratch/f1-checkin/issues/05-mission-input-coverage.md): "เวลาตื่นนอน — **คำนวณ ไม่ถามซ้ำ**"
-- **สรุปหลังบันทึกไม่เรียก AI** — [F1-04](../.scratch/f1-checkin/issues/04-post-checkin-summary.md): "template ฝั่งโค้ด ไม่เรียก AI — เร็วและฟรี" + AC "ห้ามมีโทนตัดสิน แม้วันที่ข้อมูลแย่"
-- **มี guard เที่ยงคืนเฉพาะหน้านี้** — [INFRA-11](../.scratch/infra/issues/11-component-composition.md): "หน้า `/checkin` derive วันเอง ถ้าเปิดค้างข้ามเที่ยงคืนต้องกัน · หน้า edit วันมาจาก URL ไม่ต้องกัน"
+- **หน้าเป็น `width="content"` แต่ฟอร์มยัง 448px** — [INFRA-17](issues/infra/issues/17-checkin-desktop-rail.md) ระบุปัญหาตรง ๆ ว่าฟอร์มแคบกลางจอ "เหมือน mobile ตอนขึ้นจอโปรเจกเตอร์ demo" และตัดสินใจ **ไม่ขยายฟอร์ม** แต่เติม rail แทน · rail เป็น `aria-hidden` ไม่ interactive → ไม่ชนกฎ 44px
+- **ทุกคำถามเป็นชิป ไม่มีพิมพ์ ยกเว้น note 200 ตัวอักษร** — [F1-01](issues/f1-checkin/issues/01-checkin-form.md) พร้อม AC "กรอกจบจริง ≤ 3 นาที"
+- **คำถามเสริมโผล่เฉพาะเมื่อเกี่ยว** — [F1-05](issues/f1-checkin/issues/05-mission-input-coverage.md) ย้ำว่า "บังคับใน `validate.ts` ไม่ใช่แค่ซ่อนใน UI"
+- **ไม่ถามเวลาตื่น** — [F1-05](issues/f1-checkin/issues/05-mission-input-coverage.md): "เวลาตื่นนอน — **คำนวณ ไม่ถามซ้ำ**"
+- **สรุปหลังบันทึกไม่เรียก AI** — [F1-04](issues/f1-checkin/issues/04-post-checkin-summary.md): "template ฝั่งโค้ด ไม่เรียก AI — เร็วและฟรี" + AC "ห้ามมีโทนตัดสิน แม้วันที่ข้อมูลแย่"
+- **มี guard เที่ยงคืนเฉพาะหน้านี้** — [INFRA-11](issues/infra/issues/11-component-composition.md): "หน้า `/checkin` derive วันเอง ถ้าเปิดค้างข้ามเที่ยงคืนต้องกัน · หน้า edit วันมาจาก URL ไม่ต้องกัน"
 
 ---
 
@@ -350,7 +350,7 @@
 
 **ทำไมถึงเป็นแบบนี้**
 
-- **ใช้ URL `/checkin/edit/[date]` ไม่ใช่ `/checkin/[date]`** — [F1-03](../.scratch/f1-checkin/issues/03-edit-backfill.md): "ตั้งใจไม่ใช้ `/checkin/[date]` กันชนกับ `history`"
+- **ใช้ URL `/checkin/edit/[date]` ไม่ใช่ `/checkin/[date]`** — [F1-03](issues/f1-checkin/issues/03-edit-backfill.md): "ตั้งใจไม่ใช้ `/checkin/[date]` กันชนกับ `history`"
 - **จำกัด 30 วัน** — ค่าคงที่เดียวคือ `MAX_BACKFILL_DAYS` ใช้ร่วมกันทั้ง route guard ข้อความ และ query
 - **แยกเป็น variant แทน boolean prop** — DESIGN.md ยกไฟล์คู่นี้เป็นตัวอย่างอ้างอิงของทั้งโปรเจกต์ · แกน `CheckinForm` ไม่รู้จักคำว่า backfill เลย
 
@@ -399,8 +399,8 @@
 
 **ทำไมถึงเป็นแบบนี้**
 
-- **มีหน้านี้เพราะเกณฑ์ privacy** — [F1-03](../.scratch/f1-checkin/issues/03-edit-backfill.md) AC: "ลบรายการได้จริง (เกณฑ์ privacy — แก้/ลบข้อมูลตัวเองได้)" · URL ถูกล็อกไว้ให้หน้า privacy ลิงก์มาตาม FR-7.3
-- **ยืนยันลบ 2 จังหวะในการ์ด ไม่ใช้ dialog** — [F1-03](../.scratch/f1-checkin/issues/03-edit-backfill.md): "เลี่ยงแตะ `package.json` ซึ่งเป็นไฟล์ shared"
+- **มีหน้านี้เพราะเกณฑ์ privacy** — [F1-03](issues/f1-checkin/issues/03-edit-backfill.md) AC: "ลบรายการได้จริง (เกณฑ์ privacy — แก้/ลบข้อมูลตัวเองได้)" · URL ถูกล็อกไว้ให้หน้า privacy ลิงก์มาตาม FR-7.3
+- **ยืนยันลบ 2 จังหวะในการ์ด ไม่ใช้ dialog** — [F1-03](issues/f1-checkin/issues/03-edit-backfill.md): "เลี่ยงแตะ `package.json` ซึ่งเป็นไฟล์ shared"
 - **ชื่อภาษาไทยของทุกค่ามาจากที่เดียว** — `src/lib/checkins/labels.ts` "Dashboard/ประวัติ ใช้ตัวนี้ อย่าตั้งชื่อเอง"
 - **แก้แล้วหน้าอื่นอัปเดตทันที** — `revalidatePath` ทั้ง `/checkin`, `/checkin/history`, `/dashboard` ทุกครั้งที่บันทึกหรือลบ [actions.ts:12-16](../src/lib/checkins/actions.ts#L12)
 # หน้าในแอป — ภาพรวมและสรุปสัปดาห์
@@ -442,7 +442,7 @@
 
 - ใช้ `color: "var(--chart-N)"` ตรงตาม DESIGN.md · ⚠️ **แต่ `--chart-6` อยู่นอกช่วง `--chart-1..5` ที่ DESIGN.md ข้อ 4 ระบุ** (token มีจริงพร้อมคู่ dark — เอกสารไม่ได้อัปเดต)
 - แท็บเป็น `<button>` client-side `min-h-11` มี `aria-pressed` · label สั้น (นอน/กิน/ขยับ/พลังงาน) ตามกฎ "pill ต้องจบแถวเดียว"
-- **legend เป็น `<div>` ใต้กราฟ ไม่ใช่ `ChartLegend` ใน SVG** — [F2-03](../.scratch/f2-dashboard/issues/03-disruptor-overlay.md): "มันชนกับ marker เสมอ"
+- **legend เป็น `<div>` ใต้กราฟ ไม่ใช่ `ChartLegend` ใน SVG** — [F2-03](issues/f2-dashboard/issues/03-disruptor-overlay.md): "มันชนกับ marker เสมอ"
 - tooltip เขียนเอง ภาษาไทยทั้งหมด: หัว = วันที่ไทยแบบเต็ม · ค่ามีหน่วยไทย · แท็บพลังงานแปลง 1/2/3 เป็น "ต่ำ/กลาง/สูง"
 - แกน Y: แท็บนอน fix `[0, 12]` + เส้นอ้างอิงประที่ 6 ชม. สี `var(--muted-foreground)` (ตรงกฎสี "เส้นอ้างอิง → muted-foreground ไม่ใช่แดง")
 - แกน X: `interval={0}` (โชว์ทุกวัน) เมื่อ period ≤ 14 · 30 วันปล่อยให้ recharts เว้นเอง
@@ -513,15 +513,15 @@
 
 **ทำไมถึงเป็นแบบนี้**
 
-- **Suspense ครอบ 3 การ์ด** — [INFRA-10](../.scratch/infra/issues/10-render-waterfalls.md) วัดไว้ว่า "Gemini ตอบ ~10 วินาที → dashboard ทั้งหน้าค้างรอ 10 วิ ทั้งที่กราฟกับตาราง pattern พร้อมแสดงตั้งนานแล้ว"
-- **แท็บ "ขยับ" เป็นแท่งนาทีรวมสีเดียว ไม่แยกชนิด** — [F2-02](../.scratch/f2-dashboard/issues/02-pillar-charts.md): "ข้อมูลจริงรองรับไม่ได้ (check-in เก็บนาทีรวม)" · เคยพังเป็นกราฟว่างและถูกตามแก้ใน [F2-06](../.scratch/f2-dashboard/issues/06-movement-tab-blank.md) พร้อมเพิ่ม e2e ที่วัด "ความสูงจริง" ของแท่ง
-- **พลังงานใช้สีเดียว `--chart-4`** — [F2-02](../.scratch/f2-dashboard/issues/02-pillar-charts.md): "ห้ามใช้แดง=ต่ำ/เขียว=สูง (CVD)"
-- **`generateInsight` ผูกกับปุ่มเท่านั้น ห้ามเรียกตอน render** — [F2-04](../.scratch/f2-dashboard/issues/04-pattern-table.md): "เช็ค `checkDataSufficiency` ก่อนโชว์ปุ่ม (< 7 วัน = ไม่มีปุ่ม ไม่ยิง AI)"
-- **ตัวเลขทั้งหมดมาจาก `lib/patterns` ไม่ใช่ AI** — [F3-03](../.scratch/f3-pattern-analysis/issues/03-insight-endpoint-cache.md): "Gemini เขียนแค่ภาษา ส่วนสถิติ (evidence) + pillars มาจาก `lib/patterns` เสมอ ไม่ให้ Gemini แต่งเลข" และ "Gemini ล่ม/โควตาหมด → template ทั้งหมด หน้าไม่พัง" — อธิบายว่าทำไมไม่มี UI สถานะ "โควตาหมด"
-- **"< 7 วัน" เป็น state ของตัวเอง ไม่ใช่ error สีแดง** — [F3-04](../.scratch/f3-pattern-analysis/issues/04-insufficient-data.md)
-- **ห้ามถอด `CurrentGoalCard` + `ReflectionCard` ออกจากหน้า** — [F2-02](../.scratch/f2-dashboard/issues/02-pillar-charts.md): "ลิงก์ไป `/reflection` มีที่เดียวในแอปคือการ์ดใบนี้ และไม่มีเทสต์ตัวไหนจับ"
-- **ไม่มีคะแนน/เกรด/streak เชิงลงโทษ** — AC ของ [F2-02](../.scratch/f2-dashboard/issues/02-pillar-charts.md) และ [F2-05](../.scratch/f2-dashboard/issues/05-streak.md) ที่ยัง `ready-for-human` (Priority C)
-- **กราฟใช้ `color: var(--chart-N)` ห้าม `theme: {light, dark}`** — [INFRA-14](../.scratch/infra/issues/14-chart-tokens-dark-mode.md) วัดได้ว่าแบบเดิม contrast เหลือ 1.44:1 ใน dark mode
+- **Suspense ครอบ 3 การ์ด** — [INFRA-10](issues/infra/issues/10-render-waterfalls.md) วัดไว้ว่า "Gemini ตอบ ~10 วินาที → dashboard ทั้งหน้าค้างรอ 10 วิ ทั้งที่กราฟกับตาราง pattern พร้อมแสดงตั้งนานแล้ว"
+- **แท็บ "ขยับ" เป็นแท่งนาทีรวมสีเดียว ไม่แยกชนิด** — [F2-02](issues/f2-dashboard/issues/02-pillar-charts.md): "ข้อมูลจริงรองรับไม่ได้ (check-in เก็บนาทีรวม)" · เคยพังเป็นกราฟว่างและถูกตามแก้ใน [F2-06](issues/f2-dashboard/issues/06-movement-tab-blank.md) พร้อมเพิ่ม e2e ที่วัด "ความสูงจริง" ของแท่ง
+- **พลังงานใช้สีเดียว `--chart-4`** — [F2-02](issues/f2-dashboard/issues/02-pillar-charts.md): "ห้ามใช้แดง=ต่ำ/เขียว=สูง (CVD)"
+- **`generateInsight` ผูกกับปุ่มเท่านั้น ห้ามเรียกตอน render** — [F2-04](issues/f2-dashboard/issues/04-pattern-table.md): "เช็ค `checkDataSufficiency` ก่อนโชว์ปุ่ม (< 7 วัน = ไม่มีปุ่ม ไม่ยิง AI)"
+- **ตัวเลขทั้งหมดมาจาก `lib/patterns` ไม่ใช่ AI** — [F3-03](issues/f3-pattern-analysis/issues/03-insight-endpoint-cache.md): "Gemini เขียนแค่ภาษา ส่วนสถิติ (evidence) + pillars มาจาก `lib/patterns` เสมอ ไม่ให้ Gemini แต่งเลข" และ "Gemini ล่ม/โควตาหมด → template ทั้งหมด หน้าไม่พัง" — อธิบายว่าทำไมไม่มี UI สถานะ "โควตาหมด"
+- **"< 7 วัน" เป็น state ของตัวเอง ไม่ใช่ error สีแดง** — [F3-04](issues/f3-pattern-analysis/issues/04-insufficient-data.md)
+- **ห้ามถอด `CurrentGoalCard` + `ReflectionCard` ออกจากหน้า** — [F2-02](issues/f2-dashboard/issues/02-pillar-charts.md): "ลิงก์ไป `/reflection` มีที่เดียวในแอปคือการ์ดใบนี้ และไม่มีเทสต์ตัวไหนจับ"
+- **ไม่มีคะแนน/เกรด/streak เชิงลงโทษ** — AC ของ [F2-02](issues/f2-dashboard/issues/02-pillar-charts.md) และ [F2-05](issues/f2-dashboard/issues/05-streak.md) ที่ยัง `ready-for-human` (Priority C)
+- **กราฟใช้ `color: var(--chart-N)` ห้าม `theme: {light, dark}`** — [INFRA-14](issues/infra/issues/14-chart-tokens-dark-mode.md) วัดได้ว่าแบบเดิม contrast เหลือ 1.44:1 ใน dark mode
 
 ---
 
@@ -554,7 +554,7 @@
 - **ไม่ auto-generate ตอนเปิดหน้า** — อ่านจาก `ai_outputs` อย่างเดียว (สูงสุด 12 สัปดาห์)
 - สร้างเมื่อ **ผู้ใช้กดปุ่มเท่านั้น** · ช่วงที่สรุปคือ **7 วันล่าสุดจนถึงวันนี้** เสมอ ไม่ใช่สัปดาห์ปฏิทิน
 - ปุ่มปรากฏ 2 ที่: การ์ด empty state และการ์ดเตือน "ยังไม่รวมบันทึกล่าสุด"
-- ⚠️ [F6-01](../.scratch/f6-weekly-reflection/issues/01-generation.md) เขียนสเปกไว้ว่า "Generate เมื่อผู้ใช้เปิดดูสัปดาห์ที่จบแล้วและยังไม่มีรายงาน" — **โค้ดที่ลงจริงไม่ทำแบบนั้น** (น่าจะเพื่อกันโควตา ตามคอมเมนต์ใน [F6-02](../.scratch/f6-weekly-reflection/issues/02-ui-history.md))
+- ⚠️ [F6-01](issues/f6-weekly-reflection/issues/01-generation.md) เขียนสเปกไว้ว่า "Generate เมื่อผู้ใช้เปิดดูสัปดาห์ที่จบแล้วและยังไม่มีรายงาน" — **โค้ดที่ลงจริงไม่ทำแบบนั้น** (น่าจะเพื่อกันโควตา ตามคอมเมนต์ใน [F6-02](issues/f6-weekly-reflection/issues/02-ui-history.md))
 
 **State ที่รองรับ**
 
@@ -594,11 +594,11 @@
 
 **ทำไมถึงเป็นแบบนี้**
 
-- **การ์ด "เทียบกับสัปดาห์ก่อน" มีเพราะเกณฑ์ Reflection and Improvement** — [F6-03](../.scratch/f6-weekly-reflection/issues/03-week-comparison.md): "ตรวจ `src/lib` ทั้งหมดแล้วไม่มีการเทียบสัปดาห์ต่อสัปดาห์อยู่ที่ไหนเลย … แปลว่าเราจะเสียคะแนนเกณฑ์นี้แบบไม่รู้ตัว"
-- **ตัวเลขเทียบคำนวณสดในโค้ด ไม่ใช้ AI และไม่ฝังใน cache** — [F6-03](../.scratch/f6-weekly-reflection/issues/03-week-comparison.md): "ไม่กินโควตา · unit test ได้ · ใช้ได้แม้ Gemini ล่ม" และ "ปาล์มมี reflection 4 สัปดาห์ cache อยู่แล้ว ถ้าฝังในนั้นต้องรัน backfill ใหม่ = เสียโควตาฟรี ๆ"
-- **เทียบค่าเฉลี่ยต่อวัน/สัดส่วน ไม่ใช่ผลรวมดิบ** — [F6-03](../.scratch/f6-weekly-reflection/issues/03-week-comparison.md): "หลอกตาเมื่อจำนวนวันบันทึกไม่เท่ากัน"
-- **การ์ดเตือนแทนที่จะกลบข้อความเก่า** — [F6-02](../.scratch/f6-weekly-reflection/issues/02-ui-history.md): "ข้อความ AI ถูก cache ไว้ ส่วนตัวเลขเทียบคำนวณสด → ขัดกันได้ · ไม่กลบ แต่ขึ้นการ์ด … เฉพาะสัปดาห์ล่าสุด"
-- **บันทึก < 3 วัน ได้รายงานสั้น ไม่ยิง Gemini** — [F6-01](../.scratch/f6-weekly-reflection/issues/01-generation.md): "รายงานสั้นเชิงชวนกลับมา ไม่วิเคราะห์เกินข้อมูล"
+- **การ์ด "เทียบกับสัปดาห์ก่อน" มีเพราะเกณฑ์ Reflection and Improvement** — [F6-03](issues/f6-weekly-reflection/issues/03-week-comparison.md): "ตรวจ `src/lib` ทั้งหมดแล้วไม่มีการเทียบสัปดาห์ต่อสัปดาห์อยู่ที่ไหนเลย … แปลว่าเราจะเสียคะแนนเกณฑ์นี้แบบไม่รู้ตัว"
+- **ตัวเลขเทียบคำนวณสดในโค้ด ไม่ใช้ AI และไม่ฝังใน cache** — [F6-03](issues/f6-weekly-reflection/issues/03-week-comparison.md): "ไม่กินโควตา · unit test ได้ · ใช้ได้แม้ Gemini ล่ม" และ "ปาล์มมี reflection 4 สัปดาห์ cache อยู่แล้ว ถ้าฝังในนั้นต้องรัน backfill ใหม่ = เสียโควตาฟรี ๆ"
+- **เทียบค่าเฉลี่ยต่อวัน/สัดส่วน ไม่ใช่ผลรวมดิบ** — [F6-03](issues/f6-weekly-reflection/issues/03-week-comparison.md): "หลอกตาเมื่อจำนวนวันบันทึกไม่เท่ากัน"
+- **การ์ดเตือนแทนที่จะกลบข้อความเก่า** — [F6-02](issues/f6-weekly-reflection/issues/02-ui-history.md): "ข้อความ AI ถูก cache ไว้ ส่วนตัวเลขเทียบคำนวณสด → ขัดกันได้ · ไม่กลบ แต่ขึ้นการ์ด … เฉพาะสัปดาห์ล่าสุด"
+- **บันทึก < 3 วัน ได้รายงานสั้น ไม่ยิง Gemini** — [F6-01](issues/f6-weekly-reflection/issues/01-generation.md): "รายงานสั้นเชิงชวนกลับมา ไม่วิเคราะห์เกินข้อมูล"
 # หน้าในแอป — โค้ชและเป้าหมาย
 
 ## `/coach` — คุยกับโค้ชสุขภาพ
@@ -649,7 +649,7 @@
 
 **ไม่รองรับ** (จะโผล่เป็นตัวอักษรดิบ): ตัวเอียง, ลิงก์ `[]()`, code fence, ลิสต์ซ้อนชั้น · **ไม่มี `dangerouslySetInnerHTML` ที่ไหนเลย → raw HTML จาก LLM หลุดไม่ได้**
 
-> ✅ AC ของ [F4-06](../.scratch/f4-coach/issues/06-markdown-bubbles.md) — "ฟองข้อความโค้ชไม่มี `**` `##` ดิบโผล่" · **ปิดแล้ว 25 ก.ค.** พร้อม [unit test 6 ข้อ](../src/components/coach/formatted-message.test.ts) ที่ใช้คำตอบ Gemini จริงจาก `.scratch/ai-safety-test/` ตามที่ AC บังคับว่าห้ามยิงโมเดลใหม่
+> ✅ AC ของ [F4-06](issues/f4-coach/issues/06-markdown-bubbles.md) — "ฟองข้อความโค้ชไม่มี `**` `##` ดิบโผล่" · **ปิดแล้ว 25 ก.ค.** พร้อม [unit test 6 ข้อ](../src/components/coach/formatted-message.test.ts) ที่ใช้คำตอบ Gemini จริงจาก `docs/issues/ai-safety-test/` ตามที่ AC บังคับว่าห้ามยิงโมเดลใหม่
 
 **ช่องพิมพ์**
 
@@ -689,7 +689,7 @@
 
 ระหว่างรอ AI ขั้นสุดท้ายจะเห็นกล่องเส้นประ + `Loader2` + "กำลังดูบันทึกของคุณเพื่อเลือกเป้าหมายที่ทำได้จริง..."
 
-ข้อความโค้ชทั้ง 4 ก้อนและข้อความตอบของผู้ใช้ใน flow เป็น **template ในโค้ด** — ไม่ยิง Gemini และไม่บันทึกลง `chat_messages` ([F4-03](../.scratch/f4-coach/issues/03-guided-goal-flow.md): "เจตนาคือแบบฟอร์มที่แต่งเป็นบทสนทนา")
+ข้อความโค้ชทั้ง 4 ก้อนและข้อความตอบของผู้ใช้ใน flow เป็น **template ในโค้ด** — ไม่ยิง Gemini และไม่บันทึกลง `chat_messages` ([F4-03](issues/f4-coach/issues/03-guided-goal-flow.md): "เจตนาคือแบบฟอร์มที่แต่งเป็นบทสนทนา")
 
 **State ที่รองรับ**
 
@@ -732,11 +732,11 @@
 
 - **ไม่ใช้ PageContainer / กว้าง 46rem / โครง 3 ชั้น** — DESIGN.md ระบุเป็นข้อยกเว้นที่ตั้งใจ: "แชทเป็นบทสนทนา ไม่ใช่ฟอร์ม · ให้ข้อความเลื่อนในกล่อง input ปักล่าง (โครง 3 ชั้นแบบ LINE/ChatGPT)"
 - **โค้ชไม่มีพื้นฟอง มี avatar + ชื่อ** — DESIGN.md: "ตัวตนโค้ชชัด ตามโจทย์ Feature 4"
-- **แยก variant แทน boolean prop** — [F4-01](../.scratch/f4-coach/issues/01-chat-ui-history.md): "ห้ามรวมเป็นคอมโพเนนต์เดียวแล้วสลับด้วย flag"
+- **แยก variant แทน boolean prop** — [F4-01](issues/f4-coach/issues/01-chat-ui-history.md): "ห้ามรวมเป็นคอมโพเนนต์เดียวแล้วสลับด้วย flag"
 - **ปุ่มลองใหม่เรียก `retryCoachReply()`** — DESIGN.md: "ไม่งั้นประวัติจะมีข้อความผู้ใช้ซ้ำ 2 อัน"
-- **เขียน markdown renderer เอง ไม่ลง library** — [F4-06](../.scratch/f4-coach/issues/06-markdown-bubbles.md) เลือกทางที่ "ไม่ลง lib ไม่แตะ prompt" เพราะแตะ `COACH_SYSTEM_PROMPT` จะทำให้หลักฐาน safety ทั้งกองเป็นโมฆะและกินโควตา Gemini ทั้งวัน
+- **เขียน markdown renderer เอง ไม่ลง library** — [F4-06](issues/f4-coach/issues/06-markdown-bubbles.md) เลือกทางที่ "ไม่ลง lib ไม่แตะ prompt" เพราะแตะ `COACH_SYSTEM_PROMPT` จะทำให้หลักฐาน safety ทั้งกองเป็นโมฆะและกินโควตา Gemini ทั้งวัน
 - **โค้ชทักก่อนด้วยข้อมูลจริง** — "ช่องแชทเปล่า + จุดกระพริบ = ภาพจำของ AI ทั่วโลก" และ "โยนภาระคิดคำถามให้ผู้ใช้ ทั้งที่โจทย์ Feature 4 บอกว่าหัวใจคือคำถามที่โค้ชถาม" · ตัวเลข/วันคำนวณในโค้ด ไม่ให้ LLM คิด ตามกฎเหล็กใน AGENTS.md
-- **ล้างประวัติแล้วโควตากลับมาเต็ม** — คอมเมนต์ในโค้ด ("ลบแถวออก = `countMessagesToday()` กลับไปนับได้ใหม่") และ [F4-05](../.scratch/f4-coach/issues/05-delete-history.md) ที่แยกเป็น INFRA-20 — **คือรูที่รู้ตัว ไม่ใช่บั๊กที่หลุด**
+- **ล้างประวัติแล้วโควตากลับมาเต็ม** — คอมเมนต์ในโค้ด ("ลบแถวออก = `countMessagesToday()` กลับไปนับได้ใหม่") และ [F4-05](issues/f4-coach/issues/05-delete-history.md) ที่แยกเป็น INFRA-20 — **คือรูที่รู้ตัว ไม่ใช่บั๊กที่หลุด**
 
 ---
 
@@ -780,7 +780,7 @@
 **การ์ดแนะนำเป้าจาก AI แสดงเมื่อไหร่**
 
 - **ไม่แสดงอัตโนมัติ** — ต้องกดปุ่มก่อนเสมอ
-- ข้อเสนอ **อยู่แค่ใน state ไม่ลง DB** จนกว่าจะกด "รับเป้าหมาย" — [F5-02](../.scratch/f5-micro-goals/issues/02-goals-ui.md): "ข้อเสนอไม่ลง DB จนกว่าจะกด "รับ" (refresh แล้วหายคือถูกแล้ว)"
+- ข้อเสนอ **อยู่แค่ใน state ไม่ลง DB** จนกว่าจะกด "รับเป้าหมาย" — [F5-02](issues/f5-micro-goals/issues/02-goals-ui.md): "ข้อเสนอไม่ลง DB จนกว่าจะกด "รับ" (refresh แล้วหายคือถูกแล้ว)"
 - อีกทางที่ได้เป้าคือ **ผ่าน guided flow ในหน้า `/coach`** ซึ่งเรียก `recommendGoals(context)` พร้อมด้าน/วันยุ่ง/ข้อจำกัด แล้ว `acceptGoal()` ตรง ๆ
 
 **Copy ที่ผู้ใช้เห็น**
@@ -802,9 +802,9 @@
 
 **ทำไมถึงเป็นแบบนี้**
 
-- **ภาษาปุ่มยกเลิกไม่ตำหนิ** — [F5-02](../.scratch/f5-micro-goals/issues/02-goals-ui.md) เขียนเป็นงานเลย: "ภาษา dropped ต้องไม่ตำหนิ ("สัปดาห์นี้ไม่เหมาะ ไว้ลองใหม่")" · สอดคล้องกับกฎสี DESIGN.md — ปุ่มนี้จึงเป็น `ghost` ไม่ใช่ `destructive`
+- **ภาษาปุ่มยกเลิกไม่ตำหนิ** — [F5-02](issues/f5-micro-goals/issues/02-goals-ui.md) เขียนเป็นงานเลย: "ภาษา dropped ต้องไม่ตำหนิ ("สัปดาห์นี้ไม่เหมาะ ไว้ลองใหม่")" · สอดคล้องกับกฎสี DESIGN.md — ปุ่มนี้จึงเป็น `ghost` ไม่ใช่ `destructive`
 - **จำกัด 2 เป้าต่อสัปดาห์** — `MAX_ACTIVE_GOALS = 2` พร้อมเหตุผลอยู่ในข้อความ error เอง ("จะได้ไม่หนักเกินไป")
-- **การ์ด goal ปัจจุบันโผล่บน dashboard ด้วย** ([current-goal-card.tsx](../src/components/goals/current-goal-card.tsx) ไม่ได้ถูกใช้ในหน้า `/goals` เลย) — ข้อกำหนดใน [F5-02](../.scratch/f5-micro-goals/issues/02-goals-ui.md)
+- **การ์ด goal ปัจจุบันโผล่บน dashboard ด้วย** ([current-goal-card.tsx](../src/components/goals/current-goal-card.tsx) ไม่ได้ถูกใช้ในหน้า `/goals` เลย) — ข้อกำหนดใน [F5-02](issues/f5-micro-goals/issues/02-goals-ui.md)
 - **สัปดาห์เริ่มวันจันทร์** — `weekStart()` คำนวณ `(weekday + 6) % 7` · ⚠️ ไม่พบเอกสารอธิบายเหตุผลของการเลือกวันจันทร์
 # หน้านอกแอป — ทางเข้า ตั้งค่า และหน้าพัง
 
@@ -850,7 +850,7 @@
 
 **ทำไมถึงเป็นแบบนี้**
 
-- ปุ่มเรียงแนวตั้ง + safety notice ปักล่างสุด มาจาก [F0-04](../.scratch/f0-account-onboarding/issues/04-landing-cta-github.md) — เดิมตั้งใจใส่ลิงก์ GitHub ล่างสุด PM เปลี่ยนใจตัดออกแล้วให้ safety notice ไปอยู่แทน
+- ปุ่มเรียงแนวตั้ง + safety notice ปักล่างสุด มาจาก [F0-04](issues/f0-account-onboarding/issues/04-landing-cta-github.md) — เดิมตั้งใจใส่ลิงก์ GitHub ล่างสุด PM เปลี่ยนใจตัดออกแล้วให้ safety notice ไปอยู่แทน
 - DESIGN.md บอกว่า "เราไม่มี landing page ไม่มี hero" — หน้านี้จึงเป็นข้อยกเว้นที่จงใจให้บางที่สุด และเด้งเข้า `/checkin` ทันทีถ้าล็อกอินแล้ว
 
 ---
@@ -988,9 +988,9 @@
 **ทำไมถึงเป็นแบบนี้**
 
 - disclaimer + ปุ่มรับทราบเป็นข้อบังคับของ **FR-0.3** ซึ่ง [docs/04](04-requirements.md) ระบุว่า **ห้ามตัดแม้เวลาไม่พอ** เพราะเป็นเกณฑ์ให้คะแนน Safety โดยตรง · [docs/08](08-safety-privacy.md) เรียกสิ่งนี้ว่า "ชั้นการป้องกันที่ 1 (UI)" ของระบบ 3 ชั้น
-- [F0-03](../.scratch/f0-account-onboarding/issues/03-disclaimer.md) บันทึกกติกา "profile row สร้างตอนรับทราบเท่านั้น" — เป็นเหตุผลที่ทั้งฟอร์มยิง DB ครั้งเดียวตอนจบ ไม่ใช่ save ทีละขั้น
-- ขั้นที่ 3 (ช่วงงานหนัก) มาทีหลัง — [F0-02](../.scratch/f0-account-onboarding/issues/02-onboarding-profile.md) ระบุ 4 ขั้น ส่วน **FR-0.2** เพิ่ม `busy_periods` ทำให้ปัจจุบันเป็น 5 ขั้น
-- ⚠️ **"แก้ไขข้อมูล onboarding ภายหลัง" ยังไม่มีในแอป** — [F0-02](../.scratch/f0-account-onboarding/issues/02-onboarding-profile.md) ติ๊กค้างไว้ว่าเลื่อนไป F7 และไม่พบ UI แก้โปรไฟล์ในหน้า settings
+- [F0-03](issues/f0-account-onboarding/issues/03-disclaimer.md) บันทึกกติกา "profile row สร้างตอนรับทราบเท่านั้น" — เป็นเหตุผลที่ทั้งฟอร์มยิง DB ครั้งเดียวตอนจบ ไม่ใช่ save ทีละขั้น
+- ขั้นที่ 3 (ช่วงงานหนัก) มาทีหลัง — [F0-02](issues/f0-account-onboarding/issues/02-onboarding-profile.md) ระบุ 4 ขั้น ส่วน **FR-0.2** เพิ่ม `busy_periods` ทำให้ปัจจุบันเป็น 5 ขั้น
+- ⚠️ **"แก้ไขข้อมูล onboarding ภายหลัง" ยังไม่มีในแอป** — [F0-02](issues/f0-account-onboarding/issues/02-onboarding-profile.md) ติ๊กค้างไว้ว่าเลื่อนไป F7 และไม่พบ UI แก้โปรไฟล์ในหน้า settings
 
 ---
 
@@ -1062,9 +1062,9 @@
 
 - เนื้อหาทั้งหน้าเป็นการถอด [docs/08 Part 2](08-safety-privacy.md) ลงเป็น UI — ย่อหน้าสรุปคัดลอกคำต่อคำ
 - **FR-7.2** บังคับว่าหน้า privacy ต้องอธิบายว่าเก็บอะไร ใช้อย่างไร + ปุ่มลบข้อมูล/ลบบัญชี และ [docs/04](04-requirements.md) ห้ามตัด FR-7.x
-- การ์ด "การระบุตัวตนและการรวมข้อมูล" ถูก **เติมทีหลัง** เพราะตอน review พบว่าตอบโจทย์ข้อ 9 ได้แค่ 4/6 ([F7-01](../.scratch/f7-privacy/issues/01-privacy-page.md))
-- คอลัมน์เดียว `max-w-3xl` มาจาก [INFRA-18](../.scratch/infra/issues/18-privacy-declutter.md) ที่**เลิก `lg:columns-2` (masonry) เพราะคอลัมน์เบี้ยวและช่องว่างล่างขวาโหว่**
-- DeleteZone แยกเป็น client component เพื่อ **คืนหน้า privacy ให้เป็น server component** ([F7-02](../.scratch/f7-privacy/issues/02-delete-all.md))
+- การ์ด "การระบุตัวตนและการรวมข้อมูล" ถูก **เติมทีหลัง** เพราะตอน review พบว่าตอบโจทย์ข้อ 9 ได้แค่ 4/6 ([F7-01](issues/f7-privacy/issues/01-privacy-page.md))
+- คอลัมน์เดียว `max-w-3xl` มาจาก [INFRA-18](issues/infra/issues/18-privacy-declutter.md) ที่**เลิก `lg:columns-2` (masonry) เพราะคอลัมน์เบี้ยวและช่องว่างล่างขวาโหว่**
+- DeleteZone แยกเป็น client component เพื่อ **คืนหน้า privacy ให้เป็น server component** ([F7-02](issues/f7-privacy/issues/02-delete-all.md))
 - ลิงก์ไป `/checkin/history` ถูกล็อกเป็น contract ข้ามสาย ("URL คือ `/checkin/history` ใช้ตัวนี้เป๊ะ ๆ อย่าเดาเอง")
 
 ---
@@ -1135,7 +1135,7 @@
 11. ✅ **ปิดแล้ว — `--chart-6` อยู่นอกช่วงที่เอกสารระบุ** — DESIGN.md ข้อ 4 อัปเดตเป็น `--chart-1` ถึง `--chart-6` พร้อมระบุความหมายครบทุกตัวแล้ว
 12. ✅ **ปิดแล้ว — ใช้สี destructive กับข้อความชวนบันทึก** — เพิ่ม `<GentleNotice>` / `<ErrorNotice>` ([notice.tsx](../src/components/ui/notice.tsx)) แล้วย้าย **6 สถานะที่ไม่ใช่ความผิดผู้ใช้**ออกจากกล่องแดง: ข้อมูลไม่พอ (insight/reflection) · ยังไม่มีบันทึกให้แนะนำเป้า · ครบ 2 เป้าหมาย · โควตาแชทหมด · ข้ามเที่ยงคืน
 13. ✅ **ปิดแล้ว — marker ปัจจัยรบกวนไม่มี focus ring** — เพิ่ม `focus-visible:ring-3` แล้ว · พร้อมกับอีก 3 จุดที่เป็นอาการเดียวกัน (แท็บกราฟ · ปุ่มช่วงเวลา · week picker)
-14. ⬜ **ยังค้าง — สเปก reflection ไม่ตรงกับของที่ลงจริง** — [F6-01](../.scratch/f6-weekly-reflection/issues/01-generation.md) เขียนว่า generate อัตโนมัติ · โค้ดจริงต้องกดปุ่มเอง (จงใจเพื่อกันโควตา แต่ issue ไม่ได้อัปเดต)
+14. ⬜ **ยังค้าง — สเปก reflection ไม่ตรงกับของที่ลงจริง** — [F6-01](issues/f6-weekly-reflection/issues/01-generation.md) เขียนว่า generate อัตโนมัติ · โค้ดจริงต้องกดปุ่มเอง (จงใจเพื่อกันโควตา แต่ issue ไม่ได้อัปเดต)
 15. ✅ **ปิดแล้ว — `day-lines.tsx` ใช้ `sm:`** — เปลี่ยนเป็น `lg:` แล้ว (รวมในข้อ 3)
 16. ⬜ **ยังค้าง — `/reflection` ประกาศ `export const dynamic = "force-dynamic"`** โดยไม่มีคำอธิบาย [page.tsx](../src/app/(app)/reflection/page.tsx) — หมายเหตุ: `/goals` ก็ประกาศเหมือนกัน จึงไม่ใช่หน้าเดียวอีกต่อไป
 
@@ -1170,7 +1170,7 @@
 
 ## เรื่องที่ผู้ใช้ไม่มีทางรู้ (ไม่ใช่บั๊ก แต่ควรรู้ตอนตอบกรรมการ)
 
-40. **โควตา Gemini หมด = ผู้ใช้ไม่รู้เลย (บน insight/reflection)** — ทั้งสองหน้า fallback ไปใช้ template เงียบ ๆ ตัวเลขยังจริงเพราะมาจาก `lib/patterns` — เป็นการตัดสินใจที่บันทึกไว้ใน [F3-03](../.scratch/f3-pattern-analysis/issues/03-insight-endpoint-cache.md) · **ต่างจากหน้าแชท** ที่ตอนนี้บอกตรง ๆ ด้วยโทน muted (ข้อ 18)
+40. **โควตา Gemini หมด = ผู้ใช้ไม่รู้เลย (บน insight/reflection)** — ทั้งสองหน้า fallback ไปใช้ template เงียบ ๆ ตัวเลขยังจริงเพราะมาจาก `lib/patterns` — เป็นการตัดสินใจที่บันทึกไว้ใน [F3-03](issues/f3-pattern-analysis/issues/03-insight-endpoint-cache.md) · **ต่างจากหน้าแชท** ที่ตอนนี้บอกตรง ๆ ด้วยโทน muted (ข้อ 18)
 41. ✅ **ปิดแล้ว — cache hit ตอนกดปุ่มไม่มีข้อความบอก** — การ์ดวิเคราะห์แสดง "วิเคราะห์เมื่อ {วันที่}" แล้ว → แยกออกว่าเป็นของเดิมจาก cache หรือของที่เพิ่งสร้าง
 42. ✅ **ปิดแล้ว (เชิงสังเกตการณ์) — DB error ตอนดึง checkin ถูกกลืน** — ยังคืน `[]` โดยตั้งใจ (empty state ดีกว่าหน้าพัง) แต่ log แล้ว จึงแยก "DB ล่ม" ออกจาก "ผู้ใช้ใหม่" ได้ — `getCheckins` คืน `[]` → ผู้ใช้เห็นหน้า "ยังไม่มีข้อมูลสุขภาพ" เหมือนผู้ใช้ใหม่ ทั้งที่จริงคือระบบพัง
 
@@ -1194,6 +1194,6 @@
 
 ## บทเรียนจาก audit รอบนี้ (บันทึกไว้กันพลาดซ้ำ)
 
-- **ตัวกรองคำต้องห้ามเกือบถูกเอาไปใช้กับคำตอบแชท** — ระหว่าง audit มีข้อเสนอให้เอา `findForbiddenTerms()` ไปกรองคำตอบโค้ชด้วย โดยอ้าง CONTEXT.md ที่เขียนว่า "ทุก feature ที่มี AI output ต้องผ่าน guardrail เดียวกัน" · **เกือบทำจริงแล้วจึงพบว่าผิด** — [docs/08](08-safety-privacy.md) ระบุไว้ว่าจงใจไม่กรอง เพราะคำปฏิเสธที่ถูกต้องต้องเอ่ยคำต้องห้ามเอง และ [หลักฐาน QA-01](../.scratch/ai-safety-test/verdicts-2026-07-19.md) ยืนยันว่าคำตอบที่ผ่านการตรวจมีคำเหล่านั้นอยู่จริง · ถ้าปล่อยไป **การสาธิตปฏิเสธสดบนเวทีจะได้ข้อความ fallback แทนคำปฏิเสธจริง** → มีเทสต์ใน [language.test.ts](../src/lib/safety/language.test.ts) เตือนไว้แล้ว
+- **ตัวกรองคำต้องห้ามเกือบถูกเอาไปใช้กับคำตอบแชท** — ระหว่าง audit มีข้อเสนอให้เอา `findForbiddenTerms()` ไปกรองคำตอบโค้ชด้วย โดยอ้าง CONTEXT.md ที่เขียนว่า "ทุก feature ที่มี AI output ต้องผ่าน guardrail เดียวกัน" · **เกือบทำจริงแล้วจึงพบว่าผิด** — [docs/08](08-safety-privacy.md) ระบุไว้ว่าจงใจไม่กรอง เพราะคำปฏิเสธที่ถูกต้องต้องเอ่ยคำต้องห้ามเอง และ [หลักฐาน QA-01](issues/ai-safety-test/verdicts-2026-07-19.md) ยืนยันว่าคำตอบที่ผ่านการตรวจมีคำเหล่านั้นอยู่จริง · ถ้าปล่อยไป **การสาธิตปฏิเสธสดบนเวทีจะได้ข้อความ fallback แทนคำปฏิเสธจริง** → มีเทสต์ใน [language.test.ts](../src/lib/safety/language.test.ts) เตือนไว้แล้ว
 - **อ่าน CONTEXT.md อย่างเดียวไม่พอ** — กฎที่ดูขัดกันมักมีเหตุผลบันทึกไว้ใน docs/08 หรือ ADR · ก่อนแก้อะไรที่เกี่ยวกับ safety ให้เปิดทั้งสองที่
 - **ด่าน e2e เดิมกวาดแค่ตอนเปิดหน้า** — สถานะที่ต้องกดก่อนถึงจะโผล่ (guided flow, โหมดยืนยันลบ) ไม่เคยถูกตรวจ ซึ่งเป็นเหตุผลที่ไทย 11px รอดมาได้ · เพิ่มด่านที่กดก่อนแล้วค่อยกวาดแล้ว แต่ยังครอบไม่ครบทุกหน้า

@@ -16,11 +16,11 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 Issue อยู่เป็นไฟล์ markdown ในเรโปนี้ ไม่มี tracker ภายนอก
 
-- 1 feature = 1 โฟลเดอร์ `.scratch/<feature-slug>/` · PRD อยู่ที่ `.scratch/<feature-slug>/PRD.md`
-- Issue คือ `.scratch/<feature-slug>/issues/<NN>-<slug>.md` เริ่มจาก `01`
+- 1 feature = 1 โฟลเดอร์ `docs/issues/<feature-slug>/` · PRD อยู่ที่ `docs/issues/<feature-slug>/PRD.md`
+- Issue คือ `docs/issues/<feature-slug>/issues/<NN>-<slug>.md` เริ่มจาก `01`
 - สถานะเขียนเป็นบรรทัด `Status:` ใกล้หัวไฟล์ — ค่าที่ใช้จริง: `ready-for-agent` · `ready-for-human` · `done` · `wontfix`
 - ความคืบหน้า/บทสนทนา **ต่อท้ายไฟล์** ใต้หัวข้อ `## Comments` พร้อมวันที่และคนเขียน
-- ภาพรวมงานทั้งหมดอยู่ที่ `.scratch/BOARD.md`
+- ภาพรวมงานทั้งหมดอยู่ที่ `docs/issues/BOARD.md`
 
 ## กติกาที่ห้ามพลาด
 

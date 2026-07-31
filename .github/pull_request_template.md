@@ -4,7 +4,7 @@
 
 ## Issue ที่เกี่ยวข้อง
 
-<!-- เช่น .scratch/f1-checkin/issues/01-checkin-form.md -->
+<!-- เช่น docs/issues/f1-checkin/issues/01-checkin-form.md -->
 
 ## เช็คก่อน request review
 

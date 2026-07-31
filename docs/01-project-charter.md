@@ -47,11 +47,11 @@ Production: https://personal-healthcoach.vercel.app/ · Repo: https://github.com
 
 Sprint 0 (6–8 ก.ค.) setup → Sprint 1 (9–15) auth + check-in **เริ่ม dogfooding 13 ก.ค.** → Sprint 2 (16–22) AI ทั้งหมด → Sprint 3 (23–28) reflection + polish + pitch → **freeze 29 · Pitching Day 30 ก.ค.**
 
-การแบ่งโซนไฟล์ รายละเอียดแต่ละ sprint และ risk register อยู่ใน [09-project-plan.md](09-project-plan.md)
+การแบ่งโซนไฟล์และงานรายสปรินต์เดินจริงผ่าน issue tracker ใน [issues/](issues/)
 
 ## เกณฑ์ความสำเร็จ
 
 - Demo workflow หลักได้ครบทั้ง 8 ข้อใน scope โดยไม่มี error ต่อหน้ากรรมการ
-- ตอบเกณฑ์การให้คะแนนทั้ง 9 ข้อของโจทย์ได้ (mapping ใน [10-deliverables-checklist.md](10-deliverables-checklist.md))
+- ตอบเกณฑ์การให้คะแนนทั้ง 9 ข้อของโจทย์ได้
 - Deliverables 14 รายการครบ
 - ทีมมีข้อมูล dogfooding จริง ≥ 2 สัปดาห์ไว้เล่าตอน pitch
