@@ -32,10 +32,11 @@ jobs:
       - run: npm ci
 
       # สคริปต์ทั้งชุดอ่านค่าจาก .env.local ผ่าน node --env-file
+      # ชื่อ secret ฝั่ง Supabase ไม่มี NEXT_PUBLIC_ นำหน้า — ใช้ชุดเดียวกับ ci.yml
       - name: เขียน .env.local จาก secrets
         env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           DEMO_EMAIL: ${{ secrets.DEMO_EMAIL }}
