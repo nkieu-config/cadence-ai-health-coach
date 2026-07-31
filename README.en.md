@@ -46,13 +46,13 @@ Real screens, not mockups — captured at iPhone 13 size (390×844) · light and
 
 > [!NOTE]
 > **The app itself is in Thai.** Every screen quoted below is translated, and the demo account is
-> readable with a browser translation extension. The [9-page project summary](docs/pitch/showcase-en-light.pdf) is in English.
+> readable with a browser translation extension. The [9-page project summary](docs/summary/showcase-en-light.pdf) is in English.
 
 ## Try it
 
 - **Live app** — [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/)
 - **Demo account** — `palm@example.com` / `cadence-demo-2026`, loaded with four real weeks: dashboard, patterns, coach, goals, weekly summary
-- **9-page summary (PDF, English)** — [showcase-en-light.pdf](docs/pitch/showcase-en-light.pdf)
+- **9-page summary (PDF, English)** — [showcase-en-light.pdf](docs/summary/showcase-en-light.pdf)
 
 > [!NOTE]
 > It is a public account — fill it in, edit it, delete it. A [scheduled job](.github/workflows/refresh-demo.yml)
@@ -82,7 +82,7 @@ to take. It never scores, never grades, and never says anything about body shape
 
 **Built as a mobile app, not a website** — no landing page, no hero, just forms, a dashboard and a
 bottom nav. At ≥ 1024px that nav becomes a left sidebar, and that is the **only** breakpoint the app
-actually uses ([DESIGN.md](DESIGN.md), Thai).
+actually uses ([DESIGN.md](docs/DESIGN.md), Thai).
 
 ```mermaid
 flowchart LR
@@ -167,8 +167,8 @@ The design docs are written in Thai. The table says what each one holds.
 | [docs/adr/](docs/adr/) | Five architecture decision records, each with the reasoning behind it |
 | [docs/issues/](docs/issues/) | The issue tracker this project actually ran on — 69 issues, each closed with evidence and tied to a PR |
 | [docs/12-ui-inventory.md](docs/12-ui-inventory.md) | Every route and every state as the app really behaves, each linked into the code |
-| [CONTEXT.md](CONTEXT.md) | The shared glossary — one meaning per word, used in code, issues and UI copy alike |
-| [DESIGN.md](DESIGN.md) | The UI rules that are actually enforced, each with the incident that created it |
+| [CONTEXT.md](docs/CONTEXT.md) | The shared glossary — one meaning per word, used in code, issues and UI copy alike |
+| [DESIGN.md](docs/DESIGN.md) | The UI rules that are actually enforced, each with the incident that created it |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to run it · environment variables · every script · the gates before a PR |
 
 ---

@@ -4,7 +4,7 @@ Status: ready-for-human
 Owner: A
 Sprint: 3
 Priority: M — README คือหน้าแรกที่กรรมการเห็นก่อนเปิดแอป
-Refs: [DESIGN.md](/DESIGN.md) บรรทัดแรก · [docs/12-ui-inventory.md](/docs/12-ui-inventory.md)
+Refs: [DESIGN.md](/docs/DESIGN.md) บรรทัดแรก · [docs/12-ui-inventory.md](/docs/12-ui-inventory.md)
 
 ## ที่มา
 

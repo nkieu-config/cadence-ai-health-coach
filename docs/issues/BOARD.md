@@ -57,7 +57,7 @@
 6. **เช็ค `git config user.email`** ให้ตรงกับอีเมลที่ Verified บน GitHub ก่อน commit แรก — ไม่งั้นผลงานไม่ถูกนับ
 7. **อย่าเทสด้วยบัญชีปาล์ม** — สมัครบัญชีทิ้งแทน · ปาล์มคือบัญชีที่ใช้ demo วัน pitch (ข้อความเทสจะโผล่บนจอตอนนำเสนอ)
 
-กฎอื่นอยู่ในไฟล์ที่เป็นเจ้าของเรื่อง: ขั้นตอนก่อนเปิด PR → [CONTRIBUTING.md](/CONTRIBUTING.md) · กฎ UI → [DESIGN.md](/DESIGN.md) ส่วนแรก · กติกาการทำงาน → [docs/agents.md](/docs/agents.md)
+กฎอื่นอยู่ในไฟล์ที่เป็นเจ้าของเรื่อง: ขั้นตอนก่อนเปิด PR → [CONTRIBUTING.md](/CONTRIBUTING.md) · กฎ UI → [DESIGN.md](/docs/DESIGN.md) ส่วนแรก · กติกาการทำงาน → [docs/agents.md](/docs/agents.md)
 
 ## ก่อนวัน pitch
 

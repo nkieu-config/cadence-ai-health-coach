@@ -1,12 +1,12 @@
 # 12 · UI Inventory — Cadence มีหน้าตาและพฤติกรรมอย่างไร
 
-> เอกสารนี้ **บันทึกว่าแอปเป็นอย่างไรจริง ๆ** (descriptive) ต่างจาก [DESIGN.md](../DESIGN.md) ที่เป็น **กฎสำหรับคนเขียนโค้ดใหม่** (prescriptive)
+> เอกสารนี้ **บันทึกว่าแอปเป็นอย่างไรจริง ๆ** (descriptive) ต่างจาก [DESIGN.md](DESIGN.md) ที่เป็น **กฎสำหรับคนเขียนโค้ดใหม่** (prescriptive)
 > ถ้าสองไฟล์ขัดกัน แปลว่ามีอันหนึ่งเก่า — ดูหัวข้อ [จุดที่เอกสารไม่ตรงกับโค้ด](#จุดที่เอกสารไม่ตรงกับโค้ด) ท้ายไฟล์
 >
 > อัปเดตเมื่อ 24 ก.ค. 2026 (หลัง UX/UI audit เต็มระบบ) · ครอบคลุม 17 route + โครงร่วม · ทุกหัวข้อลิงก์ไปโค้ดจริง กดดูได้
 > route ที่เพิ่มหลังฉบับ 23 ก.ค.: `/settings` (redirect ไป `/settings/privacy`) · `/forgot-password` · `/reset-password`
 >
-> ⚠️ **screenshot ใน [docs/pitch/screenshots/](pitch/screenshots/) ยังเป็นของก่อน audit** — สีกราฟ · marker ปัจจัยรบกวน · กล่องสถานะ และหน้าเช็คอินเปลี่ยนไปแล้ว **ต้องรัน `npm run shots` ใหม่ก่อนทำสไลด์**
+> ⚠️ **screenshot ใน [docs/summary/screenshots/](summary/screenshots/) ยังเป็นของก่อน audit** — สีกราฟ · marker ปัจจัยรบกวน · กล่องสถานะ และหน้าเช็คอินเปลี่ยนไปแล้ว **ต้องรัน `npm run shots` ใหม่ก่อนทำสไลด์**
 
 ## สารบัญ
 
