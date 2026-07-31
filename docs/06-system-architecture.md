@@ -130,5 +130,5 @@ supabase/migrations/            ← 0001 ตาราง+RLS · 0002 ฟิล�
 |---|---|
 | Production | Vercel (auto deploy จาก branch `main`) |
 | Database | Supabase project เดียว (free tier) |
-| Secrets | `GEMINI_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY` ใน Vercel env vars เท่านั้น |
+| Secrets | `GEMINI_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `DEMO_EMAIL`, `DEMO_PASSWORD` ใน Vercel env vars เท่านั้น |
 | Repo | GitHub — branch protection บน `main`, feature branch + PR review ขั้นต่ำ 1 คน |

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { DemoButton } from "@/components/auth/demo-button";
 import { BrandMark } from "@/components/brand";
 import { PILLAR_COLORS, PILLAR_ICONS, PILLAR_ORDER } from "@/components/pillar-visual";
 import { SafetyNotice } from "@/components/safety-notice";
@@ -47,7 +48,16 @@ export default async function LandingPage() {
         </ul>
 
         <div className="flex w-full max-w-xs flex-col gap-3">
-          <Link href="/login" className={buttonVariants()}>
+          <DemoButton />
+          <p className="-mt-1 text-xs text-muted-foreground">
+            เปิดบัญชีตัวอย่างที่มีข้อมูลจริง 4 สัปดาห์ ไม่ต้องสมัคร
+          </p>
+          <div className="flex items-center gap-3">
+            <span className="h-px flex-1 bg-border" />
+            <span className="text-xs text-muted-foreground">หรือ</span>
+            <span className="h-px flex-1 bg-border" />
+          </div>
+          <Link href="/login" className={buttonVariants({ variant: "secondary" })}>
             เข้าสู่ระบบ
           </Link>
           <Link href="/register" className={buttonVariants({ variant: "outline" })}>

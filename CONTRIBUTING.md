@@ -22,7 +22,7 @@ npm run dev                   # http://localhost:3000
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ | |
 | `GEMINI_API_KEY` | ✅ | ขอฟรีที่ [aistudio.google.com](https://aistudio.google.com/apikey) — โควตานับต่อโปรเจกต์ × โมเดล การใช้ key ร่วมกันจะแย่ง rate limit กัน |
 | `SUPABASE_SERVICE_ROLE_KEY` | — | bypass RLS ได้ทั้งฐาน · ไม่มีก็รันแอปได้ปกติ แต่สคริปต์เตรียม/ตรวจข้อมูลรันไม่ได้ |
-| `DEMO_EMAIL` · `DEMO_PASSWORD` | — | บัญชีที่สคริปต์กับ e2e ใช้ล็อกอิน · **ไม่มีค่า default ในโค้ด** ถ้าไม่ตั้ง สคริปต์จะหยุดพร้อมบอกชื่อตัวแปร |
+| `DEMO_EMAIL` · `DEMO_PASSWORD` | — | บัญชีที่สคริปต์กับ e2e ใช้ล็อกอิน **และที่ปุ่ม "ลองเลย ด้วยบัญชีตัวอย่าง" ใช้** · **ไม่มีค่า default ในโค้ด** ถ้าไม่ตั้ง สคริปต์จะหยุดพร้อมบอกชื่อตัวแปร ส่วนปุ่มจะเด้งกลับ `/login?error=demo` (หน้าอื่นยังใช้ได้ปกติ) |
 | `AI_MODEL` | ❌ | **ห้ามตั้งค้างไว้** — โมเดล production ล็อกที่ `src/lib/ai/model.ts` แล้ว มีไว้ override ชั่วคราวเท่านั้น |
 
 > [!WARNING]

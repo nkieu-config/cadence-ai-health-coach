@@ -46,8 +46,8 @@ AI health coach สำหรับนักศึกษาและ first jobber
 
 ## ลองเลย
 
-- **แอปจริง** — [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/)
-- **บัญชี demo** — `palm@example.com` / `cadence-demo-2026` มีข้อมูลจริง 4 สัปดาห์ ครบทั้ง dashboard · pattern · coach · goal · สรุปสัปดาห์
+- **แอปจริง** — [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/) กดปุ่ม **"ลองเลย ด้วยบัญชีตัวอย่าง"** หน้าแรกได้เลย ไม่ต้องสมัครและไม่ต้องกรอกอะไร
+- **บัญชี demo** — ปุ่มนั้นพาเข้า `palm@example.com` ซึ่งมีข้อมูลจริง 4 สัปดาห์ ครบทั้ง dashboard · pattern · coach · goal · สรุปสัปดาห์ (อยากกรอกเองใช้รหัส `cadence-demo-2026`)
 - **สรุปผลงาน 9 หน้า** — [showcase-en-light.pdf](docs/summary/showcase-en-light.pdf) (ภาษาอังกฤษ)
 
 > [!NOTE]

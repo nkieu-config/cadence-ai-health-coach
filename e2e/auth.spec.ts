@@ -23,6 +23,17 @@ for (const route of RECOVERY_ROUTES) {
   });
 }
 
+test("/ — หน้าแรกเปิดได้ อ่านออก กดได้ พร้อมปุ่มบัญชีตัวอย่าง (ยังไม่ล็อกอิน)", async ({
+  page,
+}) => {
+  const errors = watchConsole(page);
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+
+  await expect(page.getByRole("button", { name: "ลองเลย ด้วยบัญชีตัวอย่าง" })).toBeVisible();
+  await expectUsablePage(page, "Cadence", errors);
+});
+
 test("/login — ยังไม่เปิดทางไปหน้ากู้รหัสผ่าน (รอพิสูจน์ว่าอีเมลส่งออกจริง)", async ({ page }) => {
   await page.goto("/login");
   await page.waitForLoadState("networkidle");

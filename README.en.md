@@ -50,8 +50,8 @@ Real screens, not mockups — captured at iPhone 13 size (390×844) · light and
 
 ## Try it
 
-- **Live app** — [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/)
-- **Demo account** — `palm@example.com` / `cadence-demo-2026`, loaded with four real weeks: dashboard, patterns, coach, goals, weekly summary
+- **Live app** — [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/) — the first button on the landing page ("ลองเลย ด้วยบัญชีตัวอย่าง" / _try it with the sample account_) signs you straight in. No sign-up, nothing to type.
+- **Demo account** — that button opens `palm@example.com`, loaded with four real weeks: dashboard, patterns, coach, goals, weekly summary (password `cadence-demo-2026` if you would rather type it)
 - **9-page summary (PDF, English)** — [showcase-en-light.pdf](docs/summary/showcase-en-light.pdf)
 
 > [!NOTE]

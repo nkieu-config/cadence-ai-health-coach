@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { LoginForm } from "@/components/auth/login-form";
 import { AuthMessage } from "@/components/auth/auth-message";
+import { DemoButton } from "@/components/auth/demo-button";
 import { GoogleButton } from "@/components/auth/google-button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -31,6 +32,12 @@ export default async function LoginPage({
         {error === "oauth" && (
           <AuthMessage tone="error">เข้าสู่ระบบด้วย Google ไม่สำเร็จ ลองใหม่อีกครั้ง</AuthMessage>
         )}
+        {error === "demo" && (
+          <AuthMessage tone="error">
+            เปิดบัญชีตัวอย่างไม่สำเร็จ — เข้าด้วยอีเมลด้านล่างได้ตามปกติ
+          </AuthMessage>
+        )}
+        <DemoButton variant="outline" />
         <GoogleButton from="/login" />
         <div className="flex items-center gap-3">
           <span className="h-px flex-1 bg-border" />

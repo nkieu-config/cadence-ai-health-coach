@@ -40,6 +40,25 @@ export async function signIn(_prev: AuthState, formData: FormData): Promise<Auth
   redirect(onboarded ? "/" : "/onboarding");
 }
 
+export async function signInAsDemo() {
+  const email = process.env.DEMO_EMAIL?.trim();
+  const password = process.env.DEMO_PASSWORD;
+  if (!email || !password) {
+    redirect("/login?error=demo");
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) {
+    redirect("/login?error=demo");
+  }
+
+  const onboarded = await hasCompletedOnboarding();
+
+  revalidatePath("/", "layout");
+  redirect(onboarded ? "/" : "/onboarding");
+}
+
 export async function signUp(_prev: AuthState, formData: FormData): Promise<AuthState> {
   const { email, password } = readCredentials(formData);
   if (!email || !password) {
