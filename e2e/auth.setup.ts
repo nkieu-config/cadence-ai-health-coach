@@ -1,7 +1,13 @@
 import { expect, test as setup } from "@playwright/test";
 
-const DEMO_EMAIL = process.env.DEMO_EMAIL ?? "palm@example.com";
-const DEMO_PASSWORD = process.env.DEMO_PASSWORD ?? "palmcadence123";
+function requireEnv(name: string) {
+  const value = process.env[name];
+  if (!value?.trim()) throw new Error(`ต้องตั้ง ${name} ใน .env.local ก่อน — ดู .env.example`);
+  return value;
+}
+
+const DEMO_EMAIL = requireEnv("DEMO_EMAIL");
+const DEMO_PASSWORD = requireEnv("DEMO_PASSWORD");
 const STATE = "e2e/.auth/demo.json";
 
 setup("ล็อกอินบัญชี demo แล้วเก็บ session ไว้ให้เทสต์อื่นใช้", async ({ page }) => {

@@ -211,7 +211,7 @@ async function run() {
     `ยิงสำเร็จ ${total - errors}/${total} · ไม่พบคำที่ต้องมี ${missingMust} · อ้างอาการเกินข้อมูล ${bridged}`
   );
 
-  const dir = ".scratch/ai-safety-test";
+  const dir = "docs/issues/ai-safety-test";
   mkdirSync(dir, { recursive: true });
   const path = `${dir}/run-${stamp}-with-context-raw.md`;
   writeFileSync(

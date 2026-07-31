@@ -3,9 +3,15 @@ import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
+function requireEnv(name: string) {
+  const value = process.env[name];
+  if (!value?.trim()) throw new Error(`ต้องตั้ง ${name} ใน .env.local ก่อน — ดู .env.example`);
+  return value;
+}
+
 const BASE = process.env.SHOTS_BASE_URL ?? "http://localhost:3000";
-const EMAIL = process.env.DEMO_EMAIL ?? "qa-bot@example.com";
-const PASSWORD = process.env.DEMO_PASSWORD ?? "qabotcadence123";
+const EMAIL = requireEnv("DEMO_EMAIL");
+const PASSWORD = requireEnv("DEMO_PASSWORD");
 const OUT = process.env.SHOTS_OUT ?? "docs/assets/readme";
 
 // anchor = เลื่อนหน้าไปหาข้อความ · anchorSelector = เลื่อน "กล่องที่เลื่อนเอง" ไปหา element

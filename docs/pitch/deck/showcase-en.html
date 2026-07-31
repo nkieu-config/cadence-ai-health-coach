@@ -1,0 +1,1221 @@
+<!doctype html>
+<html lang="th" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cadence — Showcase (EN)</title>
+    <style>
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 400;
+        src: url("fonts/plex-thai-400.woff2") format("woff2");
+        unicode-range: U+2D7, U+303, U+331, U+E01-E5B, U+200C-200D, U+25CC;
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 500;
+        src: url("fonts/plex-thai-500.woff2") format("woff2");
+        unicode-range: U+2D7, U+303, U+331, U+E01-E5B, U+200C-200D, U+25CC;
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 600;
+        src: url("fonts/plex-thai-600.woff2") format("woff2");
+        unicode-range: U+2D7, U+303, U+331, U+E01-E5B, U+200C-200D, U+25CC;
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 400;
+        src: url("fonts/plex-latin-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 500;
+        src: url("fonts/plex-latin-500.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Plex Thai";
+        font-weight: 600;
+        src: url("fonts/plex-latin-600.woff2") format("woff2");
+      }
+
+      :root {
+        --bg: #0d1526;
+        --fg: #e6edf9;
+        --card: #16203a;
+        --card-2: #1b2745;
+        --primary: #2ed89b;
+        --on-primary: #06231a;
+        --muted-fg: #96a3be;
+        --border: rgba(255, 255, 255, 0.14);
+        --rule: rgba(255, 255, 255, 0.22);
+        --shot-bg: #0a1120;
+      }
+      html[data-theme="light"] {
+        --bg: #ffffff;
+        --fg: #10231c;
+        --card: #f2fbf7;
+        --card-2: #e6f5ee;
+        --primary: #06805a;
+        --on-primary: #ffffff;
+        --muted-fg: #4d635a;
+        --border: #cfe8dc;
+        --rule: #b6d8c8;
+        --shot-bg: #0d1526;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        background: var(--bg);
+      }
+      body {
+        font-family: "Plex Thai", sans-serif;
+        color: var(--fg);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      @page {
+        size: 1280px 720px;
+        margin: 0;
+      }
+
+      .slide {
+        position: relative;
+        width: 1280px;
+        height: 720px;
+        overflow: hidden;
+        background: var(--bg);
+        padding: 46px 72px 40px;
+        display: flex;
+        flex-direction: column;
+        break-after: page;
+      }
+      .slide:last-child {
+        break-after: auto;
+      }
+      .slide::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 7px;
+        background: var(--primary);
+      }
+
+      .masthead {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 24px;
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: 12px;
+        margin-bottom: 26px;
+      }
+      .eyebrow {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        color: var(--primary);
+        text-transform: uppercase;
+      }
+      .folio {
+        font-size: 19px;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        color: var(--muted-fg);
+        white-space: nowrap;
+      }
+
+      .baseline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+        border-top: 1px solid var(--rule);
+        padding-top: 14px;
+        margin-top: 20px;
+      }
+      .baseline p {
+        font-size: 21px;
+        color: var(--muted-fg);
+        line-height: 1.5;
+      }
+      .baseline b {
+        color: var(--fg);
+        font-weight: 600;
+      }
+
+      .grow {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+      .row {
+        display: flex;
+        flex-direction: row;
+        min-height: 0;
+        min-width: 0;
+      }
+      .col {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        min-height: 0;
+      }
+
+      .display {
+        font-size: 86px;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        line-height: 1.05;
+      }
+      h2 {
+        font-size: 48px;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+        line-height: 1.3;
+      }
+      .lead {
+        font-size: 28px;
+        font-weight: 400;
+        color: var(--muted-fg);
+        line-height: 1.55;
+      }
+      .hl {
+        color: var(--primary);
+        font-weight: 600;
+      }
+      b,
+      strong {
+        font-weight: 600;
+      }
+      .cap {
+        font-size: 20px;
+        line-height: 1.5;
+        color: var(--muted-fg);
+      }
+
+      /* ---- ปก ---- */
+      .teamname {
+        align-self: flex-start;
+        background: var(--primary);
+        color: var(--on-primary);
+        border-radius: 999px;
+        padding: 9px 24px;
+        font-size: 25px;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+      .mission {
+        background: var(--card);
+        border-left: 6px solid var(--primary);
+        border-radius: 0 12px 12px 0;
+        padding: 20px 26px;
+      }
+      .mission .label {
+        font-size: 19px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        color: var(--primary);
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .mission p {
+        font-size: 25px;
+        line-height: 1.55;
+      }
+
+      .qr {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+      }
+      .qr img {
+        display: block;
+        width: 76px;
+        height: 76px;
+        background: #fff;
+        border-radius: 6px;
+        padding: 4px;
+      }
+      .qr p {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--muted-fg);
+        text-align: right;
+        line-height: 1.35;
+        white-space: nowrap;
+        order: -1;
+      }
+      .qr-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+      .qr-card img {
+        width: 124px;
+        height: 124px;
+        flex-shrink: 0;
+        background: #fff;
+        border-radius: 8px;
+        padding: 7px;
+        display: block;
+      }
+      .qr-card .t {
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.35;
+        white-space: nowrap;
+      }
+      .qr-card .u {
+        font-size: 18px;
+        color: var(--muted-fg);
+        line-height: 1.5;
+        margin-top: 4px;
+      }
+      html[data-qr="missing"] .qr::before,
+      html[data-qr="missing"] .qr-card::before {
+        content: "ยังไม่ได้ใส่ QR";
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 76px;
+        height: 76px;
+        flex-shrink: 0;
+        border: 2px dashed var(--primary);
+        border-radius: 6px;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--primary);
+        padding: 6px;
+      }
+
+      /* ---- โซ่ปัญหา / ขั้นตอน ---- */
+      .chain {
+        display: flex;
+        align-items: stretch;
+        gap: 14px;
+      }
+      .chain .arrow {
+        align-self: center;
+        font-size: 34px;
+        font-weight: 600;
+        color: var(--primary);
+        flex-shrink: 0;
+      }
+      .box {
+        flex: 1;
+        min-width: 0;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 18px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .box .when {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 19px;
+        font-weight: 600;
+        color: var(--primary);
+      }
+      .box .when svg {
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+      }
+      .box .what {
+        font-size: 24px;
+        line-height: 1.45;
+      }
+
+      .step {
+        flex: 1;
+        min-width: 0;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 18px 20px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .step .n {
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        background: var(--primary);
+        color: var(--on-primary);
+        font-size: 22px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .step .h {
+        font-size: 25px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
+      .step .d {
+        font-size: 20px;
+        color: var(--muted-fg);
+        line-height: 1.5;
+      }
+
+      .quote {
+        font-size: 36px;
+        font-weight: 400;
+        font-style: italic;
+        line-height: 1.5;
+        border-left: 6px solid var(--primary);
+        padding-left: 30px;
+      }
+
+      .chips {
+        display: flex;
+        gap: 14px;
+        flex-wrap: nowrap;
+      }
+      .chip {
+        background: var(--card-2);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 9px 22px;
+        font-size: 22px;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      .strip {
+        background: var(--card-2);
+        border-radius: 12px;
+        padding: 16px 24px;
+        font-size: 23px;
+        line-height: 1.5;
+      }
+
+      /* ---- ภาพหน้าจอ ---- */
+      .shot {
+        background: var(--shot-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+      }
+      .shot img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      /* ---- ตารางเทียบโมเดล ---- */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--muted-fg);
+        text-align: left;
+        padding: 0 14px 12px;
+        border-bottom: 2px solid var(--rule);
+      }
+      td {
+        font-size: 22px;
+        line-height: 1.45;
+        padding: 16px 14px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+      }
+      tr.pick td {
+        background: var(--card);
+        font-weight: 600;
+      }
+      tr.pick td:first-child {
+        border-left: 5px solid var(--primary);
+      }
+      td .sub {
+        font-size: 19px;
+        font-weight: 400;
+        color: var(--muted-fg);
+        display: block;
+        margin-top: 2px;
+      }
+      .num {
+        white-space: nowrap;
+      }
+
+      /* ---- ตัวเลขหลักฐาน ---- */
+      .stats {
+        display: flex;
+        gap: 26px;
+        min-width: 0;
+      }
+      .stat {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        border-top: 3px solid var(--primary);
+        padding-top: 14px;
+      }
+      .stat .n {
+        font-size: 55px;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        line-height: 1;
+      }
+      .stat .t {
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
+      .stat .d {
+        font-size: 18px;
+        color: var(--muted-fg);
+        line-height: 1.4;
+      }
+
+      .pull {
+        font-size: 27px;
+        font-weight: 600;
+        line-height: 1.5;
+        border-left: 5px solid var(--primary);
+        padding-left: 22px;
+      }
+
+      /* ---- เทียบ เดิม / ตอนนี้ ---- */
+      .compare {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .compare .head {
+        display: flex;
+        gap: 20px;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--muted-fg);
+      }
+      .compare .head span:first-child {
+        width: 480px;
+        flex-shrink: 0;
+      }
+      .compare .head span:last-child {
+        color: var(--primary);
+      }
+      .cmp {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      .cmp .was {
+        width: 480px;
+        flex-shrink: 0;
+        font-size: 23px;
+        line-height: 1.4;
+        color: var(--muted-fg);
+      }
+      .cmp .now {
+        flex: 1;
+        min-width: 0;
+        font-size: 23px;
+        line-height: 1.4;
+        background: var(--card);
+        border-left: 5px solid var(--primary);
+        border-radius: 0 10px 10px 0;
+        padding: 12px 18px;
+      }
+
+      /* ---- ป้ายกำกับขั้นตอน ---- */
+      .tag {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 8px;
+      }
+      .tag b {
+        color: var(--fg);
+      }
+
+      /* ---- กล่องแนวทาง AI ---- */
+      .lane {
+        flex: 1;
+        min-width: 0;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .lane .who {
+        font-size: 27px;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+      .lane li {
+        font-size: 21px;
+        line-height: 1.5;
+        color: var(--muted-fg);
+      }
+      .lane ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        border: 0;
+        padding: 0;
+      }
+
+      /* ---- การ์ดเทียบโมเดล ---- */
+      .model {
+        flex: 1;
+        min-width: 0;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .model.pick {
+        border: 2px solid var(--primary);
+      }
+      .model .name {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+      .model .badge {
+        align-self: flex-start;
+        background: var(--primary);
+        color: var(--on-primary);
+        border-radius: 999px;
+        padding: 4px 16px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .model .metric {
+        font-size: 21px;
+        line-height: 1.5;
+      }
+      .model .metric b {
+        font-size: 26px;
+      }
+      .model .verdict {
+        font-size: 20px;
+        line-height: 1.45;
+        color: var(--muted-fg);
+        margin-top: auto;
+      }
+
+      /* ---- การ์ดคำพูดของระบบ ---- */
+      .qcard {
+        background: var(--card);
+        border-left: 5px solid var(--primary);
+        border-radius: 0 12px 12px 0;
+        padding: 12px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .qcard .said {
+        font-size: 23px;
+        font-weight: 600;
+        line-height: 1.34;
+      }
+      .qcard .evi {
+        font-size: 19px;
+        line-height: 1.4;
+        color: var(--muted-fg);
+      }
+      .rule {
+        font-size: 20px;
+        line-height: 1.42;
+      }
+      .rule b {
+        color: var(--primary);
+      }
+
+      /* ---- ภาพย่อ 4 ช่อง ---- */
+      .feat {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .feat .h {
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.4;
+      }
+      .feat .d {
+        font-size: 19px;
+        line-height: 1.45;
+        color: var(--muted-fg);
+        min-height: 46px;
+      }
+      .phone {
+        margin-top: auto;
+        width: 166px;
+        height: 268px;
+        align-self: center;
+        overflow: hidden;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+      }
+      .phone img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+      }
+
+      /* ---- ก่อนแก้ / หลังแก้ ---- */
+      .ba {
+        flex: 1;
+        min-width: 0;
+        border-radius: 12px;
+        padding: 12px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        background: var(--card);
+        border-left: 5px solid var(--rule);
+      }
+      .ba.good {
+        border-left-color: var(--primary);
+      }
+      .ba .when {
+        font-size: 19px;
+        font-weight: 600;
+        color: var(--muted-fg);
+      }
+      .ba.good .when {
+        color: var(--primary);
+      }
+      .ba .said {
+        font-size: 20px;
+        line-height: 1.4;
+      }
+      .ba .note {
+        font-size: 18px;
+        line-height: 1.35;
+        color: var(--muted-fg);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- 01 · cover -->
+    <section class="slide">
+      <header class="masthead">
+        <p class="eyebrow">CSTU Spark Camp in AI · Exhibition · 30 July 2026</p>
+        <p class="folio">01 / 09</p>
+      </header>
+
+      <div class="grow row" style="gap: 44px; align-items: center">
+        <div class="col" style="flex: 1; gap: 18px">
+          <p class="teamname">Team “Phi Mai Wai Laew, Fak Nong Duay”</p>
+          <p class="cap" style="margin-top: -10px">
+            <b>ทีม พี่ไม่ไหวแล้ว ฝากน้องด้วย</b> — <i>“I'm running on empty, over to you”</i>
+          </p>
+
+          <div class="col" style="gap: 8px">
+            <p class="display">Cadence</p>
+            <p class="lead" style="font-size: 27px; color: var(--fg)">
+              A health coach for people whose
+              <span class="hl">week never looks the same twice</span>
+            </p>
+          </div>
+
+          <div class="mission">
+            <p class="label">Mission #5</p>
+            <p style="font-size: 22px">AI Personal Health Coach for Students and First Jobbers</p>
+          </div>
+        </div>
+
+        <div class="col" style="width: 430px; gap: 16px">
+          <div class="qr-card">
+            <img src="qr-app.png" alt="" />
+            <div>
+              <p class="t">Try it on your phone</p>
+              <p class="u" style="font-size: 17px; white-space: nowrap">
+                personal-healthcoach.vercel.app
+              </p>
+              <p class="u" style="color: var(--fg)">palm@example.com<br />cadence-demo-2026</p>
+            </div>
+          </div>
+          <div class="qr-card">
+            <img src="qr-repo.png" alt="" />
+            <div>
+              <p class="t">Code and documentation</p>
+              <p class="u">github.com/nkieu-config<br />/cadence-ai-health-coach</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="baseline">
+        <p><b>Members</b> Keen · Prairie · Keeta · Mai</p>
+        <p style="text-align: right">
+          <b>The app is in Thai</b> — every screen quoted on these slides is translated
+        </p>
+      </footer>
+    </section>
+
+    <!-- 02 · problem -->
+    <section class="slide">
+      <header class="masthead">
+        <p class="eyebrow">The problem · who it hits</p>
+        <p class="folio">02 / 09</p>
+      </header>
+
+      <div class="grow" style="gap: 18px; justify-content: center">
+        <div class="col" style="gap: 8px">
+          <p class="quote" style="font-size: 33px">
+            “I code until 3 a.m. to make the deadline, then I have a 9 a.m. class.”
+          </p>
+          <p class="cap" style="padding-left: 36px">
+            <b style="color: var(--fg)">Palm · third-year student</b> — the persona the whole system
+            was designed around
+          </p>
+        </div>
+
+        <div class="chain">
+          <div class="box">
+            <p class="when">Night before a deadline</p>
+            <p class="what">4 hours of sleep</p>
+          </div>
+          <p class="arrow">→</p>
+          <div class="box">
+            <p class="when">Next morning</p>
+            <p class="what">Overslept, skipped breakfast</p>
+          </div>
+          <p class="arrow">→</p>
+          <div class="box">
+            <p class="when">That same afternoon</p>
+            <p class="what">Energy gone, never left the desk</p>
+          </div>
+        </div>
+
+        <p class="lead" style="font-size: 26px">
+          But all Palm feels is one sentence —
+          <b style="color: var(--fg)">“I've been tired lately.”</b>
+        </p>
+
+        <div class="chips" style="align-items: center">
+          <p class="lead" style="font-size: 21px; white-space: nowrap">Who lives this</p>
+          <p class="chip">Students whose timetable changes weekly</p>
+          <p class="chip">First jobbers · long screens and commutes</p>
+        </div>
+      </div>
+
+      <footer class="baseline">
+        <p>
+          <b>Palm already knows he should sleep more.</b> It is spread across different days, so
+          nobody sees what pairs with what
+        </p>
+        <div class="qr">
+          <p>Scan to<br />try it</p>
+          <img src="qr-app.png" alt="" />
+        </div>
+      </footer>
+    </section>
+
+    <!-- 03 · how it helps -->
+    <section class="slide">
+      <header class="masthead">
+        <p class="eyebrow">How the product helps</p>
+        <p class="folio">03 / 09</p>
+      </header>
+
+      <div class="grow" style="gap: 24px; justify-content: center">
+        <h2 style="font-size: 42px">Fix the reasons he quit, don't add features</h2>
+
+        <div class="compare">
+          <div class="head">
+            <span>What made Palm quit before</span>
+            <span>What Cadence does instead</span>
+          </div>
+          <div class="cmp">
+            <p class="was">So much to fill in he quit after 4 days</p>
+            <p class="now">4 steps, taps only — timed 24 times, <b>median 1:26</b></p>
+          </div>
+          <div class="cmp">
+            <p class="was">Generic advice: “eat well, sleep enough, exercise”</p>
+            <p class="now">Tied to <b>his own deadlines and early classes</b></p>
+          </div>
+          <div class="cmp">
+            <p class="was">Big goals that fail easily, then get abandoned</p>
+            <p class="now">Small weekly goals, hard to fail · <b>never about weight</b></p>
+          </div>
+          <div class="cmp">
+            <p class="was">Scores that make a bad week feel like failure</p>
+            <p class="now">No score, no streak, <b>no blame for missed days</b></p>
+          </div>
+        </div>
+      </div>
+
+      <footer class="baseline">
+        <p>Every line on the right is live in production today · <b>scan and try it</b></p>
+        <div class="qr">
+          <p>Scan to<br />try it</p>
+          <img src="qr-app.png" alt="" />
+        </div>
+      </footer>
+    </section>
+
+    <!-- 04 · how the prototype works -->
+    <section class="slide">
+      <header class="masthead">
+        <p class="eyebrow">How the prototype works</p>
+        <p class="folio">04 / 09</p>
+      </header>
+
+      <div class="grow" style="gap: 11px; justify-content: center">
+        <h2 style="font-size: 32px">He answers once a day — the system answers in a sentence</h2>
+
+        <div class="chips" style="align-items: center; gap: 12px">
+          <p class="tag" style="margin: 0; white-space: nowrap"><b>Every night · 1:26</b></p>
+          <p class="chip">Food</p>
+          <p class="chip">Sleep</p>
+          <p class="chip">Movement</p>
+          <p class="chip">Disruptors</p>
+          <p class="lead" style="font-size: 19px; white-space: nowrap">
+            deadline · early class · exam
+          </p>
+        </div>
+
+        <div class="col" style="gap: 6px; flex-shrink: 0">
+          <p class="tag" style="margin: 0"><b>After 7 days it says this on its own</b></p>
+          <div class="qcard">
+            <p class="said">
+              “On days you slept under 6 hours you skipped breakfast 100% of the time, against 22%
+              on days you slept 6 hours or more”
+            </p>
+            <p class="evi">
+              Groups compared — under 6 hrs <b style="color: var(--fg)">4 days</b> · 6 hrs or more
+              <b style="color: var(--fg)">9 days</b> · counted by code, not by the AI
+            </p>
+          </div>
+          <p class="rule">
+            It always closes with the line we <b>force every time</b> — “a signal worth watching,
+            <b>not cause and effect</b>”
+          </p>
+        </div>
+
+        <div class="col" style="gap: 6px; flex-shrink: 0">
+          <p class="tag" style="margin: 0"><b>Then it offers a step that fits his calendar</b></p>
+          <div class="qcard">
+            <p class="said" style="font-size: 23px">
+              “Put yoghurt or fruit in the fridge for Sunday and Tuesday nights”
+            </p>
+            <p class="evi">Because Palm logged that his early classes are Monday and Wednesday</p>
+          </div>
+        </div>
+      </div>
+
+      <footer class="baseline">
+        <p>
+          <b>Under 7 days it says plainly that it cannot conclude</b> — it never guesses to sound
+          clever
+        </p>
+        <div class="qr">
+          <p>Scan to<br />try it</p>
+          <img src="qr-app.png" alt="" />
+        </div>
+      </footer>
+    </section>
+
+    <!-- 05 · what the user gets back -->
+    <section class="slide">
+      <header class="masthead">
+        <p class="eyebrow">What the user gets back</p>
+        <p class="folio">05 / 09</p>
+      </header>
+
+      <div class="grow" style="gap: 12px; justify-content: center">
+        <h2 style="font-size: 34px">The brief requires 6 features — all 6 are live</h2>
+
+        <div class="chain" style="gap: 20px">
+          <div class="feat">
+            <p class="h">3 · Three-pillar overview</p>
+            <p class="d">Food, sleep and movement, marked with disruptors</p>
+            <div class="phone"><img src="../screenshots/phone-dashboard-dark.png" alt="" /></div>
+          </div>
+          <div class="feat">
+            <p class="h">4 · A coach you can talk to</p>
+            <p class="d">Asks first, never judges, answers with a step for today</p>
+            <div class="phone"><img src="../screenshots/phone-coach-dark.png" alt="" /></div>
+          </div>
+          <div class="feat">
+            <p class="h">5 · Weekly micro goal</p>
+            <p class="d">The user picks it, then ticks progress off day by day</p>
+            <div class="phone"><img src="../screenshots/phone-goals-dark.png" alt="" /></div>
+          </div>
+          <div class="feat">
+            <p class="h">6 · Weekly reflection</p>
+            <p class="d">All three pillars plus next week — and no score</p>
+            <div class="phone"><img src="../screenshots/phone-reflection-dark.png" alt="" /></div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="baseline">
+        <p>
+          <b>1 daily check-in</b> and <b>2 pattern analysis</b> are on the previous slide · all real
+          phone screens
+        </p>
+        <div class="qr">
+          <p>Scan to<br />try it</p>
+          <img src="qr-app.png" alt="" />
+        </div>
+      </footer>
+    </section>
+
+    <!-- 06 · AI approach -->
+    <section class="slide">
+      <header class="masthead">
+        <p class="eyebrow">Which AI, and why · the approach</p>
+        <p class="folio">06 / 09</p>
+      </header>
+
+      <div class="grow" style="gap: 22px; justify-content: center">
+        <h2 style="font-size: 36px">
+          Code handles what must be exact · the LLM what must sound human
+        </h2>
+
+        <div class="chain">
+          <div class="lane">
+            <p class="who">Our code — no AI</p>
+            <ul>
+              <li>Counts 10 pairings of sleep, food, movement, disruptors</li>
+              <li>Speaks only when groups differ ≥ 20% with ≥ 3 days each</li>
+              <li>Under 7 days, nothing is sent to the AI at all</li>
+            </ul>
+          </div>
+          <div class="lane">
+            <p class="who">The LLM — Gemini</p>
+            <ul>
+              <li>Turns those numbers into language that does not judge</li>
+              <li>Answers in the context of that specific user</li>
+              <li>Proposes a small step tied to a real calendar</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="strip" style="font-size: 20px">
+          <b>Anything the system writes itself</b> — analysis, goals, reflection — passes one more
+          filter: no weight, no body shape, no calories, no fasting · failures fall back to a
+          standard sentence
+        </p>
+      </div>
+
+      <footer class="baseline">
+        <p>
+          <b>The AI never touches a number</b> — if it goes down the numbers remain and no page
+          breaks
+        </p>
+        <div class="qr">
+          <p>Scan to<br />try it</p>
+          <img src="qr-app.png" alt="" />
+        </div>
+      </footer>
+    </section>
+
+    <!-- 07 · model choice -->
+    <section class="slide">
+      <header class="masthead">
+        <p class="eyebrow">Which AI, and why · the model</p>
+        <p class="folio">07 / 09</p>
+      </header>
+
+      <div class="grow" style="gap: 20px; justify-content: center">
+        <div class="col" style="gap: 8px">
+          <h2 style="font-size: 40px">We measured three models — and did not pick the newest</h2>
+          <p class="lead" style="font-size: 22px">
+            Built on a <b style="color: var(--fg)">zero baht budget</b> — the free daily quota is a
+            real constraint
+          </p>
+        </div>
+
+        <div class="chain">
+          <div class="model pick">
+            <p class="badge">In production</p>
+            <p class="name">Gemini 3.1 Flash Lite</p>
+            <p class="metric">Chat reply <b>2.2 s</b></p>
+            <p class="metric">Free quota <b>500</b>/day</p>
+            <p class="verdict">Fast enough, and enough quota for the whole app</p>
+          </div>
+          <div class="model">
+            <p class="name" style="margin-top: 34px">Gemini 3.5 Flash Lite</p>
+            <p class="metric">Chat reply <b>about the same</b></p>
+            <p class="metric">Free quota <b>500</b>/day</p>
+            <p class="verdict">Replies ~40% shorter — not worth changing the coach's voice now</p>
+          </div>
+          <div class="model">
+            <p class="name" style="margin-top: 34px">Gemini 3.6 Flash</p>
+            <p class="metric">Chat reply <b>10.4 s</b></p>
+            <p class="metric">Free quota <b>20</b>/day</p>
+            <p class="verdict">4× slower · four teammates exhaust it before one analysis</p>
+          </div>
+        </div>
+      </div>
+
+      <footer class="baseline">
+        <p>
+          Measured on 22 July with real data and the real pipeline · quotas come from hitting the
+          ceiling, not docs · <b>switching models is one environment variable</b>
+        </p>
+        <div class="qr">
+          <p>Scan to read<br />the evidence</p>
+          <img src="qr-repo.png" alt="" />
+        </div>
+      </footer>
+    </section>
+
+    <!-- 08 · evidence -->
+    <section class="slide">
+      <header class="masthead">
+        <p class="eyebrow">Testing · evidence</p>
+        <p class="folio">08 / 09</p>
+      </header>
+
+      <div class="grow" style="gap: 12px; justify-content: center">
+        <h2 style="font-size: 32px">20 risky prompts refused — and the one we caught ourselves</h2>
+
+        <div class="row" style="gap: 26px; align-items: center">
+          <div class="col" style="flex: 1; gap: 14px">
+            <div class="stats">
+              <div class="stat">
+                <p class="n">20/20</p>
+                <p class="t">risky prompts refused</p>
+                <p class="d">diet plans · “what disease is this headache” · “I'll skip meals”</p>
+              </div>
+              <div class="stat">
+                <p class="n">9/9</p>
+                <p class="t">crisis cases gave the 1323 helpline</p>
+                <p class="d">severe stress and self-harm intent</p>
+              </div>
+            </div>
+            <p class="cap">
+              10 cases × 2 phrasings on the production model · logs uncut ·
+              <b style="color: var(--fg)">reviewed by someone who did not write the prompt</b>
+            </p>
+          </div>
+          <div class="shot" style="width: 300px">
+            <img src="../screenshots/safety-refusal-dark.png" alt="" />
+          </div>
+        </div>
+
+        <div class="chain" style="gap: 18px">
+          <div class="ba">
+            <p class="when">14 July — the round that failed</p>
+            <p class="said">
+              “Skipping breakfast <b>may be because</b> of waking late … <b>coming from</b> a late
+              bedtime”
+            </p>
+            <p class="note">Cause and effect from 3 days of data — against our own rule</p>
+          </div>
+          <div class="ba good">
+            <p class="when">16 July — after the prompt fix</p>
+            <p class="said">
+              “Under 7 days <b>I cannot summarise a pattern yet</b> … here is what I notice …”
+            </p>
+            <p class="note">Says the data is not enough, then offers it as a signal</p>
+          </div>
+        </div>
+      </div>
+
+      <footer class="baseline">
+        <p>Also in the repo — 24 timed check-ins · 219 automated tests · every raw run log</p>
+        <div class="qr">
+          <p>Scan to read<br />the evidence</p>
+          <img src="qr-repo.png" alt="" />
+        </div>
+      </footer>
+    </section>
+
+    <!-- 09 · limits -->
+    <section class="slide">
+      <header class="masthead">
+        <p class="eyebrow">Limits · privacy · what comes next</p>
+        <p class="folio">09 / 09</p>
+      </header>
+
+      <div class="grow" style="gap: 20px; justify-content: center">
+        <h2 style="font-size: 38px">
+          The limits we know, and how we keep them from misleading users
+        </h2>
+
+        <div class="chain">
+          <div class="step">
+            <p class="h">Every number is self-reported</p>
+            <p class="d"><b>Guarded by</b> no scores, no streaks — honesty costs nothing</p>
+          </div>
+          <div class="step">
+            <p class="h">Our only 4 testers built it</p>
+            <p class="d"><b>Guarded by</b> calling 1:26 a design ceiling, not an average</p>
+          </div>
+          <div class="step">
+            <p class="h">An LLM is never fully controllable</p>
+            <p class="d">
+              <b>Guarded by</b> a validator on every goal — failures fall back to a standard goal
+            </p>
+          </div>
+        </div>
+
+        <p class="strip" style="font-size: 21px">
+          <b>Health data</b> — visible only to its owner · deletable any time · no name or email
+          reaches the model
+        </p>
+
+        <div class="chain" style="gap: 12px; align-items: center">
+          <p class="lead" style="font-size: 21px; white-space: nowrap">Next</p>
+          <p class="chip" style="font-size: 20px">10–15 real users outside the team</p>
+          <p class="arrow" style="font-size: 24px">→</p>
+          <p class="chip" style="font-size: 20px">per-user quota</p>
+          <p class="arrow" style="font-size: 24px">→</p>
+          <p class="chip" style="font-size: 20px">LINE reminders</p>
+          <p class="arrow" style="font-size: 24px">→</p>
+          <p class="chip" style="font-size: 20px">wearables</p>
+        </div>
+      </div>
+
+      <footer class="baseline">
+        <div>
+          <p style="font-size: 23px"><b>personal-healthcoach.vercel.app</b></p>
+          <p>Team <b>Phi Mai Wai Laew, Fak Nong Duay</b> · Keen · Prairie · Keeta · Mai</p>
+        </div>
+        <div class="qr">
+          <p>Scan to<br />try it</p>
+          <img src="qr-app.png" alt="" />
+        </div>
+      </footer>
+    </section>
+  </body>
+</html>
