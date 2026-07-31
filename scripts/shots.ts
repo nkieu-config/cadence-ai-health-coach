@@ -1,9 +1,15 @@
 import { chromium, devices } from "@playwright/test";
 import { mkdirSync } from "node:fs";
 
+function requireEnv(name: string) {
+  const value = process.env[name];
+  if (!value?.trim()) throw new Error(`ต้องตั้ง ${name} ใน .env.local ก่อน — ดู .env.example`);
+  return value;
+}
+
 const BASE = process.env.SHOTS_BASE_URL ?? "http://localhost:3000";
-const EMAIL = process.env.DEMO_EMAIL ?? "palm@example.com";
-const PASSWORD = process.env.DEMO_PASSWORD ?? "palmcadence123";
+const EMAIL = requireEnv("DEMO_EMAIL");
+const PASSWORD = requireEnv("DEMO_PASSWORD");
 const OUT = process.env.SHOTS_OUT ?? "docs/pitch/screenshots";
 
 const SCREENS: [string, string][] = [

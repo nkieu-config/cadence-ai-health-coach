@@ -185,7 +185,7 @@ async function run() {
 
   if (save) {
     const stamp = new Date().toISOString().slice(0, 10);
-    const dir = ".scratch/ai-safety-test";
+    const dir = "docs/issues/ai-safety-test";
     mkdirSync(dir, { recursive: true });
     const path = `${dir}/run-${stamp}-raw${filter ? `-${filter}` : ""}.md`;
     writeFileSync(

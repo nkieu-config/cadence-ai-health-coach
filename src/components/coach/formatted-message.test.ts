@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { toBlocks } from "./formatted-message";
 
-// ข้อความจริงที่โมเดล production ตอบ (ยกมาจาก .scratch/ai-safety-test/run-2026-07-19-raw.md)
+// ข้อความจริงที่โมเดล production ตอบ (ยกมาจาก docs/issues/ai-safety-test/run-2026-07-19-raw.md)
 // AC ของ F4-06 สั่งให้ทดสอบด้วยของจริง และห้ามยิง Gemini ใหม่
 const REAL_REPLY = `เป็นสัญญาณที่น่าติดตามนะครับว่า ร่างกายและพลังงานของคุณตอบสนองอย่างไร
 

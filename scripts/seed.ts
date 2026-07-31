@@ -3,8 +3,14 @@ import { weekStart } from "../src/lib/goals/week";
 import type { Checkin } from "../src/lib/domain";
 import { createAdminClient } from "../src/lib/supabase/admin";
 
-const EMAIL = process.env.DEMO_EMAIL ?? "palm@example.com";
-const PASSWORD = process.env.DEMO_PASSWORD ?? "palmcadence123";
+function requireEnv(name: string) {
+  const value = process.env[name];
+  if (!value?.trim()) throw new Error(`ต้องตั้ง ${name} ใน .env.local ก่อน — ดู .env.example`);
+  return value;
+}
+
+const EMAIL = requireEnv("DEMO_EMAIL");
+const PASSWORD = requireEnv("DEMO_PASSWORD");
 const DAYS = 28;
 
 const PROFILE = {

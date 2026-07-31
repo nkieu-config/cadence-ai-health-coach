@@ -7,22 +7,10 @@ const QR = resolve("docs/pitch/deck/qr-app.png");
 // เพดานตัวเล็กต่างกันตามระยะอ่าน: สไลด์อ่านจากหลังห้อง เอกสารแผ่นเดียวอ่านในมือ
 const DOCS = [
   {
-    file: resolve("docs/pitch/deck/deck.html"),
+    file: resolve("docs/pitch/deck/showcase-en.html"),
     size: { width: 1280, height: 720 },
     minThai: 18,
-    targets: [
-      { theme: "dark", out: "docs/pitch/deck.pdf" },
-      { theme: "light", out: "docs/pitch/deck-light.pdf" },
-    ],
-  },
-  {
-    file: resolve("docs/pitch/deck/showcase.html"),
-    size: { width: 1280, height: 720 },
-    minThai: 18,
-    targets: [
-      { theme: "dark", out: "docs/pitch/showcase.pdf" },
-      { theme: "light", out: "docs/pitch/showcase-light.pdf" },
-    ],
+    targets: [{ theme: "light", out: "docs/pitch/showcase-en-light.pdf" }],
   },
 ];
 

@@ -1,31 +1,31 @@
-# เอกสารโปรเจกต์ Cadence
+# Cadence — เอกสารออกแบบ
 
-ชุดเอกสารวางแผนก่อนเริ่มเขียนโค้ด — อ่านเรียงตามเลขได้เลย สมาชิกใหม่เริ่มที่ 01
+เขียนก่อนลงมือโค้ด แล้วรักษาให้ตรงกับโค้ดตลอดทาง — อ่านเรียงเลขได้ หรือกระโดดไปเฉพาะไฟล์ที่ตอบคำถามของคุณ
 
 | ไฟล์ | เนื้อหา |
-|---|---|
-| [00-mission-brief.md](00-mission-brief.md) | โจทย์ต้นทางจากอาจารย์ (Mission #5) — อ้างอิงเสมอเวลาตัดสิน scope |
-| [01-project-charter.md](01-project-charter.md) | เป้าหมาย scope ทีม timeline เกณฑ์ความสำเร็จ |
-| [02-problem-analysis.md](02-problem-analysis.md) | วิเคราะห์ปัญหา + สมมติฐานของ product |
-| [03-user-persona.md](03-user-persona.md) | Persona "ปาล์ม" + demo scenario |
-| [04-requirements.md](04-requirements.md) | Functional/Non-functional requirements (M/S/C) |
-| [05-data-design.md](05-data-design.md) | Data design + Supabase schema |
-| [06-system-architecture.md](06-system-architecture.md) | สถาปัตยกรรม + workflow diagrams |
-| [07-ai-design.md](07-ai-design.md) | System prompt, pattern analysis, แผนทดสอบ AI |
-| [08-safety-privacy.md](08-safety-privacy.md) | Safety guardrail + privacy design |
-| [09-project-plan.md](09-project-plan.md) | Sprint plan, แบ่งงาน 3 สาย + A, risk register |
-| [10-deliverables-checklist.md](10-deliverables-checklist.md) | เช็คลิสต์ deliverables 14 ข้อ + mapping เกณฑ์คะแนน |
-| [11-limitations-future.md](11-limitations-future.md) | ข้อจำกัดที่รู้ตัว + สิ่งที่ทำแล้วเพื่อรับมือ + แผนถ้าไปต่อ |
-| [12-ui-inventory.md](12-ui-inventory.md) | **แอปมีหน้าตาและพฤติกรรมอย่างไรจริง ๆ** — ทุก route ทุก state ทุก copy พร้อมลิงก์โค้ด · ต่างจาก DESIGN.md ที่เป็นกฎสำหรับคนเขียนโค้ด |
-| [pitch/](pitch/) | ของนำเสนอวัน pitch: deck, demo script, screenshot สำรอง (QA-03) |
+| --- | --- |
+| [00-mission-brief.md](00-mission-brief.md) | โจทย์ต้นทางที่โปรเจกต์นี้ถูกสร้างขึ้นมาตอบ |
+| [01-project-charter.md](01-project-charter.md) | เป้าหมาย ขอบเขต ทีม และนิยามของคำว่าเสร็จ |
+| [02-problem-analysis.md](02-problem-analysis.md) | ปัญหา และสมมติฐานของ product ที่ตั้งใจไปพิสูจน์ |
+| [03-user-persona.md](03-user-persona.md) | persona เดียวที่ทุกตัวอย่างและ seed data ยึดไว้ |
+| [04-requirements.md](04-requirements.md) | requirement เชิงฟังก์ชันและไม่ใช่ฟังก์ชัน จัดลำดับ M/S/C |
+| [05-data-design.md](05-data-design.md) | data model และ schema บน Supabase |
+| [06-system-architecture.md](06-system-architecture.md) | สถาปัตยกรรมและเส้นทางของ request |
+| [07-ai-design.md](07-ai-design.md) | system prompt · การคำนวณ pattern · วิธีทดสอบ AI |
+| [08-safety-privacy.md](08-safety-privacy.md) | guardrail ความปลอดภัย และการออกแบบความเป็นส่วนตัว |
+| [11-limitations-future.md](11-limitations-future.md) | สิ่งที่ระบบทำไม่ได้ · สิ่งที่ทำไปแล้วเพื่อไม่ให้มันหลอกผู้ใช้ · แผนถ้าไปต่อ |
+| [12-ui-inventory.md](12-ui-inventory.md) | ทุก route ทุก state ตามที่แอปทำงานจริง พร้อมลิงก์เข้าโค้ดทุกจุด |
 
-เอกสารอ้างอิงระดับ root:
+## ที่ควรเปิดดูด้วย
 
-- [../CONTEXT.md](../CONTEXT.md) — glossary ภาษากลางของโปรเจกต์ (อ่านก่อนตั้งชื่อตัวแปร/เขียน UI copy)
-- [adr/](adr/) — บันทึกการตัดสินใจทางเทคนิค (ADR-0001 ถึง 0005)
+- [adr/](adr/) — บันทึกการตัดสินใจ 5 ฉบับ: ทำไมเป็นเว็บแอป · ทำไมสแตกนี้ · ทำไม Gemini free tier ·
+  ทำไม seed data คู่กับ dogfooding · ทำไมมี auth สองแบบ
+- [issues/](issues/) — issue tracker ที่โปรเจกต์นี้เดินด้วยจริง 69 ใบ ปิดพร้อมหลักฐานและผูกกับ PR
+- [issues/ai-safety-test/](issues/ai-safety-test/) — ผลรันดิบจากโมเดล ไม่ตัดต่อ พร้อมลายเซ็นคนตรวจที่ไม่ได้เขียน prompt
+- [../CONTEXT.md](../CONTEXT.md) — glossary หนึ่งความหมายหนึ่งคำ ใช้ทั้งในโค้ด issue และข้อความบนจอ
+- [../DESIGN.md](../DESIGN.md) — กฎ UI ที่บังคับใช้จริง พร้อมเหตุการณ์ที่ทำให้เกิดกฎแต่ละข้อ
 
-## ไฟล์ไหนคือของส่งอาจารย์
-
-**Deliverable ตามโจทย์ข้อ 10 อยู่ใน 02 · 03 · 05 · 06 · 08 · 11** — [10-deliverables-checklist.md](10-deliverables-checklist.md) เป็นสารบัญที่ map ครบทั้ง 14 ข้อว่าอะไรอยู่ที่ไหน (รวมของที่อยู่ในแอป ไม่ใช่เอกสาร) พร้อม mapping เกณฑ์ให้คะแนน 9 ข้อ
-
-ไฟล์ที่เหลือ (01 · 04 · 07 · 09) เป็นเอกสารกระบวนการ — โจทย์ไม่ได้สั่งโดยตรง แต่ใช้ตอบกรรมการเวลาถามว่า "ตัดสินใจแบบนี้เพราะอะไร" และเป็นหลักฐานของเกณฑ์ Prototype Quality
+> [!NOTE]
+> `12-ui-inventory.md` เป็น **descriptive** — บันทึกว่าแอปทำงานอย่างไรวันนี้
+> `DESIGN.md` เป็น **prescriptive** — บังคับว่าโค้ดใหม่ทำอะไรได้บ้าง
+> ถ้าสองไฟล์ขัดกัน แปลว่ามีอันหนึ่งเก่าแล้ว

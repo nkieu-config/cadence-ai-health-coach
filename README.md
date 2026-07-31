@@ -6,8 +6,11 @@
 
 **เห็นจังหวะของตัวเอง แล้วเริ่มจากก้าวเล็ก ๆ ที่ทำได้จริง**
 
-AI Personal Health Coach สำหรับนักศึกษาและ first jobber — ช่วยให้เห็น pattern การกิน–นอน–เคลื่อนไหว
-ของตัวเอง แล้วตั้ง micro goal ที่ทำได้จริงในชีวิตที่ตารางไม่แน่นอน
+AI health coach สำหรับนักศึกษาและ first jobber — บันทึกวันละครั้งในเวลาไม่ถึงนาทีครึ่ง
+แล้วระบบหาความสัมพันธ์ระหว่างการกิน–นอน–เคลื่อนไหวกับตารางชีวิตจริง
+
+<sub><i>An AI wellness coach for students and first jobbers. A 90-second daily check-in; statistics
+computed in code, an LLM only puts them into words. Thai UI · live demo below.</i></sub>
 
 [![CI](https://github.com/nkieu-config/cadence-ai-health-coach/actions/workflows/ci.yml/badge.svg)](https://github.com/nkieu-config/cadence-ai-health-coach/actions/workflows/ci.yml)
 ![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
@@ -18,11 +21,10 @@ AI Personal Health Coach สำหรับนักศึกษาและ fir
 
 [**เปิดแอปจริง**](https://personal-healthcoach.vercel.app/) •
 [ภาพรวม](#ภาพรวม) •
-[สำหรับกรรมการ](#สำหรับกรรมการ--ผู้รีวิว) •
+[สิ่งที่น่าดูในเชิงวิศวกรรม](#สิ่งที่น่าดูในเชิงวิศวกรรม) •
 [ข้อจำกัด](#ข้อจำกัดที่เรารู้ตัว) •
-[เริ่มใช้งาน](#เริ่มใช้งาน) •
-[คำสั่ง](#คำสั่งที่มี) •
-[เอกสาร](#เอกสาร)
+[เอกสาร](#เอกสาร) •
+[รันเอง](CONTRIBUTING.md)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme/dark-phone-checkin.webp">
@@ -38,15 +40,27 @@ AI Personal Health Coach สำหรับนักศึกษาและ fir
 </picture>
 
 <sub>เช็คอิน 4 ขั้น ชิปกดล้วน · แนวโน้ม 4 แท็บ พร้อมวันที่มีปัจจัยรบกวน · โค้ชที่ตอบจากบันทึกจริง ไม่ใช่คำแนะนำสำเร็จรูป<br>
-ภาพจริงจากแอป ไม่ใช่ mockup — ถ่ายที่ขนาดจอ iPhone 13 (390×844) เมื่อ 29 ก.ค. 2569 · สลับ light/dark ตามธีมของคนอ่านเอง</sub>
+ภาพจริงจากแอป ไม่ใช่ mockup — ถ่ายที่ขนาดจอ iPhone 13 (390×844) · สลับ light/dark ตามธีมของคนอ่านเอง</sub>
 
 </div>
 
+## ลองเลย
+
+| | |
+| --- | --- |
+| **แอปจริง** | [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/) |
+| **บัญชี demo** | `palm@example.com` / `cadence-demo-2026` — มีข้อมูลจริง 4 สัปดาห์ ครบทั้ง dashboard · pattern · coach · goal · สรุปสัปดาห์ |
+| **สรุปผลงาน 9 หน้า** | [showcase-en-light.pdf](docs/pitch/showcase-en-light.pdf) (ภาษาอังกฤษ) |
+
+> [!NOTE]
+> เป็นบัญชีสาธารณะ ใครก็แก้ข้อมูลได้ · ถ้าเจอข้อมูลเพี้ยน `npm run seed` สร้างคืนได้ทั้งชุด
+
 ## ภาพรวม
 
-Cadence เป็น **wellness coach ไม่ใช่บริการทางการแพทย์** ผู้ใช้เช็คอินวันละครั้ง ใช้เวลา**มัธยฐาน 1 นาที 26 วินาที** (จับเวลาจริง 24 ครั้ง)
-ระบบเชื่อมโยงการกิน–นอน–เคลื่อนไหวเข้ากับบริบทชีวิต (เดดไลน์ เรียนเช้า เดินทาง) แล้วเสนอก้าวเล็ก ๆ
-ที่ทำได้จริง โดยไม่ให้คะแนน ไม่จัดเกรด และไม่กดดันเรื่องรูปร่าง
+Cadence เป็น **wellness coach ไม่ใช่บริการทางการแพทย์** ผู้ใช้เช็คอินวันละครั้ง ใช้เวลา
+**มัธยฐาน 1 นาที 26 วินาที** (จับเวลาจริง 24 ครั้ง) ระบบเชื่อมโยงการกิน–นอน–เคลื่อนไหวเข้ากับ
+บริบทชีวิต (เดดไลน์ เรียนเช้า เดินทาง) แล้วเสนอก้าวเล็ก ๆ ที่ทำได้จริง โดยไม่ให้คะแนน
+ไม่จัดเกรด และไม่กดดันเรื่องรูปร่าง
 
 **ออกแบบเป็นแอปมือถือ ไม่ใช่เว็บไซต์** — ไม่มี landing page ไม่มี hero มีแค่ฟอร์ม dashboard และเมนูล่าง
 ที่ ≥ 1024px เมนูล่างกลายเป็น sidebar ซ้าย ซึ่งเป็น breakpoint **เดียว** ที่แอปใช้จริง ([DESIGN.md](DESIGN.md))
@@ -61,10 +75,6 @@ flowchart LR
   G --> APP
 ```
 
-> [!IMPORTANT]
-> **ตัวเลขทุกตัวที่ AI พูดถึงมาจาก `lib/patterns` ไม่ใช่จาก LLM** — Gemini ทำหน้าที่เรียบเรียงเป็นภาษาเท่านั้น
-> ถ้า Gemini ล่มหรือโควตาหมด ระบบ fallback เป็น template ที่ยังใช้ตัวเลขจริง หน้าไม่พัง
-
 **สิ่งที่ระบบทำ**
 
 - **เช็คอินรายวัน** 4 ขั้น เป็นชิปกดล้วน — คำถามเสริมโผล่เฉพาะเมื่อเกี่ยว (นอนดึก → ถามเหตุผล)
@@ -76,18 +86,35 @@ flowchart LR
 
 **สิ่งที่ระบบไม่ทำ** — ไม่วินิจฉัยโรค ไม่แนะนำยา/อาหารเสริม ไม่ให้แผนลดน้ำหนัก ไม่เก็บน้ำหนัก/ส่วนสูง/BMI/แคลอรี/รูปถ่าย
 
-## สำหรับกรรมการ / ผู้รีวิว
+## สิ่งที่น่าดูในเชิงวิศวกรรม
 
-เริ่มตรงนี้ ใช้เวลาราว 15 นาที
+**1 · โค้ดคำนวณ LLM เล่าเรื่อง — แยกกันโดยโครงสร้าง ไม่ใช่โดยคำสั่งใน prompt**
 
-| ลำดับ | อยากเห็นอะไร | เปิดที่ |
-| --- | --- | --- |
-| 1 | **ระบบจริง** — บัญชีทดลองมีข้อมูลจริง 4 สัปดาห์ ครบทั้ง dashboard, pattern, coach, goal, reflection | [แอปบน production](https://personal-healthcoach.vercel.app/)<br/>`judge@example.com` / `judgecadence123` |
-| 2 | **Deliverables ครบ 14 ข้อ อยู่ไหนบ้าง** — สารบัญ map ข้อต่อข้อ + เกณฑ์ให้คะแนน 9 ข้อ | [docs/10-deliverables-checklist.md](docs/10-deliverables-checklist.md) |
-| 3 | **หลักฐาน Safety** — 10 เคส × 2 ประโยค = 20/20 บนโมเดล production ผลดิบไม่ตัดต่อ + ลายเซ็นผู้ตรวจอิสระ | [.scratch/ai-safety-test/](.scratch/ai-safety-test/) |
-| 4 | **เอกสารออกแบบ** — ปัญหา → persona → data → architecture → AI → safety/privacy → limitations | [docs/](docs/README.md) อ่านเรียงเลข 01→12 |
-| 5 | **UI ทุกหน้า ทุกสถานะ** — บันทึกว่าแอปเป็นอย่างไรจริง พร้อมลิงก์โค้ดทุกจุด | [docs/12-ui-inventory.md](docs/12-ui-inventory.md) |
-| 6 | **Process ของทีม** — issue tracker 69 งาน (ปิดแล้ว 65), PR history, CI 2 ด่านบังคับ | [.scratch/BOARD.md](.scratch/BOARD.md) + แท็บ Pull requests |
+`lib/patterns` นับความสัมพันธ์ 10 คู่จากข้อมูลจริง แล้วเก็บเฉพาะคู่ที่สองกลุ่มต่างกัน ≥ 20% และมีข้อมูล
+≥ 3 วันต่อกลุ่ม · จากนั้นโค้ด**แนบตัวเลขหลักฐานกลับเข้าไปเองหลัง LLM ตอบ** ทำให้โมเดลไม่มีช่องแต่งตัวเลข
+ตั้งแต่ต้น · ข้อมูลต่ำกว่า 7 วันไม่ถูกส่งให้ AI เลย ([07-ai-design.md](docs/07-ai-design.md))
+
+**2 · ทดสอบ safety ด้วยผลรันดิบที่คอมมิตไม่ตัดต่อ**
+
+10 เคส × 2 ประโยค บนโมเดล production · ปฏิเสธถูก 20/20 · เคสวิกฤตให้สายด่วน 9/9 · **คนตรวจไม่ใช่คนเขียน
+prompt** · ที่สำคัญกว่าคือรอบแรก**ไม่ผ่าน** — โมเดลเขียนเชิงเหตุ-ผลจากข้อมูล 3 วัน เราแก้ prompt แล้วรันซ้ำ
+ผลทั้งสองรอบอยู่ในเรโป ([ai-safety-test/](docs/issues/ai-safety-test/))
+
+**3 · เลือกโมเดลจากผลวัด ไม่ใช่จากเวอร์ชัน**
+
+ตอนมีรุ่นใหม่ออก วัดใหม่ทั้งชุดด้วยข้อมูลจริงและ pipeline จริง — รุ่นใหม่กว่าช้ากว่า 4 เท่าและโควตาเหลือ
+20 ครั้ง/วัน จึง**ไม่เปลี่ยน** · โควตาทุกตัวมาจากการยิงชนเพดานเอง ไม่ใช่จากเอกสาร ([ADR-0003](docs/adr/0003-gemini-free-tier-ai.md))
+
+**4 · ด่านที่รู้ว่าตัวเองจับอะไรไม่ได้**
+
+unit test ครอบแค่ตรรกะใน `lib/` — PR ที่ทำ layout พังจะผ่าน `verify` เขียวหมด จึงมีด่าน e2e ที่เปิดหน้าจริง
+ทุกหน้า × มือถือ/เดสก์ท็อป × light/dark แล้วเช็ค contrast ≥ 4.5:1 · ปุ่ม ≥ 44px · ไม่มี horizontal scroll ·
+ไม่มี console error
+
+**5 · เอกสารที่บันทึกความผิดพลาดของตัวเอง**
+
+[11-limitations-future.md](docs/11-limitations-future.md) ไม่ใช่รายการข้อแก้ตัว — ทุกข้อจำกัดมาคู่กับสิ่งที่ทำไปแล้ว
+เพื่อไม่ให้มันหลอกผู้ใช้ และหลายข้อมีเลข error หรือผลทดสอบกำกับ เพราะเจอจริงระหว่างสร้าง
 
 ## ข้อจำกัดที่เรารู้ตัว
 
@@ -96,121 +123,28 @@ flowchart LR
 - **pattern ที่เจอคือความสัมพันธ์ ไม่ใช่เหตุและผล** — โค้ดไม่ส่งข้อมูล < 7 วันให้ LLM · prompt ห้ามสรุปเหตุ-ผล · มีรายการคำเชิงสาเหตุที่ตรวจจับได้
 - **LLM ควบคุมได้ไม่ 100%** — ทุกเป้าหมายต้องผ่าน `validateGoalTitle()` ก่อนถูกใช้ ไม่ผ่านคือทิ้งแล้วตกไปใช้เป้ามาตรฐาน
 
-ทุกข้อมาคู่กับสิ่งที่ทำไปแล้วเพื่อไม่ให้มันหลอกผู้ใช้ และแผนถ้าไปต่อ — อ่านเต็มที่ [docs/11-limitations-future.md](docs/11-limitations-future.md)
+อ่านเต็มพร้อมแผนถ้าไปต่อที่ [docs/11-limitations-future.md](docs/11-limitations-future.md)
 
-## เริ่มใช้งาน
+## ความเป็นส่วนตัว
 
-**ต้องมีก่อน:** Node.js 22 ขึ้นไป (ตาม [`.nvmrc`](.nvmrc)) · บัญชี Supabase และ Gemini API key
-
-```bash
-git clone https://github.com/nkieu-config/cadence-ai-health-coach.git
-cd cadence-ai-health-coach
-cp .env.example .env.local    # เติมค่าตามตารางด้านล่าง
-npm ci
-npm run dev                   # http://localhost:3000
-```
-
-### ตัวแปรสภาพแวดล้อม
-
-| ตัวแปร | ต้องมีไหม | หมายเหตุ |
-| --- | --- | --- |
-| `NEXT_PUBLIC_SUPABASE_URL` | ✅ | ขอจาก A (ค่าเดียวกันทั้งทีม) |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ | ค่าเดียวกันทั้งทีม |
-| `GEMINI_API_KEY` | ✅ | **ของแต่ละคนเอง** ขอฟรีที่ [aistudio.google.com](https://aistudio.google.com/apikey) — โควตานับต่อโปรเจกต์ × โมเดล การใช้ key ร่วมกันจะแย่ง rate limit กันตอน dev |
-| `SUPABASE_SERVICE_ROLE_KEY` | — | bypass RLS ได้ทั้งฐาน A ถือคนเดียว · ไม่มีก็รันแอปได้ปกติ แต่สคริปต์เตรียม/ตรวจข้อมูลรันไม่ได้ (ดูใต้ตาราง) |
-| `AI_MODEL` | ❌ | **ห้ามตั้งค้างไว้** — โมเดล production ล็อกที่ `src/lib/ai/model.ts` แล้ว มีไว้ override ชั่วคราวเท่านั้น |
-
-> [!WARNING]
-> ตั้ง `AI_MODEL` ค้างไว้ = รันคนละโมเดลกับ production เงียบ ๆ **เคยทำหลักฐาน safety เสียมาแล้ว 2 รอบ** (ดู INFRA-23)
-
-**14 สคริปต์ที่ต้องมี `SUPABASE_SERVICE_ROLE_KEY`** — `seed` · `refresh:demo-week` · `backfill:demo-ai` · `seed:coach-chat` ·
-`verify:db` · `verify:rls` · `verify:seed` · `verify:user` · `test:insight` · `test:goal` · `test:reflection` · `test:coach` ·
-`test:coach-safety` · `compare:models` · **`test:ai` ไม่ต้องมี** (ใช้ Gemini key อย่างเดียว) · `shots` กับ `shots:readme` ล็อกอินเป็นผู้ใช้ปกติ
-
-Schema และ RLS อยู่ที่ [`supabase/migrations/`](supabase/migrations/) (`0001`→`0005`) — A รันบน project กลางให้แล้ว
-เพื่อนร่วมทีมแค่ `git pull` ก็ใช้ได้ · ตรวจว่า schema ตรงจริงด้วย `npm run verify:db` (ต้องมี service-role key)
-
-## ก่อนเปิด PR
-
-คำสั่ง 5 ด่านที่ต้องรันและกติกาการทำงานทั้งหมดอยู่ใน **[AGENTS.md](AGENTS.md) ที่เดียว** —
-README ไม่เก็บสำเนาไว้ เพราะกฎที่มีสองสำเนาคือกฎที่จะเพี้ยนกันเอง · ด้านล่างคือสิ่งที่ AGENTS.md ไม่ได้บอก
-
-CI บังคับ **2 ด่านทุก PR**: `verify` (format · lint · tsc · test · build) และ `e2e (เปิดแอปจริง)` ซึ่งเปิดทุกหน้าจริงบน
-มือถือ+เดสก์ท็อป × light+dark แล้วเช็ค h1 อันเดียว · ไม่มี horizontal scroll · ปุ่ม ≥ 44px ·
-contrast ≥ 4.5:1 · ไม่มี console error
-
-> [!CAUTION]
-> unit test ครอบแค่ตรรกะใน `lib/` — **PR ที่ทำ layout พังหรือ dashboard ขาว จะผ่าน `verify` เขียวหมด**
-> `e2e` คือด่านเดียวที่จับได้
-
-> [!NOTE]
-> CI รันเฉพาะ [`e2e/routes.spec.ts`](e2e/routes.spec.ts) กับ [`e2e/theme.spec.ts`](e2e/theme.spec.ts) ซึ่งไม่แตะข้อมูลบัญชี demo ·
-> เทสต์ที่เขียนข้อมูล ([`checkin.spec.ts`](e2e/checkin.spec.ts)) และเทสต์อื่นรันบนเครื่องตัวเองด้วย `npm run e2e`
-
-**กฎ UI ทั้งหมด** อยู่ในส่วนแรกของ [DESIGN.md](DESIGN.md) — บังคับถ้าจะแตะหน้าจอ
-
-## คำสั่งที่มี
-
-| คำสั่ง | ทำอะไร |
-| --- | --- |
-| `npm run dev` | dev server |
-| `npm run build` · `npm run lint` | build production · เช็ค lint |
-| `npm test` | unit test (vitest) — ตรรกะใน `lib/` |
-| `npm run e2e` | เปิดทุกหน้าจริง × มือถือ/เดสก์ท็อป × light/dark (~40 วิ) — **ต้องรันถ้าแตะ UI** |
-| `npm run verify:db` | ยืนยัน schema + RLS (ตารางครบ · anon เข้าไม่ได้ · user เห็นข้ามกันไม่ได้) รันซ้ำได้หลังแก้ schema |
-| `npm run test:ai` | ยิงเคสภาษาไทยผ่าน `lib/ai` เช็ค guardrail + latency · เจาะเคสเดียวด้วย `-- <id/category>` |
-| `npm run shots` | ถ่าย screenshot ทุกหน้า × light/dark × มือถือ/เดสก์ท็อป ลง `docs/pitch/screenshots/` |
-| `npm run shots:readme` | ถ่ายภาพชุดที่ใช้ใน README ลง `docs/assets/readme/` — เฉพาะส่วนที่เห็นบนจอ ใส่กรอบมือถือ แปลงเป็น WebP (ต้องมี `cwebp`) |
-| `npm run refresh:demo-week` | **เตรียมบัญชี demo ก่อนนำเสนอ** — เติม goal สัปดาห์ปัจจุบัน + อุ่น insight/reflection ให้ตรงวัน · `-- --goal-only` = ไม่ยิง Gemini |
-
-> [!TIP]
-> ของในบัญชี demo ผูกกับวันที่ จึงเก่าเองทุกวัน — เช้าวันนำเสนอให้รัน `npm run refresh:demo-week` ก่อนเสมอ
-> ขั้นตอนเต็มอยู่ใน [docs/pitch/demo-script.md](docs/pitch/demo-script.md)
-
-คำสั่งที่ยิง Supabase หรือ Gemini ต้องมี `.env.local` ครบ · `test:ai` คือสคริปต์ที่ผลิต[หลักฐาน safety](.scratch/ai-safety-test/) ของ QA-01
-
-## โครงสร้างโปรเจกต์
-
-```
-src/
-├── app/                  หน้าและ route ทั้งหมด (App Router)
-├── proxy.ts              auth guard — Next.js 16 ใช้ชื่อนี้แทน middleware.ts
-├── lib/
-│   ├── ai/               Gemini + system prompt guardrail — ทุก AI call ต้องผ่านที่นี่
-│   ├── patterns/         คำนวณ pattern จากสถิติจริง (ไม่ใช่ AI)
-│   ├── supabase/         client (browser) / server / admin
-│   └── checkins/         วันที่ · label ภาษาไทย · validation
-├── components/ui/        shadcn/ui
-supabase/migrations/      SQL schema + RLS
-docs/                     เอกสารทั้งหมด — เริ่มที่ docs/README.md
-.scratch/                 issue tracker (ไม่มี tracker ภายนอก) — ภาพรวมที่ .scratch/BOARD.md
-CONTEXT.md                glossary ภาษากลาง — อ่านก่อนตั้งชื่อตัวแปรหรือเขียน UI copy
-DESIGN.md                 กฎ UI — บังคับถ้าจะแตะหน้าจอ
-AGENTS.md · CLAUDE.md     กติกาสำหรับ AI coding agent
-```
-
-> [!NOTE]
-> **Next.js 16 ต่างจากที่คุ้นเคย** — auth guard คือ `src/proxy.ts` (ไม่ใช่ `middleware.ts`) และ API หลายตัวเปลี่ยนไป
-> ก่อนเขียนโค้ดให้อ่าน docs ที่มากับแพ็กเกจใน `node_modules/next/dist/docs/`
-
-## บัญชีที่ใช้ทดสอบ
-
-> [!CAUTION]
-> **ห้ามเทสด้วยบัญชีปาล์ม** — ใช้ `qa-bot@example.com` ที่เตรียมไว้แล้ว (ข้อมูลชุดเดียวกัน · เละแล้ว `seed` คืนสภาพได้ ·
-> รหัสอยู่ใน [.scratch/BOARD.md](.scratch/BOARD.md)) · ปาล์มคือบัญชีที่ใช้ demo วันนำเสนอ และ**ฐานข้อมูลมีชุดเดียว**
-> ไม่ว่าจะรันจาก localhost หรือ production ก็แตะแถวเดียวกัน
+ข้อมูลสุขภาพเห็นได้เฉพาะเจ้าของบัญชี (บังคับด้วย RLS ระดับฐานข้อมูล ตรวจซ้ำด้วย `npm run verify:rls`) ·
+ผู้ใช้ลบข้อมูลหรือลบบัญชีเองได้ทุกเมื่อ · **ไม่ส่งชื่อหรืออีเมลให้โมเดล** ส่งเฉพาะข้อมูลพฤติกรรม
+([08-safety-privacy.md](docs/08-safety-privacy.md))
 
 ## เอกสาร
 
 | ไฟล์ | เนื้อหา |
 | --- | --- |
-| [docs/README.md](docs/README.md) | สารบัญเอกสารทั้งหมด อ่านเรียงเลข 01→12 |
-| [docs/00-mission-brief.md](docs/00-mission-brief.md) | โจทย์ต้นทาง (Mission #5) — อ้างอิงเสมอเวลาตัดสิน scope |
-| [docs/12-ui-inventory.md](docs/12-ui-inventory.md) | แอปมีหน้าตาและพฤติกรรมอย่างไรจริง ทุก route ทุก state |
-| [docs/adr/](docs/adr/) | เหตุผลเบื้องหลังการตัดสินใจทางเทคนิค (ADR-0001→0005) |
+| [docs/](docs/README.md) | สารบัญเอกสารออกแบบ 11 ฉบับ — ปัญหา → persona → data → architecture → AI → safety → limitations |
+| [docs/adr/](docs/adr/) | เหตุผลเบื้องหลังการตัดสินใจทางเทคนิค 5 ฉบับ |
+| [docs/issues/](docs/issues/) | issue tracker ที่โปรเจกต์นี้เดินด้วยจริง 69 ใบ ปิดพร้อมหลักฐานและผูกกับ PR |
+| [docs/12-ui-inventory.md](docs/12-ui-inventory.md) | ทุก route ทุก state ตามที่แอปทำงานจริง พร้อมลิงก์เข้าโค้ด |
 | [CONTEXT.md](CONTEXT.md) | glossary ภาษากลาง ใช้คำตามนิยามนี้ทั้งในโค้ด issue และ UI copy |
-| [DESIGN.md](DESIGN.md) | กฎ UI ที่บังคับใช้จริง + ที่มาของ theme |
+| [DESIGN.md](DESIGN.md) | กฎ UI ที่บังคับใช้จริง พร้อมเหตุการณ์ที่ทำให้เกิดกฎแต่ละข้อ |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | วิธีรันเอง · ตัวแปรสภาพแวดล้อม · คำสั่งทั้งหมด · กติกาก่อนเปิด PR |
 
-Deploy อัตโนมัติจาก branch `main` ไป [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/)
+---
 
-สัญญาอนุญาต [MIT](LICENSE) — งานส่ง Mission #5 · CSTU Spark Camp in AI 2569
+<sub>สร้างโดยทีม 4 คนใน 4 สัปดาห์ ด้วยงบ 0 บาท สำหรับ CSTU Spark Camp in AI 2569 (Mission #5) ·
+Deploy อัตโนมัติจาก `main` ไป [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/) ·
+สัญญาอนุญาต [MIT](LICENSE)</sub>

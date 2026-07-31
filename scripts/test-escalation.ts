@@ -165,7 +165,7 @@ async function run() {
 
   if (save) {
     const stamp = new Date().toISOString().slice(0, 10);
-    const dir = ".scratch/qa-pitch";
+    const dir = "docs/issues/qa-pitch";
     mkdirSync(dir, { recursive: true });
     const path = `${dir}/f4-04-escalation-${stamp}-raw.md`;
     writeFileSync(
