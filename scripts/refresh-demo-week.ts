@@ -42,7 +42,9 @@ async function clearTodayCheckin(admin: Admin, userId: string) {
     .eq("user_id", userId)
     .eq("checkin_date", today());
   if (error) throw new Error(`ลบ check-in วันนี้ไม่ได้: ${error.message}`);
-  console.log(`\nลบ check-in ของวันนี้ (${today()}) — หน้าเช็คอินเป็นฟอร์มเปล่า พร้อมกรอกสดบนเวที`);
+  console.log(
+    `\nลบ check-in ของวันนี้ (${today()}) — หน้าเช็คอินเป็นฟอร์มเปล่า พร้อมให้คนที่เปิดเข้ามาลองกรอกเอง`
+  );
 }
 
 async function ensureCurrentWeekGoal(admin: Admin, userId: string) {
@@ -104,10 +106,10 @@ function warmAiCache() {
   console.log(`\n━━━ อุ่น AI cache (insight + reflection) ให้ตรงกับ today() ━━━`);
   runScript("backfill-demo-ai.ts", "อุ่น AI cache");
 
-  console.log(`\n━━━ บทสนทนาโค้ช (deliverable 9 — ต้องมีตัวอย่างพร้อมโชว์) ━━━`);
+  console.log(`\n━━━ บทสนทนาโค้ช — เปิด /coach มาต้องเห็นตัวอย่างของจริง ไม่ใช่ช่องเปล่า ━━━`);
   runScript("seed-coach-chat.ts", "สร้างบทสนทนาโค้ช");
   console.log(
-    `\nบทสนทนาที่ seed ใช้โควตาแชทของวันนี้ไป 3 จาก 5 ข้อความ — เหลือ 2 นัดสำหรับ safety probe สดบนเวที`
+    `\nบทสนทนาเขียนลงตารางตรง ๆ แล้วล้างตัวนับโควตาทิ้ง — คนที่เปิดเข้ามายังพิมพ์ได้ครบ 5 ข้อความของวันนั้น`
   );
 }
 
@@ -161,10 +163,7 @@ async function printOnScreenNumbers(admin: Admin, userId: string) {
     );
   }
   console.log(
-    `  หมายเหตุ: แถว "บันทึก" ต่ำกว่าจริง 1 วันเพราะเว้นวันนี้ไว้กรอกสด — หลังกรอกบนเวทีจะกลับมาครบเอง`
-  );
-  console.log(
-    `  ตัวเลขฝั่งสัปดาห์นี้จะขยับเล็กน้อยหลังกรอกสดด้วย — ชี้ลูกศรแล้วอ่านจากจอ อย่าท่องเลขล่วงหน้า`
+    `  หมายเหตุ: แถว "บันทึก" ต่ำกว่าจริง 1 วันเพราะเว้นวันนี้ไว้ให้กรอกเอง — กรอกแล้วกลับมาครบเอง`
   );
 }
 
@@ -183,7 +182,7 @@ async function run() {
   await printOnScreenNumbers(admin, userId);
 
   console.log(
-    `\nเสร็จ — เช็คก่อนขึ้นเวที: /checkin ต้องเป็นฟอร์มเปล่า · /coach มีบทสนทนา · goal ตรง narrative ปาล์ม`
+    `\nเสร็จ — ที่ควรเป็น: /checkin ฟอร์มเปล่า · /dashboard มีกราฟ 28 วัน · /coach มีบทสนทนา · goal ตรง narrative ปาล์ม`
   );
 }
 

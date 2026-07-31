@@ -22,6 +22,7 @@
   ทำไม seed data คู่กับ dogfooding · ทำไมมี auth สองแบบ
 - [issues/](issues/) — issue tracker ที่โปรเจกต์นี้เดินด้วยจริง 69 ใบ ปิดพร้อมหลักฐานและผูกกับ PR
 - [issues/ai-safety-test/](issues/ai-safety-test/) — ผลรันดิบจากโมเดล ไม่ตัดต่อ พร้อมลายเซ็นคนตรวจที่ไม่ได้เขียน prompt
+- [agents.md](agents.md) — กติกาการทำงานในเรโป: อ่านอะไรก่อน · issue tracker · กฎที่ห้ามพลาด
 - [../CONTEXT.md](../CONTEXT.md) — glossary หนึ่งความหมายหนึ่งคำ ใช้ทั้งในโค้ด issue และข้อความบนจอ
 - [../DESIGN.md](../DESIGN.md) — กฎ UI ที่บังคับใช้จริง พร้อมเหตุการณ์ที่ทำให้เกิดกฎแต่ละข้อ
 
