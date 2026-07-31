@@ -1,0 +1,56 @@
+name: refresh-demo
+
+# บัญชี demo ที่ประกาศไว้ใน README เป็นบัญชีสาธารณะและข้อมูลผูกกับวันที่
+# ปล่อยไว้กราฟจะเลื่อนหายไปเอง และใครก็กดลบข้อมูลทิ้งได้ → งานนี้สร้างคืนให้ทุกวัน
+on:
+  schedule:
+    - cron: "0 21 * * *" # 04:00 ตามเวลาไทย
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# ไม่ให้รอบใหม่ทับรอบที่กำลังเขียนฐานข้อมูลอยู่
+concurrency:
+  group: refresh-demo
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: สร้างข้อมูลบัญชี demo ใหม่
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # สคริปต์ทั้งชุดอ่านค่าจาก .env.local ผ่าน node --env-file
+      - name: เขียน .env.local จาก secrets
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DEMO_EMAIL: ${{ secrets.DEMO_EMAIL }}
+          DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
+        run: |
+          for name in NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY \
+                      SUPABASE_SERVICE_ROLE_KEY GEMINI_API_KEY DEMO_EMAIL DEMO_PASSWORD; do
+            if [ -z "${!name}" ]; then
+              echo "::error::ขาด secret $name — ตั้งที่ Settings → Secrets and variables → Actions"
+              exit 1
+            fi
+            printf '%s=%s\n' "$name" "${!name}" >> .env.local
+          done
+
+      - run: npm run refresh:demo-week
+
+      - name: ยืนยันว่าข้อมูลเข้าจริง
+        run: npm run verify:seed

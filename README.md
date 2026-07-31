@@ -53,7 +53,8 @@ computed in code, an LLM only puts them into words. Thai UI · live demo below.<
 | **สรุปผลงาน 9 หน้า** | [showcase-en-light.pdf](docs/pitch/showcase-en-light.pdf) (ภาษาอังกฤษ) |
 
 > [!NOTE]
-> เป็นบัญชีสาธารณะ ใครก็แก้ข้อมูลได้ · ถ้าเจอข้อมูลเพี้ยน `npm run seed` สร้างคืนได้ทั้งชุด
+> เป็นบัญชีสาธารณะ กรอก แก้ ลบได้ตามสบาย — [งาน scheduled](.github/workflows/refresh-demo.yml) สร้างข้อมูล 28 วันขึ้นใหม่ทุกตี 4
+> ตั้งใจเว้นเช็คอิน**ของวันนี้**ไว้ว่าง เพื่อให้ลองกรอกเองได้ · แชทคุยกับโค้ชได้ 5 ข้อความต่อวัน (โควตา Gemini ฟรี)
 
 ## ภาพรวม
 

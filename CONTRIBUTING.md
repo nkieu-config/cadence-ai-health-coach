@@ -38,8 +38,8 @@ Schema และ RLS อยู่ที่ [`supabase/migrations/`](supabase/mig
 
 ## ก่อนเปิด PR
 
-คำสั่ง 5 ด่านและกติกาการทำงานทั้งหมดอยู่ใน **[AGENTS.md](AGENTS.md) ที่เดียว** —
-ไฟล์นี้เก็บเฉพาะสิ่งที่ AGENTS.md ไม่ได้บอก
+คำสั่ง 5 ด่านและกติกาการทำงานทั้งหมดอยู่ใน **[docs/agents.md](docs/agents.md) ที่เดียว** —
+หัวข้อนี้เก็บเฉพาะสิ่งที่ไฟล์นั้นไม่ได้บอก
 
 CI บังคับ **2 ด่านทุก PR**: `verify` (format · lint · tsc · test · build) และ `e2e (เปิดแอปจริง)`
 ซึ่งเปิดทุกหน้าจริงบนมือถือ+เดสก์ท็อป × light+dark แล้วเช็ค h1 อันเดียว · ไม่มี horizontal scroll ·
@@ -70,8 +70,24 @@ CI บังคับ **2 ด่านทุก PR**: `verify` (format · lint �
 | `npm run shots:readme` | ถ่ายภาพหน้าจอชุดที่ใช้ใน README (ต้องมี `cwebp`) |
 | `npm run deck` | สร้าง PDF สรุปผลงานจาก `docs/pitch/deck/showcase-en.html` พร้อมตรวจเนื้อหาล้น ภาพเสีย ฟอนต์ไม่ติด |
 
+## บัญชี demo ที่เปิดให้คนนอกลอง
+
+`palm@example.com` ประกาศไว้ใน README จึงต้องมีข้อมูลครบตลอดเวลา แต่ข้อมูลผูกกับวันที่และใครก็กดลบทิ้งได้
+
+[`.github/workflows/refresh-demo.yml`](.github/workflows/refresh-demo.yml) รัน `refresh:demo-week` ทุกวัน 21:00 UTC
+(ตี 4 เวลาไทย) แล้วปิดท้ายด้วย `verify:seed` ซึ่ง exit 1 ถ้าตาราง Feature 2 ไม่ครบ 3 แถว —
+งานเขียว = หน้า dashboard ของบัญชี demo มีของจริงให้ดู · กดรันเองได้จากแท็บ Actions
+
+**secrets ที่งานนี้ต้องมี** — `NEXT_PUBLIC_SUPABASE_URL` · `NEXT_PUBLIC_SUPABASE_ANON_KEY` ·
+`SUPABASE_SERVICE_ROLE_KEY` · `GEMINI_API_KEY` · `DEMO_EMAIL` · `DEMO_PASSWORD`
+(ขาดตัวไหนงานจะหยุดพร้อมบอกชื่อ ไม่ใช่รันครึ่ง ๆ กลาง ๆ)
+
+> [!WARNING]
+> GitHub ปิด scheduled workflow ของ public repo อัตโนมัติเมื่อเรโปไม่มีความเคลื่อนไหว 60 วัน
+> (มีเมลเตือนก่อน · กดเปิดคืนหรือ push อะไรก็รีเซ็ตตัวนับ) — ถ้าเรโปนิ่งยาว ให้เช็คว่างานนี้ยังเดินอยู่
+
 > [!TIP]
-> ข้อมูลในบัญชี demo ผูกกับวันที่ จึงเก่าเองทุกวัน — `npm run refresh:demo-week` เติมให้ตรงวันปัจจุบัน
+> รันบนเครื่องตัวเองก็ได้ — `npm run refresh:demo-week` · เติม `-- --goal-only` ถ้าไม่อยากยิง Gemini
 
 ## โครงสร้างโปรเจกต์
 
