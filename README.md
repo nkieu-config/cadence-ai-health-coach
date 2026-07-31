@@ -9,8 +9,7 @@
 AI health coach สำหรับนักศึกษาและ first jobber — บันทึกวันละครั้งในเวลาไม่ถึงนาทีครึ่ง
 แล้วระบบหาความสัมพันธ์ระหว่างการกิน–นอน–เคลื่อนไหวกับตารางชีวิตจริง
 
-<sub><i>An AI wellness coach for students and first jobbers. A 90-second daily check-in; statistics
-computed in code, an LLM only puts them into words. Thai UI · live demo below.</i></sub>
+**ภาษาไทย** · [English](README.en.md)
 
 [![CI](https://github.com/nkieu-config/cadence-ai-health-coach/actions/workflows/ci.yml/badge.svg)](https://github.com/nkieu-config/cadence-ai-health-coach/actions/workflows/ci.yml)
 ![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
@@ -20,6 +19,7 @@ computed in code, an LLM only puts them into words. Thai UI · live demo below.<
 ![Gemini](https://img.shields.io/badge/Gemini-3.1%20Flash%20Lite-4285F4?logo=googlegemini&logoColor=white)
 
 [**เปิดแอปจริง**](https://personal-healthcoach.vercel.app/) •
+[บทบาทของผม](#บทบาทของผมในโปรเจกต์นี้) •
 [ภาพรวม](#ภาพรวม) •
 [สิ่งที่น่าดูในเชิงวิศวกรรม](#สิ่งที่น่าดูในเชิงวิศวกรรม) •
 [ข้อจำกัด](#ข้อจำกัดที่เรารู้ตัว) •
@@ -46,15 +46,25 @@ computed in code, an LLM only puts them into words. Thai UI · live demo below.<
 
 ## ลองเลย
 
-| | |
-| --- | --- |
-| **แอปจริง** | [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/) |
-| **บัญชี demo** | `palm@example.com` / `cadence-demo-2026` — มีข้อมูลจริง 4 สัปดาห์ ครบทั้ง dashboard · pattern · coach · goal · สรุปสัปดาห์ |
-| **สรุปผลงาน 9 หน้า** | [showcase-en-light.pdf](docs/pitch/showcase-en-light.pdf) (ภาษาอังกฤษ) |
+- **แอปจริง** — [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/)
+- **บัญชี demo** — `palm@example.com` / `cadence-demo-2026` มีข้อมูลจริง 4 สัปดาห์ ครบทั้ง dashboard · pattern · coach · goal · สรุปสัปดาห์
+- **สรุปผลงาน 9 หน้า** — [showcase-en-light.pdf](docs/pitch/showcase-en-light.pdf) (ภาษาอังกฤษ)
 
 > [!NOTE]
 > เป็นบัญชีสาธารณะ กรอก แก้ ลบได้ตามสบาย — [งาน scheduled](.github/workflows/refresh-demo.yml) สร้างข้อมูล 28 วันขึ้นใหม่ทุกตี 4
 > ตั้งใจเว้นเช็คอิน**ของวันนี้**ไว้ว่าง เพื่อให้ลองกรอกเองได้ · แชทคุยกับโค้ชได้ 5 ข้อความต่อวัน (โควตา Gemini ฟรี)
+
+## บทบาทของผมในโปรเจกต์นี้
+
+ทีม 4 คน ผมเป็น **PM & SA** และเป็นคนเขียนส่วนที่อยู่หลังหน้าจอทั้งหมด — schema กับ RLS บน Postgres ·
+[`lib/patterns`](src/lib/patterns/) ที่คำนวณความสัมพันธ์ · [`lib/ai`](src/lib/ai/) กับ guardrail ทุกชั้น ·
+ชุดทดสอบ safety · สคริปต์ข้อมูล · CI และด่าน e2e · เอกสารออกแบบและ ADR ทั้งหมด
+
+อีก 3 คนทำหน้าจอเดินขนานกัน — กราฟบน dashboard · UI หน้าโค้ช · หน้าเป้าหมายกับสิทธิ์ความเป็นส่วนตัว
+
+หัวข้อ [สิ่งที่น่าดูในเชิงวิศวกรรม](#สิ่งที่น่าดูในเชิงวิศวกรรม) ข้างล่างทั้ง 5 ข้ออยู่ในส่วนที่ผมเป็นเจ้าของ
+ตรวจสอบย้อนได้จาก [96 PR ที่ merge แล้ว](https://github.com/nkieu-config/cadence-ai-health-coach/pulls?q=is%3Apr+is%3Amerged)
+(ของผม 86 ใบ) และ [issue tracker](docs/issues/) ที่ทุกใบปิดพร้อมหลักฐานและผูกกับ PR
 
 ## ภาพรวม
 
