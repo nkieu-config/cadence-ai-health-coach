@@ -15,11 +15,11 @@ Glossary ของโปรเจกต์ **AI Personal Health Coach for Studen
 | **Insight** | Pattern ที่ AI แปลความหมายแล้ว พร้อม next step ที่ทำได้จริง | ต้องแยกส่วน "ข้อมูลบอกว่า" กับ "ข้อเสนอ" ชัดเจนเสมอ |
 | **Micro Goal** | เป้าหมายเล็กรายสัปดาห์ที่ผูกกับสถานการณ์จริง เช่น "เตรียมมื้อเช้าล่วงหน้า 2 วัน" | ห้ามผูกกับน้ำหนัก รูปร่าง หรือแคลอรี ห้ามสุดโต่ง ต้องล้มเหลวยาก |
 | **Weekly Reflection** | รายงานสรุปรายสัปดาห์ 3 pillars + ข้อเสนอ micro goal สัปดาห์หน้า สร้างโดย AI | เน้นภาพรวมและกำลังใจ ไม่ใช่คะแนนสุขภาพ ไม่ตำหนิวันที่ขาดบันทึก |
-| **Coach** | AI conversation ที่คุยแบบไม่ตัดสิน ถามนำ และแนะนำ practical | Coach คือ wellness coach **ไม่ใช่แพทย์** — ดู guardrail ใน [docs/08-safety-privacy.md](docs/08-safety-privacy.md) |
+| **Coach** | AI conversation ที่คุยแบบไม่ตัดสิน ถามนำ และแนะนำ practical | Coach คือ wellness coach **ไม่ใช่แพทย์** — ดู guardrail ใน [docs/08-safety-privacy.md](08-safety-privacy.md) |
 | **Guardrail** | กติกาความปลอดภัยที่บังคับใน system prompt และ UI: ไม่วินิจฉัยโรค ไม่แนะนำยา/อาหารเสริม ไม่ให้แผนลดน้ำหนัก ไม่วิจารณ์รูปร่าง | ทุก feature ที่มี AI output ต้องผ่าน guardrail เดียวกัน |
 | **Persona** | ผู้ใช้ต้นแบบของ prototype: **"ปาล์ม" นักศึกษาปี 3 ช่วงทำ project และใกล้สอบ** | ทุกตัวอย่างใน UI, seed data และ pitch ใช้ persona นี้ |
 | **Seed Data** | ข้อมูล check-in จำลอง 4 สัปดาห์ของ persona ที่ฝัง pattern ไว้ให้ demo เห็นชัด (ADR-0004) | ใช้เฉพาะ demo account แยกจากข้อมูลจริงของทีม |
-| **Dogfooding** | ทีม 4 คนใช้แอปบันทึกจริงทุกวันตั้งแต่ check-in ใช้งานได้ | เริ่มจริง 13 ก.ค. 2026 — เป็นที่มาของบั๊กและข้อจำกัดหลายข้อใน [docs/11](docs/11-limitations-future.md) · **ห้าม dogfood ด้วยบัญชีปาล์ม** (เป็นบัญชี demo) |
+| **Dogfooding** | ทีม 4 คนใช้แอปบันทึกจริงทุกวันตั้งแต่ check-in ใช้งานได้ | เริ่มจริง 13 ก.ค. 2026 — เป็นที่มาของบั๊กและข้อจำกัดหลายข้อใน [docs/11](11-limitations-future.md) · **ห้าม dogfood ด้วยบัญชีปาล์ม** (เป็นบัญชี demo) |
 | **Pitching Day** | วันนำเสนอ 30 ก.ค. 2026 — deadline สุดท้ายของทุกงาน | Code freeze 29 ก.ค. 2026 |
 
 ## หลักภาษาที่ AI ต้องใช้กับผู้ใช้

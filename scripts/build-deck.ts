@@ -2,15 +2,15 @@ import { chromium } from "@playwright/test";
 import { existsSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 
-const QR = resolve("docs/pitch/deck/qr-app.png");
+const QR = resolve("docs/summary/deck/qr-app.png");
 
 // เพดานตัวเล็กต่างกันตามระยะอ่าน: สไลด์อ่านจากหลังห้อง เอกสารแผ่นเดียวอ่านในมือ
 const DOCS = [
   {
-    file: resolve("docs/pitch/deck/showcase-en.html"),
+    file: resolve("docs/summary/deck/showcase-en.html"),
     size: { width: 1280, height: 720 },
     minThai: 18,
-    targets: [{ theme: "light", out: "docs/pitch/showcase-en-light.pdf" }],
+    targets: [{ theme: "light", out: "docs/summary/showcase-en-light.pdf" }],
   },
 ];
 
@@ -80,7 +80,7 @@ async function render(
 }
 
 async function main() {
-  const shots = readdirSync("docs/pitch/screenshots");
+  const shots = readdirSync("docs/summary/screenshots");
 
   for (const doc of DOCS) {
     for (const { theme, out } of doc.targets) {
@@ -115,7 +115,7 @@ async function main() {
   }
 
   console.log(
-    `\nภาพในคลัง ${shots.length} ใบ · แก้เนื้อหาใน docs/pitch/deck/ แล้วรัน npm run deck ใหม่`
+    `\nภาพในคลัง ${shots.length} ใบ · แก้เนื้อหาใน docs/summary/deck/ แล้วรัน npm run deck ใหม่`
   );
 }
 

@@ -10,7 +10,7 @@ function requireEnv(name: string) {
 const BASE = process.env.SHOTS_BASE_URL ?? "http://localhost:3000";
 const EMAIL = requireEnv("DEMO_EMAIL");
 const PASSWORD = requireEnv("DEMO_PASSWORD");
-const OUT = process.env.SHOTS_OUT ?? "docs/pitch/screenshots";
+const OUT = process.env.SHOTS_OUT ?? "docs/summary/screenshots";
 
 const SCREENS: [string, string][] = [
   ["dashboard", "/dashboard"],

@@ -48,7 +48,7 @@ AI health coach สำหรับนักศึกษาและ first jobber
 
 - **แอปจริง** — [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/)
 - **บัญชี demo** — `palm@example.com` / `cadence-demo-2026` มีข้อมูลจริง 4 สัปดาห์ ครบทั้ง dashboard · pattern · coach · goal · สรุปสัปดาห์
-- **สรุปผลงาน 9 หน้า** — [showcase-en-light.pdf](docs/pitch/showcase-en-light.pdf) (ภาษาอังกฤษ)
+- **สรุปผลงาน 9 หน้า** — [showcase-en-light.pdf](docs/summary/showcase-en-light.pdf) (ภาษาอังกฤษ)
 
 > [!NOTE]
 > เป็นบัญชีสาธารณะ กรอก แก้ ลบได้ตามสบาย — [งาน scheduled](.github/workflows/refresh-demo.yml) สร้างข้อมูล 28 วันขึ้นใหม่ทุกตี 4
@@ -74,7 +74,7 @@ Cadence เป็น **wellness coach ไม่ใช่บริการทา
 ไม่จัดเกรด และไม่กดดันเรื่องรูปร่าง
 
 **ออกแบบเป็นแอปมือถือ ไม่ใช่เว็บไซต์** — ไม่มี landing page ไม่มี hero มีแค่ฟอร์ม dashboard และเมนูล่าง
-ที่ ≥ 1024px เมนูล่างกลายเป็น sidebar ซ้าย ซึ่งเป็น breakpoint **เดียว** ที่แอปใช้จริง ([DESIGN.md](DESIGN.md))
+ที่ ≥ 1024px เมนูล่างกลายเป็น sidebar ซ้าย ซึ่งเป็น breakpoint **เดียว** ที่แอปใช้จริง ([DESIGN.md](docs/DESIGN.md))
 
 ```mermaid
 flowchart LR
@@ -150,8 +150,8 @@ unit test ครอบแค่ตรรกะใน `lib/` — PR ที่ท�
 | [docs/adr/](docs/adr/) | เหตุผลเบื้องหลังการตัดสินใจทางเทคนิค 5 ฉบับ |
 | [docs/issues/](docs/issues/) | issue tracker ที่โปรเจกต์นี้เดินด้วยจริง 69 ใบ ปิดพร้อมหลักฐานและผูกกับ PR |
 | [docs/12-ui-inventory.md](docs/12-ui-inventory.md) | ทุก route ทุก state ตามที่แอปทำงานจริง พร้อมลิงก์เข้าโค้ด |
-| [CONTEXT.md](CONTEXT.md) | glossary ภาษากลาง ใช้คำตามนิยามนี้ทั้งในโค้ด issue และ UI copy |
-| [DESIGN.md](DESIGN.md) | กฎ UI ที่บังคับใช้จริง พร้อมเหตุการณ์ที่ทำให้เกิดกฎแต่ละข้อ |
+| [CONTEXT.md](docs/CONTEXT.md) | glossary ภาษากลาง ใช้คำตามนิยามนี้ทั้งในโค้ด issue และ UI copy |
+| [DESIGN.md](docs/DESIGN.md) | กฎ UI ที่บังคับใช้จริง พร้อมเหตุการณ์ที่ทำให้เกิดกฎแต่ละข้อ |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | วิธีรันเอง · ตัวแปรสภาพแวดล้อม · คำสั่งทั้งหมด · กติกาก่อนเปิด PR |
 
 ---

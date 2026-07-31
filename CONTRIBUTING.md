@@ -53,7 +53,7 @@ CI บังคับ **2 ด่านทุก PR**: `verify` (format · lint �
 > CI รันเฉพาะ [`e2e/routes.spec.ts`](e2e/routes.spec.ts) กับ [`e2e/theme.spec.ts`](e2e/theme.spec.ts)
 > ซึ่งไม่แตะข้อมูลบัญชี demo · เทสต์ที่เขียนข้อมูล ([`checkin.spec.ts`](e2e/checkin.spec.ts)) รันบนเครื่องตัวเองด้วย `npm run e2e`
 
-**กฎ UI ทั้งหมด** อยู่ในส่วนแรกของ [DESIGN.md](DESIGN.md) — บังคับถ้าจะแตะหน้าจอ
+**กฎ UI ทั้งหมด** อยู่ในส่วนแรกของ [DESIGN.md](docs/DESIGN.md) — บังคับถ้าจะแตะหน้าจอ
 
 ## คำสั่งที่มี
 
@@ -68,7 +68,7 @@ CI บังคับ **2 ด่านทุก PR**: `verify` (format · lint �
 | `npm run seed` | สร้างข้อมูล 4 สัปดาห์ของ persona ขึ้นใหม่ทั้งชุด |
 | `npm run refresh:demo-week` | อุ่นข้อมูลบัญชี demo ให้ตรงวันปัจจุบัน · `-- --goal-only` = ไม่ยิง Gemini |
 | `npm run shots:readme` | ถ่ายภาพหน้าจอชุดที่ใช้ใน README (ต้องมี `cwebp`) |
-| `npm run deck` | สร้าง PDF สรุปผลงานจาก `docs/pitch/deck/showcase-en.html` พร้อมตรวจเนื้อหาล้น ภาพเสีย ฟอนต์ไม่ติด |
+| `npm run deck` | สร้าง PDF สรุปผลงานจาก `docs/summary/deck/showcase-en.html` พร้อมตรวจเนื้อหาล้น ภาพเสีย ฟอนต์ไม่ติด |
 
 ## บัญชี demo ที่เปิดให้คนนอกลอง
 

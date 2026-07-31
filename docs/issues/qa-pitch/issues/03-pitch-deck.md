@@ -26,7 +26,7 @@ Refs: docs/10 (แนวเดินเรื่อง + mapping เกณฑ์
 
 ---
 
-2026-07-20 (A): ✅ deck outline + demo script ร่างเสร็จ → [`docs/pitch/`](/docs/pitch/) · ⚠️ โควตาเป็น **500/วัน** แล้วหลัง INFRA-23 → **อย่าดู checklist ข้างบนแล้ว** เก็บไว้เป็นประวัติเฉย ๆ แต่ยังต้องมี plan B เรื่องเน็ตล่ม
+2026-07-20 (A): ✅ deck outline + demo script ร่างเสร็จ → `docs/pitch/` (ตอนนี้คือ [docs/summary/](/docs/summary/)) · ⚠️ โควตาเป็น **500/วัน** แล้วหลัง INFRA-23 → **อย่าดู checklist ข้างบนแล้ว** เก็บไว้เป็นประวัติเฉย ๆ แต่ยังต้องมี plan B เรื่องเน็ตล่ม
 
 📍 ขั้นตอนเช้าวัน pitch อยู่ที่เดียวใน `docs/pitch/demo-script.md` — รวม `npm run refresh:demo-week` (ข้อมูล demo ผูก `today()` จึงเก่าเองทุกวัน)
 

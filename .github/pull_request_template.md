@@ -12,7 +12,7 @@
 - [ ] ตรง acceptance criteria ของ issue
 - [ ] ไม่มี secret / API key หลุดในโค้ด
 
-### ถ้าแตะ UI (กฎเต็มอยู่ใน DESIGN.md ส่วนแรก)
+### ถ้าแตะ UI (กฎเต็มอยู่ใน docs/DESIGN.md ส่วนแรก)
 
 - [ ] Responsive มือถือ + desktop · ไม่มี horizontal scroll ที่ 390px
 - [ ] **dark mode** — ไม่มีจุดขาวโพลน · **กราฟยังเห็นแท่ง/เส้นชัด**
@@ -21,7 +21,7 @@
 - [ ] **ไม่มี boolean prop คุมพฤติกรรม** — อ่าน call site แล้วรู้ว่าเรนเดอร์อะไร
 - [ ] ไม่ hardcode สี — ใช้ token
 - [ ] **`npm run e2e` ผ่าน** (~40 วิ · เปิดทุกหน้า × มือถือ/เดสก์ท็อป × light/dark)
-- [ ] ถ้าแตะ AI output: ผ่าน guardrail — ไม่มีคำต้องห้าม ภาษาไม่ตัดสิน (ดู CONTEXT.md)
+- [ ] ถ้าแตะ AI output: ผ่าน guardrail — ไม่มีคำต้องห้าม ภาษาไม่ตัดสิน (ดู docs/CONTEXT.md)
 
 ## หมายเหตุสำหรับ reviewer
 
