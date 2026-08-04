@@ -4,12 +4,12 @@
 
 # Cadence
 
-**เห็นจังหวะของตัวเอง แล้วเริ่มจากก้าวเล็ก ๆ ที่ทำได้จริง**
+**See your own rhythm, then start from a step small enough to actually take**
 
-AI health coach สำหรับนักศึกษาและ first jobber — บันทึกวันละครั้งในเวลาไม่ถึงนาทีครึ่ง
-แล้วระบบหาความสัมพันธ์ระหว่างการกิน–นอน–เคลื่อนไหวกับตารางชีวิตจริง
+An AI health coach for students and first jobbers — one check-in a day in under ninety seconds,
+then the system looks for how eating, sleeping and moving line up with the real shape of your week.
 
-**ภาษาไทย** · [English](README.en.md)
+**English** · [ภาษาไทย](README.th.md)
 
 [![CI](https://github.com/nkieu-config/cadence-ai-health-coach/actions/workflows/ci.yml/badge.svg)](https://github.com/nkieu-config/cadence-ai-health-coach/actions/workflows/ci.yml)
 ![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
@@ -18,135 +18,154 @@ AI health coach สำหรับนักศึกษาและ first jobber
 ![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%2B%20RLS-3FCF8E?logo=supabase&logoColor=white)
 ![Gemini](https://img.shields.io/badge/Gemini-3.1%20Flash%20Lite-4285F4?logo=googlegemini&logoColor=white)
 
-[**เปิดแอปจริง**](https://personal-healthcoach.vercel.app/) •
-[ภาพรวม](#ภาพรวม) •
-[สิ่งที่น่าดูในเชิงวิศวกรรม](#สิ่งที่น่าดูในเชิงวิศวกรรม) •
-[ข้อจำกัด](#ข้อจำกัดที่เรารู้ตัว) •
-[เอกสาร](#เอกสาร) •
-[รันเอง](CONTRIBUTING.md)
+[**Open the live app**](https://personal-healthcoach.vercel.app/) •
+[Overview](#overview) •
+[Worth a look in the code](#worth-a-look-in-the-code) •
+[Limitations](#limitations-we-know-about) •
+[Docs](#documentation) •
+[Run it yourself](CONTRIBUTING.md)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme/dark-phone-checkin.webp">
-  <img src="docs/assets/readme/light-phone-checkin.webp" width="240" alt="หน้าเช็คอินประจำวันของ Cadence ขั้นที่ 1 จาก 4 ถามจำนวนมื้อ ของที่กินเพิ่ม และเครื่องดื่มหวาน เป็นชิปกดเลือกทั้งหมด">
+  <img src="docs/assets/readme/light-phone-checkin.webp" width="240" alt="The Cadence daily check-in, step 1 of 4, asking how many meals, what was eaten between them, and sweet drinks — every answer is a tap chip">
 </picture>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme/dark-phone-dashboard.webp">
-  <img src="docs/assets/readme/light-phone-dashboard.webp" width="240" alt="หน้าภาพรวมสุขภาพของ Cadence แสดงกราฟชั่วโมงนอนย้อนหลัง 14 วัน พร้อมสัญลักษณ์วันที่มีปัจจัยรบกวนใต้แท่งกราฟ">
+  <img src="docs/assets/readme/light-phone-dashboard.webp" width="240" alt="The Cadence health overview showing a 14-day sleep-hours bar chart, with markers under the bars for days that had something disrupting the schedule">
 </picture>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme/dark-phone-coach.webp">
-  <img src="docs/assets/readme/light-phone-coach.webp" width="240" alt="หน้าคุยกับโค้ชสุขภาพของ Cadence ผู้ใช้ถามว่าสัปดาห์หน้าควรเริ่มแก้อะไรก่อน โค้ชตอบให้โฟกัสมื้อเช้า โดยอ้างจากบันทึกว่าวันที่เรียนหรือทำงานเช้ามักเป็นวันที่ข้ามมื้อเช้า">
+  <img src="docs/assets/readme/light-phone-coach.webp" width="240" alt="The Cadence coach screen: the user asks what to fix first next week, and the coach answers breakfast, citing the record that days with early classes are the days breakfast gets skipped">
 </picture>
 
-<sub>เช็คอิน 4 ขั้น ชิปกดล้วน · แนวโน้ม 4 แท็บ พร้อมวันที่มีปัจจัยรบกวน · โค้ชที่ตอบจากบันทึกจริง ไม่ใช่คำแนะนำสำเร็จรูป<br>
-ภาพจริงจากแอป ไม่ใช่ mockup — ถ่ายที่ขนาดจอ iPhone 13 (390×844) · สลับ light/dark ตามธีมของคนอ่านเอง</sub>
+<sub>A four-step check-in, chips only · four trend tabs marking disrupted days · a coach that answers from the user's own records, not canned advice<br>
+Real screens, not mockups — captured at iPhone 13 size (390×844) · light and dark follow your own theme</sub>
 
 </div>
 
-## ลองเลย
+> [!NOTE]
+> **The app itself is in Thai.** Every screen quoted below is translated, and the demo account is
+> readable with a browser translation extension. The [9-page project summary](docs/summary/showcase-en-light.pdf) is in English.
 
-- **แอปจริง** — [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/) · ปุ่มแรกบนหน้าแรกพาเข้าบัญชีตัวอย่างทันที ไม่ต้องสมัคร ไม่ต้องกรอกอะไร
-- **บัญชี demo** — `palm@example.com` มีข้อมูลจริง 4 สัปดาห์ ครบทั้ง dashboard · pattern · coach · goal · สรุปสัปดาห์ (จะกรอกเองก็ได้ รหัส `cadence-demo-2026`)
-- **สรุปผลงาน 9 หน้า** — [showcase-en-light.pdf](docs/summary/showcase-en-light.pdf) (ภาษาอังกฤษ)
+## Try it
+
+- **Live app** — [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/) · the first button on the landing page — the green one, "ลองเลย ด้วยบัญชีตัวอย่าง" — signs you straight in. No sign-up, nothing to type.
+- **Demo account** — `palm@example.com`, loaded with four real weeks: dashboard, patterns, coach, goals, weekly summary (password `cadence-demo-2026` if you would rather type it)
+- **9-page summary (PDF, English)** — [showcase-en-light.pdf](docs/summary/showcase-en-light.pdf)
 
 > [!NOTE]
-> เป็นบัญชีสาธารณะ กรอก แก้ ลบได้ตามสบาย — [งาน scheduled](.github/workflows/refresh-demo.yml) สร้างข้อมูล 28 วันขึ้นใหม่ทุกตี 4
-> ตั้งใจเว้นเช็คอิน**ของวันนี้**ไว้ว่าง เพื่อให้ลองกรอกเองได้ · แชทคุยกับโค้ชได้ 5 ข้อความต่อวัน (โควตา Gemini ฟรี)
+> It is a public account — fill it in, edit it, delete it. A [scheduled job](.github/workflows/refresh-demo.yml)
+> rebuilds 28 days of data every night. **Today's** check-in is deliberately left blank so you can
+> submit one yourself · the coach takes 5 chat messages per day (free Gemini quota)
 
-## ภาพรวม
+## Overview
 
-Cadence เป็น **wellness coach ไม่ใช่บริการทางการแพทย์** ผู้ใช้เช็คอินวันละครั้ง ใช้เวลา
-**มัธยฐาน 1 นาที 26 วินาที** (จับเวลาจริง 24 ครั้ง) ระบบเชื่อมโยงการกิน–นอน–เคลื่อนไหวเข้ากับ
-บริบทชีวิต (เดดไลน์ เรียนเช้า เดินทาง) แล้วเสนอก้าวเล็ก ๆ ที่ทำได้จริง โดยไม่ให้คะแนน
-ไม่จัดเกรด และไม่กดดันเรื่องรูปร่าง
+Cadence is **a wellness coach, not a medical service**. The user checks in once a day — median
+**1 minute 26 seconds**, timed 24 times for real. The system connects eating, sleeping and moving to
+the actual context of a life (deadlines, early classes, commuting) and proposes a step small enough
+to take. It never scores, never grades, and never says anything about body shape.
 
-**ออกแบบเป็นแอปมือถือ ไม่ใช่เว็บไซต์** — มีแค่ฟอร์ม dashboard และเมนูล่าง ที่ ≥ 1024px เมนูล่าง
-กลายเป็น sidebar ซ้าย ซึ่งเป็น breakpoint **เดียว** ที่แอปใช้จริง ([DESIGN.md](docs/DESIGN.md))
+**Built as a mobile app, not a website** — just forms, a dashboard and a bottom nav. At ≥ 1024px that
+nav becomes a left sidebar, and that is the **only** breakpoint the app actually uses
+([DESIGN.md](docs/DESIGN.md), Thai).
 
 ```mermaid
 flowchart LR
-  U["ผู้ใช้"] --> APP["Next.js 16<br/>App Router"]
+  U["User"] --> APP["Next.js 16<br/>App Router"]
   APP --> DB[("Supabase<br/>Postgres + RLS")]
-  APP --> P["lib/patterns<br/>คำนวณสถิติจริง"]
-  P -- "ตัวเลข + หลักฐาน" --> AI["lib/ai<br/>guardrail + prompt"]
-  AI -- "เรียบเรียงเป็นภาษา" --> G["Gemini API"]
+  APP --> P["lib/patterns<br/>computes the statistics"]
+  P -- "numbers + evidence" --> AI["lib/ai<br/>guardrails + prompt"]
+  AI -- "puts it into words" --> G["Gemini API"]
   G --> APP
 ```
 
-**สิ่งที่ระบบทำ**
+**What it does**
 
-- **เช็คอินรายวัน** 4 ขั้น เป็นชิปกดล้วน — คำถามเสริมโผล่เฉพาะเมื่อเกี่ยว (นอนดึก → ถามเหตุผล)
-- **ภาพรวมสุขภาพ** กราฟแนวโน้ม 4 แท็บ + timeline "คืนสู่เช้า" + สัญลักษณ์วันที่มีปัจจัยรบกวน
-- **วิเคราะห์รูปแบบ** เชื่อม 3 เสาเข้ากับตารางชีวิต (ต้องมีข้อมูล ≥ 7 วันถึงจะวิเคราะห์)
-- **โค้ชสนทนา** ถามก่อนด้วยข้อมูลจริงของผู้ใช้ ไม่ใช่ช่องแชทเปล่า + guided flow ตั้งเป้า 4 ขั้น
-- **Micro goal** สัปดาห์ละไม่เกิน 2 ข้อ ติ๊กความคืบหน้ารายวัน
-- **สรุปสัปดาห์** พร้อมตัวเลขเทียบสัปดาห์ก่อนที่คำนวณสดในโค้ด (ไม่ใช้ AI ไม่กินโควตา)
+- **Daily check-in** in four steps, chips only — follow-up questions appear only when they are relevant (late night → ask why)
+- **Health overview** with four trend tabs, a night-into-morning timeline, and markers on disrupted days
+- **Pattern analysis** tying the three pillars to the shape of the week (needs ≥ 7 days of data before it will analyse anything)
+- **Conversational coach** that opens with a question drawn from the user's own records rather than an empty chat box, plus a four-step guided goal flow
+- **Micro goals**, at most two a week, ticked off day by day
+- **Weekly summary** with week-over-week numbers computed in code (no AI call, no quota spent)
 
-**สิ่งที่ระบบไม่ทำ** — ไม่วินิจฉัยโรค ไม่แนะนำยา/อาหารเสริม ไม่ให้แผนลดน้ำหนัก ไม่เก็บน้ำหนัก/ส่วนสูง/BMI/แคลอรี/รูปถ่าย
+**What it will not do** — no diagnosis, no medication or supplement advice, no weight-loss plans, and it stores no weight, height, BMI, calories or photos.
 
-## สิ่งที่น่าดูในเชิงวิศวกรรม
+## Worth a look in the code
 
-**1 · โค้ดคำนวณ LLM เล่าเรื่อง — แยกกันโดยโครงสร้าง ไม่ใช่โดยคำสั่งใน prompt**
+**1 · Code computes, the LLM narrates — separated structurally, not by asking the prompt nicely**
 
-[`lib/patterns`](src/lib/patterns/index.ts) นับความสัมพันธ์ 10 คู่จากข้อมูลจริง แล้วเก็บเฉพาะคู่ที่สองกลุ่มต่างกัน ≥ 20%
-และมีข้อมูล ≥ 3 วันต่อกลุ่ม — เกณฑ์ทุกตัวเป็นค่าคงที่กองรวมกันอยู่หัวไฟล์ อ่านจบในหน้าจอเดียว ([index.ts:4-10](src/lib/patterns/index.ts#L4-L10)) ·
-จากนั้นโค้ด**แนบตัวเลขหลักฐานกลับเข้าไปเองหลัง LLM ตอบ** ทำให้โมเดลไม่มีช่องแต่งตัวเลขตั้งแต่ต้น ·
-ข้อมูลต่ำกว่า 7 วันไม่ถูกส่งให้ AI เลย ([07-ai-design.md](docs/07-ai-design.md))
+[`lib/patterns`](src/lib/patterns/index.ts) counts ten correlations from the real records and keeps only
+those where the two groups differ by ≥ 20% with ≥ 3 days on each side — every threshold is a constant
+sitting at the top of the file, readable in one screen ([index.ts:4-10](src/lib/patterns/index.ts#L4-L10)).
+The code then **re-attaches the evidence numbers itself, after the model has replied**, so there was
+never an opening for the model to invent a figure. Fewer than 7 days of data is never sent to the LLM
+at all ([07-ai-design.md](docs/07-ai-design.md), Thai).
 
-**2 · ทดสอบ safety ด้วยผลรันดิบที่คอมมิตไม่ตัดต่อ**
+**2 · Safety tested with raw output committed unedited**
 
-10 เคส × 2 ประโยค บนโมเดล production · ปฏิเสธถูก 20/20 · เคสวิกฤตให้สายด่วน 9/9 · **คนตรวจไม่ใช่คนเขียน
-prompt** · ที่สำคัญกว่าคือรอบแรก**ไม่ผ่าน** — โมเดลเขียนเชิงเหตุ-ผลจากข้อมูล 3 วัน เราแก้ prompt แล้วรันซ้ำ
-ผลทั้งสองรอบอยู่ในเรโปให้เทียบกันได้ตรง ๆ ([ก่อนแก้](docs/issues/ai-safety-test/run-2026-07-14-before-prompt-fix.md) ·
-[หลังแก้](docs/issues/ai-safety-test/run-2026-07-16-after-prompt-fix.md) · [prompt ที่ใช้](src/lib/ai/system-prompt.ts))
+10 cases × 2 phrasings against the production model: 20/20 refused correctly, 9/9 crisis cases
+surfaced the helpline, and **the person who checked the results was not the person who wrote the
+prompt**. What matters more is that the first round **failed** — the model wrote causal claims off
+three days of data. We fixed the prompt and ran it again. Both rounds are in the repo, side by side
+([before](docs/issues/ai-safety-test/run-2026-07-14-before-prompt-fix.md) ·
+[after](docs/issues/ai-safety-test/run-2026-07-16-after-prompt-fix.md) ·
+[the prompt itself](src/lib/ai/system-prompt.ts)).
 
-**3 · เลือกโมเดลจากผลวัด ไม่ใช่จากเวอร์ชัน**
+**3 · Model chosen by measurement, not by version number**
 
-ตอนมีรุ่นใหม่ออก วัดใหม่ทั้งชุดด้วยข้อมูลจริงและ pipeline จริง — รุ่นใหม่กว่าช้ากว่า 4 เท่าและโควตาเหลือ
-20 ครั้ง/วัน จึง**ไม่เปลี่ยน** · โควตาทุกตัวมาจากการยิงชนเพดานเอง ไม่ใช่จากเอกสาร ([ADR-0003](docs/adr/0003-gemini-free-tier-ai.md)) ·
-โมเดลถูก pin ไว้ที่ [`model.ts`](src/lib/ai/model.ts) และมี unit test ล็อกชื่อไว้ การเปลี่ยนเงียบ ๆ จึงทำไม่ได้
+When a newer release appeared, the whole suite was re-run against real data through the real
+pipeline. The newer model was 4× slower and left a quota of 20 requests a day, so we **did not
+switch**. Every quota figure here came from hitting the ceiling ourselves, not from the docs
+([ADR-0003](docs/adr/0003-gemini-free-tier-ai.md), Thai). The model is pinned in
+[`model.ts`](src/lib/ai/model.ts) and a unit test locks the name, so it cannot drift quietly.
 
-**4 · ด่านที่รู้ว่าตัวเองจับอะไรไม่ได้**
+**4 · A gate that knows what it cannot catch**
 
-unit test ครอบแค่ตรรกะใน `lib/` — PR ที่ทำ layout พังจะผ่าน `verify` เขียวหมด จึงมีด่าน e2e ที่เปิดหน้าจริง
-ทุกหน้า × มือถือ/เดสก์ท็อป × light/dark แล้วเช็ค contrast ≥ 4.5:1 · ปุ่ม ≥ 44px · ไม่มี horizontal scroll ·
-ไม่มี console error — ทั้งหมดเป็นโค้ดที่รันจริงใน [e2e/checks.ts](e2e/checks.ts) ไม่ใช่ checklist ที่คนไล่ดูเอง
-(contrast คำนวณโดยให้เบราว์เซอร์แปลงสีให้ เพราะ Tailwind v4 คืนค่าเป็น `oklab()` ที่ parse เองแล้วได้ผลผิด)
+Unit tests only cover logic in `lib/` — a PR that breaks the layout sails through `verify` completely
+green. So there is an e2e gate that opens every real page across mobile and desktop, light and dark,
+and asserts contrast ≥ 4.5:1, tap targets ≥ 44px, no horizontal scroll, no console errors — all of it
+executable code in [e2e/checks.ts](e2e/checks.ts), not a checklist somebody eyeballs. (Contrast is
+measured by letting the browser convert the colours, because Tailwind v4 returns `oklab()`, which
+gives the wrong ratio if you parse it yourself.)
 
-**5 · เอกสารที่บันทึกความผิดพลาดของตัวเอง**
+**5 · Documentation that records its own mistakes**
 
-[11-limitations-future.md](docs/11-limitations-future.md) ไม่ใช่รายการข้อแก้ตัว — ทุกข้อจำกัดมาคู่กับสิ่งที่ทำไปแล้ว
-เพื่อไม่ให้มันหลอกผู้ใช้ และหลายข้อมีเลข error หรือผลทดสอบกำกับ เพราะเจอจริงระหว่างสร้าง
+[11-limitations-future.md](docs/11-limitations-future.md) is not a list of excuses. Every limitation
+comes paired with what was built so it would not mislead a user, and several carry an error number or
+a test result, because they were hit for real during the build.
 
-## ข้อจำกัดที่เรารู้ตัว
+## Limitations we know about
 
-- **ข้อมูลมาจากผู้ใช้กรอกเองทั้งหมด** ไม่มีเซนเซอร์ยืนยัน — เราจึงออกแบบให้การกรอกตามจริงไม่มีต้นทุนทางใจ (ไม่มีคะแนน ไม่มีสตรีค ภาษาไม่ตัดสิน)
-- **ยังไม่ได้ประเมินกับผู้ใช้จริงนอกทีม** — ผู้ทดสอบ 4 คนคือคนสร้างเอง ตัวเลขที่วัดได้จึงเป็นเพดานของดีไซน์ ไม่ใช่พื้นของคนใช้ครั้งแรก
-- **pattern ที่เจอคือความสัมพันธ์ ไม่ใช่เหตุและผล** — โค้ดไม่ส่งข้อมูล < 7 วันให้ LLM · prompt ห้ามสรุปเหตุ-ผล · มีรายการคำเชิงสาเหตุที่ตรวจจับได้
-- **LLM ควบคุมได้ไม่ 100%** — ทุกเป้าหมายต้องผ่าน [`validateGoalTitle()`](src/lib/goals/suggest.ts#L70) ก่อนถูกใช้ ไม่ผ่านคือทิ้งแล้วตกไปใช้เป้ามาตรฐาน
+- **Every number is self-reported**, with no sensor to confirm it — so the design removes the emotional cost of answering honestly: no score, no streak, no judging language
+- **Not yet evaluated with users outside the team** — the four testers built it, so the timings measure the ceiling of the design, not the floor for a first-time user
+- **The patterns are correlations, not causes** — data under 7 days never reaches the LLM, the prompt forbids causal claims, and there is a detectable list of causal wording
+- **An LLM cannot be controlled completely** — every goal must pass [`validateGoalTitle()`](src/lib/goals/suggest.ts#L70) before use; anything that fails is discarded in favour of a standard goal
 
-อ่านเต็มพร้อมแผนถ้าไปต่อที่ [docs/11-limitations-future.md](docs/11-limitations-future.md)
+The full version, with what we would do next, is in [docs/11-limitations-future.md](docs/11-limitations-future.md) (Thai).
 
-## ความเป็นส่วนตัว
+## Privacy
 
-ข้อมูลสุขภาพเห็นได้เฉพาะเจ้าของบัญชี (บังคับด้วย RLS ระดับฐานข้อมูล ตรวจซ้ำด้วย `npm run verify:rls`) ·
-ผู้ใช้ลบข้อมูลหรือลบบัญชีเองได้ทุกเมื่อ · **ไม่ส่งชื่อหรืออีเมลให้โมเดล** ส่งเฉพาะข้อมูลพฤติกรรม
-([08-safety-privacy.md](docs/08-safety-privacy.md))
+Health data is visible only to its owner, enforced by row-level security in the database and
+re-checked by `npm run verify:rls`. Users can delete their data or their whole account at any time.
+**No name or email is ever sent to the model** — only behavioural data
+([08-safety-privacy.md](docs/08-safety-privacy.md), Thai).
 
-## เอกสาร
+## Documentation
 
-| ไฟล์ | เนื้อหา |
+The design docs are written in Thai. The table says what each one holds.
+
+| File | What is in it |
 | --- | --- |
-| [docs/](docs/README.md) | สารบัญเอกสารออกแบบ 11 ฉบับ — ปัญหา → persona → data → architecture → AI → safety → limitations |
-| [docs/adr/](docs/adr/) | เหตุผลเบื้องหลังการตัดสินใจทางเทคนิค 5 ฉบับ |
-| [docs/issues/](docs/issues/) | issue tracker ที่โปรเจกต์นี้เดินด้วยจริง 69 ใบ ปิดพร้อมหลักฐานและผูกกับ PR |
-| [docs/12-ui-inventory.md](docs/12-ui-inventory.md) | ทุก route ทุก state ตามที่แอปทำงานจริง พร้อมลิงก์เข้าโค้ด |
-| [CONTEXT.md](docs/CONTEXT.md) | glossary ภาษากลาง ใช้คำตามนิยามนี้ทั้งในโค้ด issue และ UI copy |
-| [DESIGN.md](docs/DESIGN.md) | กฎ UI ที่บังคับใช้จริง พร้อมเหตุการณ์ที่ทำให้เกิดกฎแต่ละข้อ |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | วิธีรันเอง · ตัวแปรสภาพแวดล้อม · คำสั่งทั้งหมด · กติกาก่อนเปิด PR |
+| [docs/](docs/README.md) | Index of the 11 design docs — problem → persona → data → architecture → AI → safety → limitations |
+| [docs/adr/](docs/adr/) | Five architecture decision records, each with the reasoning behind it |
+| [docs/issues/](docs/issues/) | The issue tracker this project actually ran on — 69 issues, each closed with evidence and tied to a PR |
+| [docs/12-ui-inventory.md](docs/12-ui-inventory.md) | Every route and every state as the app really behaves, each linked into the code |
+| [CONTEXT.md](docs/CONTEXT.md) | The shared glossary — one meaning per word, used in code, issues and UI copy alike |
+| [DESIGN.md](docs/DESIGN.md) | The UI rules that are actually enforced, each with the incident that created it |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | How to run it · environment variables · every script · the gates before a PR |
 
 ---
 
-<sub>สร้างโดยทีม 4 คนใน 4 สัปดาห์ ด้วยงบ 0 บาท สำหรับ CSTU Spark Camp in AI 2569 (Mission #5) ·
-Deploy อัตโนมัติจาก `main` ไป [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/) ·
-สัญญาอนุญาต [MIT](LICENSE)</sub>
+<sub>Built by a team of four in four weeks on a budget of zero, for CSTU Spark Camp in AI 2026 (Mission #5) ·
+Deployed automatically from `main` to [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/) ·
+Licensed [MIT](LICENSE)</sub>
