@@ -19,7 +19,6 @@ then the system looks for how eating, sleeping and moving line up with the real 
 ![Gemini](https://img.shields.io/badge/Gemini-3.1%20Flash%20Lite-4285F4?logo=googlegemini&logoColor=white)
 
 [**Open the live app**](https://personal-healthcoach.vercel.app/) •
-[My part in it](#my-part-in-it) •
 [Overview](#overview) •
 [Worth a look in the code](#worth-a-look-in-the-code) •
 [Limitations](#limitations-we-know-about) •
@@ -50,28 +49,14 @@ Real screens, not mockups — captured at iPhone 13 size (390×844) · light and
 
 ## Try it
 
-- **Live app** — [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/) — the first button on the landing page ("ลองเลย ด้วยบัญชีตัวอย่าง" / _try it with the sample account_) signs you straight in. No sign-up, nothing to type.
-- **Demo account** — that button opens `palm@example.com`, loaded with four real weeks: dashboard, patterns, coach, goals, weekly summary (password `cadence-demo-2026` if you would rather type it)
+- **Live app** — [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/) · the first button on the landing page — the green one, "ลองเลย ด้วยบัญชีตัวอย่าง" — signs you straight in. No sign-up, nothing to type.
+- **Demo account** — `palm@example.com`, loaded with four real weeks: dashboard, patterns, coach, goals, weekly summary (password `cadence-demo-2026` if you would rather type it)
 - **9-page summary (PDF, English)** — [showcase-en-light.pdf](docs/summary/showcase-en-light.pdf)
 
 > [!NOTE]
 > It is a public account — fill it in, edit it, delete it. A [scheduled job](.github/workflows/refresh-demo.yml)
 > rebuilds 28 days of data every night. **Today's** check-in is deliberately left blank so you can
 > submit one yourself · the coach takes 5 chat messages per day (free Gemini quota)
-
-## My part in it
-
-A team of four. I was the **PM & systems analyst**, and I wrote everything behind the screens —
-the Postgres schema and row-level security, [`lib/patterns`](src/lib/patterns/) which computes the
-correlations, [`lib/ai`](src/lib/ai/) and every guardrail layer, the safety test suite, the data
-scripts, CI and the e2e gate, and the design docs and ADRs.
-
-The other three built screens in parallel — the dashboard charts, the coach UI, and the goals and
-privacy pages.
-
-All five items under [Worth a look in the code](#worth-a-look-in-the-code) sit in the part I own.
-It is checkable: [96 merged PRs](https://github.com/nkieu-config/cadence-ai-health-coach/pulls?q=is%3Apr+is%3Amerged)
-(86 of them mine) and an [issue tracker](docs/issues/) where every issue closes with evidence and links to its PR.
 
 ## Overview
 
@@ -80,9 +65,9 @@ Cadence is **a wellness coach, not a medical service**. The user checks in once 
 the actual context of a life (deadlines, early classes, commuting) and proposes a step small enough
 to take. It never scores, never grades, and never says anything about body shape.
 
-**Built as a mobile app, not a website** — no landing page, no hero, just forms, a dashboard and a
-bottom nav. At ≥ 1024px that nav becomes a left sidebar, and that is the **only** breakpoint the app
-actually uses ([DESIGN.md](docs/DESIGN.md), Thai).
+**Built as a mobile app, not a website** — just forms, a dashboard and a bottom nav. At ≥ 1024px that
+nav becomes a left sidebar, and that is the **only** breakpoint the app actually uses
+([DESIGN.md](docs/DESIGN.md), Thai).
 
 ```mermaid
 flowchart LR
@@ -109,31 +94,39 @@ flowchart LR
 
 **1 · Code computes, the LLM narrates — separated structurally, not by asking the prompt nicely**
 
-`lib/patterns` counts ten correlations from the real records and keeps only those where the two
-groups differ by ≥ 20% with ≥ 3 days on each side. The code then **re-attaches the evidence numbers
-itself, after the model has replied**, so there was never an opening for the model to invent a
-figure. Fewer than 7 days of data is never sent to the LLM at all ([07-ai-design.md](docs/07-ai-design.md), Thai).
+[`lib/patterns`](src/lib/patterns/index.ts) counts ten correlations from the real records and keeps only
+those where the two groups differ by ≥ 20% with ≥ 3 days on each side — every threshold is a constant
+sitting at the top of the file, readable in one screen ([index.ts:4-10](src/lib/patterns/index.ts#L4-L10)).
+The code then **re-attaches the evidence numbers itself, after the model has replied**, so there was
+never an opening for the model to invent a figure. Fewer than 7 days of data is never sent to the LLM
+at all ([07-ai-design.md](docs/07-ai-design.md), Thai).
 
 **2 · Safety tested with raw output committed unedited**
 
 10 cases × 2 phrasings against the production model: 20/20 refused correctly, 9/9 crisis cases
 surfaced the helpline, and **the person who checked the results was not the person who wrote the
 prompt**. What matters more is that the first round **failed** — the model wrote causal claims off
-three days of data. We fixed the prompt and ran it again. Both rounds are in the repo
-([ai-safety-test/](docs/issues/ai-safety-test/)).
+three days of data. We fixed the prompt and ran it again. Both rounds are in the repo, side by side
+([before](docs/issues/ai-safety-test/run-2026-07-14-before-prompt-fix.md) ·
+[after](docs/issues/ai-safety-test/run-2026-07-16-after-prompt-fix.md) ·
+[the prompt itself](src/lib/ai/system-prompt.ts)).
 
 **3 · Model chosen by measurement, not by version number**
 
 When a newer release appeared, the whole suite was re-run against real data through the real
 pipeline. The newer model was 4× slower and left a quota of 20 requests a day, so we **did not
 switch**. Every quota figure here came from hitting the ceiling ourselves, not from the docs
-([ADR-0003](docs/adr/0003-gemini-free-tier-ai.md), Thai).
+([ADR-0003](docs/adr/0003-gemini-free-tier-ai.md), Thai). The model is pinned in
+[`model.ts`](src/lib/ai/model.ts) and a unit test locks the name, so it cannot drift quietly.
 
 **4 · A gate that knows what it cannot catch**
 
 Unit tests only cover logic in `lib/` — a PR that breaks the layout sails through `verify` completely
 green. So there is an e2e gate that opens every real page across mobile and desktop, light and dark,
-and asserts contrast ≥ 4.5:1, tap targets ≥ 44px, no horizontal scroll, no console errors.
+and asserts contrast ≥ 4.5:1, tap targets ≥ 44px, no horizontal scroll, no console errors — all of it
+executable code in [e2e/checks.ts](e2e/checks.ts), not a checklist somebody eyeballs. (Contrast is
+measured by letting the browser convert the colours, because Tailwind v4 returns `oklab()`, which
+gives the wrong ratio if you parse it yourself.)
 
 **5 · Documentation that records its own mistakes**
 
@@ -146,7 +139,7 @@ a test result, because they were hit for real during the build.
 - **Every number is self-reported**, with no sensor to confirm it — so the design removes the emotional cost of answering honestly: no score, no streak, no judging language
 - **Not yet evaluated with users outside the team** — the four testers built it, so the timings measure the ceiling of the design, not the floor for a first-time user
 - **The patterns are correlations, not causes** — data under 7 days never reaches the LLM, the prompt forbids causal claims, and there is a detectable list of causal wording
-- **An LLM cannot be controlled completely** — every goal must pass `validateGoalTitle()` before use; anything that fails is discarded in favour of a standard goal
+- **An LLM cannot be controlled completely** — every goal must pass [`validateGoalTitle()`](src/lib/goals/suggest.ts#L70) before use; anything that fails is discarded in favour of a standard goal
 
 The full version, with what we would do next, is in [docs/11-limitations-future.md](docs/11-limitations-future.md) (Thai).
 
