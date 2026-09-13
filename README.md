@@ -6,8 +6,9 @@
 
 **See your own rhythm, then start from a step small enough to actually take**
 
-An AI health coach for students and first jobbers — one check-in a day in under ninety seconds,
-then the system looks for how eating, sleeping and moving line up with the real shape of your week.
+An AI wellness coach for students and first jobbers. Cadence helps people notice patterns in
+eating, sleeping, and movement, then turn those patterns into practical micro-goals that fit the
+shape of their real week.
 
 **English** · [ภาษาไทย](README.th.md)
 
@@ -18,12 +19,9 @@ then the system looks for how eating, sleeping and moving line up with the real 
 ![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%2B%20RLS-3FCF8E?logo=supabase&logoColor=white)
 ![Gemini](https://img.shields.io/badge/Gemini-3.1%20Flash%20Lite-4285F4?logo=googlegemini&logoColor=white)
 
-[**Open the live app**](https://personal-healthcoach.vercel.app/) •
-[Overview](#overview) •
-[Worth a look in the code](#worth-a-look-in-the-code) •
-[Limitations](#limitations-we-know-about) •
-[Docs](#documentation) •
-[Run it yourself](CONTRIBUTING.md)
+[**Open the live app**](https://personal-healthcoach.vercel.app/) ·
+[Case study PDF](docs/summary/showcase-en-light.pdf) ·
+[Run it locally](CONTRIBUTING.md)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme/dark-phone-checkin.webp">
@@ -44,128 +42,97 @@ Real screens, not mockups — captured at iPhone 13 size (390×844) · light and
 </div>
 
 > [!NOTE]
-> **The app itself is in Thai.** Every screen quoted below is translated, and the demo account is
-> readable with a browser translation extension. The [9-page project summary](docs/summary/showcase-en-light.pdf) is in English.
+> **The app itself is in Thai.** The screenshots and examples below are translated for English-speaking
+> readers. A browser translation extension can be used when exploring the live demo.
 
-## Try it
+## Try the demo
 
-- **Live app** — [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/) · the first button on the landing page — the green one, "ลองเลย ด้วยบัญชีตัวอย่าง" — signs you straight in. No sign-up, nothing to type.
-- **Demo account** — `palm@example.com`, loaded with four real weeks: dashboard, patterns, coach, goals, weekly summary (password `cadence-demo-2026` if you would rather type it)
-- **9-page summary (PDF, English)** — [showcase-en-light.pdf](docs/summary/showcase-en-light.pdf)
+- **Live app** — [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/). The first button on the landing page signs you in with the demo account; no sign-up is required.
+- **Demo account** — `palm@example.com`, preloaded with four weeks of check-ins, patterns, coaching, goals, and weekly reflection. Password: `cadence-demo-2026`.
+- **Case study** — [9-page project summary](docs/summary/showcase-en-light.pdf) in English.
 
-> [!NOTE]
-> It is a public account — fill it in, edit it, delete it. A [scheduled job](.github/workflows/refresh-demo.yml)
-> rebuilds 28 days of data every night. **Today's** check-in is deliberately left blank so you can
-> submit one yourself · the coach takes 5 chat messages per day (free Gemini quota)
+The demo account is public, so feel free to fill in, edit, or delete data. Its data is refreshed nightly.
+Today's check-in is intentionally left blank so you can try it yourself. AI coaching is limited to five
+messages per day on the free Gemini quota.
 
-## Overview
+## About the project
 
-Cadence is **a wellness coach, not a medical service**. The user checks in once a day — median
-**1 minute 26 seconds**, timed 24 times for real. The system connects eating, sleeping and moving to
-the actual context of a life (deadlines, early classes, commuting) and proposes a step small enough
-to take. It never scores, never grades, and never says anything about body shape.
+Cadence is a wellness coach, not a medical service. It is designed for people whose routines are
+shaped by classes, deadlines, commuting, and changing energy levels.
 
-**Built as a mobile app, not a website** — just forms, a dashboard and a bottom nav. At ≥ 1024px that
-nav becomes a left sidebar, and that is the **only** breakpoint the app actually uses
-([DESIGN.md](docs/DESIGN.md), Thai).
+Instead of scoring or judging users, the app follows a simple loop:
 
-```mermaid
-flowchart LR
-  U["User"] --> APP["Next.js 16<br/>App Router"]
-  APP --> DB[("Supabase<br/>Postgres + RLS")]
-  APP --> P["lib/patterns<br/>computes the statistics"]
-  P -- "numbers + evidence" --> AI["lib/ai<br/>guardrails + prompt"]
-  AI -- "puts it into words" --> G["Gemini API"]
-  G --> APP
+```text
+Daily check-in → Personal patterns → One practical next step → Weekly reflection
 ```
 
-**What it does**
+The check-in is designed to take under three minutes, using tap-based answers and only showing
+follow-up questions when they are relevant. The coach uses the user's own records to make suggestions
+that are small enough to fit their actual week.
 
-- **Daily check-in** in four steps, chips only — follow-up questions appear only when they are relevant (late night → ask why)
-- **Health overview** with four trend tabs, a night-into-morning timeline, and markers on disrupted days
-- **Pattern analysis** tying the three pillars to the shape of the week (needs ≥ 7 days of data before it will analyse anything)
-- **Conversational coach** that opens with a question drawn from the user's own records rather than an empty chat box, plus a four-step guided goal flow
-- **Micro goals**, at most two a week, ticked off day by day
-- **Weekly summary** with week-over-week numbers computed in code (no AI call, no quota spent)
+## Key features
 
-**What it will not do** — no diagnosis, no medication or supplement advice, no weight-loss plans, and it stores no weight, height, BMI, calories or photos.
+- **Daily check-in** — record eating, sleep, movement, and the context that shaped the day.
+- **Health overview** — review trends across four tabs, including a night-to-morning timeline and disrupted days.
+- **Pattern insights** — see relationships between health behaviours and real-life schedule constraints.
+- **AI coach** — start with a question based on your records, continue the conversation, and turn it into a guided goal.
+- **Micro-goals** — choose up to two small weekly goals and track progress day by day.
+- **Weekly reflection** — compare recent weeks and review what changed.
 
-## Worth a look in the code
+Cadence does not diagnose conditions, recommend medication or supplements, create weight-loss plans, or
+store weight, height, BMI, calories, or photos.
 
-**1 · Code computes, the LLM narrates — separated structurally, not by asking the prompt nicely**
+## Portfolio highlights
 
-[`lib/patterns`](src/lib/patterns/index.ts) counts ten correlations from the real records and keeps only
-those where the two groups differ by ≥ 20% with ≥ 3 days on each side — every threshold is a constant
-sitting at the top of the file, readable in one screen ([index.ts:4-10](src/lib/patterns/index.ts#L4-L10)).
-The code then **re-attaches the evidence numbers itself, after the model has replied**, so there was
-never an opening for the model to invent a figure. Fewer than 7 days of data is never sent to the LLM
-at all ([07-ai-design.md](docs/07-ai-design.md), Thai).
+- **Product thinking** — reduced daily friction with a short, conditional check-in instead of a long form.
+- **Responsible AI design** — keeps evidence and language separate, and treats AI as a coach within clear safety boundaries. See [AI design](docs/07-ai-design.md).
+- **Privacy and quality** — keeps health data owner-only, supports account deletion, sends no name or email to the model, and verifies behaviour with unit and end-to-end tests. See [safety and privacy](docs/08-safety-privacy.md).
 
-**2 · Safety tested with raw output committed unedited**
+## Project context
 
-10 cases × 2 phrasings against the production model: 20/20 refused correctly, 9/9 crisis cases
-surfaced the helpline, and **the person who checked the results was not the person who wrote the
-prompt**. What matters more is that the first round **failed** — the model wrote causal claims off
-three days of data. We fixed the prompt and ran it again. Both rounds are in the repo, side by side
-([before](docs/issues/ai-safety-test/run-2026-07-14-before-prompt-fix.md) ·
-[after](docs/issues/ai-safety-test/run-2026-07-16-after-prompt-fix.md) ·
-[the prompt itself](src/lib/ai/system-prompt.ts)).
+Cadence was built by a team of four in four weeks for CSTU Spark Camp in AI 2026, using a zero-dollar
+budget. The team designed, implemented, dogfooded, tested, and deployed a working demo for the final
+pitch. The [project charter](docs/01-project-charter.md) and [issue tracker](docs/issues/) record the
+scope, decisions, and development history.
 
-**3 · Model chosen by measurement, not by version number**
+## Tech stack
 
-When a newer release appeared, the whole suite was re-run against real data through the real
-pipeline. The newer model was 4× slower and left a quota of 20 requests a day, so we **did not
-switch**. Every quota figure here came from hitting the ceiling ourselves, not from the docs
-([ADR-0003](docs/adr/0003-gemini-free-tier-ai.md), Thai). The model is pinned in
-[`model.ts`](src/lib/ai/model.ts) and a unit test locks the name, so it cannot drift quietly.
+- Next.js 16 with the App Router and React 19
+- TypeScript and Tailwind CSS v4
+- Supabase Auth, Postgres, and Row Level Security
+- Google Gemini 3.1 Flash Lite
+- Vitest and Playwright
+- Vercel
 
-**4 · A gate that knows what it cannot catch**
+## Run locally
 
-Unit tests only cover logic in `lib/` — a PR that breaks the layout sails through `verify` completely
-green. So there is an e2e gate that opens every real page across mobile and desktop, light and dark,
-and asserts contrast ≥ 4.5:1, tap targets ≥ 44px, no horizontal scroll, no console errors — all of it
-executable code in [e2e/checks.ts](e2e/checks.ts), not a checklist somebody eyeballs. (Contrast is
-measured by letting the browser convert the colours, because Tailwind v4 returns `oklab()`, which
-gives the wrong ratio if you parse it yourself.)
+```bash
+npm install
+cp .env.example .env.local
+npm run dev
+```
 
-**5 · Documentation that records its own mistakes**
+You need Node.js 22 or newer. For environment variables, database setup, seed data, test commands,
+and deployment details, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-[11-limitations-future.md](docs/11-limitations-future.md) is not a list of excuses. Every limitation
-comes paired with what was built so it would not mislead a user, and several carry an error number or
-a test result, because they were hit for real during the build.
+## Limitations
 
-## Limitations we know about
+- All health information is self-reported; there is no sensor data to verify it.
+- Patterns show relationships, not causes, and should not be treated as medical advice.
+- The current prototype has not yet been evaluated with users outside the team.
+- AI output cannot be controlled perfectly, so the product uses safety boundaries and fallbacks.
 
-- **Every number is self-reported**, with no sensor to confirm it — so the design removes the emotional cost of answering honestly: no score, no streak, no judging language
-- **Not yet evaluated with users outside the team** — the four testers built it, so the timings measure the ceiling of the design, not the floor for a first-time user
-- **The patterns are correlations, not causes** — data under 7 days never reaches the LLM, the prompt forbids causal claims, and there is a detectable list of causal wording
-- **An LLM cannot be controlled completely** — every goal must pass [`validateGoalTitle()`](src/lib/goals/suggest.ts#L70) before use; anything that fails is discarded in favour of a standard goal
-
-The full version, with what we would do next, is in [docs/11-limitations-future.md](docs/11-limitations-future.md) (Thai).
-
-## Privacy
-
-Health data is visible only to its owner, enforced by row-level security in the database and
-re-checked by `npm run verify:rls`. Users can delete their data or their whole account at any time.
-**No name or email is ever sent to the model** — only behavioural data
-([08-safety-privacy.md](docs/08-safety-privacy.md), Thai).
+The full limitations and future plan are documented in [docs/11-limitations-future.md](docs/11-limitations-future.md).
 
 ## Documentation
 
-The design docs are written in Thai. The table says what each one holds.
-
-| File | What is in it |
+| Topic | Documentation |
 | --- | --- |
-| [docs/](docs/README.md) | Index of the 11 design docs — problem → persona → data → architecture → AI → safety → limitations |
-| [docs/adr/](docs/adr/) | Five architecture decision records, each with the reasoning behind it |
-| [docs/issues/](docs/issues/) | The issue tracker this project actually ran on — 69 issues, each closed with evidence and tied to a PR |
-| [docs/12-ui-inventory.md](docs/12-ui-inventory.md) | Every route and every state as the app really behaves, each linked into the code |
-| [CONTEXT.md](docs/CONTEXT.md) | The shared glossary — one meaning per word, used in code, issues and UI copy alike |
-| [DESIGN.md](docs/DESIGN.md) | The UI rules that are actually enforced, each with the incident that created it |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | How to run it · environment variables · every script · the gates before a PR |
+| Product, design, and requirements | [docs/](docs/README.md) |
+| Architecture and request flows | [System architecture](docs/06-system-architecture.md) |
+| AI, patterns, and model decisions | [AI design](docs/07-ai-design.md) · [ADR-0003](docs/adr/0003-gemini-free-tier-ai.md) |
+| Safety, privacy, and test evidence | [Safety and privacy](docs/08-safety-privacy.md) · [AI safety tests](docs/issues/ai-safety-test/) |
+| UI rules and route states | [UI inventory](docs/12-ui-inventory.md) · [Design rules](docs/DESIGN.md) |
+| Local development and contribution workflow | [CONTRIBUTING.md](CONTRIBUTING.md) |
 
----
-
-<sub>Built by a team of four in four weeks on a budget of zero, for CSTU Spark Camp in AI 2026 (Mission #5) ·
-Deployed automatically from `main` to [personal-healthcoach.vercel.app](https://personal-healthcoach.vercel.app/) ·
-Licensed [MIT](LICENSE)</sub>
+<sub>Deployed automatically from <code>main</code> to <a href="https://personal-healthcoach.vercel.app/">personal-healthcoach.vercel.app</a> · Licensed under <a href="LICENSE">MIT</a></sub>
